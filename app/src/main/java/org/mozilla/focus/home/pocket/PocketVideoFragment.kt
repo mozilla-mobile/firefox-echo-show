@@ -51,6 +51,8 @@ class PocketVideoFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val context = context!!
+
         fun displayFeed(layout: View, videos: PocketVideosDeferred) {
             layout.videoFeed.gridView.adapter = PocketVideoAdapter(context, videos, fragmentManager)
         }
@@ -88,7 +90,7 @@ class PocketVideoFragment : Fragment() {
 private class PocketVideoAdapter(
         context: Context,
         feedItemsDeferred: PocketVideosDeferred,
-        private val fragmentManager: FragmentManager
+        private val fragmentManager: FragmentManager?
 ) : RecyclerView.Adapter<PocketVideoViewHolder>() {
 
     private val photonGrey70 = ContextCompat.getColor(context, R.color.photonGrey70)
