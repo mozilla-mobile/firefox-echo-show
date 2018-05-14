@@ -10,17 +10,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
-
-import com.amazon.android.webkit.AmazonWebView;
+import android.webkit.WebView;
 
 import org.mozilla.focus.iwebview.IWebView;
 
 /* package */ class LinkHandler implements View.OnLongClickListener {
-    private final AmazonWebView webView;
+    private final WebView webView;
     private @Nullable
     IWebView.Callback callback = null;
 
-    public LinkHandler(final AmazonWebView webView) {
+    public LinkHandler(final WebView webView) {
         this.webView = webView;
     }
 
@@ -34,20 +33,20 @@ import org.mozilla.focus.iwebview.IWebView;
             return false;
         }
 
-        final AmazonWebView.HitTestResult hitTestResult = webView.getHitTestResult();
+        final WebView.HitTestResult hitTestResult = webView.getHitTestResult();
 
         switch (hitTestResult.getType()) {
-            case AmazonWebView.HitTestResult.SRC_ANCHOR_TYPE:
+            case WebView.HitTestResult.SRC_ANCHOR_TYPE:
                 final String linkURL = hitTestResult.getExtra();
                 callback.onLongPress(new IWebView.HitTarget(true, linkURL, false, null));
                 return true;
 
-            case AmazonWebView.HitTestResult.IMAGE_TYPE:
+            case WebView.HitTestResult.IMAGE_TYPE:
                 final String imageURL = hitTestResult.getExtra();
                 callback.onLongPress(new IWebView.HitTarget(false, null, true, imageURL));
                 return true;
 
-            case AmazonWebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
+            case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
                 // hitTestResult.getExtra() contains only the image URL, and not the link
                 // URL. Internally, WebView's HitTestData contains both, but they only
                 // make it available via requestFocusNodeHref...

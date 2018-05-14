@@ -11,8 +11,7 @@ import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-
-import com.amazon.android.webkit.AmazonWebView;
+import android.webkit.WebView;
 
 /**
  * WebView that supports nested scrolls (for using in a CoordinatorLayout).
@@ -24,7 +23,7 @@ import com.amazon.android.webkit.AmazonWebView;
  * Based on:
  *   https://github.com/takahirom/webview-in-coordinatorlayout
  */
-public class NestedWebView extends AmazonWebView implements NestedScrollingChild {
+public class NestedWebView extends WebView implements NestedScrollingChild {
     private int mLastY;
     private final int[] mScrollOffset = new int[2];
     private final int[] mScrollConsumed = new int[2];

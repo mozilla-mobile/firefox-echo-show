@@ -7,9 +7,8 @@ package org.mozilla.focus.webview;
 import android.content.res.Resources;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.util.Pair;
-
-import com.amazon.android.webkit.AmazonWebView;
-import com.amazon.android.webkit.AmazonWebViewClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.HtmlLoader;
@@ -27,12 +26,12 @@ public class ErrorPage {
         // Chromium's mapping (internal error code, to Android WebView error code) is described at:
         // https://chromium.googlesource.com/chromium/src.git/+/master/android_webview/java/src/org/chromium/android_webview/ErrorCodeConversionHelper.java
 
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_UNKNOWN,
+        errorDescriptionMap.put(WebViewClient.ERROR_UNKNOWN,
                 new Pair<>(R.string.error_connectionfailure_title, R.string.error_connectionfailure_message));
 
         // This is probably the most commonly shown error. If there's no network, we inevitably
         // show this.
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_HOST_LOOKUP,
+        errorDescriptionMap.put(WebViewClient.ERROR_HOST_LOOKUP,
                 new Pair<>(R.string.error_hostLookup_title, R.string.error_hostLookup_message));
 
 //        WebViewClient.ERROR_UNSUPPORTED_AUTH_SCHEME
@@ -41,19 +40,19 @@ public class ErrorPage {
 //        WebViewClient.ERROR_AUTHENTICATION
         // TODO: there's no point in implementing this until we actually support http auth (#159)
 
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_CONNECT,
+        errorDescriptionMap.put(WebViewClient.ERROR_CONNECT,
                 new Pair<>(R.string.error_connect_title, R.string.error_connect_message));
 
         // It's unclear what this actually means - it's not well documented. Based on looking at
         // ErrorCodeConversionHelper this could happen if networking is disabled during load, in which
         // case the generic error is good enough:
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_IO,
+        errorDescriptionMap.put(WebViewClient.ERROR_IO,
                 new Pair<>(R.string.error_connectionfailure_title, R.string.error_connectionfailure_message));
 
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_TIMEOUT,
+        errorDescriptionMap.put(WebViewClient.ERROR_TIMEOUT,
                 new Pair<>(R.string.error_timeout_title, R.string.error_timeout_message));
 
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_REDIRECT_LOOP,
+        errorDescriptionMap.put(WebViewClient.ERROR_REDIRECT_LOOP,
                 new Pair<>(R.string.error_redirectLoop_title, R.string.error_redirectLoop_message));
 
         // We already try to handle external URLs if possible (i.e. we offer to open the corresponding
@@ -62,13 +61,13 @@ public class ErrorPage {
         // to know whether that's the right step, especially if there are no good apps for actually
         // handling such a protocol there - moreover there doesn't seem to be a good way to search
         // google play for apps supporting a given scheme.
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_UNSUPPORTED_SCHEME,
+        errorDescriptionMap.put(WebViewClient.ERROR_UNSUPPORTED_SCHEME,
                 new Pair<>(R.string.error_unsupportedprotocol_title, R.string.error_unsupportedprotocol_message));
 
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_FAILED_SSL_HANDSHAKE,
+        errorDescriptionMap.put(WebViewClient.ERROR_FAILED_SSL_HANDSHAKE,
                 new Pair<>(R.string.error_sslhandshake_title, R.string.error_sslhandshake_message));
 
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_BAD_URL,
+        errorDescriptionMap.put(WebViewClient.ERROR_BAD_URL,
                 new Pair<>(R.string.error_malformedURI_title, R.string.error_malformedURI_message));
 
         // WebView returns ERROR_UNKNOWN when we try to access a file:/// on Android (with the error string
@@ -78,7 +77,7 @@ public class ErrorPage {
 //        WebViewClient.ERROR_FILE_NOT_FOUND;
 
         // Seems to be an indication of OOM, insufficient resources, or too many queued DNS queries
-        errorDescriptionMap.put(AmazonWebViewClient.ERROR_TOO_MANY_REQUESTS,
+        errorDescriptionMap.put(WebViewClient.ERROR_TOO_MANY_REQUESTS,
                 new Pair<>(R.string.error_generic_title, R.string.error_generic_message));
     }
 
@@ -86,7 +85,7 @@ public class ErrorPage {
         return (errorDescriptionMap.get(errorCode) != null);
     }
 
-    public static void loadErrorPage(final AmazonWebView webView, final String desiredURL, final int errorCode) {
+    public static void loadErrorPage(final WebView webView, final String desiredURL, final int errorCode) {
         final Pair<Integer, Integer> errorResourceIDs = errorDescriptionMap.get(errorCode);
 
         if (errorResourceIDs == null) {

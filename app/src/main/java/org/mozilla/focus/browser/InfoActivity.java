@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 
-import org.mozilla.focus.MainActivity;
 import org.mozilla.focus.R;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.iwebview.IWebView;
@@ -86,7 +85,7 @@ public class InfoActivity extends AppCompatActivity {
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         if (name.equals(IWebView.class.getName())) {
-            final View view = WebViewProvider.create(this, attrs, MainActivity.getFactory());
+            final View view = WebViewProvider.create(this, attrs);
 
             final IWebView webView = (IWebView) view;
             webView.setBlockingEnabled(false);

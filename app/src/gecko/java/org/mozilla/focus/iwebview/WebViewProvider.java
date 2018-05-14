@@ -38,10 +38,6 @@ public class WebViewProvider {
         return geckoView;
     }
 
-    public static View create(Context context, AttributeSet attrs, Object factory) {
-        return create(context, attrs);
-    }
-
     public static void performCleanup(final Context context) {
         // Nothing: does Gecko need extra private mode cleanup?
     }

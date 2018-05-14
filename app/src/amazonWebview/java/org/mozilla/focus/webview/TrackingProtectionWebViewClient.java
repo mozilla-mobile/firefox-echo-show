@@ -10,17 +10,16 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
-
-import com.amazon.android.webkit.AmazonWebResourceResponse;
-import com.amazon.android.webkit.AmazonWebView;
-import com.amazon.android.webkit.AmazonWebViewClient;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.iwebview.IWebView;
 import org.mozilla.focus.webview.matcher.UrlMatcher;
 
-public class TrackingProtectionWebViewClient extends AmazonWebViewClient
+public class TrackingProtectionWebViewClient extends WebViewClient
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static volatile UrlMatcher MATCHER;
 
@@ -79,9 +78,9 @@ public class TrackingProtectionWebViewClient extends AmazonWebViewClient
 
     // TODO we need to figure out what to do with the shouldInterceptRequest method that has a request
     // String instead of WebResourceRequest
-    // WebResourceRequest was added in API21 and there is no equivalent AmazonWebResourceRequest
+    // WebResourceRequest was added in API21 and there is no equivalent WebResourceRequest
     @Override
-    public AmazonWebResourceResponse shouldInterceptRequest(final AmazonWebView view, final String request) {
+    public WebResourceResponse shouldInterceptRequest(final WebView view, final String request) {
         if (!blockingEnabled) {
             return super.shouldInterceptRequest(view, request);
         }
@@ -99,7 +98,7 @@ public class TrackingProtectionWebViewClient extends AmazonWebViewClient
 //            // but not in all cases (malformed market: URIs, such as market:://... will still end up here).
 //            // (Note: data: URIs are automatically handled by WebView, and won't end up here either.)
 //            // file:// URIs are disabled separately by setting WebSettings.setAllowFileAccess()
-//            return new AmazonWebResourceResponse(null, null, null);
+//            return new WebResourceResponse(null, null, null);
 //        }
 
         // WebView always requests a favicon, even though it won't be used anywhere. This check
@@ -108,7 +107,7 @@ public class TrackingProtectionWebViewClient extends AmazonWebViewClient
         // favicon loading that's performed.
         final String path = resourceUri.getPath();
         if (path != null && path.endsWith("/favicon.ico")) {
-            return new AmazonWebResourceResponse(null, null, null);
+            return new WebResourceResponse(null, null, null);
         }
 
         final UrlMatcher blockedSiteMatcher = getMatcher(view.getContext());
@@ -120,7 +119,7 @@ public class TrackingProtectionWebViewClient extends AmazonWebViewClient
         // Matches is true if the resourceUri is on the blocklist and is not a first party request.
         // The matcher code could be better named to make this apparent.
         if (blockedSiteMatcher.matches(resourceUri, currentPageUri)) {
-            return new AmazonWebResourceResponse(null, null, null);
+            return new WebResourceResponse(null, null, null);
         }
 
         return super.shouldInterceptRequest(view, request);
@@ -138,7 +137,7 @@ public class TrackingProtectionWebViewClient extends AmazonWebViewClient
     }
 
     @Override
-    public void onPageStarted(AmazonWebView view, String url, Bitmap favicon) {
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
         currentPageURL = url;
 
         super.onPageStarted(view, url, favicon);

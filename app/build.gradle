@@ -207,9 +207,6 @@ dependencies {
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestUtil 'com.android.support.test:orchestrator:1.0.1'
-
-    implementation files('libs/awv_api/awv_interface.jar')
-    implementation files('libs/awv_api/awv_android_factory.jar')
 }
 
 // -------------------------------------------------------------------------------------------------

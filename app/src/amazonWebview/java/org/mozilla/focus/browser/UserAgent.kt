@@ -13,8 +13,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.support.annotation.VisibleForTesting
 import android.text.TextUtils
-
-import com.amazon.android.webkit.AmazonWebSettings
+import android.webkit.WebSettings
 
 /** A collection of user agent functionality. */
 object UserAgent {
@@ -57,7 +56,7 @@ object UserAgent {
     }
 
     @JvmStatic
-    fun buildUserAgentString(context: Context, settings: AmazonWebSettings, appName: String): String {
+    fun buildUserAgentString(context: Context, settings: WebSettings, appName: String): String {
         val uaBuilder = StringBuilder()
 
         uaBuilder.append("Mozilla/5.0")

@@ -11,11 +11,10 @@ import android.net.http.SslCertificate;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.amazon.android.webkit.AmazonSslErrorHandler;
-import com.amazon.android.webkit.AmazonWebResourceResponse;
-import com.amazon.android.webkit.AmazonWebView;
 
 import org.mozilla.focus.browser.LocalizedContent;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -84,7 +83,7 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
             "}";
 
     @Override
-    public void onLoadResource(AmazonWebView view, String url) {
+    public void onLoadResource(WebView view, String url) {
         // We can't access the webview during shouldInterceptRequest(), however onLoadResource()
         // is called on the UI thread so we're allowed to do this now:
 //        evaluateJavascript(view,
@@ -111,16 +110,16 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
 
     // TODO we need to figure out what to do with the shouldInterceptRequest method that has a request
     // String instead of WebResourceRequest. This "request" is a string of the URL.
-    // WebResourceRequest was added in API21 and there is no equivalent AmazonWebResourceRequest
+    // WebResourceRequest was added in API21 and there is no equivalent WebResourceRequest
     @Override
-    public AmazonWebResourceResponse shouldInterceptRequest(AmazonWebView view, String request) {
+    public WebResourceResponse shouldInterceptRequest(WebView view, String request) {
         if (request != null && request.startsWith(APP_URL_PREFIX)) {
             switch (request) {
                 case APP_URL_HOME:
                     // Home screen should show a blank webview behind the overlay, but keep the url.
                     callback.onShouldInterceptRequest(request);
                     final ByteArrayInputStream homeDataStream = getBlankPageStream();
-                    return new AmazonWebResourceResponse("text/html", "utf-8", homeDataStream);
+                    return new WebResourceResponse("text/html", "utf-8", homeDataStream);
             }
         }
 
@@ -133,7 +132,7 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
     }
 
 //    @Override
-//    public AmazonWebResourceResponse shouldInterceptRequest(AmazonWebView view, final AmazonWebResourceRequest request) {
+//    public WebResourceResponse shouldInterceptRequest(WebView view, final WebResourceRequest request) {
 //        // Only update the user visible URL if:
 //        // 1. The purported site URL has actually been requested
 //        // 2. And it's being loaded for the main frame (and not a fake/hidden/iframe request)
@@ -170,7 +169,7 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
 //    }
 
     @Override
-    public void onPageStarted(AmazonWebView view, String url, Bitmap favicon) {
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
         if (errorReceived) {
             // When dealing with error pages, WebView sometimes sends onPageStarted()
             // without a matching onPageFinished(). We hack around that by using
@@ -203,7 +202,7 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
     }
 
     @Override
-    public void onPageFinished(AmazonWebView view, final String url) {
+    public void onPageFinished(WebView view, final String url) {
         SslCertificate certificate = view.getCertificate();
 
         if (!TextUtils.isEmpty(restoredUrl)) {
@@ -240,13 +239,13 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
 //                "})();");
     }
 
-    private void evaluateJavascript(AmazonWebView view, String javascriptString) {
+    private void evaluateJavascript(WebView view, String javascriptString) {
         // TODO this way of evaluating javascript currently launches unescapable dialogs >:(
         view.loadUrl("javascript:" + javascriptString);
     }
 
     @Override
-    public boolean shouldOverrideUrlLoading(AmazonWebView view, String url) {
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
         // If this is an internal URL like focus:about then we load the content ourselves here.
         if (LocalizedContent.handleInternalContent(url, view)) {
             return true;
@@ -282,7 +281,7 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
     }
 
     @Override
-    public void onReceivedSslError(AmazonWebView view, AmazonSslErrorHandler handler, SslError error) {
+    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
         handler.cancel();
 
         // WebView can try to load the favicon for a bad page when you set a new URL. If we then
@@ -299,7 +298,7 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
     }
 
     @Override
-    public void onReceivedError(final AmazonWebView webView, int errorCode, final String description, String failingUrl) {
+    public void onReceivedError(final WebView webView, int errorCode, final String description, String failingUrl) {
         errorReceived = true;
 
         // This is a hack: onReceivedError(WebView, WebResourceRequest, WebResourceError) is API 23+ only,

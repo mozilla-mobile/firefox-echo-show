@@ -9,8 +9,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.amazon.android.webkit.AmazonWebKitFactory
-import com.amazon.android.webkit.AmazonWebSettings
+import android.webkit.WebSettings
+import android.webkit.WebView.setWebContentsDebuggingEnabled
+import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.UserAgent
 import org.mozilla.focus.webview.FirefoxAmazonWebChromeClient
@@ -31,14 +32,11 @@ object WebViewProvider {
     }
 
     @JvmStatic
-    fun create(context: Context, attrs: AttributeSet, factory: AmazonWebKitFactory): View {
+    fun create(context: Context, attrs: AttributeSet): View {
         val client = FocusWebViewClient(context.applicationContext)
         val chromeClient = FirefoxAmazonWebChromeClient()
 
         return FirefoxAmazonWebView(context, attrs, client, chromeClient).apply {
-            // We experienced crashes if factory init occurs after clients are set.
-            factory.initializeWebView(this, 0xFFFFFF, false, null)
-
             setWebViewClient(client)
             setWebChromeClient(chromeClient)
 
@@ -52,15 +50,14 @@ private fun initWebview(webView: FirefoxAmazonWebView) = with (webView) {
     isVerticalScrollBarEnabled = true
     isHorizontalScrollBarEnabled = true
 
-    // TODO This does not exist with the AmazonWebView
-    //if (BuildConfig.DEBUG) {
-    //    setWebContentsDebuggingEnabled(true);
-    //}
+    if (BuildConfig.DEBUG) {
+        setWebContentsDebuggingEnabled(true)
+    }
 }
 
 @SuppressLint("SetJavaScriptEnabled") // We explicitly want to enable JavaScript
 @Suppress("DEPRECATION") // To be safe, we'll use delete methods as long as they're there.
-private fun initWebSettings(context: Context, settings: AmazonWebSettings) = with (settings) {
+private fun initWebSettings(context: Context, settings: WebSettings) = with (settings) {
     val appName = context.resources.getString(R.string.useragent_appname)
     userAgentString = UserAgent.buildUserAgentString(context, settings, appName)
 

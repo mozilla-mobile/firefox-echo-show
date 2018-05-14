@@ -11,8 +11,6 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
-import com.amazon.android.webkit.AmazonWebKitFactories
-import com.amazon.android.webkit.AmazonWebKitFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
@@ -47,7 +45,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         Pocket.init()
         PublicSuffix.init(this) // Used by Pocket Video feed & custom home tiles.
 
-        initAmazonFactory()
         val intent = SafeIntent(intent)
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -111,7 +108,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
         return if (name == IWebView::class.java.name) {
             // Inject our implementation of IWebView from the WebViewProvider.
-            WebViewProvider.create(this, attrs, factory!!)
+            WebViewProvider.create(this, attrs)
         } else super.onCreateView(name, context, attrs)
     }
 
@@ -126,23 +123,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
             return
         }
         super.onBackPressed()
-    }
-
-    private fun initAmazonFactory() {
-        if (!isAmazonFactoryInit) {
-            factory = AmazonWebKitFactories.getDefaultFactory()
-            if (factory!!.isRenderProcess(this)) {
-                return // Do nothing if this is on render process
-            }
-            factory!!.initialize(this.applicationContext)
-
-            // factory configuration is done here, for example:
-            factory!!.cookieManager.setAcceptCookie(true)
-
-            isAmazonFactoryInit = true
-        } else {
-            factory = AmazonWebKitFactories.getDefaultFactory()
-        }
     }
 
     override fun onNonTextInputUrlEntered(urlStr: String) {
@@ -169,10 +149,5 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         } else {
             super.dispatchKeyEvent(event)
         }
-    }
-
-    companion object {
-        private var isAmazonFactoryInit = false
-        @JvmStatic var factory: AmazonWebKitFactory? = null
     }
 }

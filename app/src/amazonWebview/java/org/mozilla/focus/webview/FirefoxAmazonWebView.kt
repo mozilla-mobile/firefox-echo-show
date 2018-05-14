@@ -14,8 +14,8 @@ import android.support.annotation.VisibleForTesting
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewTreeObserver
-import com.amazon.android.webkit.AmazonWebChromeClient
-import com.amazon.android.webkit.AmazonWebView
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import org.mozilla.focus.ext.deleteData
 import org.mozilla.focus.ext.hasChild
 import org.mozilla.focus.iwebview.FirefoxAmazonFocusedDOMElementCache
@@ -26,7 +26,7 @@ import org.mozilla.focus.utils.UrlUtils
 private val uiHandler = Handler(Looper.getMainLooper())
 
 /**
- * An IWebView implementation using AmazonWebView.
+ * An IWebView implementation using WebView.
  *
  * Initialization for this class should primarily occur in WebViewProvider,
  * which is visible by the main code base and constructs this class.
@@ -107,6 +107,7 @@ internal class FirefoxAmazonWebView(
         this.callback?.onBlockingStateChanged(enabled)
     }
 
+    @Suppress("DEPRECATION") // shouldOverrideUrlLoading deprecated in 24 but we support 22.
     override fun loadUrl(url: String) {
         // We need to check external URL handling here - shouldOverrideUrlLoading() is only
         // called by webview when clicking on a link, and not when opening a new page for the
@@ -154,10 +155,10 @@ private inline fun clampScroll(scroll: Int, canScroll: (direction: Int) -> Boole
 }
 
 // todo: move into WebClients file with FocusWebViewClient.
-internal class FirefoxAmazonWebChromeClient : AmazonWebChromeClient() {
+internal class FirefoxAmazonWebChromeClient : WebChromeClient() {
     var callback: IWebView.Callback? = null
 
-    override fun onProgressChanged(view: AmazonWebView?, newProgress: Int) {
+    override fun onProgressChanged(view: WebView?, newProgress: Int) {
         callback?.let { callback ->
             // This is the earliest point where we might be able to confirm a redirected
             // URL: we don't necessarily get a shouldInterceptRequest() after a redirect,
@@ -171,7 +172,7 @@ internal class FirefoxAmazonWebChromeClient : AmazonWebChromeClient() {
         }
     }
 
-    override fun onShowCustomView(view: View?, webviewCallback: AmazonWebChromeClient.CustomViewCallback?) {
+    override fun onShowCustomView(view: View?, webviewCallback: WebChromeClient.CustomViewCallback?) {
         val fullscreenCallback = object : IWebView.FullscreenCallback {
             override fun fullScreenExited() {
                 webviewCallback?.onCustomViewHidden()
