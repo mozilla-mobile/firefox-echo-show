@@ -18,7 +18,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import org.mozilla.focus.ext.deleteData
 import org.mozilla.focus.ext.hasChild
-import org.mozilla.focus.iwebview.FirefoxAmazonFocusedDOMElementCache
+import org.mozilla.focus.iwebview.FirefoxFocusedDOMElementCache
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.session.Session
 import org.mozilla.focus.utils.UrlUtils
@@ -32,13 +32,13 @@ private val uiHandler = Handler(Looper.getMainLooper())
  * which is visible by the main code base and constructs this class.
  */
 @Suppress("ViewConstructor") // We only construct this in code.
-internal class FirefoxAmazonWebView(
+internal class FirefoxWebView(
         context: Context, attrs: AttributeSet,
         private val client: FocusWebViewClient,
-        private val chromeClient: FirefoxAmazonWebChromeClient
+        private val chromeClient: FirefoxWebChromeClient
 ) : NestedWebView(context, attrs), IWebView {
 
-    private val onGlobalFocusChangeListener = FirefoxAmazonWebViewFocusChangeListener(this)
+    private val onGlobalFocusChangeListener = FirefoxWebViewFocusChangeListener(this)
 
     @get:VisibleForTesting
     override var callback: IWebView.Callback? = null
@@ -136,7 +136,7 @@ internal class FirefoxAmazonWebView(
         return outBitmap
     }
 
-    override val focusedDOMElement = FirefoxAmazonFocusedDOMElementCache(this)
+    override val focusedDOMElement = FirefoxFocusedDOMElementCache(this)
 
     override fun scrollByClamped(vx: Int, vy: Int) {
         // This is not a true clamp: it can only stop us from
@@ -155,7 +155,7 @@ private inline fun clampScroll(scroll: Int, canScroll: (direction: Int) -> Boole
 }
 
 // todo: move into WebClients file with FocusWebViewClient.
-internal class FirefoxAmazonWebChromeClient : WebChromeClient() {
+internal class FirefoxWebChromeClient : WebChromeClient() {
     var callback: IWebView.Callback? = null
 
     override fun onProgressChanged(view: WebView?, newProgress: Int) {
@@ -189,7 +189,7 @@ internal class FirefoxAmazonWebChromeClient : WebChromeClient() {
 
 // onFocusChangeListener isn't called for AmazonWebView (unlike Android's WebView)
 // so we use the global listener instead.
-private class FirefoxAmazonWebViewFocusChangeListener(val webView: FirefoxAmazonWebView) : ViewTreeObserver.OnGlobalFocusChangeListener {
+private class FirefoxWebViewFocusChangeListener(val webView: FirefoxWebView) : ViewTreeObserver.OnGlobalFocusChangeListener {
     override fun onGlobalFocusChanged(oldFocus: View?, newFocus: View?) {
         val viewTreeObserver = (oldFocus ?: newFocus)?.viewTreeObserver
         if (viewTreeObserver == null || !viewTreeObserver.isAlive) return

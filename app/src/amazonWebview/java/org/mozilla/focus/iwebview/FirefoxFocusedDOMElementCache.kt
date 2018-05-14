@@ -7,7 +7,7 @@ package org.mozilla.focus.iwebview
 private const val CACHE_VAR = "_firefoxForFireTvPreviouslyFocusedElement"
 private const val CACHE_JS = "var $CACHE_VAR = document.activeElement;"
 
-class FirefoxAmazonFocusedDOMElementCache(private val webView: IWebView) : FocusedDOMElementCache {
+class FirefoxFocusedDOMElementCache(private val webView: IWebView) : FocusedDOMElementCache {
 
     override fun cache() {
         webView.evalJS(CACHE_JS)

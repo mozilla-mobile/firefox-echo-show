@@ -14,8 +14,8 @@ import android.webkit.WebView.setWebContentsDebuggingEnabled
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.UserAgent
-import org.mozilla.focus.webview.FirefoxAmazonWebChromeClient
-import org.mozilla.focus.webview.FirefoxAmazonWebView
+import org.mozilla.focus.webview.FirefoxWebChromeClient
+import org.mozilla.focus.webview.FirefoxWebView
 import org.mozilla.focus.webview.FocusWebViewClient
 import org.mozilla.focus.webview.TrackingProtectionWebViewClient
 
@@ -34,9 +34,9 @@ object WebViewProvider {
     @JvmStatic
     fun create(context: Context, attrs: AttributeSet): View {
         val client = FocusWebViewClient(context.applicationContext)
-        val chromeClient = FirefoxAmazonWebChromeClient()
+        val chromeClient = FirefoxWebChromeClient()
 
-        return FirefoxAmazonWebView(context, attrs, client, chromeClient).apply {
+        return FirefoxWebView(context, attrs, client, chromeClient).apply {
             setWebViewClient(client)
             setWebChromeClient(chromeClient)
 
@@ -46,7 +46,7 @@ object WebViewProvider {
     }
 }
 
-private fun initWebview(webView: FirefoxAmazonWebView) = with (webView) {
+private fun initWebview(webView: FirefoxWebView) = with (webView) {
     isVerticalScrollBarEnabled = true
     isHorizontalScrollBarEnabled = true
 

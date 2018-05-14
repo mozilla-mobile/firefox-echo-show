@@ -186,7 +186,7 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
         super.onPageStarted(view, url, favicon);
     }
 
-    /* package */ void saveState(FirefoxAmazonWebView view, Bundle bundle) {
+    /* package */ void saveState(FirefoxWebView view, Bundle bundle) {
         final SslCertificate certificate = view.getCertificate();
         if (certificate != null) {
             bundle.putString(STATE_KEY_URL, view.getUrl());
