@@ -13,7 +13,6 @@ import android.webkit.WebSettings
 import android.webkit.WebView.setWebContentsDebuggingEnabled
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
-import org.mozilla.focus.browser.UserAgent
 import org.mozilla.focus.webview.FirefoxWebChromeClient
 import org.mozilla.focus.webview.FirefoxWebView
 import org.mozilla.focus.webview.FocusWebViewClient
@@ -41,7 +40,7 @@ object WebViewProvider {
             setWebChromeClient(chromeClient)
 
             initWebview(this)
-            initWebSettings(context, settings)
+            initWebSettings(settings)
         }
     }
 }
@@ -57,9 +56,8 @@ private fun initWebview(webView: FirefoxWebView) = with (webView) {
 
 @SuppressLint("SetJavaScriptEnabled") // We explicitly want to enable JavaScript
 @Suppress("DEPRECATION") // To be safe, we'll use delete methods as long as they're there.
-private fun initWebSettings(context: Context, settings: WebSettings) = with (settings) {
-    val appName = context.resources.getString(R.string.useragent_appname)
-    userAgentString = UserAgent.buildUserAgentString(context, settings, appName)
+private fun initWebSettings(settings: WebSettings) = with (settings) {
+    userAgentString = settings.userAgentString
 
     javaScriptEnabled = true
     domStorageEnabled = true
