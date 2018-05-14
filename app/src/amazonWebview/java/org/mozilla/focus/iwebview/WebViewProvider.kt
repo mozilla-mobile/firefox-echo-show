@@ -12,7 +12,6 @@ import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView.setWebContentsDebuggingEnabled
 import org.mozilla.focus.BuildConfig
-import org.mozilla.focus.R
 import org.mozilla.focus.webview.FirefoxWebChromeClient
 import org.mozilla.focus.webview.FirefoxWebView
 import org.mozilla.focus.webview.FocusWebViewClient
