@@ -17,7 +17,6 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import org.mozilla.focus.ext.deleteData
-import org.mozilla.focus.iwebview.FirefoxFocusedDOMElementCache
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.session.Session
 import org.mozilla.focus.utils.UrlUtils

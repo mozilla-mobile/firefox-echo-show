@@ -2,12 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.iwebview
+package org.mozilla.focus.webview
+
+import org.mozilla.focus.iwebview.IWebView
 
 private const val CACHE_VAR = "_firefoxForFireTvPreviouslyFocusedElement"
 private const val CACHE_JS = "var $CACHE_VAR = document.activeElement;"
 
-class FirefoxFocusedDOMElementCache(private val webView: IWebView) : FocusedDOMElementCache {
+internal class FirefoxFocusedDOMElementCache(private val webView: IWebView) : FocusedDOMElementCache {
 
     override fun cache() {
         webView.evalJS(CACHE_JS)
