@@ -75,7 +75,7 @@ interface IWebView {
 
     val isYoutubeTV: Boolean get() = getUrl()?.contains("youtube.com/tv") ?: false
 
-    val focusedDOMElement: FocusedDOMElementCache
+    fun onOverlayPreSetVisibility(willOverlayBeVisible: Boolean)
 
     /**
      * Enable/Disable content blocking for this session (Only the blockers that are

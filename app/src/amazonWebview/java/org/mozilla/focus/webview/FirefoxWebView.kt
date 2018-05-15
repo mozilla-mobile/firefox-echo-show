@@ -37,6 +37,8 @@ internal class FirefoxWebView(
         private val chromeClient: FirefoxWebChromeClient
 ) : NestedWebView(context, attrs), IWebView {
 
+    private val focusedDOMElement = FirefoxFocusedDOMElementCache(this)
+
     @get:VisibleForTesting
     override var callback: IWebView.Callback? = null
         set(callback) {
@@ -125,7 +127,14 @@ internal class FirefoxWebView(
         return outBitmap
     }
 
-    override val focusedDOMElement = FirefoxFocusedDOMElementCache(this)
+    override fun onOverlayPreSetVisibility(willOverlayBeVisible: Boolean) {
+        // We cache when the overlay is opened but actions on the overlay can clear the DOM and
+        // any focused element cache (e.g. reload) so we need to cache again before it's hidden:
+        // see FocusedDOMElementCache for details.
+        if (!willOverlayBeVisible) {
+            focusedDOMElement.cache()
+        }
+    }
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect)

@@ -173,11 +173,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             onNavigationEvent = this@BrowserFragment.onNavigationEvent
             navigationStateProvider = NavigationStateProvider()
             visibility = overlayVisibleCached ?: View.GONE
-            onPreSetVisibilityListener = { isVisible ->
-                // The overlay can clear the DOM and a previous focused element cache (e.g. reload)
-                // so we need to do our own caching: see FocusedDOMElementCache for details.
-                if (!isVisible) { webView?.focusedDOMElement?.cache() }
-            }
+            onPreSetVisibilityListener = { webView!!.onOverlayPreSetVisibility(it) }
 
             openHomeTileContextMenu = {
                 activity.openContextMenu(browserOverlay.tileContainer)

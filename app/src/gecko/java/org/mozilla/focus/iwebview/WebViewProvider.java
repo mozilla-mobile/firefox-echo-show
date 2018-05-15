@@ -96,6 +96,11 @@ public class WebViewProvider {
         }
 
         @Override
+        public void onOverlayPreSetVisibility(boolean willOverlayBeVisible) {
+
+        }
+
+        @Override
         public void scrollByClamped(int vx, int vy) {
 
         }
@@ -131,19 +136,6 @@ public class WebViewProvider {
         @Override
         public Bitmap takeScreenshot() {
             throw new NotImplementedError();
-        }
-
-        @NotNull
-        @Override
-        public FocusedDOMElementCache getFocusedDOMElement() {
-            // This hack is only necessary for AmazonWebView: see FocusedDOMElementCache for details.
-            return new FocusedDOMElementCache() {
-                @Override
-                public void cache() { }
-
-                @Override
-                public void restore() { }
-            };
         }
 
         @Override
