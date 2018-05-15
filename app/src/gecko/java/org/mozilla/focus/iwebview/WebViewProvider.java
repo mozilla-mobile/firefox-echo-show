@@ -96,14 +96,6 @@ public class WebViewProvider {
         }
 
         @Override
-        public void onStart() {
-        }
-
-        @Override
-        public void onStop() {
-        }
-
-        @Override
         public void scrollByClamped(int vx, int vy) {
 
         }

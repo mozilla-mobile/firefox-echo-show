@@ -53,12 +53,6 @@ internal class FirefoxWebView(
         isLongClickable = true
     }
 
-    override fun onStart() {
-    }
-
-    override fun onStop() {
-    }
-
     override fun restoreWebViewState(session: Session) {
         val stateData = session.webViewState
 
