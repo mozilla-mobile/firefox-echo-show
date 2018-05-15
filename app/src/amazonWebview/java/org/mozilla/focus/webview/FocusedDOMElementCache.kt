@@ -30,7 +30,7 @@ private const val CACHE_JS = "var $CACHE_VAR = document.activeElement;"
  * the last possible moment before the WebView regains Android focus and loses the focused
  * DOMElement, which is in [View.setVisibility].
  */
-internal class FirefoxFocusedDOMElementCache(private val webView: IWebView) {
+internal class FocusedDOMElementCache(private val webView: IWebView) {
 
     /** Caches the currently focused DOMElement in the DOM (i.e. it will be cleared if the page is reloaded). */
     fun cache() {

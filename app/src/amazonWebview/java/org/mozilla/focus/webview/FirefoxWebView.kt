@@ -36,7 +36,7 @@ internal class FirefoxWebView(
         private val chromeClient: FirefoxWebChromeClient
 ) : NestedWebView(context, attrs), IWebView {
 
-    private val focusedDOMElement = FirefoxFocusedDOMElementCache(this)
+    private val focusedDOMElement = FocusedDOMElementCache(this)
 
     @get:VisibleForTesting
     override var callback: IWebView.Callback? = null
