@@ -120,7 +120,7 @@ internal class FirefoxWebView(
     }
 
     override fun evalJS(js: String) {
-        super.loadUrl("javascript:$js")
+        evaluateJavascript(js, null)
     }
 
     override fun cleanup() {
