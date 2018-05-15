@@ -7,17 +7,16 @@ package org.mozilla.focus.webview
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.annotation.VisibleForTesting
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewTreeObserver
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import org.mozilla.focus.ext.deleteData
-import org.mozilla.focus.ext.hasChild
 import org.mozilla.focus.iwebview.FirefoxFocusedDOMElementCache
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.session.Session
@@ -38,8 +37,6 @@ internal class FirefoxWebView(
         private val chromeClient: FirefoxWebChromeClient
 ) : NestedWebView(context, attrs), IWebView {
 
-    private val onGlobalFocusChangeListener = FirefoxWebViewFocusChangeListener(this)
-
     @get:VisibleForTesting
     override var callback: IWebView.Callback? = null
         set(callback) {
@@ -57,11 +54,9 @@ internal class FirefoxWebView(
     }
 
     override fun onStart() {
-        viewTreeObserver.addOnGlobalFocusChangeListener(onGlobalFocusChangeListener)
     }
 
     override fun onStop() {
-        viewTreeObserver.removeOnGlobalFocusChangeListener(onGlobalFocusChangeListener)
     }
 
     override fun restoreWebViewState(session: Session) {
@@ -138,6 +133,22 @@ internal class FirefoxWebView(
 
     override val focusedDOMElement = FirefoxFocusedDOMElementCache(this)
 
+    override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect)
+
+        // For why we're doing this, see FocusedDOMElementCache.
+        if (!focused) {
+            // Any views (like BrowserNavigationOverlay) that may clear the cache, e.g. by
+            // reloading the page, are required to handle their own caching. Here we'll handle
+            // cases where the page cache isn't cleared.
+            focusedDOMElement.cache()
+        } else {
+            // Trying to restore immediately doesn't work - perhaps the WebView hasn't actually
+            // received focus yet? Posting to the end of the UI queue seems to solve the problem.
+            uiHandler.post { focusedDOMElement.restore() }
+        }
+    }
+
     override fun scrollByClamped(vx: Int, vy: Int) {
         // This is not a true clamp: it can only stop us from
         // continuing to scroll if we've already overscrolled.
@@ -184,33 +195,5 @@ internal class FirefoxWebChromeClient : WebChromeClient() {
 
     override fun onHideCustomView() {
         callback?.onExitFullScreen()
-    }
-}
-
-// onFocusChangeListener isn't called for AmazonWebView (unlike Android's WebView)
-// so we use the global listener instead.
-private class FirefoxWebViewFocusChangeListener(val webView: FirefoxWebView) : ViewTreeObserver.OnGlobalFocusChangeListener {
-    override fun onGlobalFocusChanged(oldFocus: View?, newFocus: View?) {
-        val viewTreeObserver = (oldFocus ?: newFocus)?.viewTreeObserver
-        if (viewTreeObserver == null || !viewTreeObserver.isAlive) return
-
-        // These can both be false if the WebView is not involved in this transaction.
-        val isLosingFocus = webView.hasChild(oldFocus)
-        val isGainingFocus = webView.hasChild(newFocus)
-
-        // From a user's perspective, the WebView receives focus. Under the hood,
-        // the AmazonWebView's child, *Delegate, is actually receiving focus.
-        //
-        // For why we're doing this, see FocusedDOMElementCache.
-        if (isLosingFocus) {
-            // Any views (like BrowserNavigationOverlay) that may clear the cache, e.g. by
-            // reloading the page, are required to handle their own caching. Here we'll handle
-            // cases where the page cache isn't cleared.
-            webView.focusedDOMElement.cache()
-        } else if (isGainingFocus) {
-            // Trying to restore immediately doesn't work - perhaps the WebView hasn't actually
-            // received focus yet? Posting to the end of the UI queue seems to solve the problem.
-            uiHandler.post { webView.focusedDOMElement.restore() }
-        }
     }
 }
