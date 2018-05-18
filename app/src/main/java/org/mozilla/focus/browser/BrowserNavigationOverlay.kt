@@ -40,7 +40,7 @@ private const val NAVIGATION_BUTTON_DISABLED_ALPHA = 0.3f
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
 private const val MAX_UNPIN_TOAST_COUNT = 3
 
-private const val COL_COUNT = 5
+private const val COL_COUNT = 4
 
 enum class NavigationEvent {
     SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION, POCKET;
@@ -104,8 +104,6 @@ class BrowserNavigationOverlay @JvmOverloads constructor(
         set(value) {
             Settings.getInstance(context).isBlockingEnabled = value
         }
-
-    private val pocketVideos = Pocket.getRecommendedVideos()
 
     private var hasUserChangedURLSinceEditTextFocused = false
 
