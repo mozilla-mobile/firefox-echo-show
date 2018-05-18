@@ -57,7 +57,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
                 val sessions = value
                 if (sessions.isEmpty()) {
                     // There's no active session. Start a new session with "homepage".
-                    ScreenController.showBrowserScreenForUrl(supportFragmentManager, APP_URL_HOME, Source.NONE)
+                    ScreenController.showHomeScreen(supportFragmentManager)
                 } else {
                     ScreenController.showBrowserScreenForCurrentSession(supportFragmentManager, sessionManager)
                 }

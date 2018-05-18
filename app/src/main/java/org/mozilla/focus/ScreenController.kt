@@ -9,6 +9,7 @@ import android.content.Context
 import android.support.v4.app.FragmentManager
 import android.text.TextUtils
 import org.mozilla.focus.browser.BrowserFragment
+import org.mozilla.focus.home.HomeFragment
 import org.mozilla.focus.home.pocket.Pocket
 import org.mozilla.focus.home.pocket.PocketVideoFragment
 import org.mozilla.focus.session.SessionManager
@@ -91,6 +92,13 @@ object ScreenController {
         } else {
             SessionManager.getInstance().createSession(source, url)
         }
+    }
+
+    fun showHomeScreen(fragmentManager: FragmentManager) {
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, HomeFragment.create(), HomeFragment.FRAGMENT_TAG)
+                .addToBackStack(null)
+                .commit()
     }
 
     fun showPocketScreen(fragmentManager: FragmentManager) {
