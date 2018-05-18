@@ -113,11 +113,6 @@ class BrowserNavigationOverlay @JvmOverloads constructor(
         LayoutInflater.from(context)
                 .inflate(R.layout.browser_overlay, this, true)
 
-        topNavContainer.forEachChild {
-            it.nextFocusDownId = navUrlInput.id
-            if (it.isFocusable) it.setOnClickListener(this)
-        }
-
         uiLifecycleCancelJob = Job()
 
         initTiles()
