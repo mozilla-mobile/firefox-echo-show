@@ -53,7 +53,6 @@ enum class NavigationEvent {
             R.id.navButtonSettings -> SETTINGS
             R.id.turboButton -> TURBO
             R.id.pinButton -> PIN_ACTION
-            R.id.pocketVideoMegaTileView -> POCKET
             else -> null
         }
 
@@ -118,12 +117,10 @@ class BrowserNavigationOverlay @JvmOverloads constructor(
             it.nextFocusDownId = navUrlInput.id
             if (it.isFocusable) it.setOnClickListener(this)
         }
-        pocketVideoMegaTileView.setOnClickListener(this)
 
         uiLifecycleCancelJob = Job()
 
         initTiles()
-        initMegaTile()
         setupUrlInput()
         turboButton.isChecked = Settings.getInstance(context).isBlockingEnabled
         navButtonSettings.setImageResource(R.drawable.ic_settings) // Must be set in code for SVG to work correctly.
@@ -167,17 +164,6 @@ class BrowserNavigationOverlay @JvmOverloads constructor(
         updateLayoutParams {
             val marginLayoutParams = it as MarginLayoutParams
             marginLayoutParams.bottomMargin = -tileBottomMargin
-        }
-    }
-
-    private fun initMegaTile() {
-        if (pocketVideos.isCompleted) {
-            pocketVideoMegaTileView.pocketVideos = pocketVideos.getCompleted()
-        } else {
-            // TODO: #864 show loading screen
-            launch(UI) {
-                pocketVideoMegaTileView.pocketVideos = pocketVideos.await()
-            }
         }
     }
 
