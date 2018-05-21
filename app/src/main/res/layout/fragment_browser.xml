@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <org.mozilla.focus.widget.ResizableKeyboardCoordinatorLayout
+        <android.support.design.widget.CoordinatorLayout
             app:viewToHideWhenActivated="@+id/erase"
             android:layout_marginTop="0dp"
             android:id="@+id/main_content"
@@ -27,11 +27,19 @@
                 android:id="@+id/webview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbarThumbVertical="@drawable/scrollbar_thumb">
-                <requestFocus />
-            </org.mozilla.focus.iwebview.IWebView>
+                android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                />
 
-        </org.mozilla.focus.widget.ResizableKeyboardCoordinatorLayout>
+            <!-- Height must match browser_toolbar container's height. -->
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+                <include layout="@layout/browser_toolbar"/>
+
+            </android.support.design.widget.AppBarLayout>
+        </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 
     <FrameLayout
