@@ -43,7 +43,7 @@ private const val MAX_UNPIN_TOAST_COUNT = 3
 private const val COL_COUNT = 4
 
 enum class NavigationEvent {
-    SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION, POCKET;
+    SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
 
     companion object {
         fun fromViewClick(viewId: Int?) = when (viewId) {
@@ -61,7 +61,7 @@ enum class NavigationEvent {
     }
 }
 
-class BrowserNavigationOverlay @JvmOverloads constructor(
+class HomeTileGridNavigation @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyle: Int = 0 )
     : LinearLayout(context, attrs, defStyle), View.OnClickListener {
 
@@ -81,7 +81,7 @@ class BrowserNavigationOverlay @JvmOverloads constructor(
     var uiLifecycleCancelJob: Job
 
     // We need this in order to show the unpin toast, at max, once per
-    // instantiation of the BrowserNavigationOverlay
+    // instantiation of the HomeTileGridNavigation
     var canShowUpinToast: Boolean = false
 
     // Setting the onTileLongClick function in the HomeTileAdapter is fragile

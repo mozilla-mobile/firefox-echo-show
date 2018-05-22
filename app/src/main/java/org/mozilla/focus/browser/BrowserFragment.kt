@@ -276,7 +276,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     /**
      * Changes the overlay visibility: this should be called instead of changing
-     * [BrowserNavigationOverlay.isVisible] directly.
+     * [HomeTileGridNavigation.isVisible] directly.
      *
      * It's important this is only called for user actions because our Telemetry
      * is dependent on it.
@@ -288,7 +288,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         TelemetryWrapper.drawerShowHideEvent(toShow)
     }
 
-    private inner class NavigationStateProvider : BrowserNavigationOverlay.BrowserNavigationStateProvider {
+    private inner class NavigationStateProvider : HomeTileGridNavigation.BrowserNavigationStateProvider {
         override fun isBackEnabled() = webView?.canGoBack() ?: false
         override fun isForwardEnabled() = webView?.canGoForward() ?: false
         override fun isPinEnabled() = !isUrlEqualToHomepage

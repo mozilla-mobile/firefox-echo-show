@@ -140,7 +140,7 @@ internal class FirefoxWebView(
 
         // For why we're doing this, see FocusedDOMElementCache.
         if (!focused) {
-            // Any views (like BrowserNavigationOverlay) that may clear the cache, e.g. by
+            // Any views (like HomeTileGridNavigation) that may clear the cache, e.g. by
             // reloading the page, are required to handle their own caching. Here we'll handle
             // cases where the page cache isn't cleared.
             focusedDOMElement.cache()

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.mozilla.focus.browser.BrowserNavigationOverlay
+    <org.mozilla.focus.browser.HomeTileGridNavigation
         android:id="@+id/browserOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
