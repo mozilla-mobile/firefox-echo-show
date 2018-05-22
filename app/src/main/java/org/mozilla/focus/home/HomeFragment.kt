@@ -15,10 +15,8 @@ import org.mozilla.focus.R
 
 class HomeFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater!!.inflate(R.layout.fragment_home, container, false)
-        return rootView
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+            inflater.inflate(R.layout.fragment_home, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         browserOverlay.loadUrl = { urlStr ->

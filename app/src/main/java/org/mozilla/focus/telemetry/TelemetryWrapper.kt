@@ -270,7 +270,6 @@ object TelemetryWrapper {
             NavigationEvent.BACK -> Value.BACK
             NavigationEvent.FORWARD -> Value.FORWARD
             NavigationEvent.RELOAD -> Value.RELOAD
-            NavigationEvent.POCKET -> Value.POCKET_VIDEO_MEGATILE
 
             // For legacy reasons, turbo has different telemetry params so we special case it.
             // Pin has a similar state change so we model it after turbo.

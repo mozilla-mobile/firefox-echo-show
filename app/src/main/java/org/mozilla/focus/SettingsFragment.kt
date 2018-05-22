@@ -25,8 +25,8 @@ class SettingsFragment : Fragment() {
         updateForAccessibility()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflater!!.inflate(R.layout.fragment_settings, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+            inflater.inflate(R.layout.fragment_settings, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 
