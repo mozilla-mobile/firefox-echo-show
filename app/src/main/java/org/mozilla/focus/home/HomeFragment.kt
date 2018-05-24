@@ -19,7 +19,7 @@ class HomeFragment : Fragment() {
             inflater.inflate(R.layout.fragment_home, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        browserOverlay.loadUrl = { urlStr ->
+        homeTileGrid.loadUrl = { urlStr ->
             (activity as MainActivity).onNonTextInputUrlEntered(urlStr)
         }
     }

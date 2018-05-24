@@ -5,41 +5,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/browserFragmentRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
+    <!-- TODO: combine this extraneous LL -->
     <LinearLayout
         android:id="@+id/browserContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.design.widget.CoordinatorLayout
-            app:viewToHideWhenActivated="@+id/erase"
-            android:layout_marginTop="0dp"
-            android:id="@+id/main_content"
+        <org.mozilla.focus.iwebview.IWebView
+            android:id="@+id/webview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:clipChildren="false">
+            android:scrollbarThumbVertical="@drawable/scrollbar_thumb" />
 
-            <org.mozilla.focus.iwebview.IWebView
-                android:id="@+id/webview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                />
-
-            <!-- Height must match browser_toolbar container's height. -->
-            <android.support.design.widget.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
-
-                <include layout="@layout/browser_toolbar"/>
-
-            </android.support.design.widget.AppBarLayout>
-        </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 
     <FrameLayout
@@ -68,7 +48,7 @@
         />
 
     <org.mozilla.focus.browser.HomeTileGridNavigation
-        android:id="@+id/browserOverlay"
+        android:id="@+id/homeTileGrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"

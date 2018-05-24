@@ -72,7 +72,7 @@ class CursorController(
     fun setEnabledForCurrentState() {
         // These sources have their own navigation controls.
         isEnabled = !browserFragment.webView!!.isYoutubeTV && !browserFragment.context.isVoiceViewEnabled()
-                && !browserFragment.browserOverlay.isVisible
+                && !browserFragment.homeTileGrid.isVisible
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)

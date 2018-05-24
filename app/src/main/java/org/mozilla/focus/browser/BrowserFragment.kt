@@ -15,7 +15,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.browser_overlay.*
 import kotlinx.android.synthetic.main.browser_overlay.view.*
 import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
@@ -110,8 +109,8 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         session.loading.observe(this, object : NonNullObserver<Boolean>() {
             public override fun onValueChanged(value: Boolean) {
                 // Update state on load start and finish to ensure buttons are updated correctly
-                if (browserOverlay.isVisible) {
-                    browserOverlay.updateOverlayForCurrentState()
+                if (homeTileGrid.isVisible) {
+                    homeTileGrid.updateOverlayForCurrentState()
                 }
             }
         })
@@ -138,7 +137,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                         NavigationEvent.VAL_CHECKED -> {
                             CustomTilesManager.getInstance(context).pinSite(context, url,
                                     webView?.takeScreenshot())
-                            browserOverlay.refreshTilesForInsertion()
+                            homeTileGrid.refreshTilesForInsertion()
                             showCenteredTopToast(context, R.string.notification_pinned_site, 0, TOAST_Y_OFFSET)
                         }
                         NavigationEvent.VAL_UNCHECKED -> {
@@ -148,7 +147,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                                 // tileId should never be null, unless, for some reason we don't
                                 // have a reference to the tile/the tile isn't a Bundled or Custom tile
                                 if (tileId != null && !tileId.isEmpty()) {
-                                    browserOverlay.removePinnedSiteFromTiles(tileId)
+                                    homeTileGrid.removePinnedSiteFromTiles(tileId)
                                     showCenteredTopToast(context, R.string.notification_unpinned_site, 0, TOAST_Y_OFFSET)
                                 }
                             }
@@ -168,16 +167,16 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                 view = layout.cursorView)
         lifecycle.addObserver(cursor!!)
 
-        with (layout.browserOverlay) {
+        with (layout.homeTileGrid) {
             onNavigationEvent = this@BrowserFragment.onNavigationEvent
             navigationStateProvider = NavigationStateProvider()
             visibility = overlayVisibleCached ?: View.GONE
             onPreSetVisibilityListener = { webView!!.onOverlayPreSetVisibility(it) }
 
             openHomeTileContextMenu = {
-                activity.openContextMenu(browserOverlay.tileContainer)
+                activity.openContextMenu(this.tileContainer)
             }
-            registerForContextMenu(browserOverlay.tileContainer)
+            registerForContextMenu(this.tileContainer)
         }
 
         layout.progressBar.initialize(this)
@@ -188,14 +187,14 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.remove -> {
-                val homeTileAdapter = tileContainer.adapter as HomeTileAdapter
-                val tileToRemove = homeTileAdapter.getItemAtPosition(browserOverlay.getFocusedTilePosition())
+                val homeTileAdapter = homeTileGrid.tileContainer.adapter as HomeTileAdapter
+                val tileToRemove = homeTileAdapter.getItemAtPosition(homeTileGrid.getFocusedTilePosition())
                         ?: return false
 
                 // This assumes that since we're deleting from a Home Tile object that we created
                 // that the Uri is valid, so we do not do error handling here.
                 HomeTilesManager.removeHomeTile(tileToRemove, context)
-                homeTileAdapter.removeItemAtPosition(browserOverlay.getFocusedTilePosition())
+                homeTileAdapter.removeItemAtPosition(homeTileGrid.getFocusedTilePosition())
                 TelemetryWrapper.homeTileRemovedEvent(tileToRemove)
                 return true
             }
@@ -207,11 +206,11 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         super.onDestroyView()
         lifecycle.removeObserver(cursor!!)
         cursor = null
-        overlayVisibleCached = browserOverlay.visibility
+        overlayVisibleCached = homeTileGrid.visibility
         // Since we start the async jobs in View.init and Android is inflating the view for us,
         // there's no good way to pass in the uiLifecycleJob. We could consider other solutions
         // but it'll add complexity that I don't think is probably worth it.
-        browserOverlay.uiLifecycleCancelJob.cancel(CancellationException("Parent lifecycle has ended"))
+        homeTileGrid.uiLifecycleCancelJob.cancel(CancellationException("Parent lifecycle has ended"))
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -220,7 +219,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     fun onBackPressed(): Boolean {
         when {
-            browserOverlay.isVisible && !isUrlEqualToHomepage -> setOverlayVisibleByUser(false)
+            homeTileGrid.isVisible && !isUrlEqualToHomepage -> setOverlayVisibleByUser(false)
             webView?.canGoBack() ?: false -> {
                 webView?.goBack()
                 TelemetryWrapper.browserBackControllerEvent()
@@ -258,13 +257,13 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         if (event.keyCode == KeyEvent.KEYCODE_MENU) {
             if (actionIsDown) {
-                val toShow = !browserOverlay.isVisible
+                val toShow = !homeTileGrid.isVisible
                 setOverlayVisibleByUser(toShow)
             }
             return true
         }
 
-        if (!browserOverlay.isVisible && webView!!.isYoutubeTV &&
+        if (!homeTileGrid.isVisible && webView!!.isYoutubeTV &&
                 event.keyCode == KeyEvent.KEYCODE_BACK) {
             val escKeyEvent = KeyEvent(event.action, KeyEvent.KEYCODE_ESCAPE)
             activity.dispatchKeyEvent(escKeyEvent)
@@ -281,7 +280,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
      * is dependent on it.
      */
     private fun setOverlayVisibleByUser(toShow: Boolean) {
-        browserOverlay.visibility = if (toShow) View.VISIBLE else View.GONE
+        homeTileGrid.visibility = if (toShow) View.VISIBLE else View.GONE
         if (toShow) cursor?.onPause() else cursor?.onResume()
         cursor?.setEnabledForCurrentState()
         TelemetryWrapper.drawerShowHideEvent(toShow)
@@ -321,7 +320,7 @@ private class BrowserIWebViewCallback(
         // This might not be called from the UI thread but needs to be, so we use launch.
         launch(UI) {
             when (url) {
-                APP_URL_HOME -> browserFragment.browserOverlay?.visibility = View.VISIBLE
+                APP_URL_HOME -> browserFragment.homeTileGrid?.visibility = View.VISIBLE
             }
         }
     }
