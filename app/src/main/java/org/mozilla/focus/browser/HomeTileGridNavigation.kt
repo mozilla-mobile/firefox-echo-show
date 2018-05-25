@@ -93,8 +93,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         }
     }
 
-    lateinit var loadUrl: (String) -> Unit
-
     var onNavigationEvent: ((event: NavigationEvent, value: String?,
                              autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit)? = null
     var navigationStateProvider: BrowserNavigationStateProvider? = null
@@ -132,7 +130,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         adapter = HomeTileAdapter(uiLifecycleCancelJob, homeTiles, loadUrl = { urlStr ->
             with (navUrlInput) {
                 if (urlStr.isNotEmpty()) {
-                    loadUrl(urlStr)
+                    onNavigationEvent?.invoke(NavigationEvent.LOAD_TILE, urlStr, null)
                 }
             }
         }, onTileLongClick = openHomeTileContextMenu, onTileFocused = {
