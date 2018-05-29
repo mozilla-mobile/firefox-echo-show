@@ -168,8 +168,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             registerForContextMenu(this.tileContainer)
         }
 
-        layout.progressBar.initialize(this)
-
         return layout
     }
 

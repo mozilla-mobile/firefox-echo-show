@@ -30,15 +30,6 @@
         android:background="@android:color/black"
         android:visibility="gone" />
 
-    <org.mozilla.focus.browser.FirefoxProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:focusable="false"
-        android:descendantFocusability="blocksDescendants"
-        />
-
     <org.mozilla.focus.browser.HomeTileGridNavigation
         android:id="@+id/homeTileGrid"
         android:layout_width="match_parent"
