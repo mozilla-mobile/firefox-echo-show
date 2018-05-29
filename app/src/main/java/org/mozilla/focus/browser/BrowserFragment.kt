@@ -6,7 +6,6 @@ package org.mozilla.focus.browser
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.annotation.UiThread
 import android.text.TextUtils
 import android.view.ContextMenu
 import android.view.KeyEvent
@@ -26,7 +25,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.ScreenController
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
-import org.mozilla.focus.browser.cursor.CursorController
 import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.toUri
 import org.mozilla.focus.home.BundledTilesManager
@@ -80,13 +78,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     val isUrlEqualToHomepage: Boolean get() = url == APP_URL_HOME
 
     private val sessionManager = SessionManager.getInstance()
-
-    /**
-     * Encapsulates the cursor's components. If this value is null, the Cursor is not attached
-     * to the view hierarchy.
-     */
-    var cursor: CursorController? = null
-        @UiThread get set // Set from the UI thread so serial access is required for simplicity.
 
     // Cache the overlay visibility state to persist in fragment back stack
     private var overlayVisibleCached: Int? = null
@@ -165,10 +156,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val layout = inflater.inflate(R.layout.fragment_browser, container, false)
 
-        cursor = CursorController(this, cursorParent = layout.browserFragmentRoot,
-                view = layout.cursorView)
-        lifecycle.addObserver(cursor!!)
-
         with (layout.homeTileGrid) {
             onNavigationEvent = this@BrowserFragment.onNavigationEvent
             navigationStateProvider = NavigationStateProvider()
@@ -206,8 +193,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        lifecycle.removeObserver(cursor!!)
-        cursor = null
         overlayVisibleCached = homeTileGrid.visibility
         // Since we start the async jobs in View.init and Android is inflating the view for us,
         // there's no good way to pass in the uiLifecycleJob. We could consider other solutions
@@ -247,11 +232,9 @@ class BrowserFragment : IWebViewLifecycleFragment() {
          * Key handling order:
          * - Menu to control overlay
          * - Youtube remap of BACK to ESC
-         * - Cursor
          * - Return false, as unhandled
          */
-        return (handleSpecialKeyEvent(event)) ||
-                (cursor?.keyDispatcher?.dispatchKeyEvent(event) ?: false)
+        return handleSpecialKeyEvent(event)
     }
 
     private fun handleSpecialKeyEvent(event: KeyEvent): Boolean {
@@ -283,8 +266,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
      */
     private fun setOverlayVisibleByUser(toShow: Boolean) {
         homeTileGrid.visibility = if (toShow) View.VISIBLE else View.GONE
-        if (toShow) cursor?.onPause() else cursor?.onResume()
-        cursor?.setEnabledForCurrentState()
         TelemetryWrapper.drawerShowHideEvent(toShow)
     }
 
