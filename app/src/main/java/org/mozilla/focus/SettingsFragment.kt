@@ -34,6 +34,7 @@ class SettingsFragment : Fragment() {
         ic_lock.setImageResource(R.drawable.ic_lock)
         telemetryButton.isChecked = DataUploadPreference.isEnabled(context)
         // Telemetry is disabled so avoid confusion among testers: don't let them click. TODO: Re-enable in #22.
+        telemetryView.alpha = 0.5f // isEnabled doesn't work on this button so we change alpha instead.
 //        telemetryView.setOnClickListener { _ ->
 //            val newTelemetryState = !DataUploadPreference.isEnabled(context)
 //            DataUploadPreference.setIsEnabled(context, newTelemetryState)
