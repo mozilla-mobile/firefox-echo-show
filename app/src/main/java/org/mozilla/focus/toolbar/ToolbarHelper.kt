@@ -8,6 +8,7 @@ object ToolbarHelper {
     /*
      * Add the components of toolbar.
      */
+    @SuppressWarnings("LongMethod")
     fun setupToolbar(toolbar: BrowserToolbar) {
         toolbar.displaySiteSecurityIcon = false
         toolbar.url = "www.mozilla.org"
