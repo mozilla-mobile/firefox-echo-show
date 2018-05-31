@@ -150,7 +150,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 hasUserChangedURLSinceEditTextFocused = false
-                updateOverlayForCurrentState() // Update URL to overwrite user input, ensuring the url's accuracy.
             }
         }
     }
@@ -173,50 +172,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         }
         onNavigationEvent?.invoke(event, value, null)
         TelemetryWrapper.overlayClickEvent(event, isTurboButtonChecked, isPinButtonChecked)
-    }
-
-    fun updateOverlayForCurrentState() {
-        fun updateOverlayButtonState(isEnabled: Boolean, overlayButton: ImageButton) {
-            overlayButton.isEnabled = isEnabled
-            overlayButton.isFocusable = isEnabled
-            overlayButton.alpha =
-                    if (isEnabled) NAVIGATION_BUTTON_ENABLED_ALPHA else NAVIGATION_BUTTON_DISABLED_ALPHA
-        }
-
-        val focusedView = findFocus()
-
-        val canGoBack = navigationStateProvider?.isBackEnabled() ?: false
-        updateOverlayButtonState(canGoBack, navButtonBack)
-
-        val canGoForward = navigationStateProvider?.isForwardEnabled() ?: false
-        updateOverlayButtonState(canGoForward, navButtonForward)
-
-        val isPinEnabled = navigationStateProvider?.isPinEnabled() ?: false
-        updateOverlayButtonState(isPinEnabled, pinButton)
-        pinButton.isChecked = navigationStateProvider?.isURLPinned() ?: false
-
-        val isRefreshEnabled = navigationStateProvider?.isRefreshEnabled() ?: false
-        updateOverlayButtonState(isRefreshEnabled, navButtonReload)
-
-        // Prevent the focus from looping to the bottom row when reaching the last
-        // focusable element in the top row
-        navButtonReload.nextFocusLeftId = when {
-            canGoForward -> R.id.navButtonForward
-            canGoBack -> R.id.navButtonBack
-            else -> R.id.navButtonReload
-        }
-        navButtonForward.nextFocusLeftId = when {
-            canGoBack -> R.id.navButtonBack
-            else -> R.id.navButtonForward
-        }
-
-        // We may have lost focus when disabling the focused view above.
-        val isFocusLost = focusedView != null && findFocus() == null
-        if (isFocusLost) {
-            navUrlInput.requestFocus()
-        }
-
-        maybeUpdateOverlayURLForCurrentState()
     }
 
     fun getFocusedTilePosition(): Int {
@@ -248,7 +203,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         if (visibility == View.VISIBLE) {
             overlayScrollView.scrollTo(0, 0)
             navUrlInput.requestFocus()
-            updateOverlayForCurrentState()
         }
     }
 

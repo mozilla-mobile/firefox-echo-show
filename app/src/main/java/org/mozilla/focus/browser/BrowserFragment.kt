@@ -98,14 +98,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         webView?.setBlockingEnabled(session.isBlockingEnabled)
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
-        session.loading.observe(this, object : NonNullObserver<Boolean>() {
-            public override fun onValueChanged(value: Boolean) {
-                // Update state on load start and finish to ensure buttons are updated correctly
-                if (homeTileGrid.isVisible) {
-                    homeTileGrid.updateOverlayForCurrentState()
-                }
-            }
-        })
     }
 
     val onNavigationEvent = { event: NavigationEvent, value: String?,
