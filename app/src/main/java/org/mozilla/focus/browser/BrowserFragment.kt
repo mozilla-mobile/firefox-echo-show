@@ -150,7 +150,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                     }
                 }
             }
-            NavigationEvent.HOME -> throw NotImplementedError() // TODO
+            NavigationEvent.HOME -> loadUrl(APP_URL_HOME)
         }
         Unit
     }
