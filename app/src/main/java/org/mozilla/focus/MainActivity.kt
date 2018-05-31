@@ -156,9 +156,15 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
 
     private fun onToolbarEvent(event: NavigationEvent, value: String?) {
         val fragmentManager = supportFragmentManager
-        if (event == NavigationEvent.SETTINGS) {
-            ScreenController.showSettingsScreen(fragmentManager)
-            return
+
+        when (event) {
+            NavigationEvent.SETTINGS -> {
+                ScreenController.showSettingsScreen(fragmentManager)
+                return
+            }
+
+            NavigationEvent.TURBO -> Settings.getInstance(this).isBlockingEnabled = value == NavigationEvent.VAL_CHECKED
+            else -> Unit // Do nothing.
         }
 
         val browserFragment = fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
