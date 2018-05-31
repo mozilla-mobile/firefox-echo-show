@@ -93,11 +93,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
 
         initTiles()
         setupUrlInput()
-        turboButton.isChecked = Settings.getInstance(context).isBlockingEnabled
-        navButtonSettings.setImageResource(R.drawable.ic_settings) // Must be set in code for SVG to work correctly.
-
-        val tintDrawable: (Drawable?) -> Unit = { it?.setTint(ContextCompat.getColor(context, R.color.tv_white)) }
-        navUrlInput.compoundDrawablesRelative.forEach(tintDrawable)
     }
 
     private fun initTiles() = with (tileContainer) {

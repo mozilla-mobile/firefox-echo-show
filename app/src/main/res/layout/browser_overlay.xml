@@ -21,22 +21,6 @@
         android:paddingBottom="0dp"
         >
 
-        <LinearLayout
-            android:id="@+id/topNavContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="57dp"
-            android:layout_marginEnd="57dp"
-            android:layout_marginBottom="27dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:focusable="true"
-            android:descendantFocusability="afterDescendants"
-            >
-
-            <include layout="@layout/browser_overlay_top_nav"/>
-        </LinearLayout>
-
         <!-- An explicit nextFocusUp seems necessary to make up work consistently.
 
              Drawable tinted in code (XML needs API 23+). -->
@@ -61,7 +45,6 @@
             android:textIsSelectable="false"
             android:textColor="@color/tv_white"
             android:nextFocusRight="@id/navUrlInput"
-            android:nextFocusUp="@id/topNavContainer"
             />
 
         <android.support.v7.widget.RecyclerView
