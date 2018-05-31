@@ -9,6 +9,7 @@ import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.ui.icons.R as iconsR
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
+import org.mozilla.focus.utils.Settings
 
 enum class NavigationEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
@@ -75,7 +76,8 @@ object ToolbarIntegration {
                 imageResourceSelected = R.drawable.turbo_on,
                 contentDescription = context.getString(R.string.turbo_mode),
                 contentDescriptionSelected = context.getString(
-                        R.string.onboarding_turbo_mode_button_off)) { isSelected ->
+                        R.string.onboarding_turbo_mode_button_off),
+                selected = Settings.getInstance(toolbar.context).isBlockingEnabled) { isSelected ->
             onToolbarEvent(TURBO, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED)
         }
         toolbar.addBrowserAction(turboButton)
