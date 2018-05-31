@@ -26,6 +26,7 @@ import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.widget.InlineAutocompleteEditText
 import kotlin.properties.Delegates
@@ -37,25 +38,6 @@ private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
 private const val MAX_UNPIN_TOAST_COUNT = 3
 
 private const val COL_COUNT = 4
-
-enum class NavigationEvent {
-    SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
-
-    companion object {
-        fun fromViewClick(viewId: Int?) = when (viewId) {
-            R.id.navButtonBack -> BACK
-            R.id.navButtonForward -> FORWARD
-            R.id.navButtonReload -> RELOAD
-            R.id.navButtonSettings -> SETTINGS
-            R.id.turboButton -> TURBO
-            R.id.pinButton -> PIN_ACTION
-            else -> null
-        }
-
-        const val VAL_CHECKED = "checked"
-        const val VAL_UNCHECKED = "unchecked"
-    }
-}
 
 class HomeTileGridNavigation @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyle: Int = 0 )

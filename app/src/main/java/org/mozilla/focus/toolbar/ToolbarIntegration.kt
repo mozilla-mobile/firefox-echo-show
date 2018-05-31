@@ -9,6 +9,25 @@ import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.ui.icons.R as iconsR
 import org.mozilla.focus.R
 
+enum class NavigationEvent {
+    SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
+
+    companion object {
+        fun fromViewClick(viewId: Int?) = when (viewId) {
+            R.id.navButtonBack -> BACK
+            R.id.navButtonForward -> FORWARD
+            R.id.navButtonReload -> RELOAD
+            R.id.navButtonSettings -> SETTINGS
+            R.id.turboButton -> TURBO
+            R.id.pinButton -> PIN_ACTION
+            else -> null
+        }
+
+        const val VAL_CHECKED = "checked"
+        const val VAL_UNCHECKED = "unchecked"
+    }
+}
+
 /**
  * Helper class for constructing and using the shared toolbar for navigation and homescreen.
  */

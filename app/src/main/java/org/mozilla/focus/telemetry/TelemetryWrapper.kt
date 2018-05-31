@@ -11,7 +11,7 @@ import android.os.StrictMode
 import android.support.annotation.AnyThread
 import android.support.annotation.UiThread
 import org.mozilla.focus.BuildConfig
-import org.mozilla.focus.browser.NavigationEvent
+import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.home.BundledHomeTile
 import org.mozilla.focus.home.CustomHomeTile
 import org.mozilla.focus.home.HomeTile
