@@ -4,12 +4,16 @@
 
 package org.mozilla.focus.toolbar
 
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.ui.icons.R as iconsR
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
+import org.mozilla.focus.ext.setSelected
+import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.utils.Settings
+import java.util.WeakHashMap
 
 enum class NavigationEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
@@ -34,6 +38,15 @@ enum class NavigationEvent {
  * Helper class for constructing and using the shared toolbar for navigation and homescreen.
  */
 object ToolbarIntegration {
+
+    /**
+     * A map that keeps strong references to [OnSharedPreferenceChangeListener]s until the object it
+     * manipulates, [BrowserToolbar], is GC'd (i.e. their lifecycles are the same). This is necessary
+     * because [SharedPreferences.registerOnSharedPreferenceChangeListener] doesn't keep strong
+     * references so someone else, this object, has to.
+     */
+    private val weakToolbarToSharedPrefListeners = WeakHashMap<BrowserToolbar, OnSharedPreferenceChangeListener>()
+
     /*
      * Add the components of toolbar.
      */
@@ -91,5 +104,13 @@ object ToolbarIntegration {
         val brandIcon = Toolbar.ActionImage(R.drawable.ic_firefox_and_workmark,
                 "")
         toolbar.addBrowserAction(brandIcon)
+
+        val sharedPrefsListener = OnSharedPreferenceChangeListener { sharedPreferences, key ->
+            if (key == IWebView.TRACKING_PROTECTION_ENABLED_PREF) {
+                turboButton.setSelected(sharedPreferences.getBoolean(key, true /* unused */))
+            }
+        }
+        Settings.getInstance(toolbar.context).preferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
+        weakToolbarToSharedPrefListeners[toolbar] = sharedPrefsListener
     }
 }

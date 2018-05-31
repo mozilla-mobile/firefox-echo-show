@@ -33,6 +33,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun setTurboMode(turboModeEnabled: Boolean) {
+        // MainActivity is updated with an OnSharedPreferencesChangeListener.
         PreferenceManager.getDefaultSharedPreferences(this)
                 .edit()
                 .putBoolean(IWebView.TRACKING_PROTECTION_ENABLED_PREF, turboModeEnabled)
