@@ -17,7 +17,7 @@
     <!-- Specified in AdaptiveIconDrawable docs. -->
 
     <dimen name="home_tile_container_margin_bottom">4dp</dimen>
-    <dimen name="home_tile_margin_bottom">24dp</dimen>
+    <dimen name="home_tile_margin_bottom">68dp</dimen>
     <dimen name="home_tile_corner_radius">6dp</dimen>
     <dimen name="home_tile_placeholder_corner_radius">12dp</dimen>
     <dimen name="home_tile_placeholder_icon_size">50dp</dimen>
