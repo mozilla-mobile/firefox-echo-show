@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
@@ -156,6 +155,15 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
     }
 
     private fun onToolbarEvent(event: NavigationEvent, value: String?) {
-        Log.d("lol", "clicked $event with $value")
+        val fragmentManager = supportFragmentManager
+        if (event == NavigationEvent.SETTINGS) {
+            ScreenController.showSettingsScreen(fragmentManager)
+            return
+        }
+
+        val browserFragment = fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
+        if (browserFragment != null && browserFragment.isVisible) {
+            browserFragment.onNavigationEvent(event, value, null)
+        } // BrowserFragment is our only fragment: this else case should never happen.
     }
 }

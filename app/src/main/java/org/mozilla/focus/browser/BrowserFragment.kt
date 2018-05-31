@@ -108,7 +108,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         })
     }
 
-    private val onNavigationEvent = { event: NavigationEvent, value: String?,
+    val onNavigationEvent = { event: NavigationEvent, value: String?,
             autocompleteResult: InlineAutocompleteEditText.AutocompleteResult? ->
         val context = context!!
 
