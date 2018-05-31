@@ -5,9 +5,11 @@
 package org.mozilla.focus.toolbar
 
 import android.graphics.Canvas
+import android.content.Context
 import android.graphics.drawable.ClipDrawable
 import android.view.Gravity
 import android.view.View
+import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
@@ -48,14 +50,14 @@ class UrlBoxProgressView(
         }
 
     private var backgroundDrawable = ClipDrawable(
-            resources.getDrawable(R.drawable.sample_url_background, context.theme),
+            resources.getDrawable(R.drawable.url_background, context.theme),
             Gravity.END,
             ClipDrawable.HORIZONTAL).apply {
         level = 10000
     }
 
     private var progressDrawable = ClipDrawable(
-            resources.getDrawable(R.drawable.sample_url_progress, context.theme),
+            resources.getDrawable(R.drawable.url_progress, context.theme),
             Gravity.START,
             ClipDrawable.HORIZONTAL).apply {
         level = 0
