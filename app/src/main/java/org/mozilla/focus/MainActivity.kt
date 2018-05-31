@@ -26,7 +26,7 @@ import org.mozilla.focus.session.Source
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
-import org.mozilla.focus.toolbar.ToolbarHelper
+import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.utils.OnUrlEnteredListener
 import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.Settings
@@ -71,7 +71,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         })
 
         WebViewProvider.preload(this)
-        ToolbarHelper.setupToolbar(toolbar)
+        ToolbarIntegration.setup(toolbar)
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {

@@ -20,14 +20,13 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
-    <!-- Height must match browser_toolbar container's height. -->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="104dp">
         <mozilla.components.browser.toolbar.BrowserToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|enterAlways|snap|exitUntilCollapsed" />
     </android.support.design.widget.AppBarLayout>
 </android.support.design.widget.CoordinatorLayout>
