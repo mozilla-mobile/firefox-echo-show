@@ -12,33 +12,30 @@
               android:focusable="true"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              android:layout_marginStart="32dp"
+              android:layout_marginEnd="32dp"
               android:clickable="true"
-              android:clipChildren="false"
               android:layout_marginBottom="@dimen/home_tile_margin_bottom">
 
-        <ImageView
-            android:id="@+id/tile_icon"
-            android:layout_width="210dp"
-            android:layout_height="140dp"
-            android:layout_gravity="center"
-            android:background="@drawable/home_tile_background"
-            android:scaleType="centerInside"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/tile_youtube" />
+    <ImageView
+        android:id="@+id/tile_icon"
+        android:layout_width="210dp"
+        android:layout_height="140dp"
+        android:layout_gravity="center"
+        android:background="@drawable/home_tile_background"
+        android:scaleType="centerInside"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/tile_youtube" />
 
     <TextView
         android:id="@+id/tile_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="24dp"
         android:ellipsize="start"
         android:fontFamily="@string/font_roboto_regular"
         android:gravity="center_horizontal"
-        android:paddingBottom="6dp"
         android:paddingEnd="6dp"
         android:paddingStart="6dp"
-        android:paddingTop="6dp"
         android:singleLine="true"
         android:textColor="#CCF9F9FA"
         tools:text="YouTube" />
