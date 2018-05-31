@@ -150,6 +150,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                     }
                 }
             }
+            NavigationEvent.HOME -> throw NotImplementedError() // TODO
         }
         Unit
     }

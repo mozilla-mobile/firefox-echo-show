@@ -7,10 +7,11 @@ package org.mozilla.focus.toolbar
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.ui.icons.R as iconsR
+import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
 
 enum class NavigationEvent {
-    SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
+    HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
 
     companion object {
         fun fromViewClick(viewId: Int?) = when (viewId) {
@@ -36,7 +37,7 @@ object ToolbarIntegration {
      * Add the components of toolbar.
      */
     @SuppressWarnings("LongMethod")
-    fun setup(toolbar: BrowserToolbar) {
+    fun setup(toolbar: BrowserToolbar, onToolbarEvent: (event: NavigationEvent, value: String?) -> Unit) {
         val context = toolbar.context
 
         toolbar.displaySiteSecurityIcon = false
@@ -47,36 +48,42 @@ object ToolbarIntegration {
         toolbar.hint = toolbar.context.getString(R.string.urlbar_hint)
 
         val homescreenButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_grid,
-                "Homescreen") {}
+                "Homescreen") { onToolbarEvent(HOME, null) }
         toolbar.addNavigationAction(homescreenButton)
 
         val backButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_back,
-                context.getString(R.string.content_description_back)) {}
+                context.getString(R.string.content_description_back)) { onToolbarEvent(BACK, null) }
         toolbar.addNavigationAction(backButton)
 
         val forwardButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_forward,
-                context.getString(R.string.content_description_forward)) {}
+                context.getString(R.string.content_description_forward)) { onToolbarEvent(FORWARD, null) }
         toolbar.addNavigationAction(forwardButton)
 
         val refreshButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_refresh,
-                context.getString(R.string.content_description_reload)) {}
+                context.getString(R.string.content_description_reload)) { onToolbarEvent(RELOAD, null) }
         toolbar.addPageAction(refreshButton)
 
         val pinButton = Toolbar.ActionToggleButton(imageResource = R.drawable.pin_unfilled,
                 imageResourceSelected = R.drawable.pin_filled,
                 contentDescription = context.getString(R.string.pin_label),
-                contentDescriptionSelected = "Unpin") {}
+                contentDescriptionSelected = "Unpin") { isSelected ->
+            onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED)
+        }
         toolbar.addBrowserAction(pinButton)
 
         val turboButton = Toolbar.ActionToggleButton(imageResource = R.drawable.turbo_off,
                 imageResourceSelected = R.drawable.turbo_on,
                 contentDescription = context.getString(R.string.turbo_mode),
                 contentDescriptionSelected = context.getString(
-                        R.string.onboarding_turbo_mode_button_off)) {}
+                        R.string.onboarding_turbo_mode_button_off)) { isSelected ->
+            onToolbarEvent(TURBO, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED)
+        }
         toolbar.addBrowserAction(turboButton)
 
         val settingsButton = Toolbar.ActionButton(R.drawable.ic_settings,
-                context.getString(R.string.menu_settings)) {}
+                context.getString(R.string.menu_settings)) {
+            onToolbarEvent(SETTINGS, null)
+        }
         toolbar.addBrowserAction(settingsButton)
 
         val brandIcon = Toolbar.ActionImage(R.drawable.ic_firefox_and_workmark,

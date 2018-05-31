@@ -9,13 +9,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
-import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.ext.toSafeIntent
 import org.mozilla.focus.home.pocket.Pocket
 import org.mozilla.focus.iwebview.IWebView
@@ -27,6 +27,7 @@ import org.mozilla.focus.session.Source
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
+import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.utils.OnUrlEnteredListener
 import org.mozilla.focus.utils.SafeIntent
@@ -72,7 +73,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         })
 
         WebViewProvider.preload(this)
-        ToolbarIntegration.setup(toolbar)
+        ToolbarIntegration.setup(toolbar, ::onToolbarEvent)
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {
@@ -152,5 +153,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         } else {
             super.dispatchKeyEvent(event)
         }
+    }
+
+    private fun onToolbarEvent(event: NavigationEvent, value: String?) {
+        Log.d("lol", "clicked $event with $value")
     }
 }
