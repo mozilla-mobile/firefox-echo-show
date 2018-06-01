@@ -37,6 +37,7 @@ import org.mozilla.focus.session.SessionCallbackProxy
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
+import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.utils.ViewUtils.showCenteredTopToast
 import org.mozilla.focus.widget.InlineAutocompleteEditText
@@ -283,7 +284,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         TelemetryWrapper.drawerShowHideEvent(toShow)
     }
 
-    inner class NavigationStateProvider : HomeTileGridNavigation.BrowserNavigationStateProvider {
+    inner class NavigationStateProvider : ToolbarStateProvider {
         override fun isBackEnabled() = webView?.canGoBack() ?: false
         override fun isForwardEnabled() = webView?.canGoForward() ?: false
         override fun isPinEnabled() = !isUrlEqualToHomepage

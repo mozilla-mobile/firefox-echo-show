@@ -11,7 +11,6 @@ import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.icons.R as iconsR
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
-import org.mozilla.focus.browser.HomeTileGridNavigation
 import org.mozilla.focus.ext.setSelected
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.utils.Settings
@@ -55,7 +54,7 @@ object ToolbarIntegration {
      */
     @SuppressWarnings("LongMethod")
     fun setup(toolbar: BrowserToolbar,
-              navigationStateProvider: HomeTileGridNavigation.BrowserNavigationStateProvider,
+              navigationStateProvider: ToolbarStateProvider,
               onToolbarEvent: (event: NavigationEvent, value: String?,
                                autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit) {
         val context = toolbar.context

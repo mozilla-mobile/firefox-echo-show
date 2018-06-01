@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
-import org.mozilla.focus.browser.HomeTileGridNavigation
+import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.ext.toSafeIntent
 import org.mozilla.focus.home.pocket.Pocket
 import org.mozilla.focus.iwebview.IWebView
@@ -207,7 +207,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         }
     }
 
-    private inner class DelegateToBrowserFragmentNavigationStateProvider : HomeTileGridNavigation.BrowserNavigationStateProvider {
+    private inner class DelegateToBrowserFragmentNavigationStateProvider : ToolbarStateProvider {
         private fun getBrowserNavProvider() = (supportFragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?)
                 ?.navigationStateProvider
 

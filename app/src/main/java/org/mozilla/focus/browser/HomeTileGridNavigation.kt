@@ -23,6 +23,7 @@ import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.widget.InlineAutocompleteEditText
@@ -36,15 +37,6 @@ private const val COL_COUNT = 4
 class HomeTileGridNavigation @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyle: Int = 0 )
     : LinearLayout(context, attrs, defStyle), View.OnClickListener {
-
-    interface BrowserNavigationStateProvider {
-        fun isBackEnabled(): Boolean
-        fun isForwardEnabled(): Boolean
-        fun getCurrentUrl(): String?
-        fun isURLPinned(): Boolean
-        fun isPinEnabled(): Boolean
-        fun isRefreshEnabled(): Boolean
-    }
 
     /**
      * Used to cancel background->UI threads: we attach them as children to this job
@@ -67,7 +59,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
 
     var onNavigationEvent: ((event: NavigationEvent, value: String?,
                              autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit)? = null
-    var navigationStateProvider: BrowserNavigationStateProvider? = null
+    var navigationStateProvider: ToolbarStateProvider? = null
     /** Called inside [setVisibility] right before super.setVisibility is called. */
     var onPreSetVisibilityListener: ((isVisible: Boolean) -> Unit)? = null
 
