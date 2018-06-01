@@ -24,6 +24,7 @@
     <color name="onboarding_button_highlight">#500060df</color>
 
     <color name="browser_overlay_background">#FF38383D</color>
+    <color name="home_tile_text_color">#CCF9F9FA</color>
 
     <color name="button_highlight">#64ffffff</color>
     <color name="button_default">@color/translucent_tv_ink</color>
