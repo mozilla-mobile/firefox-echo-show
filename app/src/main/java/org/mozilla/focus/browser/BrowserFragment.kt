@@ -23,7 +23,6 @@ import kotlinx.coroutines.experimental.launch
 import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
 import org.mozilla.focus.ScreenController
-import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
 import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.toUri

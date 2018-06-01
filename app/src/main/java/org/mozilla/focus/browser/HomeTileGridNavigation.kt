@@ -6,15 +6,12 @@ package org.mozilla.focus.browser
 
 import android.content.Context
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.preference.PreferenceManager
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.Toast
@@ -30,9 +27,6 @@ import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.widget.InlineAutocompleteEditText
 import kotlin.properties.Delegates
-
-private const val NAVIGATION_BUTTON_ENABLED_ALPHA = 1.0f
-private const val NAVIGATION_BUTTON_DISABLED_ALPHA = 0.3f
 
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
 private const val MAX_UNPIN_TOAST_COUNT = 3
