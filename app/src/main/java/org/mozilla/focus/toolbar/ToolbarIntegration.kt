@@ -13,7 +13,7 @@ import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.icons.R as iconsR
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
-import org.mozilla.focus.ext.setSelected
+import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.widget.InlineAutocompleteEditText
@@ -38,6 +38,11 @@ enum class NavigationEvent {
     }
 }
 
+/** A collection of callbacks to modify the toolbar. */
+class ToolbarCallbacks(
+    val onDisplayUrlUpdate: (url: String?) -> Unit
+)
+
 /**
  * Helper class for constructing and using the shared toolbar for navigation and homescreen.
  */
@@ -52,13 +57,19 @@ object ToolbarIntegration {
     private val weakToolbarToSharedPrefListeners = WeakHashMap<BrowserToolbar, OnSharedPreferenceChangeListener>()
 
     /**
-     * Add the components of toolbar.
+     * Add the components of toolbar and returns a collection of callbacks to modify the toolbar
+     * at runtime.
+     *
+     * We return callbacks, rather than the internal toolbar views, because it allows us to:
+     * - Group all the low-level toolbar logic in this file
+     * - Put all toolbar interactions behind an "interface" rather than coupling code to raw toolbar views
+     * - Make the code more testable, due to the "interface" ^
      */
     @SuppressWarnings("LongMethod")
     fun setup(toolbar: BrowserToolbar,
               toolbarStateProvider: ToolbarStateProvider,
               onToolbarEvent: (event: NavigationEvent, value: String?,
-                               autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit) {
+                               autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit): ToolbarCallbacks {
         val context = toolbar.context
 
         toolbar.displaySiteSecurityIcon = false
@@ -150,7 +161,23 @@ object ToolbarIntegration {
         }
         Settings.getInstance(toolbar.context).preferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
         weakToolbarToSharedPrefListeners[toolbar] = sharedPrefsListener
+
+        return ToolbarCallbacks(
+                onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url) }
+        )
     }
+}
+
+private fun onDisplayUrlUpdate(
+        toolbar: BrowserToolbar, toolbarStateProvider: ToolbarStateProvider, url: String?
+) {
+    toolbar.url = when (url) {
+        APP_URL_HOME -> "" // Uses hint instead
+        null -> toolbar.url
+        else -> url
+    }
+
+    toolbar.invalidateActions()
 }
 
 /**

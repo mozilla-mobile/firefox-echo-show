@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
-import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.ext.toSafeIntent
 import org.mozilla.focus.home.pocket.Pocket
 import org.mozilla.focus.iwebview.IWebView
@@ -31,7 +30,9 @@ import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.toolbar.NavigationEvent
+import org.mozilla.focus.toolbar.ToolbarCallbacks
 import org.mozilla.focus.toolbar.ToolbarIntegration
+import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.UrlBoxProgressView
 import org.mozilla.focus.utils.OnUrlEnteredListener
 import org.mozilla.focus.utils.SafeIntent
@@ -45,6 +46,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
     private val sessionManager = SessionManager.getInstance()
 
     private val fragmentLifecycleCallbacks = MainActivityFragmentLifecycleCallbacks()
+
+    private lateinit var toolbarCallbacks: ToolbarCallbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +82,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         }
 
         WebViewProvider.preload(this)
-        ToolbarIntegration.setup(toolbar, DelegateToBrowserToolbarStateProvider(), ::onToolbarEvent)
+        toolbarCallbacks = ToolbarIntegration.setup(toolbar, DelegateToBrowserToolbarStateProvider(), ::onToolbarEvent)
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
     }
 
@@ -190,15 +193,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
     private inner class MainActivityFragmentLifecycleCallbacks : FragmentLifecycleCallbacks() {
         override fun onFragmentAttached(fragmentManager: FragmentManager, fragment: Fragment, context: Context) {
             if (fragment is BrowserFragment) {
-                fragment.onUrlUpdate = { url ->
-                    toolbar.url = when (url) {
-                        APP_URL_HOME -> "" // Uses hint instead
-                        null -> toolbar.url
-                        else -> url
-                    }
-
-                    toolbar.invalidateActions()
-                }
+                fragment.onUrlUpdate = toolbarCallbacks.onDisplayUrlUpdate
 
                 val progressBar = toolbar.urlBoxView as UrlBoxProgressView
                 fragment.onSessionProgressUpdate = { value ->
