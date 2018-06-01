@@ -21,9 +21,6 @@
         android:paddingBottom="0dp"
         >
 
-        <!-- An explicit nextFocusUp seems necessary to make up work consistently.
-
-             Drawable tinted in code (XML needs API 23+). -->
         <org.mozilla.focus.widget.InlineAutocompleteEditText
             android:id="@+id/navUrlInput"
             android:drawableStart="@drawable/ic_search"
@@ -51,7 +48,7 @@
             android:id="@+id/tileContainer"
             android:clipToPadding="false"
             android:clipChildren="false"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
             android:layout_marginEnd="44dp"
