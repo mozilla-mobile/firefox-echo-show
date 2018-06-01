@@ -54,7 +54,7 @@ object ToolbarIntegration {
      */
     @SuppressWarnings("LongMethod")
     fun setup(toolbar: BrowserToolbar,
-              navigationStateProvider: ToolbarStateProvider,
+              toolbarStateProvider: ToolbarStateProvider,
               onToolbarEvent: (event: NavigationEvent, value: String?,
                                autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit) {
         val context = toolbar.context
@@ -81,24 +81,24 @@ object ToolbarIntegration {
 
         val backButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_back,
                 context.getString(R.string.content_description_back),
-                visible = navigationStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) }
+                visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) }
         toolbar.addNavigationAction(backButton)
 
         val forwardButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_forward,
                 context.getString(R.string.content_description_forward),
-                navigationStateProvider::isForwardEnabled) { onToolbarEvent(FORWARD, null, null) }
+                toolbarStateProvider::isForwardEnabled) { onToolbarEvent(FORWARD, null, null) }
         toolbar.addNavigationAction(forwardButton)
 
         val refreshButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_refresh,
                 context.getString(R.string.content_description_reload),
-                visible = navigationStateProvider::isRefreshEnabled) { onToolbarEvent(RELOAD, null, null) }
+                visible = toolbarStateProvider::isRefreshEnabled) { onToolbarEvent(RELOAD, null, null) }
         toolbar.addPageAction(refreshButton)
 
         val pinButton = Toolbar.ActionToggleButton(imageResource = R.drawable.pin_unfilled,
                 imageResourceSelected = R.drawable.pin_filled,
                 contentDescription = context.getString(R.string.pin_label),
                 contentDescriptionSelected = "Unpin",
-                visible = navigationStateProvider::isPinEnabled) { isSelected ->
+                visible = toolbarStateProvider::isPinEnabled) { isSelected ->
             onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
         }
         toolbar.addBrowserAction(pinButton)

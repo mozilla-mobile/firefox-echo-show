@@ -67,7 +67,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override val initialUrl get() = session.url.value
     override val iWebViewCallback get() = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
 
-    val navigationStateProvider = NavigationStateProvider()
+    val toolbarStateProvider = BrowserToolbarStateProvider()
     var onUrlUpdate: ((url: String?) -> Unit)? = null
     var onSessionProgressUpdate: ((value: Int) -> Unit)? = null
 
@@ -175,7 +175,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         with (layout.homeTileGrid) {
             onNavigationEvent = this@BrowserFragment.onNavigationEvent
-            navigationStateProvider = NavigationStateProvider()
+            navigationStateProvider = BrowserToolbarStateProvider()
             visibility = overlayVisibleCached ?: View.GONE
             onPreSetVisibilityListener = { webView!!.onOverlayPreSetVisibility(it) }
 
@@ -284,7 +284,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         TelemetryWrapper.drawerShowHideEvent(toShow)
     }
 
-    inner class NavigationStateProvider : ToolbarStateProvider {
+    inner class BrowserToolbarStateProvider : ToolbarStateProvider {
         override fun isBackEnabled() = webView?.canGoBack() ?: false
         override fun isForwardEnabled() = webView?.canGoForward() ?: false
         override fun isPinEnabled() = !isUrlEqualToHomepage

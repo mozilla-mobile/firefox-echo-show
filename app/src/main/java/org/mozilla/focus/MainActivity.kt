@@ -79,7 +79,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         }
 
         WebViewProvider.preload(this)
-        ToolbarIntegration.setup(toolbar, DelegateToBrowserFragmentNavigationStateProvider(), ::onToolbarEvent)
+        ToolbarIntegration.setup(toolbar, DelegateToBrowserToolbarStateProvider(), ::onToolbarEvent)
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
     }
 
@@ -207,15 +207,16 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         }
     }
 
-    private inner class DelegateToBrowserFragmentNavigationStateProvider : ToolbarStateProvider {
-        private fun getBrowserNavProvider() = (supportFragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?)
-                ?.navigationStateProvider
+    private inner class DelegateToBrowserToolbarStateProvider : ToolbarStateProvider {
+        private fun getBrowserToolbarProvider() =
+                (supportFragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?)
+                        ?.toolbarStateProvider
 
-        override fun isBackEnabled() = getBrowserNavProvider()?.isBackEnabled() ?: false
-        override fun isForwardEnabled() = getBrowserNavProvider()?.isForwardEnabled() ?: false
-        override fun getCurrentUrl() = getBrowserNavProvider()?.getCurrentUrl()
-        override fun isURLPinned() = getBrowserNavProvider()?.isURLPinned() ?: false
-        override fun isPinEnabled() = getBrowserNavProvider()?.isPinEnabled() ?: false
-        override fun isRefreshEnabled() = getBrowserNavProvider()?.isRefreshEnabled() ?: false
+        override fun isBackEnabled() = getBrowserToolbarProvider()?.isBackEnabled() ?: false
+        override fun isForwardEnabled() = getBrowserToolbarProvider()?.isForwardEnabled() ?: false
+        override fun getCurrentUrl() = getBrowserToolbarProvider()?.getCurrentUrl()
+        override fun isURLPinned() = getBrowserToolbarProvider()?.isURLPinned() ?: false
+        override fun isPinEnabled() = getBrowserToolbarProvider()?.isPinEnabled() ?: false
+        override fun isRefreshEnabled() = getBrowserToolbarProvider()?.isRefreshEnabled() ?: false
     }
 }
