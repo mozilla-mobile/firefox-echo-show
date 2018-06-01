@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
+import org.mozilla.focus.browser.HomeTileGridNavigation
 import org.mozilla.focus.ext.toSafeIntent
 import org.mozilla.focus.home.pocket.Pocket
 import org.mozilla.focus.iwebview.IWebView
@@ -78,6 +79,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         }
 
         WebViewProvider.preload(this)
+        ToolbarIntegration.setup(toolbar, DelegateToBrowserFragmentNavigationStateProvider(), ::onToolbarEvent)
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
     }
 
@@ -186,11 +188,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
 
     private inner class MainActivityFragmentLifecycleCallbacks : FragmentLifecycleCallbacks() {
         override fun onFragmentAttached(fragmentManager: FragmentManager, fragment: Fragment, context: Context) {
-            // In theory, this could get called more than once so we want to try to guarantee idempotence
-            // of `setup`. In practice, in our final implementation, BrowserFragment should be the only
-            // Fragment so this should only be called once.
             if (fragment is BrowserFragment) {
-                ToolbarIntegration.setup(toolbar, fragment.navigationStateProvider, ::onToolbarEvent)
                 fragment.onUrlUpdate = { url ->
                     toolbar.url = when (url) {
                         APP_URL_HOME -> "" // Uses hint instead
@@ -207,5 +205,17 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
                 }
             }
         }
+    }
+
+    private inner class DelegateToBrowserFragmentNavigationStateProvider : HomeTileGridNavigation.BrowserNavigationStateProvider {
+        private fun getBrowserNavProvider() = (supportFragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?)
+                ?.navigationStateProvider
+
+        override fun isBackEnabled() = getBrowserNavProvider()?.isBackEnabled() ?: false
+        override fun isForwardEnabled() = getBrowserNavProvider()?.isForwardEnabled() ?: false
+        override fun getCurrentUrl() = getBrowserNavProvider()?.getCurrentUrl()
+        override fun isURLPinned() = getBrowserNavProvider()?.isURLPinned() ?: false
+        override fun isPinEnabled() = getBrowserNavProvider()?.isPinEnabled() ?: false
+        override fun isRefreshEnabled() = getBrowserNavProvider()?.isRefreshEnabled() ?: false
     }
 }
