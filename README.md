@@ -18,6 +18,25 @@ can be connected to a Fire TV at a time. Note that while you can install on an
 Android TV emulator, the behavior is different from Fire TV's and should not be
 relied upon.
 
+### Pre-push hooks
+Since we don't have CI, if you're pushing code, please add the following pre-push hook as .git/hooks/pre-push:
+
+  ```sh
+  #!/bin/sh
+
+  ./gradlew -q \
+          checkstyle \
+          ktlint \
+          detektCheck \
+          pmd \
+          testAmazonWebViewDebug
+
+  # Tasks omitted because they take a long time to run:
+  # - unit test on all variants
+  # - UI tests
+  # - lint (compiles all variants)
+  ```
+
 ## License
 
     This Source Code Form is subject to the terms of the Mozilla Public
