@@ -164,7 +164,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         }
     }
 
-    private fun onToolbarEvent(event: NavigationEvent, value: String?) {
+    private fun onToolbarEvent(event: NavigationEvent, value: String?, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
         val fragmentManager = supportFragmentManager
 
         when (event) {
@@ -179,7 +179,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
 
         val browserFragment = fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
         if (browserFragment != null && browserFragment.isVisible) {
-            browserFragment.onNavigationEvent(event, value, null)
+            browserFragment.onNavigationEvent(event, value, autocompleteResult)
         } // BrowserFragment is our only fragment: this else case should never happen.
     }
 

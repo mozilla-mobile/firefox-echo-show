@@ -14,6 +14,7 @@ import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.ext.setSelected
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.utils.Settings
+import org.mozilla.focus.widget.InlineAutocompleteEditText
 import java.util.WeakHashMap
 
 enum class NavigationEvent {
@@ -56,7 +57,8 @@ object ToolbarIntegration {
     @SuppressWarnings("LongMethod")
     fun setup(toolbar: BrowserToolbar,
               navigationStateProvider: BrowserFragment.NavigationStateProvider,
-              onToolbarEvent: (event: NavigationEvent, value: String?) -> Unit) {
+              onToolbarEvent: (event: NavigationEvent, value: String?,
+                               autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit) {
         val context = toolbar.context
 
         toolbar.displaySiteSecurityIcon = false
@@ -66,23 +68,29 @@ object ToolbarIntegration {
         toolbar.setUrlTextPadding(16, 16, 16, 16)
         toolbar.hint = toolbar.context.getString(R.string.urlbar_hint)
 
+        toolbar.setOnUrlChangeListener { urlStr ->
+            // TODO: #86 - toolbar doesn't support autocomplete yet so we pass in a dummy result.
+            val autocompleteResult = InlineAutocompleteEditText.AutocompleteResult("", "", 0)
+            onToolbarEvent(LOAD_URL, urlStr, autocompleteResult)
+        }
+
         val homescreenButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_grid,
-                "Homescreen") { onToolbarEvent(HOME, null) }
+                "Homescreen") { onToolbarEvent(HOME, null, null) }
         toolbar.addNavigationAction(homescreenButton)
 
         val backButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_back,
                 context.getString(R.string.content_description_back),
-                visible = navigationStateProvider::isBackEnabled) { onToolbarEvent(BACK, null) }
+                visible = navigationStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) }
         toolbar.addNavigationAction(backButton)
 
         val forwardButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_forward,
                 context.getString(R.string.content_description_forward),
-                navigationStateProvider::isForwardEnabled) { onToolbarEvent(FORWARD, null) }
+                navigationStateProvider::isForwardEnabled) { onToolbarEvent(FORWARD, null, null) }
         toolbar.addNavigationAction(forwardButton)
 
         val refreshButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_refresh,
                 context.getString(R.string.content_description_reload),
-                visible = navigationStateProvider::isRefreshEnabled) { onToolbarEvent(RELOAD, null) }
+                visible = navigationStateProvider::isRefreshEnabled) { onToolbarEvent(RELOAD, null, null) }
         toolbar.addPageAction(refreshButton)
 
         val pinButton = Toolbar.ActionToggleButton(imageResource = R.drawable.pin_unfilled,
@@ -90,7 +98,7 @@ object ToolbarIntegration {
                 contentDescription = context.getString(R.string.pin_label),
                 contentDescriptionSelected = "Unpin",
                 visible = navigationStateProvider::isPinEnabled) { isSelected ->
-            onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED)
+            onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
         }
         toolbar.addBrowserAction(pinButton)
 
@@ -100,13 +108,13 @@ object ToolbarIntegration {
                 contentDescriptionSelected = context.getString(
                         R.string.onboarding_turbo_mode_button_off),
                 selected = Settings.getInstance(toolbar.context).isBlockingEnabled) { isSelected ->
-            onToolbarEvent(TURBO, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED)
+            onToolbarEvent(TURBO, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
         }
         toolbar.addBrowserAction(turboButton)
 
         val settingsButton = Toolbar.ActionButton(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings)) {
-            onToolbarEvent(SETTINGS, null)
+            onToolbarEvent(SETTINGS, null, null)
         }
         toolbar.addBrowserAction(settingsButton)
 
