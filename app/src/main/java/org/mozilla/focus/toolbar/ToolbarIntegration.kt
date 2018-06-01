@@ -10,6 +10,7 @@ import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.ui.icons.R as iconsR
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
+import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.ext.setSelected
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.utils.Settings
@@ -47,11 +48,15 @@ object ToolbarIntegration {
      */
     private val weakToolbarToSharedPrefListeners = WeakHashMap<BrowserToolbar, OnSharedPreferenceChangeListener>()
 
-    /*
+    /**
      * Add the components of toolbar.
+     *
+     * This method is assumed to be idempotent: see [MainActivityFragmentLifecycleCallbacks].
      */
     @SuppressWarnings("LongMethod")
-    fun setup(toolbar: BrowserToolbar, onToolbarEvent: (event: NavigationEvent, value: String?) -> Unit) {
+    fun setup(toolbar: BrowserToolbar,
+              navigationStateProvider: BrowserFragment.NavigationStateProvider,
+              onToolbarEvent: (event: NavigationEvent, value: String?) -> Unit) {
         val context = toolbar.context
 
         toolbar.displaySiteSecurityIcon = false
@@ -66,21 +71,25 @@ object ToolbarIntegration {
         toolbar.addNavigationAction(homescreenButton)
 
         val backButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_back,
-                context.getString(R.string.content_description_back)) { onToolbarEvent(BACK, null) }
+                context.getString(R.string.content_description_back),
+                visible = navigationStateProvider::isBackEnabled) { onToolbarEvent(BACK, null) }
         toolbar.addNavigationAction(backButton)
 
         val forwardButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_forward,
-                context.getString(R.string.content_description_forward)) { onToolbarEvent(FORWARD, null) }
+                context.getString(R.string.content_description_forward),
+                navigationStateProvider::isForwardEnabled) { onToolbarEvent(FORWARD, null) }
         toolbar.addNavigationAction(forwardButton)
 
         val refreshButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_refresh,
-                context.getString(R.string.content_description_reload)) { onToolbarEvent(RELOAD, null) }
+                context.getString(R.string.content_description_reload),
+                visible = navigationStateProvider::isRefreshEnabled) { onToolbarEvent(RELOAD, null) }
         toolbar.addPageAction(refreshButton)
 
         val pinButton = Toolbar.ActionToggleButton(imageResource = R.drawable.pin_unfilled,
                 imageResourceSelected = R.drawable.pin_filled,
                 contentDescription = context.getString(R.string.pin_label),
-                contentDescriptionSelected = "Unpin") { isSelected ->
+                contentDescriptionSelected = "Unpin",
+                visible = navigationStateProvider::isPinEnabled) { isSelected ->
             onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED)
         }
         toolbar.addBrowserAction(pinButton)

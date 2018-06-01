@@ -8,6 +8,9 @@ package org.mozilla.focus
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentManager.FragmentLifecycleCallbacks
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
@@ -38,6 +41,8 @@ import org.mozilla.focus.widget.InlineAutocompleteEditText
 class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
 
     private val sessionManager = SessionManager.getInstance()
+
+    private val fragmentLifecycleCallbacks = MainActivityFragmentLifecycleCallbacks()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +77,12 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         })
 
         WebViewProvider.preload(this)
-        ToolbarIntegration.setup(toolbar, ::onToolbarEvent)
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {
@@ -171,5 +181,17 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         if (browserFragment != null && browserFragment.isVisible) {
             browserFragment.onNavigationEvent(event, value, null)
         } // BrowserFragment is our only fragment: this else case should never happen.
+    }
+
+    private inner class MainActivityFragmentLifecycleCallbacks : FragmentLifecycleCallbacks() {
+        override fun onFragmentAttached(fragmentManager: FragmentManager, fragment: Fragment, context: Context) {
+            // In theory, this could get called more than once so we want to try to guarantee idempotence
+            // of `setup`. In practice, in our final implementation, BrowserFragment should be the only
+            // Fragment so this should only be called once.
+            if (fragment is BrowserFragment) {
+                ToolbarIntegration.setup(toolbar, fragment.navigationStateProvider, ::onToolbarEvent)
+                fragment.onUrlUpdate = { toolbar.invalidateActions() }
+            }
+        }
     }
 }

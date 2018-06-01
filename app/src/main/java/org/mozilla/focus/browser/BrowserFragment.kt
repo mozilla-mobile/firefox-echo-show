@@ -14,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.browser_overlay.view.*
 import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
@@ -66,6 +67,9 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override val initialUrl get() = session.url.value
     override val iWebViewCallback get() = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
 
+    val navigationStateProvider = NavigationStateProvider()
+    var onUrlUpdate: (() -> Unit)? = null
+
     /**
      * The current URL.
      *
@@ -73,7 +77,10 @@ class BrowserFragment : IWebViewLifecycleFragment() {
      * data: URLs (for error pages).
      */
     var url: String? = null
-        private set
+        private set(value) {
+            field = value
+            onUrlUpdate?.invoke()
+        }
 
     val isUrlEqualToHomepage: Boolean get() = url == APP_URL_HOME
 
@@ -260,7 +267,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         TelemetryWrapper.drawerShowHideEvent(toShow)
     }
 
-    private inner class NavigationStateProvider : HomeTileGridNavigation.BrowserNavigationStateProvider {
+    inner class NavigationStateProvider : HomeTileGridNavigation.BrowserNavigationStateProvider {
         override fun isBackEnabled() = webView?.canGoBack() ?: false
         override fun isForwardEnabled() = webView?.canGoForward() ?: false
         override fun isPinEnabled() = !isUrlEqualToHomepage
