@@ -190,7 +190,15 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
             // Fragment so this should only be called once.
             if (fragment is BrowserFragment) {
                 ToolbarIntegration.setup(toolbar, fragment.navigationStateProvider, ::onToolbarEvent)
-                fragment.onUrlUpdate = { toolbar.invalidateActions() }
+                fragment.onUrlUpdate = { url ->
+                    toolbar.url = when (url) {
+                        APP_URL_HOME -> "" // Uses hint instead
+                        null -> toolbar.url
+                        else -> url
+                    }
+
+                    toolbar.invalidateActions()
+                }
             }
         }
     }

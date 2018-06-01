@@ -68,7 +68,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override val iWebViewCallback get() = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
 
     val navigationStateProvider = NavigationStateProvider()
-    var onUrlUpdate: (() -> Unit)? = null
+    var onUrlUpdate: ((url: String?) -> Unit)? = null
 
     /**
      * The current URL.
@@ -79,7 +79,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     var url: String? = null
         private set(value) {
             field = value
-            onUrlUpdate?.invoke()
+            onUrlUpdate?.invoke(url)
         }
 
     val isUrlEqualToHomepage: Boolean get() = url == APP_URL_HOME
