@@ -5,8 +5,13 @@
 package org.mozilla.focus.toolbar
 
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
+import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.icons.R as iconsR
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
@@ -16,6 +21,8 @@ import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.widget.InlineAutocompleteEditText
 import java.util.WeakHashMap
+import org.mozilla.focus.R.id.progress
+import org.mozilla.focus.R.id.toolbar
 
 enum class NavigationEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
@@ -74,6 +81,11 @@ object ToolbarIntegration {
             onToolbarEvent(LOAD_URL, urlStr, autocompleteResult)
         }
 
+        val urlBoxProgress = UrlBoxProgressView(context)
+
+        toolbar.urlBoxView = urlBoxProgress
+        toolbar.urlBoxMargin = toolbar.dp(16)
+
         val homescreenButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_grid,
                 "Homescreen") { onToolbarEvent(HOME, null, null) }
         toolbar.addNavigationAction(homescreenButton)
@@ -129,5 +141,24 @@ object ToolbarIntegration {
         }
         Settings.getInstance(toolbar.context).preferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
         weakToolbarToSharedPrefListeners[toolbar] = sharedPrefsListener
+    }
+
+    private var job: Job? = null
+
+    private fun simulateReload(view: UrlBoxProgressView? = null) {
+        job?.cancel()
+        job = launch(UI) {
+            loop@ for (progress in 0..100 step 5) {
+                if (!isActive) {
+                    break@loop
+                }
+
+                if (view != null) {
+                    view.progress = progress
+                }
+
+                delay((progress * 5).toLong())
+            }
+        }
     }
 }
