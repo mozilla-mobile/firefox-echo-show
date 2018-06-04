@@ -50,6 +50,10 @@ object ToolbarIntegration {
      */
     private val weakToolbarToSharedPrefListeners = WeakHashMap<BrowserToolbar, OnSharedPreferenceChangeListener>()
 
+    // Ideally, we want to handle all the progress bar changes via toolbar.urlBoxView,
+    // but since there's no good way to access the progress bar due to the current way
+    // Android components has set up this specific view (besides casting it every time,
+    // which we don't want), we keep it in here while modifying it via updateProgressView.
     private lateinit var urlProgressView: UrlBoxProgressView
 
     /**
