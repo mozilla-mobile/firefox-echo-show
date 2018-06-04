@@ -5,10 +5,6 @@
 package org.mozilla.focus.toolbar
 
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.support.ktx.android.view.dp
@@ -21,8 +17,6 @@ import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.widget.InlineAutocompleteEditText
 import java.util.WeakHashMap
-import org.mozilla.focus.R.id.progress
-import org.mozilla.focus.R.id.toolbar
 
 enum class NavigationEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
