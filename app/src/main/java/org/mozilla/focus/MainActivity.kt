@@ -15,7 +15,6 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_info.view.*
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
@@ -32,6 +31,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.toolbar.ToolbarIntegration
+import org.mozilla.focus.toolbar.UrlBoxProgressView
 import org.mozilla.focus.utils.OnUrlEnteredListener
 import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.Settings
@@ -191,6 +191,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
             // Fragment so this should only be called once.
             if (fragment is BrowserFragment) {
                 ToolbarIntegration.setup(toolbar, fragment.navigationStateProvider, ::onToolbarEvent)
+                val progressBar = toolbar.urlBoxView as UrlBoxProgressView
                 fragment.onUrlUpdate = { url ->
                     toolbar.url = when (url) {
                         APP_URL_HOME -> "" // Uses hint instead
@@ -199,6 +200,10 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
                     }
 
                     toolbar.invalidateActions()
+                }
+
+                fragment.onSessionProgressUpdate = { value ->
+                    progressBar.progress = value
                 }
             }
         }

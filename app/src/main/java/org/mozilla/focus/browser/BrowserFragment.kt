@@ -38,7 +38,6 @@ import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.toolbar.NavigationEvent
-import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.utils.ViewUtils.showCenteredTopToast
 import org.mozilla.focus.widget.InlineAutocompleteEditText
 
@@ -69,6 +68,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     val navigationStateProvider = NavigationStateProvider()
     var onUrlUpdate: ((url: String?) -> Unit)? = null
+    var onSessionProgressUpdate: ((value: Int) -> Unit)? = null
 
     /**
      * The current URL.
@@ -105,20 +105,15 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         webView?.setBlockingEnabled(session.isBlockingEnabled)
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
         session.progress.observe(this, Observer { value ->
-            if (url == APP_URL_HOME) {
-                ToolbarIntegration.updateProgressView(0)
+            if (value != null) {
+                onSessionProgressUpdate?.invoke(value)
             }
 
-            if (value != null) {
-                var updatedProgressValue = value
-
-                // In SessionCallbackProxy, we set the progress to max 99 because 100 will
-                // make the progress bar disappear. Thus, we need to set the value we send
-                // to updateProgressView 100 in order for the progress bar to complete animating.
-                if (value == 99) {
-                    updatedProgressValue = 100
-                }
-                ToolbarIntegration.updateProgressView(updatedProgressValue)
+            // We need to set this separately because the webView does some loading
+            // to load the home screen, thus leaving a little bit of residual progress
+            // bar active. We set to 0 to reset the state of the bar.
+            if (url == APP_URL_HOME) {
+                onSessionProgressUpdate?.invoke(0)
             }
         })
     }
