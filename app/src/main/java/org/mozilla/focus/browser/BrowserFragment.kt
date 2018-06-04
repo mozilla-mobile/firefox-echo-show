@@ -105,6 +105,10 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         webView?.setBlockingEnabled(session.isBlockingEnabled)
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
         session.progress.observe(this, Observer { value ->
+            if (url == APP_URL_HOME) {
+                ToolbarIntegration.updateProgressView(0)
+            }
+
             if (value != null) {
                 var updatedProgressValue = value
 
