@@ -56,6 +56,8 @@ object ToolbarIntegration {
      */
     private val weakToolbarToSharedPrefListeners = WeakHashMap<BrowserToolbar, OnSharedPreferenceChangeListener>()
 
+    private lateinit var urlProgressView: UrlBoxProgressView
+
     /**
      * Add the components of toolbar.
      *
@@ -82,8 +84,9 @@ object ToolbarIntegration {
         }
 
         val urlBoxProgress = UrlBoxProgressView(context)
+        urlProgressView = UrlBoxProgressView(context)
 
-        toolbar.urlBoxView = urlBoxProgress
+        toolbar.urlBoxView = urlProgressView
         toolbar.urlBoxMargin = toolbar.dp(16)
 
         val homescreenButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_grid,
@@ -143,22 +146,7 @@ object ToolbarIntegration {
         weakToolbarToSharedPrefListeners[toolbar] = sharedPrefsListener
     }
 
-    private var job: Job? = null
-
-    private fun simulateReload(view: UrlBoxProgressView? = null) {
-        job?.cancel()
-        job = launch(UI) {
-            loop@ for (progress in 0..100 step 5) {
-                if (!isActive) {
-                    break@loop
-                }
-
-                if (view != null) {
-                    view.progress = progress
-                }
-
-                delay((progress * 5).toLong())
-            }
-        }
+    fun updateProgressView(newProgressValue: Int) {
+        urlProgressView.progress = newProgressValue
     }
 }
