@@ -4,7 +4,8 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_focused="true" android:drawable="@color/onboarding_button_highlight"/>
-    <item android:state_pressed="true" android:drawable="@color/onboarding_button_highlight"/>
-    <item android:drawable="@android:color/transparent"/>
+    <item android:state_focused="true" android:color="@color/onboarding_button_highlight"/>
+    <item android:state_pressed="true" android:color="@color/onboarding_button_highlight"/>
+    <item android:state_selected="true" android:color="@color/photonBlue60"/>
+    <item android:color="@color/photonGrey70"/>
 </selector>

@@ -72,7 +72,7 @@
                   android:theme="@style/InfoTheme"/>
 
         <activity android:name=".OnboardingActivity"
-                  android:theme="@style/AppTheme"/>
+                  android:theme="@style/AppTheme.Transparent"/>
 
         <meta-data
             android:name="android.webkit.WebView.MetricsOptOut"

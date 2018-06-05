@@ -9,7 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.content_onboarding.*
+import kotlinx.android.synthetic.main.activity_onboarding.*
 import org.mozilla.focus.iwebview.IWebView
 
 class OnboardingActivity : AppCompatActivity() {
@@ -18,12 +18,13 @@ class OnboardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
 
-        enable_turbo_mode.setOnClickListener { _ ->
+        enableTurboMode.isSelected = true
+        enableTurboMode.setOnClickListener { _ ->
             setTurboMode(true)
             finish()
         }
 
-        disable_turbo_mode.setOnClickListener { _ ->
+        disableTurboMode.setOnClickListener { _ ->
             setTurboMode(false)
             setResult(Activity.RESULT_OK, Intent())
             finish()
