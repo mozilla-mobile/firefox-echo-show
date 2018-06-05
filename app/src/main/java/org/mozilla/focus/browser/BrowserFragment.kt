@@ -143,12 +143,15 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             NavigationEvent.LOAD_TILE -> (activity as MainActivity).onNonTextInputUrlEntered(value!!)
             NavigationEvent.PIN_ACTION -> {
                 this@BrowserFragment.url?.let { url ->
+                    val brandName = context.getString(R.string.firefox_brand_name)
                     when (value) {
                         NavigationEvent.VAL_CHECKED -> {
                             CustomTilesManager.getInstance(context).pinSite(context, url,
                                     webView?.takeScreenshot())
                             homeScreen.refreshTilesForInsertion()
-                            showCenteredTopToast(context, R.string.notification_pinned_site, 0, TOAST_Y_OFFSET)
+                            showCenteredTopToast(context, context.getString(
+                                    R.string.notification_pinned_general2, brandName),
+                                    0, TOAST_Y_OFFSET)
                         }
                         NavigationEvent.VAL_UNCHECKED -> {
                             url.toUri()?.let {
@@ -158,7 +161,9 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                                 // have a reference to the tile/the tile isn't a Bundled or Custom tile
                                 if (tileId != null && !tileId.isEmpty()) {
                                     homeScreen.removePinnedSiteFromTiles(tileId)
-                                    showCenteredTopToast(context, R.string.notification_unpinned_site, 0, TOAST_Y_OFFSET)
+                                    showCenteredTopToast(context, context.getString(
+                                            R.string.notification_unpinned_general2, brandName),
+                                            0, TOAST_Y_OFFSET)
                                 }
                             }
                         }

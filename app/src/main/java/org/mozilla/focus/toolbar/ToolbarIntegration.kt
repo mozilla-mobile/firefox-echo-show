@@ -82,9 +82,8 @@ object ToolbarIntegration {
         toolbar.urlBoxView = UrlBoxProgressView(context)
         toolbar.urlBoxMargin = dp16
 
-        val homescreenButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_grid,
-                "Homescreen",
-                background = R.drawable.toolbar_button_background) { onToolbarEvent(HOME, null, null) }
+        val homescreenButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_grid,
+                context.getString(R.string.homescreen_title)) { onToolbarEvent(HOME, null, null) }
         toolbar.addNavigationAction(homescreenButton)
 
         val backButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_back,
@@ -108,7 +107,7 @@ object ToolbarIntegration {
         val pinButton = BrowserToolbar.ToggleButton(imageResource = R.drawable.pin_unfilled,
                 imageResourceSelected = R.drawable.pin_filled,
                 contentDescription = context.getString(R.string.pin_label),
-                contentDescriptionSelected = "Unpin",
+                contentDescriptionSelected = context.getString(R.string.homescreen_unpin_a11y),
                 background = R.drawable.toolbar_toggle_background,
                 visible = toolbarStateProvider::isPinEnabled) { isSelected ->
             onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
@@ -117,10 +116,10 @@ object ToolbarIntegration {
 
         val turboButton = BrowserToolbar.ToggleButton(imageResource = R.drawable.turbo_off,
                 imageResourceSelected = R.drawable.turbo_on,
-                contentDescription = context.getString(R.string.turbo_mode),
-                background = R.drawable.toolbar_toggle_background,
+                contentDescription = context.getString(R.string.turbo_mode_enable_a11y),
                 contentDescriptionSelected = context.getString(
-                        R.string.onboarding_turbo_mode_button_off),
+                        R.string.turbo_mode_disable_a11y),
+                background = R.drawable.toolbar_toggle_background,
                 selected = Settings.getInstance(toolbar.context).isBlockingEnabled) { isSelected ->
             onToolbarEvent(TURBO, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
         }

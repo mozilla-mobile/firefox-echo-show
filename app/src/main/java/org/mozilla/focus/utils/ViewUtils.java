@@ -140,8 +140,8 @@ public class ViewUtils {
         return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
     }
 
-    public static void showCenteredTopToast(Context context, int resId, int xOffset, int yOffset) {
-        Toast toast = Toast.makeText(context, resId, Toast.LENGTH_SHORT);
+    public static void showCenteredTopToast(Context context, CharSequence str, int xOffset, int yOffset) {
+        Toast toast = Toast.makeText(context, str, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, xOffset, yOffset);
         toast.show();
     }
