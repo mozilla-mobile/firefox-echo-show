@@ -69,13 +69,13 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
                 } else {
                     ScreenController.showBrowserScreenForCurrentSession(supportFragmentManager, sessionManager)
                 }
-
-                if (Settings.getInstance(this@MainActivity).shouldShowOnboarding()) {
-                    val onboardingIntent = Intent(this@MainActivity, OnboardingActivity::class.java)
-                    startActivity(onboardingIntent)
-                }
             }
         })
+
+        if (Settings.getInstance(this@MainActivity).shouldShowOnboarding()) {
+            val onboardingIntent = Intent(this@MainActivity, OnboardingActivity::class.java)
+            startActivity(onboardingIntent)
+        }
 
         WebViewProvider.preload(this)
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
