@@ -191,7 +191,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
             // Fragment so this should only be called once.
             if (fragment is BrowserFragment) {
                 ToolbarIntegration.setup(toolbar, fragment.navigationStateProvider, ::onToolbarEvent)
-                val progressBar = toolbar.urlBoxView as UrlBoxProgressView
                 fragment.onUrlUpdate = { url ->
                     toolbar.url = when (url) {
                         APP_URL_HOME -> "" // Uses hint instead
@@ -202,6 +201,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
                     toolbar.invalidateActions()
                 }
 
+                val progressBar = toolbar.urlBoxView as UrlBoxProgressView
                 fragment.onSessionProgressUpdate = { value ->
                     progressBar.progress = value
                 }

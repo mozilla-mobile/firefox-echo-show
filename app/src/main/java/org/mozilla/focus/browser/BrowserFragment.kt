@@ -105,15 +105,13 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         webView?.setBlockingEnabled(session.isBlockingEnabled)
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
         session.progress.observe(this, Observer { value ->
-            if (value != null) {
-                onSessionProgressUpdate?.invoke(value)
-            }
-
             // We need to set this separately because the webView does some loading
             // to load the home screen, thus leaving a little bit of residual progress
             // bar active. We set to 0 to reset the state of the bar.
             if (url == APP_URL_HOME) {
                 onSessionProgressUpdate?.invoke(0)
+            } else if (value != null) {
+                onSessionProgressUpdate?.invoke(value)
             }
         })
     }
