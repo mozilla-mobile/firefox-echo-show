@@ -127,19 +127,21 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             autocompleteResult: InlineAutocompleteEditText.AutocompleteResult? ->
         val context = context!!
 
+        if (event == NavigationEvent.BACK || event == NavigationEvent.FORWARD ||
+                event == NavigationEvent.LOAD_URL || event == NavigationEvent.LOAD_TILE) {
+            // The new URL will be set internally after this point;
+            // if we're going back to the home page, it will override our hide here.
+            homeScreen.visibility = View.GONE
+        }
+
         when (event) {
             NavigationEvent.BACK -> if (webView?.canGoBack() ?: false) webView?.goBack()
             NavigationEvent.FORWARD -> if (webView?.canGoForward() ?: false) webView?.goForward()
             NavigationEvent.TURBO, NavigationEvent.RELOAD -> webView?.reload()
             NavigationEvent.SETTINGS -> ScreenController.showSettingsScreen(fragmentManager!!)
-            NavigationEvent.LOAD_URL -> {
+            NavigationEvent.LOAD_URL ->
                 (activity as MainActivity).onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
-                setOverlayVisibleByUser(false)
-            }
-            NavigationEvent.LOAD_TILE -> {
-                (activity as MainActivity).onNonTextInputUrlEntered(value!!)
-                setOverlayVisibleByUser(false)
-            }
+            NavigationEvent.LOAD_TILE -> (activity as MainActivity).onNonTextInputUrlEntered(value!!)
             NavigationEvent.PIN_ACTION -> {
                 this@BrowserFragment.url?.let { url ->
                     when (value) {
