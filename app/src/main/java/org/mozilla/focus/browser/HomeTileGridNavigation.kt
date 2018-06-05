@@ -149,6 +149,8 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         when (event) {
             NavigationEvent.TURBO -> {
                 isTurboEnabled = isTurboButtonChecked
+                value = if (isTurboButtonChecked) NavigationEvent.VAL_CHECKED
+                else NavigationEvent.VAL_UNCHECKED
             }
             NavigationEvent.PIN_ACTION -> {
                 value = if (isPinButtonChecked) NavigationEvent.VAL_CHECKED

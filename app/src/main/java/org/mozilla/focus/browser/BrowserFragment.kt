@@ -136,7 +136,20 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         when (event) {
             NavigationEvent.BACK -> if (webView?.canGoBack() ?: false) webView?.goBack()
             NavigationEvent.FORWARD -> if (webView?.canGoForward() ?: false) webView?.goForward()
-            NavigationEvent.TURBO, NavigationEvent.RELOAD -> webView?.reload()
+            NavigationEvent.TURBO -> {
+                when (value) {
+                    NavigationEvent.VAL_CHECKED -> {
+                        showCenteredTopToast(context, R.string.turbo_mode_enabled_toast,
+                                0, TOAST_Y_OFFSET)
+                    }
+                    NavigationEvent.VAL_UNCHECKED -> {
+                        showCenteredTopToast(context, R.string.turbo_mode_disabled_toast,
+                            0, TOAST_Y_OFFSET)
+                    }
+                }
+                webView?.reload()
+            }
+            NavigationEvent.RELOAD -> webView?.reload()
             NavigationEvent.SETTINGS -> ScreenController.showSettingsScreen(fragmentManager!!)
             NavigationEvent.LOAD_URL ->
                 (activity as MainActivity).onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
