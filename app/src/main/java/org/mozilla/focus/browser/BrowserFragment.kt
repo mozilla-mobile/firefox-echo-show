@@ -111,7 +111,13 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             if (url == APP_URL_HOME) {
                 onSessionProgressUpdate?.invoke(0)
             } else if (value != null) {
-                onSessionProgressUpdate?.invoke(value)
+                if (value == 99) {
+                    // The max progress value is 99 (see comment in onProgress() in SessionCallbackProxy),
+                    // thus we send 100 to the UrlBoxProgressView to complete its animation.
+                    onSessionProgressUpdate?.invoke(100)
+                } else {
+                    onSessionProgressUpdate?.invoke(value)
+                }
             }
         })
     }

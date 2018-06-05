@@ -42,7 +42,6 @@ public class SessionCallbackProxy implements IWebView.Callback {
 
     @Override
     public void onProgress(int progress) {
-        // We do not want the progress to go backwards - so we always set it to at least the minimum.
         progress = Math.max(MINIMUM_PROGRESS, progress);
 
         // We do not want to show to show a progress that 100% because this will make the progress
