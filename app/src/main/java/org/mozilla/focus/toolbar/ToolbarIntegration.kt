@@ -75,26 +75,26 @@ object ToolbarIntegration {
         toolbar.urlBoxView = UrlBoxProgressView(context)
         toolbar.urlBoxMargin = toolbar.dp(16)
 
-        val homescreenButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_grid,
+        val homescreenButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_grid,
                 "Homescreen") { onToolbarEvent(HOME, null, null) }
         toolbar.addNavigationAction(homescreenButton)
 
-        val backButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_back,
+        val backButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_back,
                 context.getString(R.string.content_description_back),
                 visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) }
         toolbar.addNavigationAction(backButton)
 
-        val forwardButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_forward,
+        val forwardButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_forward,
                 context.getString(R.string.content_description_forward),
                 toolbarStateProvider::isForwardEnabled) { onToolbarEvent(FORWARD, null, null) }
         toolbar.addNavigationAction(forwardButton)
 
-        val refreshButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_refresh,
+        val refreshButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_refresh,
                 context.getString(R.string.content_description_reload),
                 visible = toolbarStateProvider::isRefreshEnabled) { onToolbarEvent(RELOAD, null, null) }
         toolbar.addPageAction(refreshButton)
 
-        val pinButton = Toolbar.ActionToggleButton(imageResource = R.drawable.pin_unfilled,
+        val pinButton = BrowserToolbar.ToggleButton(imageResource = R.drawable.pin_unfilled,
                 imageResourceSelected = R.drawable.pin_filled,
                 contentDescription = context.getString(R.string.pin_label),
                 contentDescriptionSelected = "Unpin",
@@ -103,7 +103,7 @@ object ToolbarIntegration {
         }
         toolbar.addBrowserAction(pinButton)
 
-        val turboButton = Toolbar.ActionToggleButton(imageResource = R.drawable.turbo_off,
+        val turboButton = BrowserToolbar.ToggleButton(imageResource = R.drawable.turbo_off,
                 imageResourceSelected = R.drawable.turbo_on,
                 contentDescription = context.getString(R.string.turbo_mode),
                 contentDescriptionSelected = context.getString(
@@ -113,7 +113,7 @@ object ToolbarIntegration {
         }
         toolbar.addBrowserAction(turboButton)
 
-        val settingsButton = Toolbar.ActionButton(R.drawable.ic_settings,
+        val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings)) {
             onToolbarEvent(SETTINGS, null, null)
         }
