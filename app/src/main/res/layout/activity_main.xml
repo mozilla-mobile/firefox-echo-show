@@ -25,6 +25,8 @@
         android:layout_height="104dp">
         <mozilla.components.browser.toolbar.BrowserToolbar
             android:id="@+id/toolbar"
+            android:background="@color/photonGrey70"
+            android:elevation="4dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|enterAlways|snap|exitUntilCollapsed" />
