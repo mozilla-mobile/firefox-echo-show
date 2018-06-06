@@ -5,6 +5,8 @@
 package org.mozilla.focus.toolbar
 
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.view.View
+import android.view.ViewGroup
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.support.ktx.android.view.dp
@@ -124,6 +126,12 @@ object ToolbarIntegration {
         }
         toolbar.addBrowserAction(turboButton)
 
+        toolbar.addBrowserAction(DynamicSpace(
+            toolbar.dp(160) - 2 * toolbar.browserActionMargin,
+            toolbar.dp(88) - 2 * toolbar.browserActionMargin,
+            navigationStateProvider::isPinEnabled
+        ))
+
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),
                 background = R.drawable.toolbar_button_background) {
@@ -142,5 +150,27 @@ object ToolbarIntegration {
         }
         Settings.getInstance(toolbar.context).preferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
         weakToolbarToSharedPrefListeners[toolbar] = sharedPrefsListener
+    }
+}
+
+/**
+ * An "empty" toolbar action that just displays nothing and resizes dynamically based on whether
+ * the pin icon is displayed or not.
+ */
+private class DynamicSpace(
+        private val largeWidth: Int,
+        private val smallWidth: Int,
+        private val showSmallWidth: () -> Boolean
+) : Toolbar.Action {
+    override fun createView(parent: ViewGroup): View = View(parent.context).apply {
+        minimumWidth = largeWidth
+    }
+
+    override fun bind(view: View) {
+        if (showSmallWidth.invoke()) {
+            view.minimumWidth = smallWidth
+        } else {
+            view.minimumWidth = largeWidth
+        }
     }
 }
