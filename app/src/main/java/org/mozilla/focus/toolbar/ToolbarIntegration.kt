@@ -129,7 +129,7 @@ object ToolbarIntegration {
         toolbar.addBrowserAction(DynamicSpace(
             toolbar.dp(160) - 2 * toolbar.browserActionMargin,
             toolbar.dp(88) - 2 * toolbar.browserActionMargin,
-            navigationStateProvider::isPinEnabled
+            toolbarStateProvider::isPinEnabled
         ))
 
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
