@@ -54,11 +54,11 @@ class HomeTileAdapter(
         when (item) {
             is BundledHomeTile -> {
                 onBindBundledHomeTile(holder, item)
-                setIconLayoutMarginParams(iconView, R.dimen.bundled_home_tile_margin_value)
+                setIconLayoutMarginParams(iconView, R.dimen.home_tile_margin_value)
             }
             is CustomHomeTile -> {
                 onBindCustomHomeTile(uiLifecycleCancelJob, holder, item)
-                setIconLayoutMarginParams(iconView, R.dimen.custom_home_tile_margin_value)
+                setIconLayoutMarginParams(iconView, R.dimen.home_tile_margin_value)
             }
         }.forceExhaustive
 
