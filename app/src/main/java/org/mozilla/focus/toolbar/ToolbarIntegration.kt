@@ -144,7 +144,8 @@ object ToolbarIntegration {
 
         val sharedPrefsListener = OnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == IWebView.TRACKING_PROTECTION_ENABLED_PREF) {
-                turboButton.setSelected(sharedPreferences.getBoolean(key, true /* unused */))
+                turboButton.setSelected(sharedPreferences.getBoolean(key, true /* unused */),
+                        notifyListener = true) // Allows BrowserFragment to respond.
             }
         }
         Settings.getInstance(toolbar.context).preferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
