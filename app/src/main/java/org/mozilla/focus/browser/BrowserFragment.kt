@@ -304,7 +304,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     inner class BrowserToolbarStateProvider : ToolbarStateProvider {
         override fun isBackEnabled() = webView?.canGoBack() ?: false
         override fun isForwardEnabled() = webView?.canGoForward() ?: false
-        override fun isPinEnabled() = !isUrlEqualToHomepage
+        override fun isHomepage() = isUrlEqualToHomepage
         override fun isRefreshEnabled() = !isUrlEqualToHomepage
         override fun getCurrentUrl() = url
         override fun isURLPinned() = url.toUri()?.let {
