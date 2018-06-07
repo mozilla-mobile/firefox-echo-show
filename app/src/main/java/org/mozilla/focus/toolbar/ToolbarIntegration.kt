@@ -104,8 +104,8 @@ object ToolbarIntegration {
                 visible = toolbarStateProvider::isRefreshEnabled) { onToolbarEvent(RELOAD, null, null) }
         toolbar.addPageAction(refreshButton)
 
-        val pinButton = BrowserToolbar.ToggleButton(imageResource = R.drawable.pin_unfilled,
-                imageResourceSelected = R.drawable.pin_filled,
+        val pinButton = BrowserToolbar.ToggleButton(imageResource = iconsR.drawable.mozac_ic_pin,
+                imageResourceSelected = iconsR.drawable.mozac_ic_pin_filled,
                 contentDescription = context.getString(R.string.pin_label),
                 contentDescriptionSelected = context.getString(R.string.homescreen_unpin_a11y),
                 background = R.drawable.toolbar_toggle_background,
@@ -114,8 +114,8 @@ object ToolbarIntegration {
         }
         toolbar.addBrowserAction(pinButton)
 
-        val turboButton = BrowserToolbar.ToggleButton(imageResource = R.drawable.turbo_off,
-                imageResourceSelected = R.drawable.turbo_on,
+        val turboButton = BrowserToolbar.ToggleButton(imageResource = iconsR.drawable.mozac_ic_rocket,
+                imageResourceSelected = iconsR.drawable.mozac_ic_rocket_filled,
                 contentDescription = context.getString(R.string.turbo_mode_enable_a11y),
                 contentDescriptionSelected = context.getString(
                         R.string.turbo_mode_disable_a11y),
