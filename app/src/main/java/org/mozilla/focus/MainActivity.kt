@@ -172,7 +172,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
 
         when (event) {
             NavigationEvent.SETTINGS -> {
-                ScreenController.showSettingsScreen(fragmentManager)
+//                Disabled as part of #129
+//                ScreenController.showSettingsScreen(fragmentManager)
                 return
             }
 
