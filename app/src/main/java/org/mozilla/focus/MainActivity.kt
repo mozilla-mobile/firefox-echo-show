@@ -33,7 +33,6 @@ import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.toolbar.ToolbarCallbacks
 import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
-import org.mozilla.focus.toolbar.UrlBoxProgressView
 import org.mozilla.focus.utils.OnUrlEnteredListener
 import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.Settings
@@ -194,11 +193,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
         override fun onFragmentAttached(fragmentManager: FragmentManager, fragment: Fragment, context: Context) {
             if (fragment is BrowserFragment) {
                 fragment.onUrlUpdate = toolbarCallbacks.onDisplayUrlUpdate
-
-                val progressBar = toolbar.urlBoxView as UrlBoxProgressView
-                fragment.onSessionProgressUpdate = { value ->
-                    progressBar.progress = value
-                }
+                fragment.onSessionProgressUpdate = toolbarCallbacks.onProgressUpdate
             }
         }
     }

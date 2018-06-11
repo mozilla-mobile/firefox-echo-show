@@ -40,7 +40,8 @@ enum class NavigationEvent {
 
 /** A collection of callbacks to modify the toolbar. */
 class ToolbarCallbacks(
-    val onDisplayUrlUpdate: (url: String?) -> Unit
+        val onDisplayUrlUpdate: (url: String?) -> Unit,
+        val onProgressUpdate: (progress: Int) -> Unit
 )
 
 /**
@@ -90,7 +91,8 @@ object ToolbarIntegration {
             onToolbarEvent(LOAD_URL, urlStr, autocompleteResult)
         }
 
-        toolbar.urlBoxView = UrlBoxProgressView(context)
+        val progressBar = UrlBoxProgressView(context)
+        toolbar.urlBoxView = progressBar
         toolbar.urlBoxMargin = dp16
 
         val homescreenButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_grid,
@@ -163,7 +165,8 @@ object ToolbarIntegration {
         weakToolbarToSharedPrefListeners[toolbar] = sharedPrefsListener
 
         return ToolbarCallbacks(
-                onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) }
+                onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) },
+                onProgressUpdate = { progress -> progressBar.progress = progress }
         )
     }
 }
