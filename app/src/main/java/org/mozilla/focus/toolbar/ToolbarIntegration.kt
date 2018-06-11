@@ -163,13 +163,14 @@ object ToolbarIntegration {
         weakToolbarToSharedPrefListeners[toolbar] = sharedPrefsListener
 
         return ToolbarCallbacks(
-                onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url) }
+                onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) }
         )
     }
 }
 
 private fun onDisplayUrlUpdate(
-        toolbar: BrowserToolbar, toolbarStateProvider: ToolbarStateProvider, url: String?
+        toolbar: BrowserToolbar, toolbarStateProvider: ToolbarStateProvider, url: String?,
+        pinButton: Toolbar.ActionToggleButton
 ) {
     toolbar.url = when (url) {
         APP_URL_HOME -> "" // Uses hint instead
@@ -177,6 +178,8 @@ private fun onDisplayUrlUpdate(
         else -> url
     }
 
+    pinButton.setSelected(toolbarStateProvider.isURLPinned(),
+            notifyListener = false) // We don't want to actually pin/unpin.
     toolbar.invalidateActions()
 }
 
