@@ -20,8 +20,7 @@
     <color name="ink80">#333540</color>
     <color name="default_background_gray">#e3e3e5</color>
 
-    <color name="onboarding_background">#f60c0c0d</color>
-    <color name="onboarding_button_highlight">#500060df</color>
+    <color name="onboarding_background">#e60c0c0d</color>
 
     <color name="browser_overlay_background">#FF38383D</color>
     <color name="home_tile_text_color">#CCF9F9FA</color>
