@@ -7,6 +7,7 @@ package org.mozilla.focus.browser
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.view.ContextMenu
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -352,8 +353,14 @@ private class BrowserIWebViewCallback(
             // Hide browser UI and web content
             browserContainer.visibility = View.INVISIBLE
 
+            val height = if (activity != null) {
+                val displayMetrics = DisplayMetrics()
+                activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
+                displayMetrics.heightPixels
+            } else ViewGroup.LayoutParams.MATCH_PARENT
+
             val params = FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                    ViewGroup.LayoutParams.MATCH_PARENT, height)
             videoContainer.addView(view, params)
             videoContainer.visibility = View.VISIBLE
         }
