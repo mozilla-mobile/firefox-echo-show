@@ -11,8 +11,14 @@ import io.sentry.event.User
 import org.mozilla.focus.BuildConfig
 
 /**
+ * Exception for non-crashing error states that we want Sentry to collect (even if we don't want to
+ * crash on them).
+ */
+class NonFatalAssertionException(message: String) : Exception(message)
+
+/**
  * An interface to the Sentry crash reporting SDK. All code that touches the Sentry APIs
- * directly should go in here (like TelemetryWrapper).
+ * directly should go in here (like TelemetryWrapper). We also collect non-fatal error states.
  *
  * With the current implementation, to enable Sentry on Beta/Release builds, add a
  * <project-dir>/.sentry_dsn_release file with your key. To enable Sentry on Debug
@@ -50,6 +56,8 @@ object SentryWrapper {
         // they're personally identifiable information.
         Sentry.getContext().user = SentryUnknownUser()
     }
+
+    fun capture(throwable: Throwable) = Sentry.capture(throwable)
 }
 
 /**
