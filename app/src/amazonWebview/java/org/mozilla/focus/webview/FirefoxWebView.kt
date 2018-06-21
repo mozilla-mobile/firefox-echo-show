@@ -97,6 +97,18 @@ internal class FirefoxWebView(
         this.callback?.onBlockingStateChanged(enabled)
     }
 
+    override fun goBack() {
+        super.goBack()
+        chromeClient.onHideCustomView()
+        // #152: exitFullscreen is not called on goBack.
+    }
+
+    override fun goForward() {
+        // #152: exitFullscreen is not called on goForward.
+        super.goForward()
+        chromeClient.onHideCustomView()
+    }
+
     @Suppress("DEPRECATION") // shouldOverrideUrlLoading deprecated in 24 but we support 22.
     override fun loadUrl(url: String) {
         // We need to check external URL handling here - shouldOverrideUrlLoading() is only

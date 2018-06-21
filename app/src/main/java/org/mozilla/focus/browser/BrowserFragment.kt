@@ -68,7 +68,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     // for the properties that reference session because it is lateinit.
     override lateinit var session: Session
     override val initialUrl get() = session.url.value
-    override val iWebViewCallback get() = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
+    override val iWebViewCallback by lazy { SessionCallbackProxy(session, BrowserIWebViewCallback(this)) }
 
     val toolbarStateProvider = BrowserToolbarStateProvider()
     var onUrlUpdate: ((url: String?) -> Unit)? = null
