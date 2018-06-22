@@ -6,7 +6,7 @@
     android:background="@color/onboarding_background">
 
     <ImageView
-        android:id="@+id/turboButton"
+        android:id="@+id/turboIcon"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_marginTop="96dp"
@@ -21,26 +21,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:fontFamily="sans-serif"
         android:text="@string/onboarding_turbo_mode_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="@color/photonGrey10"
-        android:textSize="48sp"
+        android:textAppearance="@style/OnboardingTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/turboButton" />
+        app:layout_constraintTop_toBottomOf="@+id/turboIcon" />
 
     <TextView
         android:id="@+id/onboardingBody"
         android:layout_width="760dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:lineSpacingExtra="8sp"
         android:text="@string/onboarding_turbo_mode_body"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        android:textColor="@color/photonGrey10_a80p"
-        android:textSize="24sp"
+        android:textAppearance="@style/OnboardingBody"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,17 +41,12 @@
 
     <Button
         android:id="@+id/enableTurboMode"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/OnboardingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="29dp"
         android:layout_marginTop="48dp"
-        android:background="@drawable/rounded_button"
-        android:minWidth="320dp"
-        android:padding="16dp"
         android:text="@string/onboarding_turbo_mode_button_on"
-        android:textAllCaps="false"
-        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/disableTurboMode"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,16 +54,11 @@
 
     <Button
         android:id="@+id/disableTurboMode"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/OnboardingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:background="@drawable/rounded_button"
-        android:minWidth="320dp"
-        android:padding="16dp"
         android:text="@string/onboarding_turbo_mode_button_off"
-        android:textAllCaps="false"
-        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/enableTurboMode"
         app:layout_constraintTop_toBottomOf="@+id/onboardingBody" />
