@@ -68,7 +68,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     // for the properties that reference session because it is lateinit.
     override lateinit var session: Session
     override val initialUrl get() = session.url.value
-    override val iWebViewCallback by lazy { SessionCallbackProxy(session, BrowserIWebViewCallback(this)) }
+    override lateinit var iWebViewCallback: IWebView.Callback
 
     val toolbarStateProvider = BrowserToolbarStateProvider()
     var onUrlUpdate: ((url: String?) -> Unit)? = null
@@ -95,18 +95,19 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initSession()
+        session = initSession()
+        webView?.setBlockingEnabled(session.isBlockingEnabled)
+        iWebViewCallback = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
     }
 
-    private fun initSession() {
+    private fun initSession(): Session {
         val sessionUUID = arguments?.getString(ARGUMENT_SESSION_UUID)
                 ?: throw IllegalAccessError("No session exists")
-        session = if (sessionManager.hasSessionWithUUID(sessionUUID))
+        val session = if (sessionManager.hasSessionWithUUID(sessionUUID))
             sessionManager.getSessionByUUID(sessionUUID)
         else
             NullSession()
 
-        webView?.setBlockingEnabled(session.isBlockingEnabled)
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
         session.progress.observe(this, Observer { value ->
             // We need to set this separately because the webView does some loading
@@ -124,6 +125,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                 }
             }
         })
+        return session
     }
 
     val onNavigationEvent = { event: NavigationEvent, value: String?,

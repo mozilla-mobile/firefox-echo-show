@@ -99,13 +99,13 @@ internal class FirefoxWebView(
 
     override fun goBack() {
         super.goBack()
+        // onHideCustomView calls through to fullscreen callbacks.
         chromeClient.onHideCustomView()
-        // #152: exitFullscreen is not called on goBack.
     }
 
     override fun goForward() {
-        // #152: exitFullscreen is not called on goForward.
         super.goForward()
+        // onHideCustomView calls through to fullscreen callbacks.
         chromeClient.onHideCustomView()
     }
 
