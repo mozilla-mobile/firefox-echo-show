@@ -19,14 +19,13 @@ import kotlinx.android.synthetic.main.browser_overlay.view.*
 import kotlinx.android.synthetic.main.browser_overlay_top_nav.view.*
 import kotlinx.coroutines.experimental.Job
 import org.mozilla.focus.R
-import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.utils.Settings
-import org.mozilla.focus.widget.InlineAutocompleteEditText
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import kotlin.properties.Delegates
 
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
@@ -69,8 +68,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
             Settings.getInstance(context).isBlockingEnabled = value
         }
 
-    private var hasUserChangedURLSinceEditTextFocused = false
-
     init {
         LayoutInflater.from(context)
                 .inflate(R.layout.browser_overlay, this, true)
@@ -78,7 +75,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         uiLifecycleCancelJob = Job()
 
         initTiles()
-        setupUrlInput()
     }
 
     private fun initTiles() = with (tileContainer) {
@@ -116,27 +112,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         updateLayoutParams {
             val marginLayoutParams = it as MarginLayoutParams
             marginLayoutParams.bottomMargin = -tileBottomMargin
-        }
-    }
-
-    private fun setupUrlInput() = with (navUrlInput) {
-        setOnCommitListener {
-            val userInput = text.toString()
-            if (userInput.isNotEmpty()) {
-                val cachedAutocompleteResult = lastAutocompleteResult // setText clears the reference so we cache it here.
-                setText(cachedAutocompleteResult.text)
-                onNavigationEvent?.invoke(NavigationEvent.LOAD_URL, userInput, cachedAutocompleteResult)
-            }
-        }
-        val autocompleteFilter = UrlAutoCompleteFilter()
-        autocompleteFilter.load(context.applicationContext)
-        setOnFilterListener { searchText, view -> autocompleteFilter.onFilter(searchText, view) }
-
-        setOnUserInputListener { hasUserChangedURLSinceEditTextFocused = true }
-        setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                hasUserChangedURLSinceEditTextFocused = false
-            }
         }
     }
 

@@ -5,7 +5,7 @@
 package org.mozilla.focus.utils
 
 import org.mozilla.focus.telemetry.UrlTextInputLocation
-import org.mozilla.focus.widget.InlineAutocompleteEditText.AutocompleteResult
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText.AutocompleteResult
 
 // I'd define this in MainActivity but it's not kotlin so it can't have a default implementation.
 interface OnUrlEnteredListener {

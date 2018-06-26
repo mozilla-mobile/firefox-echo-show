@@ -7,16 +7,17 @@ package org.mozilla.focus.toolbar
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.view.View
 import android.view.ViewGroup
+import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.icons.R as iconsR
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.utils.Settings
-import org.mozilla.focus.widget.InlineAutocompleteEditText
 import java.util.WeakHashMap
 
 enum class NavigationEvent {
@@ -85,9 +86,21 @@ object ToolbarIntegration {
         toolbar.browserActionMargin = dp16
         toolbar.hint = toolbar.context.getString(R.string.urlbar_hint)
 
+        val autoCompleteProvider = DomainAutoCompleteProvider()
+        autoCompleteProvider.initialize(context)
+
+        toolbar.setAutocompleteFilter { value, view ->
+            view?.let {
+                val result = autoCompleteProvider.autocomplete(value)
+                view.onAutocomplete(
+                        InlineAutocompleteEditText.AutocompleteResult(result.text
+                , result.source, result.size, { result.url }))
+            }
+        }
+
         toolbar.setOnUrlChangeListener { urlStr ->
-            // TODO: #86 - toolbar doesn't support autocomplete yet so we pass in a dummy result.
-            val autocompleteResult = InlineAutocompleteEditText.AutocompleteResult("", "", 0)
+            val result = autoCompleteProvider.autocomplete(urlStr)
+            val autocompleteResult = InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.size)
             onToolbarEvent(LOAD_URL, urlStr, autocompleteResult)
         }
 

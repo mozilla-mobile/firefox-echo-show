@@ -21,7 +21,7 @@
         android:paddingBottom="0dp"
         >
 
-        <org.mozilla.focus.widget.InlineAutocompleteEditText
+        <mozilla.components.ui.autocomplete.InlineAutocompleteEditText
             android:id="@+id/navUrlInput"
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="10dp"

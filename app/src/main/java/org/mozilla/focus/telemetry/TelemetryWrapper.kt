@@ -18,7 +18,7 @@ import org.mozilla.focus.home.HomeTile
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.utils.Assert
-import org.mozilla.focus.widget.InlineAutocompleteEditText.AutocompleteResult
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText.AutocompleteResult
 import org.mozilla.telemetry.Telemetry
 import org.mozilla.telemetry.TelemetryHolder
 import org.mozilla.telemetry.config.TelemetryConfiguration

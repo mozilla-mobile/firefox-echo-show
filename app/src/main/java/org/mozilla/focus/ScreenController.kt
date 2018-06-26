@@ -16,7 +16,7 @@ import org.mozilla.focus.session.Source
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.utils.UrlUtils
-import org.mozilla.focus.widget.InlineAutocompleteEditText
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 
 object ScreenController {
     /**

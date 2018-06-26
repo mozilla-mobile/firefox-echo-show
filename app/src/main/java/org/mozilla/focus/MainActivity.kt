@@ -38,7 +38,7 @@ import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
-import org.mozilla.focus.widget.InlineAutocompleteEditText
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 
 class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
 

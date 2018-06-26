@@ -43,7 +43,7 @@ import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.utils.ViewUtils.showCenteredTopToast
-import org.mozilla.focus.widget.InlineAutocompleteEditText
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 
 private const val ARGUMENT_SESSION_UUID = "sessionUUID"
 
