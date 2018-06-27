@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/onboarding_turbo_mode_title"
-        android:textAppearance="@style/OnboardingTitle"
+        android:textAppearance="@style/OnboardingTitleTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/turboIcon" />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/onboarding_turbo_mode_body"
-        android:textAppearance="@style/OnboardingBody"
+        android:textAppearance="@style/OnboardingBodyTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

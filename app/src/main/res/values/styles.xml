@@ -70,13 +70,13 @@
         <item name="overlapAnchor">true</item>
     </style>
 
-    <style name="OnboardingTitle" parent="TextAppearance.AppCompat.Headline">
-        <item name="fontFamily">sans-serif</item>
+    <style name="OnboardingTitleTextAppearance" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@string/font_roboto_regular</item>
         <item name="android:textColor">@color/photonGrey10</item>
         <item name="android:textSize">48sp</item>
     </style>
 
-    <style name="OnboardingBody" parent="TextAppearance.AppCompat.Caption">
+    <style name="OnboardingBodyTextAppearance" parent="TextAppearance.AppCompat.Caption">
         <item name="android:lineSpacingExtra">8sp</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/photonGrey10_a80p</item>

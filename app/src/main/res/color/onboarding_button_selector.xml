@@ -4,8 +4,12 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:state_selected="false" android:color="@color/photonGrey80"/>
-    <item android:state_pressed="true" android:state_selected="true" android:color="@color/photonBlue80"/>
+    <item android:state_pressed="true"
+          android:state_selected="false"
+          android:color="@color/photonGrey80"/>
+    <item android:state_pressed="true"
+          android:state_selected="true"
+          android:color="@color/photonBlue80"/>
     <item android:state_selected="true" android:color="@color/photonBlue70"/>
     <item android:color="@color/photonGrey70"/>
 </selector>
