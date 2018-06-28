@@ -4,6 +4,7 @@
 
 package org.mozilla.focus.toolbar
 
+import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,9 @@ class ToolbarCallbacks(
         val onProgressUpdate: (progress: Int) -> Unit
 )
 
+typealias OnToolbarEvent = (event: NavigationEvent, value: String?,
+                            autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit
+
 /**
  * Helper class for constructing and using the shared toolbar for navigation and homescreen.
  */
@@ -70,8 +74,7 @@ object ToolbarIntegration {
     @SuppressWarnings("LongMethod")
     fun setup(toolbar: BrowserToolbar,
               toolbarStateProvider: ToolbarStateProvider,
-              onToolbarEvent: (event: NavigationEvent, value: String?,
-                               autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit): ToolbarCallbacks {
+              onToolbarEvent: OnToolbarEvent): ToolbarCallbacks {
         val context = toolbar.context
 
         toolbar.displaySiteSecurityIcon = false
@@ -86,23 +89,7 @@ object ToolbarIntegration {
         toolbar.browserActionMargin = dp16
         toolbar.hint = toolbar.context.getString(R.string.urlbar_hint)
 
-        val autoCompleteProvider = DomainAutoCompleteProvider()
-        autoCompleteProvider.initialize(context)
-
-        toolbar.setAutocompleteFilter { value, view ->
-            view?.let {
-                val result = autoCompleteProvider.autocomplete(value)
-                view.onAutocomplete(
-                        InlineAutocompleteEditText.AutocompleteResult(result.text
-                , result.source, result.size, { result.url }))
-            }
-        }
-
-        toolbar.setOnUrlChangeListener { urlStr ->
-            val result = autoCompleteProvider.autocomplete(urlStr)
-            val autocompleteResult = InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.size)
-            onToolbarEvent(LOAD_URL, urlStr, autocompleteResult)
-        }
+        initTextChangeListeners(context, toolbar, onToolbarEvent)
 
         val progressBar = UrlBoxProgressView(context)
         toolbar.urlBoxView = progressBar
@@ -181,6 +168,27 @@ object ToolbarIntegration {
                 onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) },
                 onProgressUpdate = { progress -> progressBar.progress = progress }
         )
+    }
+
+    private fun initTextChangeListeners(context: Context, toolbar: BrowserToolbar,
+                                        onToolbarEvent: OnToolbarEvent) {
+        val domainAutoCompleteProvider = DomainAutoCompleteProvider().apply {
+            initialize(context)
+        }
+        toolbar.setAutocompleteFilter { value, view ->
+            view?.let {
+                val suggestion = domainAutoCompleteProvider.autocomplete(value)
+                view.onAutocomplete(
+                        InlineAutocompleteEditText.AutocompleteResult(suggestion.text,
+                                suggestion.source, suggestion.size, { suggestion.url }))
+            }
+        }
+
+        toolbar.setOnUrlChangeListener { urlStr ->
+            val result = domainAutoCompleteProvider.autocomplete(urlStr)
+            val autocompleteResult = InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.size)
+            onToolbarEvent(LOAD_URL, urlStr, autocompleteResult)
+        }
     }
 }
 
