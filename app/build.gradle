@@ -165,9 +165,9 @@ dependencies {
         transitive = false
     }
 
-    implementation 'org.mozilla.telemetry:telemetry:1.2.0'
     implementation "org.mozilla.photon:colors:$moz_components_version"
     implementation "org.mozilla.photon:fonts:$moz_components_version"
+    implementation "org.mozilla.components:telemetry:$moz_components_version"
     implementation "org.mozilla.components:toolbar:$moz_components_version"
     implementation "org.mozilla.components:domains:$moz_components_version"
     implementation "org.mozilla.components:autocomplete:$moz_components_version"
