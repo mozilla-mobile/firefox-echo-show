@@ -182,8 +182,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
     private fun onToolbarEvent(event: NavigationEvent, value: String?, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
         when (event) {
             NavigationEvent.SETTINGS -> {
-//                Disabled as part of #129
-//                ScreenController.showSettingsScreen(fragmentManager)
+                startActivity(Intent(this, SettingsActivity::class.java))
+                // TODO: Remove settings fragment completely
+                // ScreenController.showSettingsScreen(fragmentManager)
                 return
             }
 
