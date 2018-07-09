@@ -178,13 +178,13 @@ object ToolbarIntegration {
         toolbar.setAutocompleteFilter { value, view ->
             view?.let {
                 val suggestion = domainAutoCompleteProvider.autocomplete(value)
-                view.onAutocomplete(
+                view.applyAutocompleteResult(
                         InlineAutocompleteEditText.AutocompleteResult(suggestion.text,
                                 suggestion.source, suggestion.size, { suggestion.url }))
             }
         }
 
-        toolbar.setOnUrlChangeListener { urlStr ->
+        toolbar.setOnUrlCommitListener { urlStr ->
             val result = domainAutoCompleteProvider.autocomplete(urlStr)
             val autocompleteResult = InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.size)
             onToolbarEvent(LOAD_URL, urlStr, autocompleteResult)
