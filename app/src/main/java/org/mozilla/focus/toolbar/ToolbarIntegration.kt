@@ -155,6 +155,10 @@ object ToolbarIntegration {
                 "")
         toolbar.addBrowserAction(brandIcon)
 
+        toolbar.setOnEditFocusChangeListener { hasFocus ->
+            if (!hasFocus) toolbar.displayMode()
+        }
+
         val sharedPrefsListener = OnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == IWebView.TRACKING_PROTECTION_ENABLED_PREF) {
                 turboButton.setSelected(sharedPreferences.getBoolean(key, true /* unused */),
