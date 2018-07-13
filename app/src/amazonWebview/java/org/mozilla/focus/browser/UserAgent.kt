@@ -41,16 +41,21 @@ object UserAgent {
             }
         }
 
-        val tokens = existingUAString.substring(start).split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        // We want this to be a Mobile user agent
+        val baseUAString = if (existingUAString.indexOf("Mobile Safari") != -1)
+            existingUAString
+        else
+            existingUAString.replace("Safari", "Mobile Safari")
+
+        val tokens = baseUAString.substring(start).split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for (i in tokens.indices) {
             if (tokens[i].startsWith("Chrome")) {
                 tokens[i] = focusToken + " " + tokens[i]
-
                 return TextUtils.join(" ", tokens)
             }
         }
 
-        // If we didn't find a chrome token, we just append the focus token at the end:
+        // If we didn't find the chrome and safari tokens, we just append the focus token at the end:
         return TextUtils.join(" ", tokens) + " " + focusToken
     }
 
@@ -69,7 +74,7 @@ object UserAgent {
         // To get a Desktop UA, we do what Focus does and
         // 1) Don't use Firefox in the UA to avoid getting Gecko pages
         // 2) Remove Android so we don't get mobile pages
-        uaBuilder.append(" (Linux; ").append(Build.VERSION.RELEASE).append(") ")
+        uaBuilder.append(" (Linux; Android ").append(Build.VERSION.RELEASE).append(") ")
 
         val existingWebViewUA = settings.userAgentString
 

@@ -11,13 +11,13 @@ import android.util.AttributeSet
 import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView.setWebContentsDebuggingEnabled
-import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.UserAgent
 import org.mozilla.focus.webview.FirefoxWebChromeClient
 import org.mozilla.focus.webview.FirefoxWebView
 import org.mozilla.focus.webview.FocusWebViewClient
 import org.mozilla.focus.webview.TrackingProtectionWebViewClient
+import org.mozilla.telemetry.BuildConfig
 
 /** Creates a WebView-based IWebView implementation. */
 object WebViewProvider {
