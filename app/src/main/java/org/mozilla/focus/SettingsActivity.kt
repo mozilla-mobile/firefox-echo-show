@@ -4,11 +4,18 @@
 
 package org.mozilla.focus
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceScreen
+import android.util.AttributeSet
+import android.view.MenuItem
+import android.view.View
+import org.mozilla.focus.iwebview.IWebView
+import org.mozilla.focus.iwebview.WebViewProvider
 
 /**
  * Settings activity with nested settings screens.
@@ -25,16 +32,51 @@ class SettingsActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = getString(R.string.menu_settings)
         }
+
+        supportFragmentManager.beginTransaction().add(R.id.settings_container, SettingsFragment(), null).commit()
     }
 
-    class SettingsFragment : PreferenceFragmentCompat(), PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        return if (name == IWebView::class.java.name) {
+            // Inject our implementation of IWebView from the WebViewProvider.
+            val webview = WebViewProvider.create(this, attrs)
+            (webview as IWebView).setBlockingEnabled(false)
+            return webview
+        } else super.onCreateView(name, context, attrs)
+    }
+
+    class SettingsFragment : PreferenceFragmentCompat(),
+            PreferenceFragmentCompat.OnPreferenceStartScreenCallback,
+            PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings)
         }
 
-        override fun onPreferenceStartScreen(preferenceFragmentCompat: PreferenceFragmentCompat, preferenceScreen: PreferenceScreen): Boolean {
+        override fun onPreferenceStartScreen(preferenceFragmentCompat: PreferenceFragmentCompat,
+                                             preferenceScreen: PreferenceScreen): Boolean {
             (activity as AppCompatActivity).supportActionBar?.title = preferenceScreen.title
             preferenceFragmentCompat.preferenceScreen = preferenceScreen
+            return true
+        }
+
+        override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
+            val fragment = Fragment.instantiate(context, pref?.fragment, pref?.extras)
+            fragmentManager!!.beginTransaction()
+                .replace(R.id.settings_container, fragment, null)
+                .addToBackStack(null)
+                .commit()
             return true
         }
 

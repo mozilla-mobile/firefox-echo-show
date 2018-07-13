@@ -23,6 +23,7 @@
     android:minHeight="88dp"
     android:gravity="center_vertical"
     android:baselineAligned="false"
+    android:layout_marginStart="128dp"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
 
     <RelativeLayout

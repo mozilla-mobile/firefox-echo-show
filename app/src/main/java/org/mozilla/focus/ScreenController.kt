@@ -48,14 +48,6 @@ object ScreenController {
         }
     }
 
-    fun showSettingsScreen(fragmentManager: FragmentManager) {
-        val settingsFragment = SettingsFragment.create()
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, settingsFragment, SettingsFragment.FRAGMENT_TAG)
-                .addToBackStack(null)
-                .commit()
-    }
-
     fun showBrowserScreenForCurrentSession(fragmentManager: FragmentManager, sessionManager: SessionManager) {
         val currentSession = sessionManager.currentSession
 

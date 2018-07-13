@@ -26,7 +26,7 @@ import org.mozilla.focus.iwebview.WebViewProvider;
  * for showing any web based content, including About/Help/Rights, and also SUMO pages.
  */
 public class InfoActivity extends AppCompatActivity {
-    private static final String PRIVACY_NOTICE_URL = "https://www.mozilla.org/privacy/firefox-fire-tv/";
+    public static final String PRIVACY_NOTICE_URL = "https://www.mozilla.org/privacy/firefox-fire-tv/";
 
     private static final String EXTRA_URL = "extra_url";
     private static final String EXTRA_TITLE = "extra_title";

@@ -22,7 +22,6 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
-import org.mozilla.focus.ScreenController
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
 import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.toUri
@@ -154,7 +153,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                 webView?.reload()
             }
             NavigationEvent.RELOAD -> webView?.reload()
-            NavigationEvent.SETTINGS -> ScreenController.showSettingsScreen(fragmentManager!!)
+            NavigationEvent.SETTINGS -> Unit // No Settings in BrowserFragment
             NavigationEvent.LOAD_URL ->
                 (activity as MainActivity).onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
             NavigationEvent.LOAD_TILE -> (activity as MainActivity).onNonTextInputUrlEntered(value!!)
