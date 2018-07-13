@@ -25,7 +25,7 @@ object UserAgent {
         // Use the default WebView agent string here for everything after the platform, but insert
         // Focus in front of Chrome.
         // E.g. a default webview UA string might be:
-        // Mozilla/5.0 (Linux; Android 7.1.1; Pixel XL Build/NOF26V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/56.0.2924.87 Mobile Safari/537.36
+        // Mozilla/5.0 (Linux; Android 7.1.1; Pixel XL Build/NOF26V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/56.0.2924.87 Safari/537.36
         // And we reuse everything from AppleWebKit onwards, except for adding Focus.
         var start = existingUAString.indexOf("AppleWebKit")
         if (start == -1) {
@@ -41,8 +41,14 @@ object UserAgent {
             }
         }
 
-        val tokens = existingUAString.substring(start).split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        // We want this to be a Mobile user agent
+        val baseUAString = if (existingUAString.indexOf("Mobile Safari") != -1) {
+            existingUAString
+        } else {
+            existingUAString.replace("Safari", "Mobile Safari")
+        }
 
+        val tokens = baseUAString.substring(start).split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for (i in tokens.indices) {
             if (tokens[i].startsWith("Chrome")) {
                 tokens[i] = focusToken + " " + tokens[i]
