@@ -279,16 +279,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     }
 
     private fun handleSpecialKeyEvent(event: KeyEvent): Boolean {
-        val actionIsDown = event.action == KeyEvent.ACTION_DOWN
-
-        if (event.keyCode == KeyEvent.KEYCODE_MENU) {
-            if (actionIsDown) {
-                val toShow = !homeScreen.isVisible
-                setOverlayVisibleByUser(toShow)
-            }
-            return true
-        }
-
         if (!homeScreen.isVisible && webView!!.isYoutubeTV &&
                 event.keyCode == KeyEvent.KEYCODE_BACK) {
             val escKeyEvent = KeyEvent(event.action, KeyEvent.KEYCODE_ESCAPE)
