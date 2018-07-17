@@ -189,7 +189,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                     }
                 }
             }
-            NavigationEvent.HOME -> loadUrl(APP_URL_HOME)
+            NavigationEvent.HOME -> if (!homeScreen.isVisible) setOverlayVisibleByUser(true)
         }
         Unit
     }
