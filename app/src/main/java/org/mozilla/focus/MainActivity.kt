@@ -86,10 +86,17 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, OnHom
             startActivity(onboardingIntent)
         }
 
+        initViews()
         WebViewProvider.preload(this)
         toolbarCallbacks = ToolbarIntegration.setup(toolbar, DelegateToBrowserToolbarStateProvider(), ::onToolbarEvent)
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
-        appBarOverlay.setOnClickListener { browserFragment?.setOverlayVisibleByUser(false) }
+    }
+
+    private fun initViews() {
+        appBarOverlay.setOnClickListener {
+            appBarOverlay.visibility = View.GONE
+            browserFragment?.setOverlayVisibleByUser(false, toAnimate = true)
+        }
     }
 
     override fun onDestroy() {

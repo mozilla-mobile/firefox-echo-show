@@ -189,7 +189,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                     }
                 }
             }
-            NavigationEvent.HOME -> if (!homeScreen.isVisible) setOverlayVisibleByUser(true)
+            NavigationEvent.HOME -> if (!homeScreen.isVisible) { setOverlayVisibleByUser(true, toAnimate = true) }
         }
         Unit
     }
@@ -297,8 +297,8 @@ class BrowserFragment : IWebViewLifecycleFragment() {
      * It's important this is only called for user actions because our Telemetry
      * is dependent on it.
      */
-    fun setOverlayVisibleByUser(toShow: Boolean) {
-        homeScreen.visibility = if (toShow) View.VISIBLE else View.GONE
+    fun setOverlayVisibleByUser(toShow: Boolean, toAnimate: Boolean = false) {
+        homeScreen.setVisibility(if (toShow) View.VISIBLE else View.GONE, toAnimate)
         TelemetryWrapper.drawerShowHideEvent(toShow)
     }
 

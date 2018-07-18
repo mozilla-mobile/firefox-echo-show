@@ -4,8 +4,11 @@
 
 package org.mozilla.focus.browser
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.preference.PreferenceManager
+import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
@@ -85,6 +88,31 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         onPreSetVisibilityListener?.invoke(visibility == View.VISIBLE)
         super.setVisibility(visibility)
         scrollTo(0, 0)
+    }
+
+    fun setVisibility(visibility: Int, toAnimate: Boolean) {
+        if (!toAnimate) {
+            setVisibility(visibility)
+        } else {
+            val toShow = visibility == View.VISIBLE
+            if (toShow) { setVisibility(View.VISIBLE) }
+
+            val screenHeight = resources.displayMetrics.heightPixels.toFloat()
+            translationY = if (toShow) screenHeight else 0f
+            animate()
+                    .setInterpolator(FastOutSlowInInterpolator())
+                    .setDuration(400)
+                    .translationY(if (toShow) 0f else screenHeight)
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?) {
+                            if (!toShow) {
+                                setVisibility(View.GONE)
+                                translationY = 0f // Reset the position for next show.
+                            }
+                        }
+                    })
+                    .start()
+        }
     }
 
     fun refreshTilesForInsertion() {
