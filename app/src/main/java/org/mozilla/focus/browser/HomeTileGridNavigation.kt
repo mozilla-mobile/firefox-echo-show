@@ -58,7 +58,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
 
     var onNavigationEvent: ((event: NavigationEvent, value: String?,
                              autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit)? = null
-    var navigationStateProvider: ToolbarStateProvider? = null
     /** Called inside [setVisibility] right before super.setVisibility is called. */
     var onPreSetVisibilityListener: ((isVisible: Boolean) -> Unit)? = null
 

@@ -199,7 +199,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         with (layout.homeScreen) {
             onNavigationEvent = this@BrowserFragment.onNavigationEvent
-            navigationStateProvider = BrowserToolbarStateProvider()
             visibility = overlayVisibleCached ?: View.GONE
             onPreSetVisibilityListener = { webView!!.onOverlayPreSetVisibility(it) }
 
