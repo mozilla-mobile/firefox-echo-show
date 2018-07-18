@@ -97,7 +97,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
             }
         })
         layoutManager = GridLayoutManager(context, COL_COUNT)
-        setHasFixedSize(true)
 
         // We add bottomMargin to each tile in order to add spacing between them: this makes the
         // RecyclerView slightly larger than necessary and makes the default start screen scrollable
