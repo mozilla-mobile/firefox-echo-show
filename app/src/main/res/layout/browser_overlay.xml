@@ -11,26 +11,16 @@
     android:focusable="false"
     android:scrollbars="none">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tileContainer"
+        android:clipChildren="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/browser_overlay_background"
-        android:orientation="vertical"
-        android:descendantFocusability="afterDescendants"
+        android:paddingStart="44dp"
+        android:paddingEnd="44dp"
         android:paddingTop="27dp"
-        android:paddingBottom="0dp"
-        >
+        android:paddingBottom="27dp"
+        android:background="@color/browser_overlay_background"
+        />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/tileContainer"
-            android:clipChildren="false"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="44dp"
-            android:paddingBottom="27dp"
-            android:background="@android:color/transparent"
-            />
-
-    </LinearLayout>
 </org.mozilla.focus.browser.BrowserNavigationOverlayScrollView>
