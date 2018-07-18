@@ -82,10 +82,8 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         canShowUpinToast = true
 
         adapter = HomeTileAdapter(uiLifecycleCancelJob, homeTiles, loadUrl = { urlStr ->
-            with (navUrlInput) {
-                if (urlStr.isNotEmpty()) {
-                    onNavigationEvent?.invoke(NavigationEvent.LOAD_TILE, urlStr, null)
-                }
+            if (urlStr.isNotEmpty()) {
+                onNavigationEvent?.invoke(NavigationEvent.LOAD_TILE, urlStr, null)
             }
         }, onTileLongClick = openHomeTileContextMenu, onTileFocused = {
             val prefInt = PreferenceManager.getDefaultSharedPreferences(context).getInt(SHOW_UNPIN_TOAST_COUNTER_PREF, 0)
@@ -146,7 +144,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
 
         if (visibility == View.VISIBLE) {
             overlayScrollView.scrollTo(0, 0)
-            navUrlInput.requestFocus()
         }
     }
 

@@ -21,29 +21,6 @@
         android:paddingBottom="0dp"
         >
 
-        <mozilla.components.ui.autocomplete.InlineAutocompleteEditText
-            android:id="@+id/navUrlInput"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="10dp"
-            android:layout_width="498dp"
-            android:layout_height="@dimen/urlbar_height"
-            android:layout_marginStart="57dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/nav_urlbar_background"
-            android:hint="@string/urlbar_hint"
-            android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:inputType="textUri"
-            android:lines="1"
-            android:visibility="gone"
-            android:importantForAutofill="no"
-            android:cursorVisible="false"
-            android:textIsSelectable="false"
-            android:textColor="@color/tv_white"
-            android:nextFocusRight="@id/navUrlInput"
-            />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tileContainer"
             android:clipChildren="false"
