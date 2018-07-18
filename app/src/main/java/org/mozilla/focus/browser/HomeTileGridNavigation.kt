@@ -9,15 +9,11 @@ import android.preference.PreferenceManager
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
-import kotlinx.android.synthetic.main.browser_overlay.view.*
 import kotlinx.coroutines.experimental.Job
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
-import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.toolbar.NavigationEvent
 import kotlin.properties.Delegates
@@ -29,7 +25,7 @@ private const val COL_COUNT = 4
 
 class HomeTileGridNavigation @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyle: Int = 0 )
-    : LinearLayout(context, attrs, defStyle) {
+    : RecyclerView(context, attrs, defStyle) {
 
     /**
      * Used to cancel background->UI threads: we attach them as children to this job
@@ -45,9 +41,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     // since we init the tiles in View.init and Android is inflating the view for us,
     // thus we need to use Delegates.observable to update onTileLongClick.
     var openHomeTileContextMenu: (() -> Unit) by Delegates.observable({}) { _, _, newValue ->
-        with (tileContainer) {
-            (adapter as HomeTileAdapter).onTileLongClick = newValue
-        }
+        (adapter as HomeTileAdapter).onTileLongClick = newValue
     }
 
     var onNavigationEvent: ((event: NavigationEvent, value: String?,
@@ -56,15 +50,11 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     var onPreSetVisibilityListener: ((isVisible: Boolean) -> Unit)? = null
 
     init {
-        LayoutInflater.from(context)
-                .inflate(R.layout.browser_overlay, this, true)
-
         uiLifecycleCancelJob = Job()
-
         initTiles()
     }
 
-    private fun initTiles() = with (tileContainer) {
+    private fun initTiles() {
         val homeTiles = HomeTilesManager.getTilesCache(context)
 
         canShowUpinToast = true
@@ -85,18 +75,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
             }
         })
         layoutManager = GridLayoutManager(context, COL_COUNT)
-
-        // We add bottomMargin to each tile in order to add spacing between them: this makes the
-        // RecyclerView slightly larger than necessary and makes the default start screen scrollable
-        // even though it doesn't need to be. To undo this, we add negative margins on the tile container.
-        // I tried other solutions (ItemDecoration, dynamically changing margins) but this is more
-        // complex because we need to relayout more than the changed view when adding/removing a row.
-        val tileBottomMargin = resources.getDimensionPixelSize(R.dimen.home_tile_margin_bottom) -
-                resources.getDimensionPixelSize(R.dimen.home_tile_container_margin_bottom)
-        updateLayoutParams {
-            val marginLayoutParams = it as MarginLayoutParams
-            marginLayoutParams.bottomMargin = -tileBottomMargin
-        }
     }
 
     fun getFocusedTilePosition(): Int {
@@ -106,19 +84,16 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     override fun setVisibility(visibility: Int) {
         onPreSetVisibilityListener?.invoke(visibility == View.VISIBLE)
         super.setVisibility(visibility)
-
-        if (visibility == View.VISIBLE) {
-            tileContainer.scrollTo(0, 0)
-        }
+        scrollTo(0, 0)
     }
 
     fun refreshTilesForInsertion() {
-        val adapter = tileContainer.adapter as HomeTileAdapter
+        val adapter = adapter as HomeTileAdapter
         adapter.updateAdapterSingleInsertion(HomeTilesManager.getTilesCache(context))
     }
 
     fun removePinnedSiteFromTiles(tileId: String) {
-        val adapter = tileContainer.adapter as HomeTileAdapter
+        val adapter = adapter as HomeTileAdapter
         adapter.removeTileFromAdapter(tileId)
     }
 }

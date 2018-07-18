@@ -34,6 +34,12 @@
         android:id="@+id/homeScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="44dp"
+        android:paddingEnd="44dp"
+        android:paddingTop="27dp"
+        android:paddingBottom="27dp"
+        android:background="@color/browser_overlay_background"
+        android:clipChildren="false"
         android:visibility="gone"
         />
 </FrameLayout>

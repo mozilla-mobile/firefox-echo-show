@@ -15,7 +15,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.browser_overlay.view.*
 import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.experimental.CancellationException
@@ -203,9 +202,9 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             onPreSetVisibilityListener = { webView!!.onOverlayPreSetVisibility(it) }
 
             openHomeTileContextMenu = {
-                activity?.openContextMenu(this.tileContainer)
+                activity?.openContextMenu(this)
             }
-            registerForContextMenu(this.tileContainer)
+            registerForContextMenu(this)
         }
 
         return layout
@@ -214,7 +213,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.remove -> {
-                val homeTileAdapter = homeScreen.tileContainer.adapter as HomeTileAdapter
+                val homeTileAdapter = homeScreen.adapter as HomeTileAdapter
                 val tileToRemove = homeTileAdapter.getItemAtPosition(homeScreen.getFocusedTilePosition())
                         ?: return false
 
