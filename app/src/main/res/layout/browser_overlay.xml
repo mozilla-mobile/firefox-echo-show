@@ -2,25 +2,14 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<org.mozilla.focus.browser.BrowserNavigationOverlayScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/overlayScrollView"
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/tileContainer"
+    android:clipChildren="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:focusable="false"
-    android:scrollbars="none">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/tileContainer"
-        android:clipChildren="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="44dp"
-        android:paddingEnd="44dp"
-        android:paddingTop="27dp"
-        android:paddingBottom="27dp"
-        android:background="@color/browser_overlay_background"
-        />
-
-</org.mozilla.focus.browser.BrowserNavigationOverlayScrollView>
+    android:paddingStart="44dp"
+    android:paddingEnd="44dp"
+    android:paddingTop="27dp"
+    android:paddingBottom="27dp"
+    android:background="@color/browser_overlay_background"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

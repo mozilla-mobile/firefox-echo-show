@@ -143,7 +143,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         super.setVisibility(visibility)
 
         if (visibility == View.VISIBLE) {
-            overlayScrollView.scrollTo(0, 0)
+            tileContainer.scrollTo(0, 0)
         }
     }
 
@@ -155,29 +155,5 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     fun removePinnedSiteFromTiles(tileId: String) {
         val adapter = tileContainer.adapter as HomeTileAdapter
         adapter.removeTileFromAdapter(tileId)
-    }
-}
-
-/**
- * A [ScrollView] with functionality overridden for the specific requirements of the overlay.
- *
- * One crappy thing with the current implementation is that when a scroll is interrupted (e.g. user
- * clicks up twice quickly), it will skip and not scroll smoothly. Since we don't scroll often,
- * this seems fine.
- */
-class BrowserNavigationOverlayScrollView(
-        context: Context, attrs: AttributeSet
-) : ScrollView(context, attrs) {
-
-    private val deltaScrollPadding = resources.getDimensionPixelSize(R.dimen.browser_overlay_delta_scroll_padding)
-
-    override fun computeScrollDeltaToGetChildRectOnScreen(rect: Rect?): Int {
-        // We modify the scroll offset to ensure:
-        // 1) Scrolling through the tiles will show enough of the next tile to indicate scrollability.
-        // 2) When focusing the last vertical view in the layout, the default implementation will
-        //    leave some empty space at the edge of the view such that an additional dpad click will
-        //    scroll the screen but nothing new is focused: we don't want that.
-        val deltaScrollForOnScreen = super.computeScrollDeltaToGetChildRectOnScreen(rect)
-        return deltaScrollForOnScreen + deltaScrollPadding * Integer.signum(deltaScrollForOnScreen)
     }
 }
