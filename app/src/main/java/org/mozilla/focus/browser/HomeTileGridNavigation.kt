@@ -5,7 +5,6 @@
 package org.mozilla.focus.browser
 
 import android.content.Context
-import android.graphics.Rect
 import android.preference.PreferenceManager
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,19 +12,14 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.browser_overlay.view.*
-import kotlinx.android.synthetic.main.browser_overlay_top_nav.view.*
 import kotlinx.coroutines.experimental.Job
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.home.HomeTilesManager
-import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.NavigationEvent
-import org.mozilla.focus.utils.Settings
-import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import kotlin.properties.Delegates
 
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
@@ -35,7 +29,7 @@ private const val COL_COUNT = 4
 
 class HomeTileGridNavigation @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyle: Int = 0 )
-    : LinearLayout(context, attrs, defStyle), View.OnClickListener {
+    : LinearLayout(context, attrs, defStyle) {
 
     /**
      * Used to cancel background->UI threads: we attach them as children to this job
@@ -60,12 +54,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
                              autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit)? = null
     /** Called inside [setVisibility] right before super.setVisibility is called. */
     var onPreSetVisibilityListener: ((isVisible: Boolean) -> Unit)? = null
-
-    private var isTurboEnabled: Boolean
-        get() = Settings.getInstance(context).isBlockingEnabled
-        set(value) {
-            Settings.getInstance(context).isBlockingEnabled = value
-        }
 
     init {
         LayoutInflater.from(context)
@@ -109,28 +97,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
             val marginLayoutParams = it as MarginLayoutParams
             marginLayoutParams.bottomMargin = -tileBottomMargin
         }
-    }
-
-    override fun onClick(view: View?) {
-        val event = NavigationEvent.fromViewClick(view?.id) ?: return
-        var value: String? = null
-
-        val isTurboButtonChecked = turboButton.isChecked
-        val isPinButtonChecked = pinButton.isChecked
-        when (event) {
-            NavigationEvent.TURBO -> {
-                isTurboEnabled = isTurboButtonChecked
-                value = if (isTurboButtonChecked) NavigationEvent.VAL_CHECKED
-                else NavigationEvent.VAL_UNCHECKED
-            }
-            NavigationEvent.PIN_ACTION -> {
-                value = if (isPinButtonChecked) NavigationEvent.VAL_CHECKED
-                else NavigationEvent.VAL_UNCHECKED
-            }
-            else -> Unit // Nothing to do.
-        }
-        onNavigationEvent?.invoke(event, value, null)
-        TelemetryWrapper.overlayClickEvent(event, isTurboButtonChecked, isPinButtonChecked)
     }
 
     fun getFocusedTilePosition(): Int {
