@@ -45,6 +45,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
     private val sessionManager = SessionManager.getInstance()
 
     private val fragmentLifecycleCallbacks = MainActivityFragmentLifecycleCallbacks()
+    private val browserFragment: BrowserFragment? get() =
+        supportFragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
 
     private lateinit var toolbarCallbacks: ToolbarCallbacks
 
@@ -131,8 +133,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
     }
 
     override fun onBackPressed() {
-        val fragmentManager = supportFragmentManager
-        val browserFragment = fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
+        val browserFragment = browserFragment
         if (browserFragment != null &&
                 browserFragment.isVisible &&
                 browserFragment.onBackPressed()) {
@@ -159,9 +160,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        val fragmentManager = supportFragmentManager
-        val browserFragment = fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
-
+        val browserFragment = browserFragment
         return if (browserFragment != null && browserFragment.isVisible) {
             browserFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(event)
         } else {
@@ -170,8 +169,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
     }
 
     private fun onToolbarEvent(event: NavigationEvent, value: String?, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
-        val fragmentManager = supportFragmentManager
-
         when (event) {
             NavigationEvent.SETTINGS -> {
 //                Disabled as part of #129
@@ -183,7 +180,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
             else -> Unit // Do nothing.
         }
 
-        val browserFragment = fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
+        val browserFragment = browserFragment
         if (browserFragment != null && browserFragment.isVisible) {
             browserFragment.onNavigationEvent(event, value, autocompleteResult)
         } // BrowserFragment is our only fragment: this else case should never happen.
@@ -200,8 +197,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener {
 
     private inner class DelegateToBrowserToolbarStateProvider : ToolbarStateProvider {
         private fun getBrowserToolbarProvider() =
-                (supportFragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?)
-                        ?.toolbarStateProvider
+                browserFragment?.toolbarStateProvider
 
         override fun isBackEnabled() = getBrowserToolbarProvider()?.isBackEnabled() ?: false
         override fun isForwardEnabled() = getBrowserToolbarProvider()?.isForwardEnabled() ?: false
