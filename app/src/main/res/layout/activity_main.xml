@@ -22,7 +22,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="104dp">
+        android:layout_height="@dimen/appbar_height">
         <mozilla.components.browser.toolbar.BrowserToolbar
             android:id="@+id/toolbar"
             android:background="@color/photonGrey70"
@@ -31,4 +31,16 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|enterAlways|snap|exitUntilCollapsed" />
     </android.support.design.widget.AppBarLayout>
+
+    <!-- We want the home tiles to seem like they're above the browser content and
+         toolbar so users don't think interacting with the toolbar will affect the
+         home tiles: we use this view obscure the toolbar. -->
+    <View
+        android:id="@+id/appBarOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/appbar_height"
+        android:background="#77000000"
+        android:visibility="gone"
+        />
+
 </android.support.design.widget.CoordinatorLayout>

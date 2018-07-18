@@ -43,6 +43,7 @@ import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.utils.ViewUtils.showCenteredTopToast
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.OnHomeVisibilityChangeListener
 
 private const val ARGUMENT_SESSION_UUID = "sessionUUID"
 
@@ -199,7 +200,10 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         with (layout.homeScreen) {
             onNavigationEvent = this@BrowserFragment.onNavigationEvent
             visibility = overlayVisibleCached ?: View.GONE
-            onPreSetVisibilityListener = { webView!!.onOverlayPreSetVisibility(it) }
+            onPreSetVisibilityListener = {
+                webView!!.onOverlayPreSetVisibility(it)
+                (activity as OnHomeVisibilityChangeListener?)?.onHomeVisibilityChange(it, isUrlEqualToHomepage)
+            }
 
             openHomeTileContextMenu = {
                 activity?.openContextMenu(this)
@@ -293,7 +297,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
      * It's important this is only called for user actions because our Telemetry
      * is dependent on it.
      */
-    private fun setOverlayVisibleByUser(toShow: Boolean) {
+    fun setOverlayVisibleByUser(toShow: Boolean) {
         homeScreen.visibility = if (toShow) View.VISIBLE else View.GONE
         TelemetryWrapper.drawerShowHideEvent(toShow)
     }
