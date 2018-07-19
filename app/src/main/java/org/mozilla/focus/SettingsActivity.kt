@@ -23,7 +23,12 @@ import org.mozilla.focus.iwebview.WebViewProvider
  * We use AppCompatActivity and override some methods in PreferenceFragmentCompat in order to handle
  * PreferenceScreen navigation.
  */
+
 class SettingsActivity : AppCompatActivity() {
+    companion object {
+        const val FRAGMENT_TAG = "settingsFragment"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -33,7 +38,21 @@ class SettingsActivity : AppCompatActivity() {
             title = getString(R.string.menu_settings)
         }
 
-        supportFragmentManager.beginTransaction().add(R.id.settings_container, SettingsFragment(), null).commit()
+        supportFragmentManager.addOnBackStackChangedListener {
+            supportFragmentManager.apply {
+                val count = backStackEntryCount
+                val title = if (count > 0) {
+                    getBackStackEntryAt(count - 1).breadCrumbTitle
+                } else {
+                    getString(R.string.menu_settings)
+                }
+                supportActionBar?.title = title
+            }
+        }
+
+        supportFragmentManager.beginTransaction()
+                .add(R.id.settings_container, SettingsFragment(), FRAGMENT_TAG)
+                .commit()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -73,10 +92,14 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
             val fragment = Fragment.instantiate(context, pref?.fragment, pref?.extras)
-            fragmentManager!!.beginTransaction()
-                .replace(R.id.settings_container, fragment, null)
-                .addToBackStack(null)
-                .commit()
+            (activity as AppCompatActivity).apply {
+                supportFragmentManager.beginTransaction()
+                        .setBreadCrumbTitle(pref?.title)
+                        .replace(R.id.settings_container, fragment, FRAGMENT_TAG)
+                        .addToBackStack(null)
+                        .commit()
+                supportActionBar?.title = pref?.title
+            }
             return true
         }
 
