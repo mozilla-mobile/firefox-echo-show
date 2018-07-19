@@ -20,8 +20,11 @@ import org.mozilla.focus.iwebview.WebViewProvider
 /**
  * Settings activity with nested settings screens.
  *
- * We use AppCompatActivity and override some methods in PreferenceFragmentCompat in order to handle
- * PreferenceScreen navigation.
+ * We use AppCompatActivity and use fragments within the PreferenceScreens.
+ *
+ * We have to override some methods in PreferenceFragmentCompat in order to handle PreferenceScreen
+ * navigation.
+ *
  */
 
 class SettingsActivity : AppCompatActivity() {
@@ -44,6 +47,7 @@ class SettingsActivity : AppCompatActivity() {
                 val title = if (count > 0) {
                     getBackStackEntryAt(count - 1).breadCrumbTitle
                 } else {
+                    // If there's no backstack, we're an the main settings screen.
                     getString(R.string.menu_settings)
                 }
                 supportActionBar?.title = title
@@ -90,6 +94,9 @@ class SettingsActivity : AppCompatActivity() {
             return true
         }
 
+        /*
+         * Handle launching Fragments from the PreferenceScreens.
+         */
         override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
             val fragment = Fragment.instantiate(context, pref?.fragment, pref?.extras)
             (activity as AppCompatActivity).apply {
