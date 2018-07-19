@@ -51,6 +51,7 @@ private const val TOAST_Y_OFFSET = 200
 /** An interface expected to be implemented by the Activities that create a BrowserFragment. */
 interface BrowserFragmentCallbacks {
     fun onHomeVisibilityChange(isHomeVisible: Boolean, isFirstHomescreenInStack: Boolean)
+    fun onFullScreenChange(isFullscreen: Boolean)
 }
 
 /**
@@ -74,7 +75,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override val initialUrl get() = session.url.value
     override lateinit var iWebViewCallback: IWebView.Callback
 
-    private val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
+    internal val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
     val toolbarStateProvider = BrowserToolbarStateProvider()
     var onUrlUpdate: ((url: String?) -> Unit)? = null
     var onSessionProgressUpdate: ((value: Int) -> Unit)? = null
@@ -351,6 +352,8 @@ private class BrowserIWebViewCallback(
         if (view == null) return
 
         with (browserFragment) {
+            callbacks?.onFullScreenChange(true)
+
             // Hide browser UI and web content
             browserContainer.visibility = View.INVISIBLE
 
@@ -373,6 +376,8 @@ private class BrowserIWebViewCallback(
 
     override fun onExitFullScreen() {
         with (browserFragment) {
+            callbacks?.onFullScreenChange(false)
+
             videoContainer.removeAllViews()
             videoContainer.visibility = View.GONE
 

@@ -202,6 +202,10 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
         appBarOverlay.visibility = if (isOverlayVisible) View.VISIBLE else View.GONE
     }
 
+    override fun onFullScreenChange(isFullscreen: Boolean) {
+        appBarLayout.setExpanded(!isFullscreen, true) // Not expanded means hidden.
+    }
+
     private inner class MainActivityFragmentLifecycleCallbacks : FragmentLifecycleCallbacks() {
         override fun onFragmentAttached(fragmentManager: FragmentManager, fragment: Fragment, context: Context) {
             if (fragment is BrowserFragment) {
