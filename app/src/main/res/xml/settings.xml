@@ -28,8 +28,9 @@
             android:value="https://www.mozilla.org/privacy/firefox-fire-tv/"/>
     </Preference>
 
-    <Preference
+    <PreferenceScreen
         android:title="@string/settings_cookies_dialog_title"
-        android:layout="@layout/preference_layout"/>
+        android:layout="@layout/preference_layout"
+        android:fragment="org.mozilla.focus.widget.ClearDataFragment"/>
 
 </PreferenceScreen>
