@@ -95,9 +95,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     private val sessionManager = SessionManager.getInstance()
 
-    // Cache the overlay visibility state to persist in fragment back stack
-    private var overlayVisibleCached: Int? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         session = initSession()
@@ -197,12 +194,11 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         with (layout.homeScreen) {
             onNavigationEvent = this@BrowserFragment.onNavigationEvent
-            visibility = overlayVisibleCached ?: View.GONE
+            visibility = View.GONE
             onPreSetVisibilityListener = {
                 webView!!.onOverlayPreSetVisibility(it)
                 callbacks?.onHomeVisibilityChange(it, isUrlEqualToHomepage)
             }
-
             openHomeTileContextMenu = {
                 activity?.openContextMenu(this)
             }
@@ -232,7 +228,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        overlayVisibleCached = homeScreen.visibility
         // Since we start the async jobs in View.init and Android is inflating the view for us,
         // there's no good way to pass in the uiLifecycleJob. We could consider other solutions
         // but it'll add complexity that I don't think is probably worth it.

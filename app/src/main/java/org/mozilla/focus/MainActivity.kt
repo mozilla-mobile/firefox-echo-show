@@ -183,8 +183,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
         when (event) {
             NavigationEvent.SETTINGS -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
-                // TODO: Remove settings fragment completely
-                // ScreenController.showSettingsScreen(fragmentManager)
                 return
             }
 

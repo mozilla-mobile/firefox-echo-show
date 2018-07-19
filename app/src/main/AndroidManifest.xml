@@ -54,14 +54,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".browser.InfoActivity"
-                  android:theme="@style/InfoTheme"/>
-
         <activity android:name=".OnboardingActivity"
                   android:theme="@style/AppTheme.Transparent"/>
 
         <activity android:name=".SettingsActivity"
-                  android:theme="@style/InfoTheme"/>
+                  android:theme="@style/SettingsTheme"/>
 
         <meta-data
             android:name="android.webkit.WebView.MetricsOptOut"
