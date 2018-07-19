@@ -39,6 +39,7 @@
         android:paddingBottom="27dp"
         android:background="@color/browser_overlay_background"
         android:clipChildren="false"
+        android:clipToPadding="false"
         android:visibility="gone"
         />
 </FrameLayout>
