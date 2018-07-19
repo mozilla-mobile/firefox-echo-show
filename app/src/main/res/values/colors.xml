@@ -35,6 +35,7 @@
 
     <color name="photonGrey10_a60p">#99F9F9FA</color>
     <color name="photonGrey10_a80p">#CCF9F9FA</color>
+    <color name="photonGrey90_a60p">#990c0c0d</color>
 
     <!-- via https://github.com/mozilla-mobile/firefox-tv/issues/759#issuecomment-381702769 -->
     <color name="pocket_coral">#EF4056</color>

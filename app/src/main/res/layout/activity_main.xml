@@ -37,7 +37,7 @@
         android:id="@+id/appBarOverlay"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_height"
-        android:background="#77000000"
+        android:background="@color/photonGrey90_a60p"
         android:visibility="gone"
         />
 
