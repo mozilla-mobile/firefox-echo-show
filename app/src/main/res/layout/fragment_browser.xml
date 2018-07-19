@@ -7,12 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- TODO: combine this extraneous LL -->
-    <LinearLayout
+    <!-- fillViewport is necessary for the WebView to fill the ScrollView -->
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/browserContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
         <org.mozilla.focus.iwebview.IWebView
             android:id="@+id/webview"
@@ -20,8 +20,7 @@
             android:layout_height="match_parent"
             android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
             />
-
-    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <FrameLayout
         android:id="@+id/videoContainer"
