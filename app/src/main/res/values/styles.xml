@@ -39,6 +39,18 @@
     <style name="SettingsTheme" parent="Theme.AppCompat">
         <item name="colorAccent">@color/colorAccentSettings</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="actionBarStyle">@style/SettingsActionBarTheme</item>
+    </style>
+
+    <style name="SettingsActionBarTheme" parent="Widget.AppCompat.ActionBar">
+        <item name="titleTextStyle">@style/OnboardingTitleTextAppearance</item>
+        <item name="height">104dp</item>
+    </style>
+
+    <style name="SettingsTitleTextAppearance">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/photonGrey10</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="PopupMenu" parent="@style/Widget.AppCompat.Light.PopupMenu">
