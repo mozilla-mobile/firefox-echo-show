@@ -50,7 +50,7 @@ private const val TOAST_Y_OFFSET = 200
 
 /** An interface expected to be implemented by the Activities that create a BrowserFragment. */
 interface BrowserFragmentCallbacks {
-    fun onHomeVisibilityChange(isHomeVisible: Boolean, isFirstHomescreenInStack: Boolean)
+    fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean)
     fun onFullScreenChange(isFullscreen: Boolean)
 }
 

@@ -195,11 +195,12 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
         } // BrowserFragment is our only fragment: this else case should never happen.
     }
 
-    override fun onHomeVisibilityChange(isHomeVisible: Boolean, isFirstHomescreenInStack: Boolean) {
-        // If this is the first homescreen we show, the home tiles are conceptually a web page rather
-        // than an overlay.
-        val isOverlayVisible = if (isFirstHomescreenInStack) false else isHomeVisible
-        appBarOverlay.visibility = if (isOverlayVisible) View.VISIBLE else View.GONE
+    override fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean) {
+        // If this is the homescreen we show on startup, we want the user to be able to interact with
+        // the toolbar and be unable to dismiss the home page (which has no content behind it). If
+        // is another homescreen, we overlay the toolbar to prevent interacting with it and allow
+        // dismissing, to show the web content, when clicked.
+        appBarOverlay.visibility = if (isHomeVisible && !isHomescreenOnStartup) View.VISIBLE else View.GONE
     }
 
     override fun onFullScreenChange(isFullscreen: Boolean) {
