@@ -74,6 +74,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override val initialUrl get() = session.url.value
     override lateinit var iWebViewCallback: IWebView.Callback
 
+    private val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
     val toolbarStateProvider = BrowserToolbarStateProvider()
     var onUrlUpdate: ((url: String?) -> Unit)? = null
     var onSessionProgressUpdate: ((value: Int) -> Unit)? = null
@@ -206,7 +207,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             visibility = overlayVisibleCached ?: View.GONE
             onPreSetVisibilityListener = {
                 webView!!.onOverlayPreSetVisibility(it)
-                (activity as BrowserFragmentCallbacks?)?.onHomeVisibilityChange(it, isUrlEqualToHomepage)
+                callbacks?.onHomeVisibilityChange(it, isUrlEqualToHomepage)
             }
 
             openHomeTileContextMenu = {
