@@ -39,12 +39,9 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.browser.BrowserFragmentCallbacks
 
-interface OnHomeVisibilityChangeListener {
-    fun onHomeVisibilityChange(isHomeVisible: Boolean, isFirstHomescreenInStack: Boolean)
-}
-
-class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, OnHomeVisibilityChangeListener {
+class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, BrowserFragmentCallbacks {
 
     private val sessionManager = SessionManager.getInstance()
 

@@ -43,11 +43,15 @@ import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.NavigationEvent
 import org.mozilla.focus.utils.ViewUtils.showCenteredTopToast
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
-import org.mozilla.focus.OnHomeVisibilityChangeListener
 
 private const val ARGUMENT_SESSION_UUID = "sessionUUID"
 
 private const val TOAST_Y_OFFSET = 200
+
+/** An interface expected to be implemented by the Activities that create a BrowserFragment. */
+interface BrowserFragmentCallbacks {
+    fun onHomeVisibilityChange(isHomeVisible: Boolean, isFirstHomescreenInStack: Boolean)
+}
 
 /**
  * Fragment for displaying the browser UI.
@@ -202,7 +206,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             visibility = overlayVisibleCached ?: View.GONE
             onPreSetVisibilityListener = {
                 webView!!.onOverlayPreSetVisibility(it)
-                (activity as OnHomeVisibilityChangeListener?)?.onHomeVisibilityChange(it, isUrlEqualToHomepage)
+                (activity as BrowserFragmentCallbacks?)?.onHomeVisibilityChange(it, isUrlEqualToHomepage)
             }
 
             openHomeTileContextMenu = {
