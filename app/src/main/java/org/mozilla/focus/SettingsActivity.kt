@@ -82,7 +82,6 @@ class SettingsActivity : AppCompatActivity() {
             PreferenceFragmentCompat.OnPreferenceStartScreenCallback,
             PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
-
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings)
         }

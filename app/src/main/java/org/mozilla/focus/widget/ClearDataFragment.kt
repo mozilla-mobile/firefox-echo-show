@@ -14,7 +14,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 
-class ClearDataFragment: Fragment() {
+class ClearDataFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_cleardata, container, false)
