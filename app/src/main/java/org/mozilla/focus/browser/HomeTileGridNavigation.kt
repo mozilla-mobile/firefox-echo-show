@@ -91,6 +91,8 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     }
 
     fun setVisibility(visibility: Int, toAnimate: Boolean) {
+        if (this.visibility == visibility) { return }
+
         if (!toAnimate) {
             setVisibility(visibility)
         } else {

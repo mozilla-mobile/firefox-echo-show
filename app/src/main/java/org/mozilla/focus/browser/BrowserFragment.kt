@@ -262,7 +262,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     fun loadUrl(url: String) {
         // Intents can trigger loadUrl, and we need to make sure the homescreen is always hidden.
-        homeScreen.visibility = View.GONE
+        homeScreen.setVisibility(View.GONE, toAnimate = true)
         val webView = webView
         if (webView != null && !TextUtils.isEmpty(url)) {
             webView.loadUrl(url)
