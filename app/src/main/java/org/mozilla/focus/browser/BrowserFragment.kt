@@ -137,13 +137,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     val onNavigationEvent = { event: NavigationEvent, value: String?,
             autocompleteResult: InlineAutocompleteEditText.AutocompleteResult? ->
         val context = context!!
-
-        if (event == NavigationEvent.BACK || event == NavigationEvent.FORWARD) {
-            // The new URL will be set internally after this point;
-            // if we're going back to the home page, it will override our hide here.
-            homeScreen.visibility = View.GONE
-        }
-
         when (event) {
             NavigationEvent.BACK -> if (webView?.canGoBack() ?: false) webView?.goBack()
             NavigationEvent.FORWARD -> if (webView?.canGoForward() ?: false) webView?.goForward()
