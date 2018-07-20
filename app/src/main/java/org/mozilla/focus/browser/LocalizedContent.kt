@@ -38,7 +38,7 @@ object LocalizedContent {
 
         val substitutionMap = ArrayMap<String, String>()
 
-        val appNameExtended = resources.getString(R.string.app_name_extended_fire)
+        val appNameExtended = resources.getString(R.string.app_name_extended_show)
         substitutionMap["%about-title%"] = appNameExtended
 
         var aboutVersion = ""
