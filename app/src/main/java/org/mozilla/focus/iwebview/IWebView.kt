@@ -17,6 +17,8 @@ interface IWebView {
         const val TRACKING_PROTECTION_ENABLED_DEFAULT = true
     }
 
+    fun setVisibility(visibility: Int)
+
     /** Get the title of the currently displayed website. */
     fun getTitle(): String? // nullable because WebView overrides it. #407
     fun getUrl(): String? // nullable because WebView overrides it. #407
