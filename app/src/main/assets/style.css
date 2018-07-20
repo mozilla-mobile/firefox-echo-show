@@ -1,14 +1,14 @@
 body, html {
-    background: #221F1F;
-    color: #FFFFFF;
+    background: #38383D;
+    color: #F9F9FA;
     font-family: sans-serif;
-    line-height: 24px;
-    font-size: 14px;
+    line-height: 40px;
+    font-size: 30px;
 }
 
 body{
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 128px;
+    padding-right: 96px;
     margin-left: 0px;
     margin-right: 0px;
 }
