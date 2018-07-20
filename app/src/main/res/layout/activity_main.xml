@@ -21,23 +21,31 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_height">
+
+        <!-- CoordinatorLayout scroll flags are added dynamically: see
+             BrowserAppBarLayoutController.updateCanScroll.
+
+             For elevation concerns, see appBarOverlay below. -->
         <mozilla.components.browser.toolbar.BrowserToolbar
             android:id="@+id/toolbar"
             android:background="@color/photonGrey70"
             android:elevation="4dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|enterAlways|snap|exitUntilCollapsed" />
+            android:layout_height="match_parent"/>
     </android.support.design.widget.AppBarLayout>
 
     <!-- We want the home tiles to seem like they're above the browser content and
          toolbar so users don't think interacting with the toolbar will affect the
-         home tiles: we use this view obscure the toolbar. -->
+         home tiles: we use this view obscure the toolbar.
+
+         The elevation of this view must be greater than the elevation of the toolbar
+         for it to draw on top. -->
     <View
         android:id="@+id/appBarOverlay"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_height"
         android:background="@color/photonGrey90_a60p"
+        android:elevation="8dp"
         android:visibility="gone"
         />
 

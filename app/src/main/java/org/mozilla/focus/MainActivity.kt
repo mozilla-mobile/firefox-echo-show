@@ -93,7 +93,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
     }
 
     private fun initViews() {
-        appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, appBarOverlay).apply {
+        appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, toolbar, appBarOverlay).apply {
             initViews(this@MainActivity::browserFragment)
         }
     }
