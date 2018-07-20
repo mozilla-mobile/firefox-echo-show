@@ -41,6 +41,7 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
+import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
 
 class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, BrowserFragmentCallbacks {
 
@@ -51,6 +52,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
         supportFragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
 
     private lateinit var toolbarCallbacks: ToolbarCallbacks
+    private lateinit var appBarLayoutController: BrowserAppBarLayoutController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,9 +93,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
     }
 
     private fun initViews() {
-        appBarOverlay.setOnClickListener {
-            appBarOverlay.visibility = View.GONE
-            browserFragment?.setOverlayVisibleByUser(false, toAnimate = true)
+        appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, appBarOverlay).apply {
+            initViews(this@MainActivity::browserFragment)
         }
     }
 
@@ -197,15 +198,11 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
     }
 
     override fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean) {
-        // If this is the homescreen we show on startup, we want the user to be able to interact with
-        // the toolbar and be unable to dismiss the home page (which has no content behind it). If
-        // is another homescreen, we overlay the toolbar to prevent interacting with it and allow
-        // dismissing, to show the web content, when clicked.
-        appBarOverlay.visibility = if (isHomeVisible && !isHomescreenOnStartup) View.VISIBLE else View.GONE
+        appBarLayoutController.onHomeVisibilityChange(isHomeVisible, isHomescreenOnStartup)
     }
 
     override fun onFullScreenChange(isFullscreen: Boolean) {
-        appBarLayout.setExpanded(!isFullscreen, true) // Not expanded means hidden.
+        appBarLayoutController.onFullScreenChange(isFullscreen)
     }
 
     private inner class MainActivityFragmentLifecycleCallbacks : FragmentLifecycleCallbacks() {
