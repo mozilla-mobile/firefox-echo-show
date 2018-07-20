@@ -354,9 +354,6 @@ private class BrowserIWebViewCallback(
         with (browserFragment) {
             callbacks?.onFullScreenChange(true)
 
-            // Hide browser UI and web content
-            browserContainer.visibility = View.INVISIBLE
-
             val activity = this.activity
             val height = if (activity != null) {
                 val displayMetrics = DisplayMetrics()
@@ -380,8 +377,6 @@ private class BrowserIWebViewCallback(
 
             videoContainer.removeAllViews()
             videoContainer.visibility = View.GONE
-
-            browserContainer.visibility = View.VISIBLE
         }
 
         fullscreenCallback?.fullScreenExited()
