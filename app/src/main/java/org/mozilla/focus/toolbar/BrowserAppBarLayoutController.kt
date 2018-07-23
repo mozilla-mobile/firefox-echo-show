@@ -56,6 +56,8 @@ class BrowserAppBarLayoutController(
 private fun BrowserToolbar.setIsScrollEnabled(isScrollEnabled: Boolean) {
     updateLayoutParams {
         val layoutParams = it as AppBarLayout.LayoutParams
+
+        // The only way to update scrolling enabled is to change the layoutParams scrollFlags x_x
         layoutParams.scrollFlags = if (isScrollEnabled) TOOLBAR_SCROLL_ENABLED_FLAGS else 0
     }
 }
