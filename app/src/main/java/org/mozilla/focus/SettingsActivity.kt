@@ -21,11 +21,12 @@ import org.mozilla.focus.iwebview.WebViewProvider
  * Settings activity with nested settings screens.
  *
  * We use AppCompatActivity and use fragments within the PreferenceScreens.
- *
- * We have to override some methods in PreferenceFragmentCompat in order to handle PreferenceScreen
- * navigation.
+ * The activity must implement some PreferenceFragmentCompat interfaces in
+ * order to handle nested PreferenceScreen navigation.
  */
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity(),
+    PreferenceFragmentCompat.OnPreferenceStartScreenCallback,
+    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     companion object {
         const val FRAGMENT_TAG = "settingsFragment"
     }
@@ -76,39 +77,37 @@ class SettingsActivity : AppCompatActivity() {
         } else super.onCreateView(name, context, attrs)
     }
 
-    class SettingsFragment : PreferenceFragmentCompat(),
-            PreferenceFragmentCompat.OnPreferenceStartScreenCallback,
-            PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    /*
+     * Handle showing a nested PreferenceScreen.
+     */
+    override fun onPreferenceStartScreen(preferenceFragmentCompat: PreferenceFragmentCompat,
+                                         preferenceScreen: PreferenceScreen): Boolean {
+        supportActionBar?.title = preferenceScreen.title
+        preferenceFragmentCompat.preferenceScreen = preferenceScreen
+        return true
+    }
 
+    /*
+     * Handle launching Fragments from the PreferenceScreens.
+     */
+    override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
+        val fragment = Fragment.instantiate(this, pref?.fragment, pref?.extras)
+        supportFragmentManager.beginTransaction()
+                .setBreadCrumbTitle(pref?.title)
+                .replace(R.id.settings_container, fragment, FRAGMENT_TAG)
+                .addToBackStack(null)
+                .commit()
+        supportActionBar?.title = pref?.title
+        return true
+    }
+
+    /*
+     * We don't use a static newInstance() call to create this fragment because it takes no
+     * arguments. If that changes, we'll need to do that.
+     */
+    class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings)
-        }
-
-        override fun onPreferenceStartScreen(preferenceFragmentCompat: PreferenceFragmentCompat,
-                                             preferenceScreen: PreferenceScreen): Boolean {
-            (activity as AppCompatActivity).supportActionBar?.title = preferenceScreen.title
-            preferenceFragmentCompat.preferenceScreen = preferenceScreen
-            return true
-        }
-
-        /*
-         * Handle launching Fragments from the PreferenceScreens.
-         */
-        override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
-            val fragment = Fragment.instantiate(context, pref?.fragment, pref?.extras)
-            (activity as AppCompatActivity).apply {
-                supportFragmentManager.beginTransaction()
-                        .setBreadCrumbTitle(pref?.title)
-                        .replace(R.id.settings_container, fragment, FRAGMENT_TAG)
-                        .addToBackStack(null)
-                        .commit()
-                supportActionBar?.title = pref?.title
-            }
-            return true
-        }
-
-        override fun getCallbackFragment(): Fragment {
-            return this
         }
     }
 }
