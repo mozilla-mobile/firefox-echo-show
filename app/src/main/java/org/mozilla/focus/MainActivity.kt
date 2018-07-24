@@ -39,6 +39,7 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
+import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.settings.SettingsActivity
 import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
 
@@ -47,8 +48,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
     private val sessionManager = SessionManager.getInstance()
 
     private val fragmentLifecycleCallbacks = MainActivityFragmentLifecycleCallbacks()
-    private val browserFragment: BrowserFragment? get() =
-        supportFragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
 
     private lateinit var toolbarCallbacks: ToolbarCallbacks
     private lateinit var appBarLayoutController: BrowserAppBarLayoutController
@@ -96,7 +95,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
 
     private fun initViews() {
         appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, toolbar, appBarOverlay).apply {
-            initViews(this@MainActivity::browserFragment)
+            initViews(supportFragmentManager::getBrowserFragment)
         }
     }
 
@@ -146,7 +145,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
     }
 
     override fun onBackPressed() {
-        val browserFragment = browserFragment
+        val browserFragment = supportFragmentManager.getBrowserFragment()
         if (browserFragment != null &&
                 browserFragment.isVisible &&
                 browserFragment.onBackPressed()) {
@@ -173,7 +172,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        val browserFragment = browserFragment
+        val browserFragment = supportFragmentManager.getBrowserFragment()
         return if (browserFragment != null && browserFragment.isVisible) {
             browserFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(event)
         } else {
@@ -192,7 +191,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
             else -> Unit // Do nothing.
         }
 
-        val browserFragment = browserFragment
+        val browserFragment = supportFragmentManager.getBrowserFragment()
         if (browserFragment != null && browserFragment.isVisible) {
             browserFragment.onNavigationEvent(event, value, autocompleteResult)
         } // BrowserFragment is our only fragment: this else case should never happen.
@@ -217,7 +216,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
 
     private inner class DelegateToBrowserToolbarStateProvider : ToolbarStateProvider {
         private fun getBrowserToolbarProvider() =
-                browserFragment?.toolbarStateProvider
+                supportFragmentManager.getBrowserFragment()?.toolbarStateProvider
 
         override fun isBackEnabled() = getBrowserToolbarProvider()?.isBackEnabled() ?: false
         override fun isForwardEnabled() = getBrowserToolbarProvider()?.isForwardEnabled() ?: false

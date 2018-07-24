@@ -17,6 +17,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.utils.UrlUtils
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.ext.getBrowserFragment
 
 object ScreenController {
     /**
@@ -51,8 +52,7 @@ object ScreenController {
     fun showBrowserScreenForCurrentSession(fragmentManager: FragmentManager, sessionManager: SessionManager) {
         val currentSession = sessionManager.currentSession
 
-        val fragment = fragmentManager.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
-        if (fragment != null && fragment.session.isSameAs(currentSession)) {
+        if (fragmentManager.getBrowserFragment()?.session?.isSameAs(currentSession) == true) {
             // There's already a BrowserFragment displaying this session.
             return
         }
@@ -75,8 +75,8 @@ object ScreenController {
         //
         // However, from a user perspective, the behavior is correct (e.g. back stack functions
         // correctly with multiple sessions).
-        val browserFragment = fragmentManager?.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as? BrowserFragment
-        if (browserFragment != null && browserFragment.isVisible) {
+        val browserFragment = fragmentManager?.getBrowserFragment()
+        if (browserFragment?.isVisible == true) {
             // We can't call loadUrl on the Fragment until the view hierarchy is inflated so we check
             // for visibility in addition to existence.
             browserFragment.loadUrl(url)
