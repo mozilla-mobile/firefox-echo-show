@@ -136,7 +136,6 @@ object ToolbarIntegration {
 
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),
-                visible = toolbarStateProvider::isHomepage,
                 background = R.drawable.toolbar_button_background) {
             onToolbarEvent(SETTINGS, null, null)
         }
