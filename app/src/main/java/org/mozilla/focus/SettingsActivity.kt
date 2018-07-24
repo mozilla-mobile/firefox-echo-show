@@ -24,9 +24,7 @@ import org.mozilla.focus.iwebview.WebViewProvider
  *
  * We have to override some methods in PreferenceFragmentCompat in order to handle PreferenceScreen
  * navigation.
- *
  */
-
 class SettingsActivity : AppCompatActivity() {
     companion object {
         const val FRAGMENT_TAG = "settingsFragment"

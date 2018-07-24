@@ -8,9 +8,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="24dp"
-    android:layout_marginLeft="96dp"
+    android:layout_marginStart="96dp"
     android:layout_marginRight="96dp"
-    android:layout_marginBottom="48dp">
+    android:layout_marginEnd="48dp">
 
     <TextView
         android:id="@+id/bodyText"
@@ -27,6 +27,7 @@
         android:id="@+id/confirmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
         android:layout_marginEnd="24dp"
         android:text="@string/action_ok"
         style="@style/OnboardingButton"
@@ -42,10 +43,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Webview for clearing webview data -->
     <org.mozilla.focus.iwebview.IWebView
         android:id="@+id/settingsWebView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"/>
 </android.support.constraint.ConstraintLayout>

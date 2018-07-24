@@ -44,13 +44,7 @@
 
     <style name="SettingsActionBarTheme" parent="Widget.AppCompat.ActionBar">
         <item name="titleTextStyle">@style/OnboardingTitleTextAppearance</item>
-        <item name="height">104dp</item>
-    </style>
-
-    <style name="SettingsTitleTextAppearance">
-        <item name="android:textSize">28sp</item>
-        <item name="android:textColor">@color/photonGrey10</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="height">@dimen/appbar_height</item>
     </style>
 
     <style name="PopupMenu" parent="@style/Widget.AppCompat.Light.PopupMenu">

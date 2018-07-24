@@ -14,6 +14,9 @@ import org.mozilla.focus.R
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 
+/**
+ * Fragment used in Settings to clear cookies and browsing history.
+ */
 class ClearDataFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
