@@ -57,7 +57,7 @@
         <activity android:name=".OnboardingActivity"
                   android:theme="@style/AppTheme.Transparent"/>
 
-        <activity android:name=".SettingsActivity"
+        <activity android:name=".settings.SettingsActivity"
                   android:theme="@style/SettingsTheme"/>
 
         <meta-data

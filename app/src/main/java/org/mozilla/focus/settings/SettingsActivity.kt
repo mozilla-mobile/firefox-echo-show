@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus
+package org.mozilla.focus.settings
 
 import android.content.Context
 import android.os.Bundle
@@ -14,6 +14,7 @@ import android.support.v7.preference.PreferenceScreen
 import android.util.AttributeSet
 import android.view.MenuItem
 import android.view.View
+import org.mozilla.focus.R
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
 

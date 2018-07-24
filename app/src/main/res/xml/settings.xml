@@ -31,6 +31,6 @@
     <PreferenceScreen
         android:title="@string/settings_cookies_dialog_title"
         android:layout="@layout/preference_layout"
-        android:fragment="org.mozilla.focus.widget.ClearDataFragment"/>
+        android:fragment="org.mozilla.focus.settings.ClearDataFragment"/>
 
 </PreferenceScreen>

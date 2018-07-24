@@ -40,6 +40,7 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
+import org.mozilla.focus.settings.SettingsActivity
 import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
 
 class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, BrowserFragmentCallbacks {
