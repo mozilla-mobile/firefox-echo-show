@@ -57,8 +57,10 @@
         <activity android:name=".OnboardingActivity"
                   android:theme="@style/AppTheme.Transparent"/>
 
+        <!-- exported = true so Settings can be launched as part of Device Settings -->
         <activity android:name=".settings.SettingsActivity"
-                  android:theme="@style/SettingsTheme"/>
+                  android:theme="@style/SettingsTheme"
+                  android:exported="true"/>
 
         <meta-data
             android:name="android.webkit.WebView.MetricsOptOut"
