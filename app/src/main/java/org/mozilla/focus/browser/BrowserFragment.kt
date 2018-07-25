@@ -115,9 +115,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             // We need to set this separately because the webView does some loading
             // to load the home screen, thus leaving a little bit of residual progress
             // bar active. We set to 0 to reset the state of the bar.
-            if (url == APP_URL_HOME) {
-                onSessionProgressUpdate?.invoke(0)
-            } else if (value != null) {
+            if (value != null) {
                 if (value == 99) {
                     // The max progress value is 99 (see comment in onProgress() in SessionCallbackProxy),
                     // thus we send 100 to the UrlBoxProgressView to complete its animation.
@@ -325,14 +323,7 @@ private class BrowserIWebViewCallback(
     override fun onBlockingStateChanged(isBlockingEnabled: Boolean) {}
 
     override fun onLongPress(hitTarget: IWebView.HitTarget) {}
-    override fun onShouldInterceptRequest(url: String) {
-        // This might not be called from the UI thread but needs to be, so we use launch.
-        launch(UI) {
-            when (url) {
-                APP_URL_HOME -> browserFragment.homeScreen?.visibility = View.VISIBLE
-            }
-        }
-    }
+    override fun onShouldInterceptRequest(url: String) {}
 
     override fun onEnterFullScreen(callback: IWebView.FullscreenCallback, view: View?) {
         fullscreenCallback = callback

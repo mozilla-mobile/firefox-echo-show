@@ -113,16 +113,6 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
     // WebResourceRequest was added in API21 and there is no equivalent WebResourceRequest
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String request) {
-        if (request != null && request.startsWith(APP_URL_PREFIX)) {
-            switch (request) {
-                case APP_URL_HOME:
-                    // Home screen should show a blank webview behind the overlay, but keep the url.
-                    callback.onShouldInterceptRequest(request);
-                    final ByteArrayInputStream homeDataStream = getBlankPageStream();
-                    return new WebResourceResponse("text/html", "utf-8", homeDataStream);
-            }
-        }
-
         return super.shouldInterceptRequest(view, request);
     }
 
