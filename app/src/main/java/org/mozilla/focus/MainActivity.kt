@@ -81,10 +81,13 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
             }
         })
 
+        /*
+        Temporarily removing Turbo Mode for breaking sites.
         if (Settings.getInstance(this@MainActivity).shouldShowOnboarding()) {
             val onboardingIntent = Intent(this@MainActivity, OnboardingActivity::class.java)
             startActivity(onboardingIntent)
         }
+        */
 
         initViews()
         WebViewProvider.preload(this)

@@ -12,7 +12,6 @@ import android.preference.PreferenceManager
 import org.mozilla.focus.R
 import org.mozilla.focus.OnboardingActivity
 import org.mozilla.focus.search.SearchEngine
-import org.mozilla.focus.iwebview.IWebView
 
 /**
  * A simple wrapper for SharedPreferences that makes reading preference a little bit easier.
@@ -51,8 +50,11 @@ class Settings private constructor(context: Context) {
     private fun getPreferenceKey(resourceId: Int): String =
             resources.getString(resourceId)
 
-    var isBlockingEnabled: Boolean // Delegates to shared prefs; could be custom delegate.
+    val isBlockingEnabled = false
+    /*
+        Boolean // Delegates to shared prefs; could be custom delegate.
         get() = preferences.getBoolean(IWebView.TRACKING_PROTECTION_ENABLED_PREF,
                 IWebView.TRACKING_PROTECTION_ENABLED_DEFAULT)
         set(value) = preferences.edit().putBoolean(IWebView.TRACKING_PROTECTION_ENABLED_PREF, value).apply()
+        */
 }

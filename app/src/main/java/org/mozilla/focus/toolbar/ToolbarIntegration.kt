@@ -123,6 +123,7 @@ object ToolbarIntegration {
                 contentDescriptionSelected = context.getString(
                         R.string.turbo_mode_disable_a11y),
                 background = R.drawable.toolbar_toggle_background,
+                visible = { false },
                 selected = Settings.getInstance(toolbar.context).isBlockingEnabled) { isSelected ->
             onToolbarEvent(TURBO, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
         }
