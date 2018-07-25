@@ -90,13 +90,14 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     var url: String? = null
         private set(value) {
             field = value
-            onUrlUpdate?.invoke(url)
 
             // We prevent users from typing this URL in loadUrl but this will still be called for
             // the initial URL set in the Session.
             if (url == APP_URL_STARTUP_HOME) {
                 homeScreen.visibility = View.VISIBLE
             }
+
+            onUrlUpdate?.invoke(url) // This should be called last so app state is up-to-date.
         }
 
     private val isStartupHomepageVisible: Boolean get() = url == APP_URL_STARTUP_HOME && homeScreen.isVisible
@@ -306,8 +307,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     inner class BrowserToolbarStateProvider : ToolbarStateProvider {
         override fun isBackEnabled() = webView?.canGoBack() ?: false
         override fun isForwardEnabled() = webView?.canGoForward() ?: false
-        override fun isHomepage() = isStartupHomepageVisible
-        override fun isRefreshEnabled() = !isStartupHomepageVisible
+        override fun isStartupHomepageVisible() = isStartupHomepageVisible
         override fun getCurrentUrl() = url
         override fun isURLPinned() = url.toUri()?.let {
             // TODO: #569 fix CustomTilesManager to use Uri too

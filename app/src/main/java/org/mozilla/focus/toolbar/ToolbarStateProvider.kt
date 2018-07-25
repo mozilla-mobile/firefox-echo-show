@@ -12,6 +12,5 @@ interface ToolbarStateProvider {
     fun isForwardEnabled(): Boolean
     fun getCurrentUrl(): String?
     fun isURLPinned(): Boolean
-    fun isHomepage(): Boolean
-    fun isRefreshEnabled(): Boolean
+    fun isStartupHomepageVisible(): Boolean
 }

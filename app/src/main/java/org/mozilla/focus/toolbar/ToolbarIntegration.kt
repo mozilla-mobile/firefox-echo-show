@@ -101,7 +101,7 @@ object ToolbarIntegration {
         val refreshButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_refresh,
                 context.getString(R.string.content_description_reload),
                 background = R.drawable.toolbar_button_background,
-                visible = toolbarStateProvider::isRefreshEnabled) { onToolbarEvent(RELOAD, null, null) }
+                visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) }
         toolbar.addPageAction(refreshButton)
 
         val pinButton = BrowserToolbar.ToggleButton(imageResource = iconsR.drawable.mozac_ic_pin,
@@ -109,7 +109,7 @@ object ToolbarIntegration {
                 contentDescription = context.getString(R.string.pin_label),
                 contentDescriptionSelected = context.getString(R.string.homescreen_unpin_a11y),
                 background = R.drawable.toolbar_toggle_background,
-                visible = { !toolbarStateProvider.isHomepage() }) { isSelected ->
+                visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { isSelected ->
             onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
         }
         toolbar.addBrowserAction(pinButton)
@@ -130,7 +130,7 @@ object ToolbarIntegration {
         toolbar.addBrowserAction(DynamicSpace(
             toolbar.dp(160) - 2 * toolbar.browserActionMargin,
             toolbar.dp(88) - 2 * toolbar.browserActionMargin,
-            toolbarStateProvider::isHomepage
+            toolbarStateProvider::isStartupHomepageVisible
         ))
 
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,

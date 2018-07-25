@@ -220,7 +220,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
         override fun isForwardEnabled() = getBrowserToolbarProvider()?.isForwardEnabled() ?: false
         override fun getCurrentUrl() = getBrowserToolbarProvider()?.getCurrentUrl()
         override fun isURLPinned() = getBrowserToolbarProvider()?.isURLPinned() ?: false
-        override fun isHomepage() = getBrowserToolbarProvider()?.isHomepage() ?: false
-        override fun isRefreshEnabled() = getBrowserToolbarProvider()?.isRefreshEnabled() ?: false
+        override fun isStartupHomepageVisible() = getBrowserToolbarProvider()?.isStartupHomepageVisible() ?: false
     }
 }
