@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId "org.mozilla.connect"
         minSdkVersion 22
-        targetSdkVersion 26
+        targetSdkVersion 22
         versionCode 11 // This versionCode is "frozen" for local builds. For "release" builds we
         // override this with a generated versionCode at build time.
         versionName "0.0.1"
