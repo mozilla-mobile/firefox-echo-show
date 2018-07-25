@@ -24,9 +24,6 @@ import org.mozilla.focus.iwebview.IWebView;
 
 import java.io.ByteArrayInputStream;
 
-import static org.mozilla.focus.browser.BrowserFragment.APP_URL_STARTUP_HOME;
-import static org.mozilla.focus.browser.BrowserFragment.APP_URL_PREFIX;
-
 /**
  * WebViewClient layer that handles browser specific WebViewClient functionality, such as error pages
  * and external URL handling.
