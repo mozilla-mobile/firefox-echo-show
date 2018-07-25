@@ -17,7 +17,6 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
-import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
 import org.mozilla.focus.ext.toSafeIntent
 import org.mozilla.focus.home.pocket.Pocket
 import org.mozilla.focus.iwebview.IWebView
@@ -71,8 +70,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
             public override fun onValueChanged(value: List<Session>) {
                 val sessions = value
                 if (sessions.isEmpty()) {
-                    // There's no active session. Start a new session with "homepage".
-                    ScreenController.showBrowserScreenForUrl(supportFragmentManager, APP_URL_HOME, Source.NONE)
+                    ScreenController.showBrowserScreenForStartupHomeScreen(supportFragmentManager)
                 } else {
                     ScreenController.showBrowserScreenForCurrentSession(supportFragmentManager, sessionManager)
                 }

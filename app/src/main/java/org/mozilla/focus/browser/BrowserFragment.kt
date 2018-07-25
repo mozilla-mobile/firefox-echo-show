@@ -18,11 +18,9 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.experimental.CancellationException
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
-import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
+import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
 import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.toUri
 import org.mozilla.focus.home.BundledTilesManager
@@ -47,6 +45,10 @@ private const val ARGUMENT_SESSION_UUID = "sessionUUID"
 
 private const val TOAST_Y_OFFSET = 200
 
+private val URLS_BLOCKED_FROM_USERS = setOf(
+        APP_URL_STARTUP_HOME
+)
+
 /** An interface expected to be implemented by the Activities that create a BrowserFragment. */
 interface BrowserFragmentCallbacks {
     fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean)
@@ -60,7 +62,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     companion object {
         const val FRAGMENT_TAG = "browser"
         const val APP_URL_PREFIX = "firefox:"
-        const val APP_URL_HOME = "${APP_URL_PREFIX}home"
+        const val APP_URL_STARTUP_HOME = "${APP_URL_PREFIX}home"
 
         @JvmStatic
         fun createForSession(session: Session) = BrowserFragment().apply {
@@ -89,9 +91,15 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         private set(value) {
             field = value
             onUrlUpdate?.invoke(url)
+
+            // We prevent users from typing this URL in loadUrl but this will still be called for
+            // the initial URL set in the Session.
+            if (url == APP_URL_STARTUP_HOME) {
+                homeScreen.visibility = View.VISIBLE
+            }
         }
 
-    val isUrlEqualToHomepage: Boolean get() = url == APP_URL_HOME
+    private val isStartupHomepageVisible: Boolean get() = url == APP_URL_STARTUP_HOME && homeScreen.isVisible
 
     private val sessionManager = SessionManager.getInstance()
 
@@ -195,7 +203,9 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             visibility = View.GONE
             onPreSetVisibilityListener = {
                 webView!!.onOverlayPreSetVisibility(it)
-                callbacks?.onHomeVisibilityChange(it, isUrlEqualToHomepage)
+
+                // It's a pre-set-visibility listener so we can't use isStartupHomePageVisible.
+                callbacks?.onHomeVisibilityChange(it, url == APP_URL_STARTUP_HOME)
             }
             openHomeTileContextMenu = {
                 activity?.openContextMenu(this)
@@ -238,7 +248,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     fun onBackPressed(): Boolean {
         when {
-            homeScreen.isVisible && !isUrlEqualToHomepage -> setOverlayVisibleByUser(false)
+            homeScreen.isVisible && !isStartupHomepageVisible -> setOverlayVisibleByUser(false)
             webView?.canGoBack() ?: false -> {
                 webView?.goBack()
                 TelemetryWrapper.browserBackControllerEvent()
@@ -256,7 +266,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         // Intents can trigger loadUrl, and we need to make sure the homescreen is always hidden.
         homeScreen.setVisibility(View.GONE, toAnimate = true)
         val webView = webView
-        if (webView != null && !TextUtils.isEmpty(url)) {
+        if (webView != null && !TextUtils.isEmpty(url) && !URLS_BLOCKED_FROM_USERS.contains(url)) {
             webView.loadUrl(url)
         }
     }
@@ -296,8 +306,8 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     inner class BrowserToolbarStateProvider : ToolbarStateProvider {
         override fun isBackEnabled() = webView?.canGoBack() ?: false
         override fun isForwardEnabled() = webView?.canGoForward() ?: false
-        override fun isHomepage() = isUrlEqualToHomepage
-        override fun isRefreshEnabled() = !isUrlEqualToHomepage
+        override fun isHomepage() = isStartupHomepageVisible
+        override fun isRefreshEnabled() = !isStartupHomepageVisible
         override fun getCurrentUrl() = url
         override fun isURLPinned() = url.toUri()?.let {
             // TODO: #569 fix CustomTilesManager to use Uri too

@@ -14,9 +14,9 @@ import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.icons.R as iconsR
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
-import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
 
 enum class NavigationEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
@@ -192,7 +192,7 @@ private fun onDisplayUrlUpdate(
         pinButton: Toolbar.ActionToggleButton
 ) {
     toolbar.url = when (url) {
-        APP_URL_HOME -> "" // Uses hint instead
+        APP_URL_STARTUP_HOME -> "" // Uses hint instead
         null -> toolbar.url
         else -> url
     }

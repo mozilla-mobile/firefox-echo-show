@@ -24,7 +24,7 @@ import org.mozilla.focus.iwebview.IWebView;
 
 import java.io.ByteArrayInputStream;
 
-import static org.mozilla.focus.browser.BrowserFragment.APP_URL_HOME;
+import static org.mozilla.focus.browser.BrowserFragment.APP_URL_STARTUP_HOME;
 import static org.mozilla.focus.browser.BrowserFragment.APP_URL_PREFIX;
 
 /**

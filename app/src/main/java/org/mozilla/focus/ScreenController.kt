@@ -65,6 +65,18 @@ object ScreenController {
                 .commit()
     }
 
+    fun showBrowserScreenForStartupHomeScreen(fragmentManager: FragmentManager) {
+        // HACK: we don't want the home screen in the back stack so we don't want to load a home
+        // screen URL. However, there's no simple way to create a BrowserFragment without a URL
+        // so we assign the startup url to a session but don't load it into the WebView. Unfortunately,
+        // this means the code controlling the initial homescreen is in several places and fragile:
+        // the best way to identify this code is to Find Usages on the startup url constant.
+        //
+        // We should fix this by rewriting how we manage sessions when we integrate the session
+        // android component.
+        showBrowserScreenForUrl(fragmentManager, BrowserFragment.APP_URL_STARTUP_HOME, Source.NONE)
+    }
+
     fun showBrowserScreenForUrl(fragmentManager: FragmentManager?, url: String, source: Source) {
         // This code is not correct:
         // - We only support one session but it creates a new session when there's no BrowserFragment
