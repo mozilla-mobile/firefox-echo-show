@@ -5,7 +5,6 @@
 package org.mozilla.focus.webview;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -15,12 +14,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.iwebview.IWebView;
 import org.mozilla.focus.webview.matcher.UrlMatcher;
 
-public class TrackingProtectionWebViewClient extends WebViewClient
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class TrackingProtectionWebViewClient extends WebViewClient {
     private static volatile UrlMatcher MATCHER;
 
     public static void triggerPreload(final Context context) {
@@ -61,10 +57,11 @@ public class TrackingProtectionWebViewClient extends WebViewClient
         // background loading of the lists as early as possible.
         triggerPreload(context);
 
+        /*
         final Settings settings = Settings.getInstance(context);
         settings.getPreferences().registerOnSharedPreferenceChangeListener(this);
         this.blockingEnabled = settings.isBlockingEnabled();
-
+        */
     }
 
     public void setBlockingEnabled(boolean enabled) {
@@ -143,10 +140,12 @@ public class TrackingProtectionWebViewClient extends WebViewClient
         super.onPageStarted(view, url, favicon);
     }
 
+    /*
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
         if (IWebView.TRACKING_PROTECTION_ENABLED_PREF.equals(key)) {
             blockingEnabled = sharedPreferences.getBoolean(IWebView.TRACKING_PROTECTION_ENABLED_PREF, IWebView.TRACKING_PROTECTION_ENABLED_DEFAULT);
         }
     }
+    */
 }

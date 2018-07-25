@@ -17,9 +17,6 @@ import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_HOME
-import org.mozilla.focus.iwebview.IWebView
-import org.mozilla.focus.utils.Settings
-import java.util.WeakHashMap
 
 enum class NavigationEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
@@ -50,7 +47,7 @@ object ToolbarIntegration {
      * because [SharedPreferences.registerOnSharedPreferenceChangeListener] doesn't keep strong
      * references so someone else, this object, has to.
      */
-    private val weakToolbarToSharedPrefListeners = WeakHashMap<BrowserToolbar, OnSharedPreferenceChangeListener>()
+    //private val weakToolbarToSharedPrefListeners = WeakHashMap<BrowserToolbar, OnSharedPreferenceChangeListener>()
 
     /**
      * Add the components of toolbar and returns a collection of callbacks to modify the toolbar
@@ -117,17 +114,18 @@ object ToolbarIntegration {
         }
         toolbar.addBrowserAction(pinButton)
 
+        /*
         val turboButton = BrowserToolbar.ToggleButton(imageResource = iconsR.drawable.mozac_ic_rocket,
                 imageResourceSelected = iconsR.drawable.mozac_ic_rocket_filled,
                 contentDescription = context.getString(R.string.turbo_mode_enable_a11y),
                 contentDescriptionSelected = context.getString(
                         R.string.turbo_mode_disable_a11y),
                 background = R.drawable.toolbar_toggle_background,
-                visible = { false },
                 selected = Settings.getInstance(toolbar.context).isBlockingEnabled) { isSelected ->
             onToolbarEvent(TURBO, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
         }
         toolbar.addBrowserAction(turboButton)
+        */
 
         toolbar.addBrowserAction(DynamicSpace(
             toolbar.dp(160) - 2 * toolbar.browserActionMargin,
@@ -150,6 +148,7 @@ object ToolbarIntegration {
             if (!hasFocus) toolbar.displayMode()
         }
 
+        /*
         val sharedPrefsListener = OnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == IWebView.TRACKING_PROTECTION_ENABLED_PREF) {
                 turboButton.setSelected(sharedPreferences.getBoolean(key, true /* unused */),
@@ -158,6 +157,7 @@ object ToolbarIntegration {
         }
         Settings.getInstance(toolbar.context).preferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
         weakToolbarToSharedPrefListeners[toolbar] = sharedPrefsListener
+        */
 
         return ToolbarCallbacks(
                 onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) },

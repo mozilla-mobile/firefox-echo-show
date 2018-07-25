@@ -35,7 +35,6 @@ import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.utils.OnUrlEnteredListener
 import org.mozilla.focus.utils.SafeIntent
-import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
@@ -189,7 +188,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
                 return
             }
 
-            NavigationEvent.TURBO -> Settings.getInstance(this).isBlockingEnabled = value == NavigationEvent.VAL_CHECKED
+//            NavigationEvent.TURBO -> Settings.getInstance(this).isBlockingEnabled = value == NavigationEvent.VAL_CHECKED
             else -> Unit // Do nothing.
         }
 
