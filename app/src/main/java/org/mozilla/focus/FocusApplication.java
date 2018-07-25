@@ -13,7 +13,6 @@ import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.session.VisibilityLifeCycleCallback;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
-import org.mozilla.focus.utils.OkHttpWrapper;
 
 public class FocusApplication extends LocaleAwareApplication {
     private VisibilityLifeCycleCallback visibilityLifeCycleCallback;
@@ -57,7 +56,7 @@ public class FocusApplication extends LocaleAwareApplication {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        OkHttpWrapper.onLowMemory();
+//        OkHttpWrapper.onLowMemory(); // Disabled because it throws NPE.
         // If you need to dump more memory, you may be able to clear the Picasso cache.
     }
 }
