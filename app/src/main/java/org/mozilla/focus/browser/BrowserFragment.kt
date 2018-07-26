@@ -100,6 +100,9 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             onUrlUpdate?.invoke(url) // This should be called last so app state is up-to-date.
         }
 
+    // If the URL is startup home, the home screen should always be visible. For defensiveness, we
+    // also check this condition. It's probably not necessary (it was originally added when the startup
+    // url was the empty string which I was concerned the WebView could pass to us while loading).
     private val isStartupHomepageVisible: Boolean get() = url == APP_URL_STARTUP_HOME && homeScreen.isVisible
 
     private val sessionManager = SessionManager.getInstance()
