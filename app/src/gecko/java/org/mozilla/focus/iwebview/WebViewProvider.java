@@ -96,11 +96,6 @@ public class WebViewProvider {
         }
 
         @Override
-        public void onOverlayPreSetVisibility(boolean willOverlayBeVisible) {
-
-        }
-
-        @Override
         public void scrollByClamped(int vx, int vy) {
 
         }

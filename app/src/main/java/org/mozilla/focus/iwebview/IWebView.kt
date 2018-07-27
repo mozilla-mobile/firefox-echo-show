@@ -77,8 +77,6 @@ interface IWebView {
 
     val isYoutubeTV: Boolean get() = getUrl()?.contains("youtube.com/tv") ?: false
 
-    fun onOverlayPreSetVisibility(willOverlayBeVisible: Boolean)
-
     /**
      * Enable/Disable content blocking for this session (Only the blockers that are
      * enabled in the app's settings will be turned on/off).

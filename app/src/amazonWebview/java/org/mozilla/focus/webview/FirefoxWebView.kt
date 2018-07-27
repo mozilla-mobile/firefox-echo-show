@@ -7,10 +7,7 @@ package org.mozilla.focus.webview
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Rect
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.support.annotation.VisibleForTesting
 import android.util.AttributeSet
 import android.view.View
@@ -20,8 +17,6 @@ import org.mozilla.focus.ext.deleteData
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.session.Session
 import org.mozilla.focus.utils.UrlUtils
-
-private val uiHandler = Handler(Looper.getMainLooper())
 
 /**
  * An IWebView implementation using WebView.
@@ -35,8 +30,6 @@ internal class FirefoxWebView(
         private val client: FocusWebViewClient,
         private val chromeClient: FirefoxWebChromeClient
 ) : NestedWebView(context, attrs), IWebView {
-
-    private val focusedDOMElement = FocusedDOMElementCache(this)
 
     @get:VisibleForTesting
     override var callback: IWebView.Callback? = null
@@ -136,31 +129,6 @@ internal class FirefoxWebView(
         val outBitmap = Bitmap.createBitmap(drawingCache)
         destroyDrawingCache()
         return outBitmap
-    }
-
-    override fun onOverlayPreSetVisibility(willOverlayBeVisible: Boolean) {
-        // We cache when the overlay is opened but actions on the overlay can clear the DOM and
-        // any focused element cache (e.g. reload) so we need to cache again before it's hidden:
-        // see FocusedDOMElementCache for details.
-        if (!willOverlayBeVisible) {
-            focusedDOMElement.cache()
-        }
-    }
-
-    override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
-        super.onFocusChanged(focused, direction, previouslyFocusedRect)
-
-        // For why we're doing this, see FocusedDOMElementCache.
-        if (!focused) {
-            // Any views (like HomeTileGridNavigation) that may clear the cache, e.g. by
-            // reloading the page, are required to handle their own caching. Here we'll handle
-            // cases where the page cache isn't cleared.
-            focusedDOMElement.cache()
-        } else {
-            // Trying to restore immediately doesn't work - perhaps the WebView hasn't actually
-            // received focus yet? Posting to the end of the UI queue seems to solve the problem.
-            uiHandler.post { focusedDOMElement.restore() }
-        }
     }
 
     override fun scrollByClamped(vx: Int, vy: Int) {

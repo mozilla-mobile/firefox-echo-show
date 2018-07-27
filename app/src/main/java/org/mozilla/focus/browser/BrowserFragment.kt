@@ -206,8 +206,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             onNavigationEvent = this@BrowserFragment.onNavigationEvent
             visibility = View.GONE
             onPreSetVisibilityListener = {
-                webView!!.onOverlayPreSetVisibility(it)
-
                 // It's a pre-set-visibility listener so we can't use isStartupHomePageVisible.
                 callbacks?.onHomeVisibilityChange(it, url == APP_URL_STARTUP_HOME)
             }
