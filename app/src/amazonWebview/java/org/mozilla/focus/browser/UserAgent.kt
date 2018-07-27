@@ -65,6 +65,7 @@ object UserAgent {
         // Most webview based browsers (and chrome), include the device name AND build ID, e.g.
         // "Pixel XL Build/NOF26V", that seems unnecessary (and not great from a privacy perspective),
         // so we skip that too.
+
         // To get a Desktop UA, we do what Focus does and
         // 1) Don't use Firefox in the UA to avoid getting Gecko pages
         // 2) Remove Android so we don't get mobile pages
