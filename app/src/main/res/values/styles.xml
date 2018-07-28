@@ -43,8 +43,13 @@
     </style>
 
     <style name="SettingsActionBarTheme" parent="Widget.AppCompat.ActionBar">
-        <item name="titleTextStyle">@style/OnboardingTitleTextAppearance</item>
+        <item name="titleTextStyle">@style/SettingsActionBarTextAppearance</item>
         <item name="height">@dimen/appbar_height</item>
+    </style>
+
+    <style name="SettingsActionBarTextAppearance" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">28sp</item>
+        <item name="android:fontFamily">amazon-ember-display-regular</item>
     </style>
 
     <style name="PopupMenu" parent="@style/Widget.AppCompat.Light.PopupMenu">
