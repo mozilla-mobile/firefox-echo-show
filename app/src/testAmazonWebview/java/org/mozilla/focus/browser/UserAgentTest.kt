@@ -58,7 +58,7 @@ class UserAgentTest {
         val testSettings = mock(WebSettings::class.java)
         `when`(testSettings.userAgentString).thenReturn("Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30")
 
-        assertEquals("Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ") AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30 fakeappname/${BuildConfig.VERSION_NAME}",
+        assertEquals("Mozilla/5.0 (Linux; " + Build.VERSION.RELEASE + ") AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30 fakeappname/${BuildConfig.VERSION_NAME}",
                 UserAgent.buildUserAgentString(RuntimeEnvironment.application, testSettings, "fakeappname"))
     }
 }
