@@ -6,4 +6,6 @@
     android:id="@+id/settings_container"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:layout_marginStart="64dp"
+    android:layout_marginEnd="64dp"/>

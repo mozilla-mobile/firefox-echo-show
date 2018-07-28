@@ -40,6 +40,7 @@
         <item name="colorAccent">@color/colorAccentSettings</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="actionBarStyle">@style/SettingsActionBarTheme</item>
+        <item name="android:fontFamily">amazon-ember-display-light</item>
     </style>
 
     <style name="SettingsActionBarTheme" parent="Widget.AppCompat.ActionBar">
