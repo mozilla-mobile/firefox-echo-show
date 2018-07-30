@@ -19,23 +19,16 @@ Android TV emulator, the behavior is different from Fire TV's and should not be
 relied upon.
 
 ### Pre-push hooks
-Since we don't have CI, if you're pushing code, please add the following pre-push hook as .git/hooks/pre-push:
+Since we don't have CI, if you're pushing code, please add a pre-push hook. To use the
+recommended hook, run this command from the project root:
+```sh
+ln -s ../../quality/pre-push-recommended.sh .git/hooks/pre-push
+```
 
-  ```sh
-  #!/bin/sh
-
-  ./gradlew -q \
-          checkstyle \
-          ktlint \
-          detektCheck \
-          pmd \
-          testAmazonWebViewDebug
-
-  # Tasks omitted because they take a long time to run:
-  # - unit test on all variants
-  # - UI tests
-  # - lint (compiles all variants)
-  ```
+To push without running the pre-push hook (e.g. doc updates):
+```sh
+git push <remote> --no-verify
+```
 
 ## License
 
