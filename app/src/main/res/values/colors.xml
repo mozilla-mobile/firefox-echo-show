@@ -40,4 +40,6 @@
 
     <color name="amazon_settings_background">#151920</color>
     <color name="amazon_settings_textcolor">@color/photonGrey10</color>
+    <color name="amazon_toggle_on">#00CAFF</color>
+    <color name="amazon_toggle_off">#F0F1EF</color>
 </resources>

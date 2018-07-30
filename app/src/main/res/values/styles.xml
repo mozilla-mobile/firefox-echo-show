@@ -40,11 +40,19 @@
 
     <style name="SettingsTheme" parent="Theme.AppCompat">
         <item name="colorAccent">@color/colorAccentSettings</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="preferenceTheme">@style/SettingsPreferenceThemeOverlay</item>
         <item name="actionBarStyle">@style/SettingsActionBarTheme</item>
         <item name="android:fontFamily">@string/font_ember_light</item>
         <item name="android:background">@color/amazon_settings_background</item>
         <item name="android:textColor">@color/amazon_settings_textcolor</item>
+    </style>
+
+    <style name="SettingsPreferenceThemeOverlay" parent="PreferenceThemeOverlay">
+        <item name="switchPreferenceCompatStyle">@style/SettingsSwitchPreferenceCompatStyle</item>
+    </style>
+
+    <style name="SettingsSwitchPreferenceCompatStyle" parent="Preference.SwitchPreferenceCompat">
+        <item name="android:widgetLayout">@layout/preferences_widget_switch_compat</item>
     </style>
 
     <style name="SettingsActionBarTheme" parent="Widget.AppCompat.ActionBar">
