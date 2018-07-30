@@ -40,7 +40,7 @@
         <item name="colorAccent">@color/colorAccentSettings</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="actionBarStyle">@style/SettingsActionBarTheme</item>
-        <item name="android:fontFamily">amazon-ember-display-light</item>
+        <item name="android:fontFamily">@string/font_ember_light</item>
     </style>
 
     <style name="SettingsActionBarTheme" parent="Widget.AppCompat.ActionBar">
@@ -50,7 +50,7 @@
 
     <style name="SettingsActionBarTextAppearance" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textSize">28sp</item>
-        <item name="android:fontFamily">amazon-ember-display-regular</item>
+        <item name="android:fontFamily">@string/font_ember_medium</item>
     </style>
 
     <style name="PopupMenu" parent="@style/Widget.AppCompat.Light.PopupMenu">
