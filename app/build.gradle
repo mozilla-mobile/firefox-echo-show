@@ -170,6 +170,7 @@ dependencies {
     implementation "org.mozilla.photon:fonts:$moz_components_version"
     implementation "org.mozilla.components:telemetry:$moz_components_version"
     implementation "org.mozilla.components:toolbar:$moz_components_version"
+    implementation "org.mozilla.components:utils:$moz_components_version"
     implementation "org.mozilla.components:domains:$moz_components_version"
     implementation "org.mozilla.components:autocomplete:$moz_components_version"
 
