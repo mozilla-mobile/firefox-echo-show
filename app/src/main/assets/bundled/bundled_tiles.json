@@ -8,56 +8,14 @@
     },
     {
         "id": "googleVideo",
-        "url": "https://www.google.com/webhp?tbm=vid",
-        "title": "Video Search",
+        "url": "https://www.google.com",
+        "title": "Google Search",
         "img": "tile_google.png"
     },
     {
-        "id": "imdb",
-        "url": "https://imdb.com/",
-        "title": "IMDB",
-        "img": "tile_imdb.png"
-    },
-    {
-        "id": "rottenTomatoes",
-        "url": "https://www.rottentomatoes.com/",
-        "title": "Rotten Tomatoes",
-        "img": "tile_rotten_tomatoes.png"
-    },
-    {
-        "id": "metacritic",
-        "url": "http://metacritic.com/",
-        "title": "metacritic",
-        "img": "tile_metacritic.png"
-    },
-    {
-        "id": "fandango",
-        "url": "https://www.fandango.com/",
-        "title": "Fandango",
-        "img": "tile_fandango.png"
-    },
-    {
-        "id": "hollywoodReporter",
-        "url": "https://hollywoodreporter.com/",
-        "title": "Hollywood Reporter",
-        "img": "tile_hollywood_reporter.png"
-    },
-    {
-        "id": "flickr",
-        "url": "https://flickr.com/",
-        "title": "Flickr",
-        "img": "tile_flickr.png"
-    },
-    {
-        "id": "instagram",
-        "url": "https://instagram.com/",
-        "title": "Instagram",
-        "img": "tile_instagram.png"
-    },
-    {
-        "id": "pinterest",
-        "url": "https://pinterest.com/",
-        "title": "Pinterest",
-        "img": "tile_pinterest.png"
+        "id": "wikipedia",
+        "url": "https://www.wikipedia.org",
+        "title": "Wikipedia",
+        "img": "tile_wikipedia.png"
     }
 ]
