@@ -19,7 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.focus.ext.AssetManagerKt;
 import org.mozilla.focus.locale.Locales;
-import org.mozilla.focus.utils.Settings;
+import org.mozilla.focus.settings.Settings;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayInputStream;
