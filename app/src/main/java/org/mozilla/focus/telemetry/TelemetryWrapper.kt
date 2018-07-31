@@ -42,7 +42,7 @@ private const val KEY_CLICKED_HOME_TILE_IDS_PER_SESSION = "clickedHomeTileIDsPer
         "LargeClass"
 )
 object TelemetryWrapper {
-    private const val TELEMETRY_APP_NAME_FOCUS_TV = "FirefoxForFireTV"
+    private const val TELEMETRY_APP_NAME = "FirefoxConnect"
 
     private object Category {
         val ACTION = "action"
@@ -114,7 +114,7 @@ object TelemetryWrapper {
 
             val configuration = TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
-                    .setAppName(TELEMETRY_APP_NAME_FOCUS_TV)
+                    .setAppName(TELEMETRY_APP_NAME)
                     .setUpdateChannel(BuildConfig.BUILD_TYPE)
                     .setPreferencesImportantForTelemetry(
                             IWebView.TRACKING_PROTECTION_ENABLED_PREF,
