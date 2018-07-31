@@ -5,6 +5,6 @@
 package org.mozilla.focus.ext
 
 import android.content.Intent
-import org.mozilla.focus.utils.SafeIntent
+import mozilla.components.support.utils.SafeIntent
 
 fun Intent.toSafeIntent() = SafeIntent(this)

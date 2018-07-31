@@ -15,6 +15,7 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
+import mozilla.components.support.utils.SafeIntent
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.ext.toSafeIntent
@@ -33,7 +34,6 @@ import org.mozilla.focus.toolbar.ToolbarCallbacks
 import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.utils.OnUrlEnteredListener
-import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText

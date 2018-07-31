@@ -7,9 +7,8 @@ package org.mozilla.focus
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
+import mozilla.components.support.utils.SafeIntent
 import org.mozilla.focus.session.Source
-import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.UrlUtils
 
 typealias OnValidBrowserIntent = (url: String, source: Source) -> Unit
@@ -26,7 +25,7 @@ typealias OnValidBrowserIntent = (url: String, source: Source) -> Unit
 object IntentValidator {
 
     fun validateOnCreate(context: Context, intent: SafeIntent, savedInstanceState: Bundle?, onValidBrowserIntent: OnValidBrowserIntent) {
-        if ((intent.getFlags() and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
+        if ((intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
             // This Intent was launched from history (recent apps). Android will redeliver the
             // original Intent (which might be a VIEW intent). However if there's no active browsing
             // session then we do not want to re-process the Intent and potentially re-open a website
@@ -46,15 +45,15 @@ object IntentValidator {
         val action = intent.action
 
         if (Intent.ACTION_VIEW.equals(action)) {
-            val dataString = intent.getDataString()
-            if (TextUtils.isEmpty(dataString)) {
+            val dataString = intent.dataString
+            if (dataString == null || dataString.isEmpty()) {
                 return // If there's no URL in the Intent then we can't create a session.
             }
 
             onValidBrowserIntent(dataString, Source.VIEW)
         } else if (Intent.ACTION_SEND.equals(action)) {
             val dataString = intent.getStringExtra(Intent.EXTRA_TEXT)
-            if (TextUtils.isEmpty(dataString)) {
+            if (dataString == null || dataString.isEmpty()) {
                 return
             }
 
