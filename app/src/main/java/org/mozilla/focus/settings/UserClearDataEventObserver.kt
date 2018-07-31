@@ -7,10 +7,11 @@ package org.mozilla.focus.settings
 import android.arch.lifecycle.Observer
 import android.support.v7.app.AppCompatActivity
 import org.mozilla.focus.ScreenController
+import org.mozilla.focus.utils.LiveDataEvent
 
 /** An observer for when the user clears their browsing data. See [UserClearDataEvent] for details. */
-class UserClearDataEventObserver(private val activity: AppCompatActivity) : Observer<UserClearDataEvent> {
-    override fun onChanged(event: UserClearDataEvent?) {
+class UserClearDataEventObserver(private val activity: AppCompatActivity) : Observer<LiveDataEvent> {
+    override fun onChanged(event: LiveDataEvent?) {
         // The global WebView state has been destroyed by Settings but we must still clean up
         // local WebView state. The browserFragment's initial state is that there is 1) no page
         // loaded and 2) there is no back stack. However, this is impossible to replicate in an

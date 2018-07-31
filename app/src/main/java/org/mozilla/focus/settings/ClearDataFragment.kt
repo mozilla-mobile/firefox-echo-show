@@ -14,19 +14,20 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_cleardata.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
-
-private val userClearDataEventLiveData = MutableLiveData<UserClearDataEvent>()
-private fun sendUserClearDataEvent() { userClearDataEventLiveData.value = UserClearDataEvent() }
+import org.mozilla.focus.utils.LiveDataEvent
 
 /**
  * An event for when the user clears their browsing data. To listen for the event, observe
  * on [liveData]: a new instance will be set each time the event occurs.
+ *
+ * This class wraps the file-private mutable LiveData instance in a read-only interface exposed
+ * outside of this file.
  */
-class UserClearDataEvent {
-    companion object {
-        val liveData: LiveData<UserClearDataEvent> = userClearDataEventLiveData
-    }
-}
+object UserClearDataEvent { val liveData: LiveData<LiveDataEvent> = mutableClearEventLiveData }
+private val mutableClearEventLiveData = MutableLiveData<LiveDataEvent>()
+
+// Wrap the LiveData assignment in a function to explain what it does.
+private fun sendUserClearDataEvent() { mutableClearEventLiveData.value = LiveDataEvent() }
 
 /**
  * Fragment used in Settings to clear cookies and browsing history.
