@@ -24,7 +24,7 @@ import kotlin.properties.Delegates
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
 private const val MAX_UNPIN_TOAST_COUNT = 3
 
-private const val COL_COUNT = 4
+private const val COL_COUNT = 5
 
 class HomeTileGridNavigation @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyle: Int = 0 )

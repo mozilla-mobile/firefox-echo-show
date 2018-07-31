@@ -9,7 +9,7 @@
               android:orientation="vertical"
               android:focusable="true"
               android:layout_width="match_parent"
-              android:layout_height="164dp"
+              android:layout_height="wrap_content"
               android:gravity="center"
               android:clickable="true"
               android:layout_marginBottom="@dimen/home_tile_margin_bottom">
@@ -18,7 +18,6 @@
         android:id="@+id/tile_icon"
         android:layout_width="210dp"
         android:layout_height="140dp"
-        android:layout_gravity="center"
         android:background="@drawable/home_tile_background"
         android:scaleType="centerInside"
         tools:ignore="ContentDescription"
@@ -26,12 +25,13 @@
 
     <TextView
         android:id="@+id/tile_title"
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:ellipsize="start"
-        android:fontFamily="@string/font_roboto_regular"
+        android:layout_width="210dp"
+        android:layout_height="36dp"
+        android:ellipsize="end"
+        android:fontFamily="@string/font_ember_regular"
         android:gravity="center"
         android:singleLine="true"
-        android:textColor="@color/photonGrey10_a80p"
+        android:textColor="@color/photonGrey10"
+        android:textSize="24sp"
         tools:text="YouTube" />
 </LinearLayout>
