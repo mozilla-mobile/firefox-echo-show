@@ -40,6 +40,8 @@ import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
 import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.settings.SettingsActivity
+import org.mozilla.focus.settings.UserClearDataEvent
+import org.mozilla.focus.settings.UserClearDataEventObserver
 import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
 
 class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, BrowserFragmentCallbacks {
@@ -89,6 +91,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
         WebViewProvider.preload(this)
         toolbarCallbacks = ToolbarIntegration.setup(toolbar, DelegateToBrowserToolbarStateProvider(), ::onToolbarEvent)
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
+        UserClearDataEvent.liveData.observe(this, UserClearDataEventObserver(this))
     }
 
     private fun initViews() {

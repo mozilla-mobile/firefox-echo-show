@@ -97,6 +97,17 @@ object ScreenController {
         }
     }
 
+    fun recreateBrowserScreen(fragmentManager: FragmentManager) {
+        fragmentManager.getBrowserFragment()?.let { browserFragment ->
+            fragmentManager.beginTransaction()
+                    .remove(browserFragment)
+                    .commitNow() // Synchronous so our session observers have the correct state.
+        }
+
+        // Activates the start up code path, which creates a new session if there are none.
+        SessionManager.getInstance().removeAllSessions()
+    }
+
     fun showPocketScreen(fragmentManager: FragmentManager) {
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PocketVideoFragment.create(Pocket.getRecommendedVideos()))

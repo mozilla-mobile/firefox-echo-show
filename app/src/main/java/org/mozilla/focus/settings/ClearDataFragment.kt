@@ -4,6 +4,8 @@
 
 package org.mozilla.focus.settings
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +13,20 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_cleardata.*
 import org.mozilla.focus.R
-import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
+
+private val userClearDataEventLiveData = MutableLiveData<UserClearDataEvent>()
+private fun sendUserClearDataEvent() { userClearDataEventLiveData.value = UserClearDataEvent() }
+
+/**
+ * An event for when the user clears their browsing data. To listen for the event, observe
+ * on [liveData]: a new instance will be set each time the event occurs.
+ */
+class UserClearDataEvent {
+    companion object {
+        val liveData: LiveData<UserClearDataEvent> = userClearDataEventLiveData
+    }
+}
 
 /**
  * Fragment used in Settings to clear cookies and browsing history.
@@ -28,8 +42,8 @@ class ClearDataFragment : Fragment() {
         confirmButton.apply {
             isSelected = true
             setOnClickListener {
-                settingsWebView.cleanup()
-                SessionManager.getInstance().removeAllSessions()
+                settingsWebView.cleanup() // This will only clear global WebView settings.
+                sendUserClearDataEvent()
                 TelemetryWrapper.clearDataEvent()
                 finishFragment()
             }
