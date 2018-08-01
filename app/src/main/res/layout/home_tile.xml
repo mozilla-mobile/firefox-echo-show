@@ -5,6 +5,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/home_tile"
               android:orientation="vertical"
               android:focusable="true"
@@ -14,14 +15,23 @@
               android:clickable="true"
               android:layout_marginBottom="@dimen/home_tile_margin_bottom">
 
-    <ImageView
-        android:id="@+id/tile_icon"
-        android:layout_width="210dp"
-        android:layout_height="140dp"
-        android:background="@drawable/home_tile_background"
-        android:scaleType="centerInside"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/tile_youtube" />
+    <!-- We hardcode the sizes of the CardView and ImageView to match so we don't get extra padding
+         between the CardView and the ImageView. -->
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/home_tile_width"
+        android:layout_height="@dimen/home_tile_height"
+        app:cardCornerRadius="6dp"
+        app:cardPreventCornerOverlap="false">
+
+        <ImageView
+            android:id="@+id/tile_icon"
+            android:layout_width="@dimen/home_tile_width"
+            android:layout_height="@dimen/home_tile_height"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/tile_youtube" />
+    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/tile_title"
