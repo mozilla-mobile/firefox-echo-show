@@ -6,17 +6,15 @@ package org.mozilla.focus.toolbar
 
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import android.view.View
-import android.view.ViewGroup
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.support.ktx.android.view.dp
-import mozilla.components.ui.icons.R as iconsR
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.R
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
 import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
-import org.mozilla.focus.R
+import mozilla.components.ui.icons.R as iconsR
 
 enum class NavigationEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
@@ -104,15 +102,19 @@ object ToolbarIntegration {
                 visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) }
         toolbar.addPageAction(refreshButton)
 
+        val pinVisibility = { !toolbarStateProvider.isStartupHomepageVisible() }
         val pinButton = BrowserToolbar.ToggleButton(imageResource = iconsR.drawable.mozac_ic_pin,
                 imageResourceSelected = iconsR.drawable.mozac_ic_pin_filled,
                 contentDescription = context.getString(R.string.pin_label),
                 contentDescriptionSelected = context.getString(R.string.homescreen_unpin_a11y),
                 background = R.drawable.toolbar_toggle_background,
-                visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { isSelected ->
+                visible = pinVisibility) { isSelected ->
             onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
         }
         toolbar.addBrowserAction(pinButton)
+
+        val pinSpace = ToggleSpace(toolbar.dp(56)) { !pinVisibility() }
+        toolbar.addBrowserAction(pinSpace)
 
         /*
         val turboButton = BrowserToolbar.ToggleButton(imageResource = iconsR.drawable.mozac_ic_rocket,
@@ -126,12 +128,7 @@ object ToolbarIntegration {
         }
         toolbar.addBrowserAction(turboButton)
         */
-
-        toolbar.addBrowserAction(DynamicSpace(
-            toolbar.dp(160) - 2 * toolbar.browserActionMargin,
-            toolbar.dp(88) - 2 * toolbar.browserActionMargin,
-            toolbarStateProvider::isStartupHomepageVisible
-        ))
+        toolbar.addBrowserAction(Toolbar.ActionSpace(toolbar.dp(384)))
 
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),
@@ -203,23 +200,9 @@ private fun onDisplayUrlUpdate(
 }
 
 /**
- * An "empty" toolbar action that just displays nothing and resizes dynamically based on whether
- * the pin icon is displayed or not.
+ * An "empty" toolbar action that displays nothing and may be toggled on and off
  */
-private class DynamicSpace(
-        private val largeWidth: Int,
-        private val smallWidth: Int,
-        private val showSmallWidth: () -> Boolean
-) : Toolbar.Action {
-    override fun createView(parent: ViewGroup): View = View(parent.context).apply {
-        minimumWidth = largeWidth
-    }
-
-    override fun bind(view: View) {
-        if (showSmallWidth.invoke()) {
-            view.minimumWidth = smallWidth
-        } else {
-            view.minimumWidth = largeWidth
-        }
-    }
-}
+private class ToggleSpace(
+        spaceWidth: Int,
+        override val visible: () -> Boolean
+) : Toolbar.ActionSpace(spaceWidth)
