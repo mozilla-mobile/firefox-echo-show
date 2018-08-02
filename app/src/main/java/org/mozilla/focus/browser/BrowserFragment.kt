@@ -124,9 +124,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
         session.progress.observe(this, Observer { value ->
-            // We need to set this separately because the webView does some loading
-            // to load the home screen, thus leaving a little bit of residual progress
-            // bar active. We set to 0 to reset the state of the bar.
             if (value != null) {
                 if (value == 99) {
                     // The max progress value is 99 (see comment in onProgress() in SessionCallbackProxy),
