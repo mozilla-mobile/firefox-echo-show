@@ -79,6 +79,7 @@ object ToolbarIntegration {
         val progressBar = UrlBoxProgressView(context)
         toolbar.urlBoxView = progressBar
         toolbar.urlBoxMargin = dp16
+        val progressBarController = ProgressBarController(progressBar)
 
         val homescreenButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_grid,
                 context.getString(R.string.homescreen_title)) { onToolbarEvent(HOME, null, null) }
@@ -158,7 +159,7 @@ object ToolbarIntegration {
 
         return ToolbarCallbacks(
                 onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) },
-                onProgressUpdate = { progress -> progressBar.progress = progress }
+                onProgressUpdate = progressBarController::onProgressUpdate
         )
     }
 
