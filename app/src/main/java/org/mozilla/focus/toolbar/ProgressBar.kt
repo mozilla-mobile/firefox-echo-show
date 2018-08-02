@@ -9,10 +9,6 @@ import android.content.Context
 import android.graphics.drawable.ClipDrawable
 import android.view.Gravity
 import android.view.View
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-
 import org.mozilla.focus.R
 
 /**
@@ -37,16 +33,6 @@ class UrlBoxProgressView(
             progressDrawable.level = 10000 - backgroundDrawable.level
             field = value
             invalidate() // Force redraw
-
-            // If the progress is 100% then we want to go back to 0 to hide the progress drawable
-            // again. However we want to show the full progress bar briefly so we wait 250ms before
-            // going back to 0.
-            if (value == 100) {
-                launch(UI) {
-                    delay(250)
-                    progress = 0
-                }
-            }
         }
 
     private var backgroundDrawable = ClipDrawable(
