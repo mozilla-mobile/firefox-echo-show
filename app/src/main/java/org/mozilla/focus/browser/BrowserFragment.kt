@@ -123,16 +123,13 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             NullSession()
 
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
-        session.progress.observe(this, Observer { value ->
-            if (value != null) {
-                if (value == 99) {
-                    // The max progress value is 99 (see comment in onProgress() in SessionCallbackProxy),
-                    // thus we send 100 to the UrlBoxProgressView to complete its animation.
-                    onSessionProgressUpdate?.invoke(100)
-                } else {
-                    onSessionProgressUpdate?.invoke(value)
-                }
-            }
+        session.progress.observe(this, Observer { rawProgressValue ->
+            if (rawProgressValue == null) { return@Observer }
+
+            // The max progress value is 99 (see comment in onProgress() in SessionCallbackProxy),
+            // thus we send 100 to the UrlBoxProgressView to complete its animation.
+            val adjustedProgressValue = if (rawProgressValue == 99) 100 else rawProgressValue
+            onSessionProgressUpdate?.invoke(adjustedProgressValue)
         })
         return session
     }
