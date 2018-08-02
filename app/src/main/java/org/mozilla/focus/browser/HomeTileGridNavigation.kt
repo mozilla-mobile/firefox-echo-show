@@ -80,10 +80,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         layoutManager = GridLayoutManager(context, COL_COUNT)
     }
 
-    fun getFocusedTilePosition(): Int {
-        return (rootView.findFocus().parent as? RecyclerView)?.getChildAdapterPosition(rootView.findFocus()) ?: RecyclerView.NO_POSITION
-    }
-
     override fun setVisibility(visibility: Int) {
         onPreSetVisibilityListener?.invoke(visibility == View.VISIBLE)
         super.setVisibility(visibility)
@@ -124,6 +120,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
 
     fun removePinnedSiteFromTiles(tileId: String) {
         val adapter = adapter as HomeTileAdapter
-        adapter.removeTileFromAdapter(tileId)
+        adapter.removeTile(tileId)
     }
 }

@@ -211,13 +211,12 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         when (item.itemId) {
             R.id.remove -> {
                 val homeTileAdapter = homeScreen.adapter as HomeTileAdapter
-                val tileToRemove = homeTileAdapter.getItemAtPosition(homeScreen.getFocusedTilePosition())
-                        ?: return false
+                val tileToRemove = homeTileAdapter.lastLongClickedTile ?: return false
 
                 // This assumes that since we're deleting from a Home Tile object that we created
                 // that the Uri is valid, so we do not do error handling here.
                 HomeTilesManager.removeHomeTile(tileToRemove, context!!)
-                homeTileAdapter.removeItemAtPosition(homeScreen.getFocusedTilePosition())
+                homeTileAdapter.removeTile(tileToRemove.idToString())
                 TelemetryWrapper.homeTileRemovedEvent(tileToRemove)
                 return true
             }
