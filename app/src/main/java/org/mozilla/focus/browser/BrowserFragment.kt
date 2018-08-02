@@ -79,6 +79,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     internal val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
     val toolbarStateProvider = BrowserToolbarStateProvider()
     var onUrlUpdate: ((url: String?) -> Unit)? = null
+    var onSessionLoadingUpdate: ((isLoading: Boolean) -> Unit)? = null
     var onSessionProgressUpdate: ((value: Int) -> Unit)? = null
 
     /**
@@ -123,6 +124,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             NullSession()
 
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
+        session.loading.observe(this, Observer { it?.let { onSessionLoadingUpdate?.invoke(it) } })
         session.progress.observe(this, Observer { it?.let { onSessionProgressUpdate?.invoke(it) } })
         return session
     }

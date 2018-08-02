@@ -13,6 +13,10 @@ class ProgressBarController(
         private val progressBar: UrlBoxProgressView
 ) {
 
+    @Suppress("UNUSED_PARAMETER")
+    fun onLoadingUpdate(isLoading: Boolean) {
+    }
+
     fun onProgressUpdate(rawProgressValue: Int) {
         // The max progress value is 99 (see comment in onProgress() in SessionCallbackProxy),
         // thus we send 100 to the UrlBoxProgressView to complete its animation.

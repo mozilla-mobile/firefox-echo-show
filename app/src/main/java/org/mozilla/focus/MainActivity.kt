@@ -210,6 +210,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
         override fun onFragmentAttached(fragmentManager: FragmentManager, fragment: Fragment, context: Context) {
             if (fragment is BrowserFragment) {
                 fragment.onUrlUpdate = toolbarCallbacks.onDisplayUrlUpdate
+                fragment.onSessionLoadingUpdate = toolbarCallbacks.onLoadingUpdate
                 fragment.onSessionProgressUpdate = toolbarCallbacks.onProgressUpdate
             }
         }

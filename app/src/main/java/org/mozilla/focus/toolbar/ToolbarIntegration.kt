@@ -28,6 +28,7 @@ enum class NavigationEvent {
 /** A collection of callbacks to modify the toolbar. */
 class ToolbarCallbacks(
         val onDisplayUrlUpdate: (url: String?) -> Unit,
+        val onLoadingUpdate: (isLoading: Boolean) -> Unit,
         val onProgressUpdate: (progress: Int) -> Unit
 )
 
@@ -159,6 +160,7 @@ object ToolbarIntegration {
 
         return ToolbarCallbacks(
                 onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) },
+                onLoadingUpdate = progressBarController::onLoadingUpdate,
                 onProgressUpdate = progressBarController::onProgressUpdate
         )
     }
