@@ -25,21 +25,24 @@
 
     <Button
         android:id="@+id/confirmButton"
+        style="@style/OnboardingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="48dp"
         android:layout_marginEnd="24dp"
         android:text="@string/action_ok"
-        style="@style/OnboardingButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cancelButton" />
 
     <Button
         android:id="@+id/cancelButton"
+        style="@style/OnboardingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="48dp"
         android:text="@string/action_cancel"
-        style="@style/OnboardingButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
