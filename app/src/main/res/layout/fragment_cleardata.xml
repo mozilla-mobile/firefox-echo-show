@@ -16,7 +16,7 @@
         android:id="@+id/bodyText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/settings_cookies_dialog_content"
+        android:text="@string/settings_cookies_dialog_content2"
         style="@style/PreferenceBodyTextAppearance"
         app:layout_constraintBottom_toTopOf="@+id/confirmButton"
         app:layout_constraintEnd_toEndOf="parent"

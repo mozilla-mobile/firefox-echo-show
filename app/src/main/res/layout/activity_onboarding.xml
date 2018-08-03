@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="29dp"
         android:layout_marginTop="48dp"
-        android:text="@string/onboarding_turbo_mode_button_on"
+        android:text="@string/button_keep_enabled"
         app:layout_constraintEnd_toStartOf="@+id/disableTurboMode"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text="@string/onboarding_turbo_mode_button_off"
+        android:text="@string/button_turn_off"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/enableTurboMode"
         app:layout_constraintTop_toBottomOf="@+id/onboardingBody" />
