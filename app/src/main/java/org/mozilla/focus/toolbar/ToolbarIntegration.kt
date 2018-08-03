@@ -6,6 +6,8 @@ package org.mozilla.focus.toolbar
 
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.support.annotation.DrawableRes
+import android.view.View
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
@@ -104,19 +106,18 @@ object ToolbarIntegration {
                 visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) }
         toolbar.addPageAction(refreshButton)
 
-        val pinVisibility = { !toolbarStateProvider.isStartupHomepageVisible() }
-        val pinButton = BrowserToolbar.ToggleButton(imageResource = iconsR.drawable.mozac_ic_pin,
+        val pinButton = ChangeableVisibilityButton(imageResource = iconsR.drawable.mozac_ic_pin,
                 imageResourceSelected = iconsR.drawable.mozac_ic_pin_filled,
                 contentDescription = context.getString(R.string.pin_label),
                 contentDescriptionSelected = context.getString(R.string.homescreen_unpin_a11y),
                 background = R.drawable.toolbar_toggle_background,
-                visible = pinVisibility) { isSelected ->
+                visibility = {
+                    if (!toolbarStateProvider.isStartupHomepageVisible()) View.VISIBLE
+                    else View.INVISIBLE
+                }) { isSelected ->
             onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
         }
         toolbar.addBrowserAction(pinButton)
-
-        val pinSpace = ToggleSpace(toolbar.dp(56)) { !pinVisibility() }
-        toolbar.addBrowserAction(pinSpace)
 
         /*
         val turboButton = BrowserToolbar.ToggleButton(imageResource = iconsR.drawable.mozac_ic_rocket,
@@ -203,9 +204,26 @@ private fun onDisplayUrlUpdate(
 }
 
 /**
- * An "empty" toolbar action that displays nothing and may be toggled on and off
+ * A [BrowserToolbar.ToggleButton] that can be set to different visibilities
  */
-private class ToggleSpace(
-        spaceWidth: Int,
-        override val visible: () -> Boolean
-) : Toolbar.ActionSpace(spaceWidth)
+private class ChangeableVisibilityButton(
+        @DrawableRes imageResource: Int,
+        @DrawableRes imageResourceSelected: Int,
+        contentDescription: String,
+        contentDescriptionSelected: String,
+        @DrawableRes background: Int? = null,
+        val visibility: () -> Int,
+        listener: (Boolean) -> Unit
+) : BrowserToolbar.ToggleButton(
+        imageResource,
+        imageResourceSelected,
+        contentDescription,
+        contentDescriptionSelected,
+        background = background,
+        listener = listener
+) {
+    override fun bind(view: View) {
+        super.bind(view)
+        view.visibility = visibility()
+    }
+}
