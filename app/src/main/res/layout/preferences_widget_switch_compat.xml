@@ -5,9 +5,9 @@
 <android.support.v7.widget.SwitchCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/switchWidget"
-    android:layout_width="80dp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:thumb="@drawable/preferences_thumb"
+    android:thumb="@drawable/preferences_thumb_inset"
     app:thumbTint="@color/preferences_thumb_selector"
     app:track="@drawable/preferences_track"
     app:trackTint="@color/preferences_thumb_selector" />
