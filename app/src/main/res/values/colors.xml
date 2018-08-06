@@ -39,5 +39,5 @@
     <color name="pocket_coral">#EF4056</color>
 
     <color name="amazon_settings_background">#151920</color>
-    <color name="amazon_settings_textcolor">#FAFAFA</color>
+    <color name="amazon_settings_textcolor">@color/photonGrey10</color>
 </resources>
