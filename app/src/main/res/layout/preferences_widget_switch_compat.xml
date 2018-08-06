@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:thumb="@drawable/preferences_thumb_inset"
+    app:switchMinWidth="108dp"
     app:thumbTint="@color/preferences_thumb_selector"
     app:track="@drawable/preferences_track"
     app:trackTint="@color/preferences_thumb_selector" />

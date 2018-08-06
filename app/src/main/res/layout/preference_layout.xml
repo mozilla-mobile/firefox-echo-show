@@ -26,9 +26,7 @@ elements, like the starting ImageView -->
     android:layout_height="wrap_content"
     android:minHeight="88dp"
     android:gravity="center_vertical"
-    android:baselineAligned="false"
-    android:paddingStart="0dp"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
+    android:baselineAligned="false">
 
     <RelativeLayout
         android:layout_width="0dp"
