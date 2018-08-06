@@ -13,6 +13,8 @@
         <item name="popupMenuStyle">@style/PopupMenu</item>
 
         <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <item name="android:fontFamily">@string/font_ember_regular</item>
     </style>
 
     <style name="AppTheme.Transparent" parent="Theme.AppCompat.NoActionBar">
