@@ -73,15 +73,28 @@
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="OnboardingButton" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:minWidth">320dp</item>
+    <style name="PillButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minWidth">204dp</item>
         <item name="android:minHeight">56dp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">28sp</item>
         <item name="android:fontFamily">@string/font_ember_regular</item>
-        <item name="android:textColor">@color/photonGrey10</item>
-        <item name="android:background">@drawable/rounded_button</item>
         <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="OnboardingButton" parent="PillButton">
+        <item name="android:textColor">@color/photonGrey10</item>
+        <item name="android:background">@drawable/button_onboarding</item>
+    </style>
+
+    <style name="PrimaryButtonNative" parent="PillButton">
+        <item name="android:textColor">@color/amazon_settings_background</item>
+        <item name="android:background">@drawable/button_primary_native</item>
+    </style>
+
+    <style name="SecondaryButtonNative" parent="PillButton">
+        <item name="android:textColor">@color/button_secondary_native_text_selector</item>
+        <item name="android:background">@drawable/button_secondary_native</item>
     </style>
 
     <style name="PreferenceTitleTextAppearance" parent="TextAppearance.AppCompat.Title">

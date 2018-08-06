@@ -24,25 +24,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/confirmButton"
-        style="@style/OnboardingButton"
+        android:id="@+id/cancelButton"
+        style="@style/SecondaryButtonNative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="48dp"
         android:layout_marginEnd="24dp"
-        android:text="@string/action_ok"
+        android:layout_marginBottom="48dp"
+        android:text="@string/action_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cancelButton" />
+        app:layout_constraintEnd_toStartOf="@+id/confirmButton" />
 
     <Button
-        android:id="@+id/cancelButton"
-        style="@style/OnboardingButton"
+        android:id="@+id/confirmButton"
+        style="@style/PrimaryButtonNative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="48dp"
-        android:text="@string/action_cancel"
+        android:text="@string/action_ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -28,6 +28,7 @@
     <dimen name="urlbar_corner_radius">4dp</dimen>
 
     <dimen name="button_size">48dp</dimen>
+    <dimen name="button_corner_radius">28dp</dimen>
     <dimen name="home_tile_margin_value">8dp</dimen>
 
     <dimen name="pocket_feed_horizontal_margin">96dp</dimen>
