@@ -102,7 +102,7 @@
     <style name="PreferenceTitleTextAppearance" parent="TextAppearance.AppCompat.Title">
         <item name="android:textSize">48sp</item>
         <item name="android:textColor">@color/photonGrey10_a80p</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">@string/font_ember_light</item>
     </style>
 
     <style name="PreferenceBodyTextAppearance" parent="TextAppearance.AppCompat.Body1">
