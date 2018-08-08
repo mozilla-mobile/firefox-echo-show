@@ -308,6 +308,10 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         override fun onChanged(isLoading: Boolean?) {
             if (isLoading == null) { return }
             onSessionLoadingUpdate?.invoke(isLoading)
+
+            val uri = url?.toUri() ?: return
+            val webView = webView ?: return
+            WebCompat.onSessionLoadingChanged(isLoading, uri, webView)
         }
     }
 }
