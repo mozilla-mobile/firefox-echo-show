@@ -66,3 +66,11 @@ fun Uri.truncatedPath(): String {
         else -> "/" + listOf(segments.first(), Char.ELLIPSIS, segments.last()).joinToString(separator = "/" )
     }
 }
+
+val Uri.isYouTubeDesktop: Boolean
+    get() {
+        val host = host // cache it.
+        return host.endsWith("youtube.com") &&
+                !host.endsWith("m.youtube.com") &&
+                !path.startsWith("/tv")
+    }
