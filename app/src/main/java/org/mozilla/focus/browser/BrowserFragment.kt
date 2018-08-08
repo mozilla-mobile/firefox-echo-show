@@ -124,7 +124,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             NullSession()
 
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
-        session.loading.observe(this, Observer { it?.let { onSessionLoadingUpdate?.invoke(it) } })
+        session.loading.observe(this, SessionLoadingObserver())
         session.progress.observe(this, Observer { it?.let { onSessionProgressUpdate?.invoke(it) } })
         return session
     }
@@ -302,6 +302,13 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             // TODO: #569 fix CustomTilesManager to use Uri too
             CustomTilesManager.getInstance(context!!).isURLPinned(it.toString()) ||
                     BundledTilesManager.getInstance(context!!).isURLPinned(it) } ?: false
+    }
+
+    private inner class SessionLoadingObserver : Observer<Boolean> {
+        override fun onChanged(isLoading: Boolean?) {
+            if (isLoading == null) { return }
+            onSessionLoadingUpdate?.invoke(isLoading)
+        }
     }
 }
 
