@@ -245,13 +245,6 @@ object TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, telemetryValue).queue()
     }
 
-    /** The browser goes back from a controller press. */
-    fun browserBackControllerEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.PAGE, Object.BROWSER, Value.BACK)
-                .extra(Extra.SOURCE, "controller")
-                .queue()
-    }
-
     fun homeTileRemovedEvent(removedTile: HomeTile) {
         TelemetryEvent.create(Category.ACTION, Method.REMOVE, Object.HOME_TILE,
                 getTileTypeAsStringValue(removedTile)).queue()

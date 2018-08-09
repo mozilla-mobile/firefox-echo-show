@@ -236,22 +236,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         activity!!.menuInflater.inflate(R.menu.menu_context_hometile, menu)
     }
 
-    fun onBackPressed(): Boolean {
-        when {
-            homeScreen.isVisible && !isStartupHomepageVisible -> setOverlayVisibleByUser(false)
-            webView?.canGoBack() ?: false -> {
-                webView?.goBack()
-                TelemetryWrapper.browserBackControllerEvent()
-            }
-            else -> {
-                SessionManager.getInstance().removeCurrentSession()
-                // Delete session, but we allow the parent to handle back behavior.
-                return false
-            }
-        }
-        return true
-    }
-
     fun loadUrl(url: String) {
         // Intents can trigger loadUrl, and we need to make sure the homescreen is always hidden.
         homeScreen.setVisibility(View.GONE, toAnimate = true)

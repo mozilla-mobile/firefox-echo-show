@@ -145,18 +145,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
         } else super.onCreateView(name, context, attrs)
     }
 
-    override fun onBackPressed() {
-        val browserFragment = supportFragmentManager.getBrowserFragment()
-        if (browserFragment != null &&
-                browserFragment.isVisible &&
-                browserFragment.onBackPressed()) {
-            // The Browser fragment handles back presses on its own because it might just go back
-            // in the browsing history.
-            return
-        }
-        super.onBackPressed()
-    }
-
     override fun onNonTextInputUrlEntered(urlStr: String) {
         ViewUtils.hideKeyboard(container)
         ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr, false,
