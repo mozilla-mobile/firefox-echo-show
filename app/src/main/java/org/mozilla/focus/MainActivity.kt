@@ -119,12 +119,12 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
 
     override fun onResume() {
         super.onResume()
-        TelemetryWrapper.startSession(this)
+        TelemetryWrapper.startSession()
     }
 
     override fun onPause() {
         super.onPause()
-        TelemetryWrapper.stopSession(this)
+        TelemetryWrapper.stopSession()
     }
 
     override fun onStart() {

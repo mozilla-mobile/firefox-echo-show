@@ -67,7 +67,7 @@ class HomeTileAdapter(
 
         itemView.setOnClickListener {
             loadUrl(item.url)
-            TelemetryWrapper.homeTileClickEvent(it.context, item)
+            TelemetryWrapper.homeTileClickEvent(item)
         }
 
         itemView.setOnLongClickListener {
