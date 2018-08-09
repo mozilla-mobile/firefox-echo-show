@@ -13,6 +13,6 @@ object OkHttpWrapper {
 
     @JvmStatic
     fun onLowMemory() {
-        try { client.cache().evictAll() } catch (_: IOException) { /* We don't care. */ }
+        try { client.cache()?.evictAll() } catch (_: IOException) { /* We don't care. */ }
     }
 }
