@@ -145,7 +145,6 @@ object TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.BACKGROUND, Object.APP).queue()
     }
 
-    @JvmStatic
     fun stopMainActivity() {
         TelemetryHolder.get()
                 .queuePing(TelemetryCorePingBuilder.TYPE)
@@ -153,7 +152,6 @@ object TelemetryWrapper {
                 .scheduleUpload()
     }
 
-    @JvmStatic
     fun urlBarEvent(isUrl: Boolean, autocompleteResult: AutocompleteResult, inputLocation: UrlTextInputLocation) {
         if (isUrl) {
             TelemetryWrapper.browseEvent(autocompleteResult, inputLocation)
@@ -210,13 +208,11 @@ object TelemetryWrapper {
                 getTileTypeAsStringValue(tile)).queue()
     }
 
-    @JvmStatic
     fun clearDataEvent() {
         TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.SETTING, Value.CLEAR_DATA).queue()
     }
 
     /** @param isOpening true if the drawer is opening, close otherwise. */
-    @JvmStatic
     fun drawerShowHideEvent(isOpening: Boolean) {
         val method = if (isOpening) Method.SHOW else Method.HIDE
         TelemetryEvent.create(Category.ACTION, method, Object.MENU).queue()
@@ -250,7 +246,6 @@ object TelemetryWrapper {
     }
 
     /** The browser goes back from a controller press. */
-    @JvmStatic
     fun browserBackControllerEvent() {
         TelemetryEvent.create(Category.ACTION, Method.PAGE, Object.BROWSER, Value.BACK)
                 .extra(Extra.SOURCE, "controller")
