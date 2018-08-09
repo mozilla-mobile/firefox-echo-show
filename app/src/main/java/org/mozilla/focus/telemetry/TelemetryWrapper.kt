@@ -61,6 +61,7 @@ object TelemetryWrapper {
         val SEARCH_BAR = "search_bar"
         val SETTING = "setting"
         val APP = "app"
+        val HOME = "home"
         val MENU = "menu"
         val BROWSER = "browser"
         const val HOME_TILE = "home_tile"
@@ -210,12 +211,6 @@ object TelemetryWrapper {
 
     fun clearDataEvent() {
         TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.SETTING, Value.CLEAR_DATA).queue()
-    }
-
-    /** @param isOpening true if the drawer is opening, close otherwise. */
-    fun drawerShowHideEvent(isOpening: Boolean) {
-        val method = if (isOpening) Method.SHOW else Method.HIDE
-        TelemetryEvent.create(Category.ACTION, method, Object.MENU).queue()
     }
 
     fun overlayClickEvent(event: NavigationEvent, isTurboButtonChecked: Boolean, isPinButtonChecked: Boolean) {

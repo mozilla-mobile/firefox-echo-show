@@ -10,6 +10,7 @@ import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_
 import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
 import android.view.View
+import kotlinx.android.synthetic.main.fragment_browser.*
 import mozilla.components.browser.toolbar.BrowserToolbar
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.ext.updateLayoutParams
@@ -31,7 +32,7 @@ class BrowserAppBarLayoutController(
 
         appBarOverlay.setOnClickListener {
             appBarOverlay.visibility = View.GONE
-            getBrowserFragment()?.setOverlayVisibleByUser(false, toAnimate = true)
+            getBrowserFragment()?.homeScreen?.setVisibilityWithAnimation(View.GONE)
         }
     }
 

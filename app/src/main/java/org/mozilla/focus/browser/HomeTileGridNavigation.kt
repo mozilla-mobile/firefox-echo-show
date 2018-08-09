@@ -80,37 +80,34 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         layoutManager = GridLayoutManager(context, COL_COUNT)
     }
 
+    /** Sets the visibility: use method with more parameters instead. */
     override fun setVisibility(visibility: Int) {
         onPreSetVisibilityListener?.invoke(visibility == View.VISIBLE)
         super.setVisibility(visibility)
         scrollTo(0, 0)
     }
 
-    fun setVisibility(visibility: Int, toAnimate: Boolean) {
+    fun setVisibilityWithAnimation(visibility: Int) {
         if (this.visibility == visibility) { return }
 
-        if (!toAnimate) {
-            setVisibility(visibility)
-        } else {
-            val toShow = visibility == View.VISIBLE
-            if (toShow) { setVisibility(View.VISIBLE) }
+        val toShow = visibility == View.VISIBLE
+        if (toShow) { setVisibility(View.VISIBLE) }
 
-            val screenHeight = resources.displayMetrics.heightPixels.toFloat()
-            translationY = if (toShow) screenHeight else 0f
-            animate()
-                    .setInterpolator(FastOutSlowInInterpolator())
-                    .setDuration(400)
-                    .translationY(if (toShow) 0f else screenHeight)
-                    .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?) {
-                            if (!toShow) {
-                                setVisibility(View.GONE)
-                                translationY = 0f // Reset the position for next show.
-                            }
+        val screenHeight = resources.displayMetrics.heightPixels.toFloat()
+        translationY = if (toShow) screenHeight else 0f
+        animate()
+                .setInterpolator(FastOutSlowInInterpolator())
+                .setDuration(400)
+                .translationY(if (toShow) 0f else screenHeight)
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        if (!toShow) {
+                            setVisibility(View.GONE)
+                            translationY = 0f // Reset the position for next show.
                         }
-                    })
-                    .start()
-        }
+                    }
+                })
+                .start()
     }
 
     fun refreshTilesForInsertion() {

@@ -13,6 +13,8 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fragment_browser.*
@@ -183,7 +185,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                     }
                 }
             }
-            NavigationEvent.HOME -> if (!homeScreen.isVisible) { setOverlayVisibleByUser(true, toAnimate = true) }
+            NavigationEvent.HOME -> if (!homeScreen.isVisible) { homeScreen.setVisibilityWithAnimation(VISIBLE) }
         }
         Unit
     }
@@ -238,7 +240,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     fun loadUrl(url: String) {
         // Intents can trigger loadUrl, and we need to make sure the homescreen is always hidden.
-        homeScreen.setVisibility(View.GONE, toAnimate = true)
+        homeScreen.setVisibilityWithAnimation(GONE)
         val webView = webView
         if (webView != null && !TextUtils.isEmpty(url) && !URLS_BLOCKED_FROM_USERS.contains(url)) {
             webView.loadUrl(url)
@@ -263,18 +265,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             return true
         }
         return false
-    }
-
-    /**
-     * Changes the overlay visibility: this should be called instead of changing
-     * [HomeTileGridNavigation.isVisible] directly.
-     *
-     * It's important this is only called for user actions because our Telemetry
-     * is dependent on it.
-     */
-    fun setOverlayVisibleByUser(toShow: Boolean, toAnimate: Boolean = false) {
-        homeScreen.setVisibility(if (toShow) View.VISIBLE else View.GONE, toAnimate)
-        TelemetryWrapper.drawerShowHideEvent(toShow)
     }
 
     inner class BrowserToolbarStateProvider : ToolbarStateProvider {
