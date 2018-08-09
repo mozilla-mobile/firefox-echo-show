@@ -151,8 +151,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
         ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr)
     }
 
-    private fun onTextInputUrlEntered(urlStr: String,
-                                      autocompleteResult: InlineAutocompleteEditText.AutocompleteResult) {
+    fun onTextInputUrlEntered(urlStr: String,
+                              autocompleteResult: InlineAutocompleteEditText.AutocompleteResult) {
         ViewUtils.hideKeyboard(container)
         ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr) { isUrl ->
             TelemetryWrapper.urlBarEvent(isUrl, autocompleteResult)

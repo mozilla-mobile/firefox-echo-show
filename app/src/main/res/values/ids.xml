@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Attached to certain views that need to retrieve user input without
+    displaying custom UI. This ET is kept out of view and focused programmatically-->
+    <item name="hiddenEditText" type="id"/>
+</resources>

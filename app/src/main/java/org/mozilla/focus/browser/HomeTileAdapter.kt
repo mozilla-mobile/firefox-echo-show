@@ -25,13 +25,17 @@ import org.mozilla.focus.ext.forceExhaustive
 import org.mozilla.focus.ext.toJavaURI
 import org.mozilla.focus.ext.withRoundedCorners
 import org.mozilla.focus.home.BundledHomeTile
-import org.mozilla.focus.home.BundledTilesManager
 import org.mozilla.focus.home.CustomHomeTile
 import org.mozilla.focus.home.HomeTile
 import org.mozilla.focus.home.HomeTilePlaceholderGenerator
+import org.mozilla.focus.home.BundledTilesManager
+import org.mozilla.focus.home.TileAction
 import org.mozilla.focus.home.HomeTileScreenshotStore
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.FormattedDomain
+import org.mozilla.focus.utils.HiddenEditTextClickListener
+import org.mozilla.focus.utils.attachHiddenEditText
+import org.mozilla.focus.utils.removeHiddenEditText
 
 /**
  * Duration of animation to show custom tile. If the duration is too short, the tile will just
@@ -65,15 +69,32 @@ class HomeTileAdapter(
             }
         }.forceExhaustive
 
-        itemView.setOnClickListener {
-            loadUrl(item.url)
-            TelemetryWrapper.homeTileClickEvent(item)
+        val setSearchBehavior: ViewGroup.() -> Unit = {
+            attachHiddenEditText(this, item.title)
+            this.setOnClickListener {
+                HiddenEditTextClickListener().onClick(it)
+                TelemetryWrapper.homeTileClickEvent(item)
+            }
         }
-
-        itemView.setOnLongClickListener {
+        val setNavigateBehavior: View.() -> Unit = {
+            removeHiddenEditText(this)
+            this.setOnClickListener {
+                loadUrl(item.url)
+                TelemetryWrapper.homeTileClickEvent(item)
+            }
+        }
+        val removeTile = View.OnLongClickListener {
             onTileLongClick?.invoke()
             lastLongClickedTile = item
             true
+        }
+
+        if (item is BundledHomeTile && item.action == TileAction.SEARCH && itemView is ViewGroup) {
+            itemView.setSearchBehavior()
+            itemView.setOnLongClickListener { true }
+        } else {
+            itemView.setNavigateBehavior()
+            itemView.setOnLongClickListener(removeTile)
         }
 
         val tvWhiteColor = ContextCompat.getColor(holder.itemView.context, R.color.tv_white)

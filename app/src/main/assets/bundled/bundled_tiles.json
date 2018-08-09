@@ -10,7 +10,8 @@
         "id": "googleVideo",
         "url": "https://www.google.com/",
         "title": "Google Search",
-        "img": "tile_google.png"
+        "img": "tile_google.png",
+        "action": "SEARCH"
     },
     {
         "id": "wikipedia",

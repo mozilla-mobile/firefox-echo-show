@@ -12,6 +12,7 @@ private const val KEY_TITLE = "title"
 
 private const val KEY_IMG = "img"
 private const val KEY_ID = "id"
+private const val KEY_ACTION = "action"
 
 sealed class HomeTile(val url: String, val title: String) {
     fun idToString() = when (this) {
@@ -30,7 +31,8 @@ class BundledHomeTile(
         title: String,
         val imagePath: String,
         /** Unique id used to identify specific home tiles, e.g. for deletion, etc. **/
-        val id: String
+        val id: String,
+        val action: TileAction
 ) : HomeTile(url, title) {
 
     public override fun toJSONObject() = super.toJSONObject().apply {
@@ -43,7 +45,9 @@ class BundledHomeTile(
             return BundledHomeTile(jsonObject.getString(KEY_URL),
                     jsonObject.getString(KEY_TITLE),
                     jsonObject.getString(KEY_IMG),
-                    jsonObject.getString(KEY_ID))
+                    jsonObject.getString(KEY_ID),
+                    action = jsonObject.optString(KEY_ACTION, TileAction.NAVIGATE.name)
+                            .let { TileAction.valueOf(it) })
         }
     }
 }
@@ -66,4 +70,8 @@ class CustomHomeTile(
                 id = UUID.fromString(jsonObject.getString(KEY_ID))
         )
     }
+}
+
+enum class TileAction {
+    NAVIGATE, SEARCH
 }
