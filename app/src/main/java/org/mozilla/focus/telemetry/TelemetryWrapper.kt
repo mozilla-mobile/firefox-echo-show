@@ -8,7 +8,6 @@ package org.mozilla.focus.telemetry
 import android.content.Context
 import android.net.http.SslError
 import android.os.StrictMode
-import android.support.annotation.AnyThread
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText.AutocompleteResult
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.home.BundledHomeTile
@@ -29,7 +28,6 @@ import org.mozilla.telemetry.ping.TelemetryMobileEventPingBuilder
 import org.mozilla.telemetry.schedule.jobscheduler.JobSchedulerTelemetryScheduler
 import org.mozilla.telemetry.serialize.JSONPingSerializer
 import org.mozilla.telemetry.storage.FileTelemetryStorage
-import java.util.Collections
 
 @Suppress(
         // Yes, this a large class with a lot of functions. But it's very simple and still easy to read.
@@ -68,7 +66,6 @@ object TelemetryWrapper {
         const val HOME_TILE = "home_tile"
         val TURBO_MODE = "turbo_mode"
         val PIN_PAGE = "pin_page"
-        val POCKET_VIDEO = "pocket_video"
     }
 
     internal object Value {
@@ -82,7 +79,6 @@ object TelemetryWrapper {
         val OFF = "off"
         val TILE_BUNDLED = "bundled"
         val TILE_CUSTOM = "custom"
-        val POCKET_VIDEO_MEGATILE = "pocket_video_tile"
     }
 
     private object Extra {
@@ -95,9 +91,6 @@ object TelemetryWrapper {
         // For the value, "autocomplete_source" exceeds max extra key length.
         val AUTOCOMPLETE_SOURCE = "autocompl_src"
     }
-
-    @get:AnyThread // Synchronize so we don't have to worry which thread telemetry is called on.
-    private val pocketUniqueClickedVideoIDs = Collections.synchronizedSet(mutableSetOf<Int>())
 
     @JvmStatic
     fun init(context: Context) {
@@ -145,29 +138,11 @@ object TelemetryWrapper {
     fun startSession() {
         TelemetryHolder.get().recordSessionStart()
         TelemetryEvent.create(Category.ACTION, Method.FOREGROUND, Object.APP).queue()
-
-        // We call reset in both startSession and stopSession. We call it here to make sure we
-        // clean up before a new session if we crashed before stopSession.
-        resetSessionMeasurements()
     }
 
     fun stopSession() {
         TelemetryHolder.get().recordSessionEnd()
         TelemetryEvent.create(Category.ACTION, Method.BACKGROUND, Object.APP).queue()
-
-        // We call reset in both startSession and stopSession. We call it here to make sure we
-        // don't persist the user's visited tile history on disk longer than strictly necessary.
-        queueSessionMeasurements()
-        resetSessionMeasurements()
-    }
-
-    private fun queueSessionMeasurements() {
-        TelemetryEvent.create(Category.AGGREGATE, Method.CLICK, Object.POCKET_VIDEO,
-                pocketUniqueClickedVideoIDs.size.toString()).queue()
-    }
-
-    private fun resetSessionMeasurements() {
-        pocketUniqueClickedVideoIDs.clear()
     }
 
     @JvmStatic
@@ -285,11 +260,6 @@ object TelemetryWrapper {
     fun homeTileRemovedEvent(removedTile: HomeTile) {
         TelemetryEvent.create(Category.ACTION, Method.REMOVE, Object.HOME_TILE,
                 getTileTypeAsStringValue(removedTile)).queue()
-    }
-
-    @AnyThread // pocketUniqueClickedVideoIDs is synchronized.
-    fun pocketVideoClickEvent(id: Int) {
-        pocketUniqueClickedVideoIDs.add(id)
     }
 
     private fun boolToOnOff(boolean: Boolean) = if (boolean) Value.ON else Value.OFF
