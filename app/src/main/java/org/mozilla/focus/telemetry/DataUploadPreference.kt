@@ -5,8 +5,10 @@
 package org.mozilla.focus.telemetry
 
 import android.content.Context
+import android.os.StrictMode
 import android.preference.PreferenceManager
 import org.mozilla.focus.R
+import org.mozilla.focus.utils.AppConstants
 import org.mozilla.telemetry.TelemetryHolder
 
 private const val PREF_KEY_TELEMETRY = R.string.pref_key_telemetry
@@ -16,19 +18,18 @@ internal object DataUploadPreference {
 
     @Suppress("UNUSED_PARAMETER")
     fun isEnabled(context: Context): Boolean {
-        return false // TODO: Re-enable in #22.
-//        if (AppConstants.isDevBuild()) return false
-//
-//        // The first access to shared preferences will require a disk read.
-//        val threadPolicy = StrictMode.allowThreadDiskReads()
-//        try {
-//            val resources = context.resources
-//            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-//
-//            return preferences.getBoolean(resources.getString(PREF_KEY_TELEMETRY), true)
-//        } finally {
-//            StrictMode.setThreadPolicy(threadPolicy)
-//        }
+        if (AppConstants.isDevBuild()) return false
+
+        // The first access to shared preferences will require a disk read.
+        val threadPolicy = StrictMode.allowThreadDiskReads()
+        try {
+            val resources = context.resources
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+            return preferences.getBoolean(resources.getString(PREF_KEY_TELEMETRY), true)
+        } finally {
+            StrictMode.setThreadPolicy(threadPolicy)
+        }
     }
 
     fun setIsEnabled(context: Context, enabled: Boolean) {
