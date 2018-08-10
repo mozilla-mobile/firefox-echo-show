@@ -19,7 +19,7 @@ import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard
 import mozilla.components.ui.icons.R as iconsR
 
 enum class NavigationEvent {
-    HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, LOAD_TILE, TURBO, PIN_ACTION;
+    HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, TURBO, PIN_ACTION;
 
     companion object {
         const val VAL_CHECKED = "checked"

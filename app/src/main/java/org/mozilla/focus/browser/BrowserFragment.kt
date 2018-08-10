@@ -154,7 +154,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             NavigationEvent.SETTINGS -> Unit // No Settings in BrowserFragment
             NavigationEvent.LOAD_URL ->
                 (activity as MainActivity).onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
-            NavigationEvent.LOAD_TILE -> (activity as MainActivity).onNonTextInputUrlEntered(value!!)
             NavigationEvent.PIN_ACTION -> {
                 this@BrowserFragment.url?.let { url ->
                     val brandName = context.getString(R.string.firefox_brand_name)
@@ -194,7 +193,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         val layout = inflater.inflate(R.layout.fragment_browser, container, false)
 
         with (layout.homeScreen) {
-            onNavigationEvent = this@BrowserFragment.onNavigationEvent
+            onTileClicked = { (activity as MainActivity).onNonTextInputUrlEntered(it) }
             visibility = View.GONE
             onPreSetVisibilityListener = {
                 // It's a pre-set-visibility listener so we can't use isStartupHomePageVisible.

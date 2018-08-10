@@ -233,7 +233,7 @@ object TelemetryWrapper {
             }
 
             // Load is handled in a separate event
-            NavigationEvent.LOAD_URL, NavigationEvent.LOAD_TILE -> return
+            NavigationEvent.LOAD_URL -> return
 
             NavigationEvent.HOME -> throw NotImplementedError("This code is expected to be removed; implementation not required")
         }

@@ -47,8 +47,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         (adapter as HomeTileAdapter).onTileLongClick = newValue
     }
 
-    var onNavigationEvent: ((event: NavigationEvent, value: String?,
-                             autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit)? = null
+    lateinit var onTileClicked: (value: String) -> Unit
     /** Called inside [setVisibility] right before super.setVisibility is called. */
     var onPreSetVisibilityListener: ((isVisible: Boolean) -> Unit)? = null
 
@@ -64,7 +63,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
 
         adapter = HomeTileAdapter(uiLifecycleCancelJob, homeTiles, loadUrl = { urlStr ->
             if (urlStr.isNotEmpty()) {
-                onNavigationEvent?.invoke(NavigationEvent.LOAD_TILE, urlStr, null)
+                onTileClicked.invoke(urlStr)
             }
         }, onTileLongClick = openHomeTileContextMenu, onTileFocused = {
             val prefInt = PreferenceManager.getDefaultSharedPreferences(context).getInt(SHOW_UNPIN_TOAST_COUNTER_PREF, 0)
