@@ -131,8 +131,8 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         return session
     }
 
-    val onToolbarEvent = { event: ToolbarEvent, value: String?,
-                           autocompleteResult: InlineAutocompleteEditText.AutocompleteResult? ->
+    fun onToolbarEvent(event: ToolbarEvent, value: String?,
+                       autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
         val context = context!!
         when (event) {
             ToolbarEvent.BACK -> if (webView?.canGoBack() ?: false) webView?.goBack()
