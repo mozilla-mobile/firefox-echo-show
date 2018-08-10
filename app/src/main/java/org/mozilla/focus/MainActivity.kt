@@ -36,7 +36,6 @@ import org.mozilla.focus.settings.UserClearDataEvent
 import org.mozilla.focus.settings.UserClearDataEventObserver
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
 import org.mozilla.focus.toolbar.ToolbarCallbacks
 import org.mozilla.focus.toolbar.ToolbarEvent
@@ -153,11 +152,10 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
     }
 
     private fun onTextInputUrlEntered(urlStr: String,
-                                      autocompleteResult: InlineAutocompleteEditText.AutocompleteResult,
-                                      inputLocation: UrlTextInputLocation) {
+                                      autocompleteResult: InlineAutocompleteEditText.AutocompleteResult) {
         ViewUtils.hideKeyboard(container)
         ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr) { isUrl ->
-            TelemetryWrapper.urlBarEvent(isUrl, autocompleteResult, inputLocation)
+            TelemetryWrapper.urlBarEvent(isUrl, autocompleteResult)
         }
     }
 
@@ -176,7 +174,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
             // The home button does nothing on when home is visible.
             return
         } else if (event == ToolbarEvent.LOAD_URL) {
-            onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
+            onTextInputUrlEntered(value!!, autocompleteResult!!)
             return
         }
 

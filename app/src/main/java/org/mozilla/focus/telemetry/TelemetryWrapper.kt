@@ -154,18 +154,17 @@ object TelemetryWrapper {
                 .scheduleUpload()
     }
 
-    fun urlBarEvent(isUrl: Boolean, autocompleteResult: AutocompleteResult, inputLocation: UrlTextInputLocation) {
+    fun urlBarEvent(isUrl: Boolean, autocompleteResult: AutocompleteResult) {
         if (isUrl) {
-            TelemetryWrapper.browseEvent(autocompleteResult, inputLocation)
+            TelemetryWrapper.urlEnterEvent(autocompleteResult)
         } else {
-            TelemetryWrapper.searchEnterEvent(inputLocation)
+            TelemetryWrapper.searchEnterEvent()
         }
     }
 
-    private fun browseEvent(autocompleteResult: AutocompleteResult, inputLocation: UrlTextInputLocation) {
+    private fun urlEnterEvent(autocompleteResult: AutocompleteResult) {
         val event = TelemetryEvent.create(Category.ACTION, Method.TYPE_URL, Object.TOOLBAR)
                 .extra(Extra.AUTOCOMPLETE, (!autocompleteResult.isEmpty).toString())
-                .extra(Extra.SOURCE, inputLocation.extra)
 
         if (!autocompleteResult.isEmpty) {
             event.extra(Extra.TOTAL, autocompleteResult.totalItems.toString())
@@ -175,16 +174,12 @@ object TelemetryWrapper {
         event.queue()
     }
 
-    private fun searchEnterEvent(inputLocation: UrlTextInputLocation) {
+    private fun searchEnterEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.TYPE_QUERY, Object.TOOLBAR).queue()
+
         val telemetry = TelemetryHolder.get()
-
-        TelemetryEvent.create(Category.ACTION, Method.TYPE_QUERY, Object.TOOLBAR)
-                .extra(Extra.SOURCE, inputLocation.extra)
-                .queue()
-
         val searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
                 telemetry.configuration.context)
-
         telemetry.recordSearch(SearchesMeasurement.LOCATION_ACTIONBAR, searchEngine.identifier)
     }
 
