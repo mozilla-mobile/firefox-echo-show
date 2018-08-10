@@ -255,9 +255,3 @@ object TelemetryWrapper {
         is CustomHomeTile -> Value.TILE_CUSTOM
     }
 }
-
-enum class UrlTextInputLocation(internal val extra: String) {
-    // We hardcode the Strings so we can change the enum
-    HOME("home"),
-    MENU("menu"),
-}
