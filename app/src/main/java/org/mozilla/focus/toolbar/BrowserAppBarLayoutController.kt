@@ -33,7 +33,7 @@ class BrowserAppBarLayoutController(
 
         appBarOverlay.setOnClickListener {
             appBarOverlay.visibility = View.GONE
-            getBrowserFragment()?.homeScreen?.setVisibilityWithAnimation(View.GONE)
+            getBrowserFragment()?.homeScreen?.setVisibilityWithAnimation(toShow = false)
             TelemetryWrapper.dismissHomeOverlayClickEvent()
         }
     }

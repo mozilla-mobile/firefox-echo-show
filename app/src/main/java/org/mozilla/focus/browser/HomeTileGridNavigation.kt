@@ -83,11 +83,11 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         scrollTo(0, 0)
     }
 
-    fun setVisibilityWithAnimation(visibility: Int) {
-        if (this.visibility == visibility) { return }
+    fun setVisibilityWithAnimation(toShow: Boolean) {
+        val newVisibility = if (toShow) View.VISIBLE else View.GONE
+        if (visibility == newVisibility) { return }
 
-        val toShow = visibility == View.VISIBLE
-        if (toShow) { setVisibility(View.VISIBLE) }
+        if (toShow) { visibility = View.VISIBLE }
 
         val screenHeight = resources.displayMetrics.heightPixels.toFloat()
         translationY = if (toShow) screenHeight else 0f
@@ -98,7 +98,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         if (!toShow) {
-                            setVisibility(View.GONE)
+                            visibility = View.GONE
                             translationY = 0f // Reset the position for next show.
                         }
                     }

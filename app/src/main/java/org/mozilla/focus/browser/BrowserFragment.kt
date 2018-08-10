@@ -14,8 +14,6 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fragment_browser.*
@@ -152,7 +150,8 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             ToolbarEvent.RELOAD -> webView?.reload()
             ToolbarEvent.SETTINGS -> Unit // No Settings in BrowserFragment
             ToolbarEvent.PIN_ACTION -> this@BrowserFragment.url?.let { url -> onPinToolbarEvent(context, url, value) }
-            ToolbarEvent.HOME -> if (!homeScreen.isVisible) { homeScreen.setVisibilityWithAnimation(VISIBLE) }
+            ToolbarEvent.HOME -> if (!homeScreen.isVisible) { homeScreen.setVisibilityWithAnimation(toShow = true)
+            }
 
             ToolbarEvent.LOAD_URL -> throw IllegalStateException("Expected $event to be handled sooner")
         }
@@ -238,7 +237,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     fun loadUrl(url: String) {
         // Intents can trigger loadUrl, and we need to make sure the homescreen is always hidden.
-        homeScreen.setVisibilityWithAnimation(GONE)
+        homeScreen.setVisibilityWithAnimation(toShow = false)
         val webView = webView
         if (webView != null && !TextUtils.isEmpty(url) && !URLS_BLOCKED_FROM_USERS.contains(url)) {
             webView.loadUrl(url)
