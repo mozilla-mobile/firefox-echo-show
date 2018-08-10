@@ -15,7 +15,7 @@ import org.mozilla.focus.home.CustomHomeTile
 import org.mozilla.focus.home.HomeTile
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.search.SearchEngineManager
-import org.mozilla.focus.toolbar.NavigationEvent
+import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.telemetry.Telemetry
 import org.mozilla.telemetry.TelemetryHolder
 import org.mozilla.telemetry.config.TelemetryConfiguration
@@ -213,29 +213,29 @@ object TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.SETTING, Value.CLEAR_DATA).queue()
     }
 
-    fun overlayClickEvent(event: NavigationEvent, isTurboButtonChecked: Boolean, isPinButtonChecked: Boolean) {
+    fun overlayClickEvent(event: ToolbarEvent, isTurboButtonChecked: Boolean, isPinButtonChecked: Boolean) {
         val telemetryValue = when (event) {
-            NavigationEvent.SETTINGS -> Value.SETTINGS
+            ToolbarEvent.SETTINGS -> Value.SETTINGS
 
-            NavigationEvent.BACK -> Value.BACK
-            NavigationEvent.FORWARD -> Value.FORWARD
-            NavigationEvent.RELOAD -> Value.RELOAD
+            ToolbarEvent.BACK -> Value.BACK
+            ToolbarEvent.FORWARD -> Value.FORWARD
+            ToolbarEvent.RELOAD -> Value.RELOAD
 
             // For legacy reasons, turbo has different telemetry params so we special case it.
             // Pin has a similar state change so we model it after turbo.
-            NavigationEvent.TURBO -> {
+            ToolbarEvent.TURBO -> {
                 TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.TURBO_MODE, boolToOnOff(isTurboButtonChecked)).queue()
                 return
             }
-            NavigationEvent.PIN_ACTION -> {
+            ToolbarEvent.PIN_ACTION -> {
                 TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.PIN_PAGE, boolToOnOff(isPinButtonChecked)).queue()
                 return
             }
 
             // Load is handled in a separate event
-            NavigationEvent.LOAD_URL -> return
+            ToolbarEvent.LOAD_URL -> return
 
-            NavigationEvent.HOME -> throw NotImplementedError("This code is expected to be removed; implementation not required")
+            ToolbarEvent.HOME -> throw NotImplementedError("This code is expected to be removed; implementation not required")
         }
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, telemetryValue).queue()
     }

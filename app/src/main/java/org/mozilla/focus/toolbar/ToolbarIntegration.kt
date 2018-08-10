@@ -15,10 +15,10 @@ import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
-import org.mozilla.focus.toolbar.NavigationEvent.* // ktlint-disable no-wildcard-imports
+import org.mozilla.focus.toolbar.ToolbarEvent.* // ktlint-disable no-wildcard-imports
 import mozilla.components.ui.icons.R as iconsR
 
-enum class NavigationEvent {
+enum class ToolbarEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, TURBO, PIN_ACTION;
 
     companion object {
@@ -34,7 +34,7 @@ class ToolbarCallbacks(
         val onProgressUpdate: (progress: Int) -> Unit
 )
 
-typealias OnToolbarEvent = (event: NavigationEvent, value: String?,
+typealias OnToolbarEvent = (event: ToolbarEvent, value: String?,
                             autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit
 
 /**
@@ -115,7 +115,7 @@ object ToolbarIntegration {
                     if (!toolbarStateProvider.isStartupHomepageVisible()) View.VISIBLE
                     else View.INVISIBLE
                 }) { isSelected ->
-            onToolbarEvent(PIN_ACTION, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
+            onToolbarEvent(PIN_ACTION, if (isSelected) ToolbarEvent.VAL_CHECKED else ToolbarEvent.VAL_UNCHECKED, null)
         }
         toolbar.addBrowserAction(pinButton)
 
@@ -127,7 +127,7 @@ object ToolbarIntegration {
                         R.string.turbo_mode_disable_a11y),
                 background = R.drawable.toolbar_toggle_background,
                 selected = Settings.getInstance(toolbar.context).isBlockingEnabled) { isSelected ->
-            onToolbarEvent(TURBO, if (isSelected) NavigationEvent.VAL_CHECKED else NavigationEvent.VAL_UNCHECKED, null)
+            onToolbarEvent(TURBO, if (isSelected) ToolbarEvent.VAL_CHECKED else ToolbarEvent.VAL_UNCHECKED, null)
         }
         toolbar.addBrowserAction(turboButton)
         */

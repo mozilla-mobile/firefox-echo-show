@@ -29,7 +29,7 @@ import org.mozilla.focus.session.Source
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
-import org.mozilla.focus.toolbar.NavigationEvent
+import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarCallbacks
 import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
@@ -169,20 +169,20 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
         }
     }
 
-    private fun onToolbarEvent(event: NavigationEvent, value: String?, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
+    private fun onToolbarEvent(event: ToolbarEvent, value: String?, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
         when (event) {
-            NavigationEvent.SETTINGS -> {
+            ToolbarEvent.SETTINGS -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 return
             }
 
-//            NavigationEvent.TURBO -> Settings.getInstance(this).isBlockingEnabled = value == NavigationEvent.VAL_CHECKED
+//            ToolbarEvent.TURBO -> Settings.getInstance(this).isBlockingEnabled = value == ToolbarEvent.VAL_CHECKED
             else -> Unit // Do nothing.
         }
 
         val browserFragment = supportFragmentManager.getBrowserFragment()
         if (browserFragment != null && browserFragment.isVisible) {
-            browserFragment.onNavigationEvent(event, value, autocompleteResult)
+            browserFragment.onToolbarEvent(event, value, autocompleteResult)
         } // BrowserFragment is our only fragment: this else case should never happen.
     }
 

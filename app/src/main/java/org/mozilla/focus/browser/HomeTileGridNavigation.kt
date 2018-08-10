@@ -15,10 +15,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
 import kotlinx.coroutines.experimental.Job
-import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.home.HomeTilesManager
-import org.mozilla.focus.toolbar.NavigationEvent
 import kotlin.properties.Delegates
 
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"

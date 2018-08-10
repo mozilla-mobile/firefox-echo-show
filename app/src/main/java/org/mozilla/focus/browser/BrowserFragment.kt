@@ -39,7 +39,7 @@ import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.toolbar.ToolbarStateProvider
-import org.mozilla.focus.toolbar.NavigationEvent
+import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.utils.ViewUtils.showCenteredTopToast
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 
@@ -131,34 +131,34 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         return session
     }
 
-    val onNavigationEvent = { event: NavigationEvent, value: String?,
-            autocompleteResult: InlineAutocompleteEditText.AutocompleteResult? ->
+    val onToolbarEvent = { event: ToolbarEvent, value: String?,
+                           autocompleteResult: InlineAutocompleteEditText.AutocompleteResult? ->
         val context = context!!
         when (event) {
-            NavigationEvent.BACK -> if (webView?.canGoBack() ?: false) webView?.goBack()
-            NavigationEvent.FORWARD -> if (webView?.canGoForward() ?: false) webView?.goForward()
-            NavigationEvent.TURBO -> {
+            ToolbarEvent.BACK -> if (webView?.canGoBack() ?: false) webView?.goBack()
+            ToolbarEvent.FORWARD -> if (webView?.canGoForward() ?: false) webView?.goForward()
+            ToolbarEvent.TURBO -> {
                 when (value) {
-                    NavigationEvent.VAL_CHECKED -> {
+                    ToolbarEvent.VAL_CHECKED -> {
                         showCenteredTopToast(context, R.string.turbo_mode_enabled_toast,
                                 0, TOAST_Y_OFFSET)
                     }
-                    NavigationEvent.VAL_UNCHECKED -> {
+                    ToolbarEvent.VAL_UNCHECKED -> {
                         showCenteredTopToast(context, R.string.turbo_mode_disabled_toast,
                             0, TOAST_Y_OFFSET)
                     }
                 }
                 webView?.reload()
             }
-            NavigationEvent.RELOAD -> webView?.reload()
-            NavigationEvent.SETTINGS -> Unit // No Settings in BrowserFragment
-            NavigationEvent.LOAD_URL ->
+            ToolbarEvent.RELOAD -> webView?.reload()
+            ToolbarEvent.SETTINGS -> Unit // No Settings in BrowserFragment
+            ToolbarEvent.LOAD_URL ->
                 (activity as MainActivity).onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
-            NavigationEvent.PIN_ACTION -> {
+            ToolbarEvent.PIN_ACTION -> {
                 this@BrowserFragment.url?.let { url ->
                     val brandName = context.getString(R.string.firefox_brand_name)
                     when (value) {
-                        NavigationEvent.VAL_CHECKED -> {
+                        ToolbarEvent.VAL_CHECKED -> {
                             CustomTilesManager.getInstance(context).pinSite(context, url,
                                     webView?.takeScreenshot())
                             homeScreen.refreshTilesForInsertion()
@@ -166,7 +166,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                                     R.string.notification_pinned_general2, brandName),
                                     0, TOAST_Y_OFFSET)
                         }
-                        NavigationEvent.VAL_UNCHECKED -> {
+                        ToolbarEvent.VAL_UNCHECKED -> {
                             url.toUri()?.let {
                                 val tileId = BundledTilesManager.getInstance(context).unpinSite(context, it)
                                         ?: CustomTilesManager.getInstance(context).unpinSite(context, url)
@@ -184,7 +184,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                     }
                 }
             }
-            NavigationEvent.HOME -> if (!homeScreen.isVisible) { homeScreen.setVisibilityWithAnimation(VISIBLE) }
+            ToolbarEvent.HOME -> if (!homeScreen.isVisible) { homeScreen.setVisibilityWithAnimation(VISIBLE) }
         }
         Unit
     }
