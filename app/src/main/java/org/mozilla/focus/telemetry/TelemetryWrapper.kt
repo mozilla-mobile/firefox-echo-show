@@ -62,7 +62,6 @@ object TelemetryWrapper {
         val SETTING = "setting"
         val APP = "app"
         val HOME = "home"
-        val MENU = "menu"
         val BROWSER = "browser"
         const val HOME_TILE = "home_tile"
         val TURBO_MODE = "turbo_mode"
@@ -75,6 +74,7 @@ object TelemetryWrapper {
         val CLEAR_DATA = "clear_data"
         val BACK = "back"
         val FORWARD = "forward"
+        val HOME = "home"
         val SETTINGS = "settings"
         val ON = "on"
         val OFF = "off"
@@ -213,8 +213,15 @@ object TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.SETTING, Value.CLEAR_DATA).queue()
     }
 
-    fun overlayClickEvent(event: ToolbarEvent, isTurboButtonChecked: Boolean, isPinButtonChecked: Boolean) {
+    fun toolbarEvent(event: ToolbarEvent, value: String?) {
+        val isCheckedValue = when (value) {
+            ToolbarEvent.VAL_CHECKED -> Value.ON
+            ToolbarEvent.VAL_UNCHECKED -> Value.OFF
+            else -> null
+        }
+
         val telemetryValue = when (event) {
+            ToolbarEvent.HOME -> Value.HOME
             ToolbarEvent.SETTINGS -> Value.SETTINGS
 
             ToolbarEvent.BACK -> Value.BACK
@@ -224,28 +231,24 @@ object TelemetryWrapper {
             // For legacy reasons, turbo has different telemetry params so we special case it.
             // Pin has a similar state change so we model it after turbo.
             ToolbarEvent.TURBO -> {
-                TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.TURBO_MODE, boolToOnOff(isTurboButtonChecked)).queue()
+//                TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.TURBO_MODE, boolToOnOff(toolbarStateProvider)).queue()
                 return
             }
             ToolbarEvent.PIN_ACTION -> {
-                TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.PIN_PAGE, boolToOnOff(isPinButtonChecked)).queue()
+                TelemetryEvent.create(Category.ACTION, Method.CHANGE, Object.PIN_PAGE, isCheckedValue).queue()
                 return
             }
 
             // Load is handled in a separate event
             ToolbarEvent.LOAD_URL -> return
-
-            ToolbarEvent.HOME -> throw NotImplementedError("This code is expected to be removed; implementation not required")
         }
-        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.MENU, telemetryValue).queue()
+        TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, telemetryValue).queue()
     }
 
     fun homeTileRemovedEvent(removedTile: HomeTile) {
         TelemetryEvent.create(Category.ACTION, Method.REMOVE, Object.HOME_TILE,
                 getTileTypeAsStringValue(removedTile)).queue()
     }
-
-    private fun boolToOnOff(boolean: Boolean) = if (boolean) Value.ON else Value.OFF
 
     private fun getTileTypeAsStringValue(tile: HomeTile) = when (tile) {
         is BundledHomeTile -> Value.TILE_BUNDLED

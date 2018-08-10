@@ -17,8 +17,12 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_browser.*
 import mozilla.components.support.utils.SafeIntent
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
+import org.mozilla.focus.browser.BrowserFragmentCallbacks
+import org.mozilla.focus.ext.getBrowserFragment
+import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.toSafeIntent
 import org.mozilla.focus.home.pocket.Pocket
 import org.mozilla.focus.iwebview.IWebView
@@ -27,24 +31,20 @@ import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
 import org.mozilla.focus.session.Session
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.session.Source
+import org.mozilla.focus.settings.SettingsActivity
+import org.mozilla.focus.settings.UserClearDataEvent
+import org.mozilla.focus.settings.UserClearDataEventObserver
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
-import org.mozilla.focus.toolbar.ToolbarEvent
+import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
 import org.mozilla.focus.toolbar.ToolbarCallbacks
+import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.utils.OnUrlEnteredListener
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
-import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
-import org.mozilla.focus.browser.BrowserFragmentCallbacks
-import org.mozilla.focus.ext.getBrowserFragment
-import org.mozilla.focus.ext.isVisible
-import org.mozilla.focus.settings.SettingsActivity
-import org.mozilla.focus.settings.UserClearDataEvent
-import org.mozilla.focus.settings.UserClearDataEventObserver
-import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
 
 class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, BrowserFragmentCallbacks {
 
@@ -53,6 +53,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
     private val fragmentLifecycleCallbacks = MainActivityFragmentLifecycleCallbacks()
 
     private lateinit var toolbarCallbacks: ToolbarCallbacks
+    private val toolbarStateProvider = DelegateToBrowserToolbarStateProvider()
     private lateinit var appBarLayoutController: BrowserAppBarLayoutController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +92,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
 
         initViews()
         WebViewProvider.preload(this)
-        toolbarCallbacks = ToolbarIntegration.setup(toolbar, DelegateToBrowserToolbarStateProvider(), ::onToolbarEvent)
+        toolbarCallbacks = ToolbarIntegration.setup(toolbar, toolbarStateProvider, ::onToolbarEvent)
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
         UserClearDataEvent.liveData.observe(this, UserClearDataEventObserver(this))
     }
@@ -177,6 +178,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
             // The home button does nothing on when home is visible.
             return
         }
+
+        TelemetryWrapper.toolbarEvent(event, value)
 
         when (event) {
             ToolbarEvent.SETTINGS -> {
