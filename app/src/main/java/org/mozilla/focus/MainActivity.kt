@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_browser.*
 import mozilla.components.support.utils.SafeIntent
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.animation.VisibilityAnimator
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
@@ -218,5 +219,16 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         override fun getCurrentUrl() = getBrowserToolbarProvider()?.getCurrentUrl()
         override fun isURLPinned() = getBrowserToolbarProvider()?.isURLPinned() ?: false
         override fun isStartupHomepageVisible() = getBrowserToolbarProvider()?.isStartupHomepageVisible() ?: false
+    }
+
+    override fun onHomeTileLongClick(unpinTile: () -> Unit) {
+        unpinButton.setOnClickListener {
+            unpinTile()
+            VisibilityAnimator.animateVisibility(unpinOverlay, false)
+        }
+        unpinOverlay.setOnClickListener {
+            VisibilityAnimator.animateVisibility(unpinOverlay, false)
+        }
+        VisibilityAnimator.animateVisibility(unpinOverlay, true)
     }
 }

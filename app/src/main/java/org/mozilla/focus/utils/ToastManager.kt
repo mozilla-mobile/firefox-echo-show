@@ -35,7 +35,7 @@ object ToastManager {
 
     fun showToast(text: String, context: Context) {
         context.let {
-            showCenteredTopToast(it, text,
+            showCenteredBottomToast(it, text,
                     0, TOAST_Y_OFFSET)
         }
     }
@@ -47,8 +47,8 @@ object ToastManager {
     }
 }
 
-private fun showCenteredTopToast(context: Context, str: CharSequence, xOffset: Int, yOffset: Int) {
+private fun showCenteredBottomToast(context: Context, str: CharSequence, xOffset: Int, yOffset: Int) {
     val toast = Toast.makeText(context, str, Toast.LENGTH_SHORT)
-    toast.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP, xOffset, yOffset)
+    toast.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM, xOffset, yOffset)
     toast.show()
 }

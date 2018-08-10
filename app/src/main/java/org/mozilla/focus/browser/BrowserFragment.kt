@@ -9,10 +9,8 @@ import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.DisplayMetrics
-import android.view.ContextMenu
 import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -26,7 +24,6 @@ import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.toUri
 import org.mozilla.focus.home.BundledTilesManager
 import org.mozilla.focus.home.CustomTilesManager
-import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.IWebViewLifecycleFragment
 import org.mozilla.focus.session.NullSession
@@ -35,7 +32,6 @@ import org.mozilla.focus.session.SessionCallbackProxy
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.NonFatalAssertionException
 import org.mozilla.focus.telemetry.SentryWrapper
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.utils.ToastManager
@@ -47,11 +43,15 @@ private val URLS_BLOCKED_FROM_USERS = setOf(
 )
 
 /** An interface expected to be implemented by the Activities that create a BrowserFragment. */
-interface BrowserFragmentCallbacks {
+interface BrowserFragmentCallbacks : HomeTileLongClickListener {
     fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean)
     fun onFullScreenChange(isFullscreen: Boolean)
 
     fun onNonTextInputUrlEntered(urlStr: String)
+}
+
+interface HomeTileLongClickListener {
+    fun onHomeTileLongClick(unpinTile: () -> Unit)
 }
 
 /**
@@ -190,30 +190,13 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                 // It's a pre-set-visibility listener so we can't use isStartupHomePageVisible.
                 callbacks?.onHomeVisibilityChange(it, url == APP_URL_STARTUP_HOME)
             }
-            openHomeTileContextMenu = {
-                activity?.openContextMenu(this)
+            homeTileLongClickListener = object : HomeTileLongClickListener {
+                override fun onHomeTileLongClick(unpinTile: () -> Unit) {
+                    callbacks?.onHomeTileLongClick(unpinTile)
+                }
             }
-            registerForContextMenu(this)
         }
-
         return layout
-    }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.remove -> {
-                val homeTileAdapter = homeScreen.adapter as HomeTileAdapter
-                val tileToRemove = homeTileAdapter.lastLongClickedTile ?: return false
-
-                // This assumes that since we're deleting from a Home Tile object that we created
-                // that the Uri is valid, so we do not do error handling here.
-                HomeTilesManager.removeHomeTile(tileToRemove, context!!)
-                homeTileAdapter.removeTile(tileToRemove.idToString())
-                TelemetryWrapper.homeTileRemovedEvent(tileToRemove)
-                return true
-            }
-            else -> return false
-        }
     }
 
     override fun onDestroyView() {
@@ -222,10 +205,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         // there's no good way to pass in the uiLifecycleJob. We could consider other solutions
         // but it'll add complexity that I don't think is probably worth it.
         homeScreen.uiLifecycleCancelJob.cancel(CancellationException("Parent lifecycle has ended"))
-    }
-
-    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-        activity!!.menuInflater.inflate(R.menu.menu_context_hometile, menu)
     }
 
     fun loadUrl(url: String) {

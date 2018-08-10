@@ -49,4 +49,21 @@
         android:visibility="gone"
         />
 
+    <FrameLayout
+        android:id="@+id/unpinOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:elevation="16dp">
+        <Button
+            android:id="@+id/unpinButton"
+            style="@style/PlatformPrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="18dp"
+            android:text="@string/homescreen_tile_remove" />
+    </FrameLayout>
+
 </android.support.design.widget.CoordinatorLayout>

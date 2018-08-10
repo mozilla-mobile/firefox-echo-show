@@ -98,12 +98,12 @@
         <item name="android:background">@drawable/button_onboarding</item>
     </style>
 
-    <style name="PrimaryButtonNative" parent="PillButton">
+    <style name="PlatformPrimaryButton" parent="PillButton">
         <item name="android:textColor">@color/amazon_settings_background</item>
         <item name="android:background">@drawable/button_primary_native</item>
     </style>
 
-    <style name="SecondaryButtonNative" parent="PillButton">
+    <style name="PlatformSecondaryButton" parent="PillButton">
         <item name="android:textColor">@color/button_secondary_native_text_selector</item>
         <item name="android:background">@drawable/button_secondary_native</item>
     </style>

@@ -19,7 +19,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.utils.Provider
-import kotlin.properties.Delegates
 
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
 private const val MAX_UNPIN_TOAST_COUNT = 3
@@ -43,9 +42,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     // Setting the onTileLongClick function in the HomeTileAdapter is fragile
     // since we init the tiles in View.init and Android is inflating the view for us,
     // thus we need to use Delegates.observable to update onTileLongClick.
-    var openHomeTileContextMenu: (() -> Unit) by Delegates.observable({}) { _, _, newValue ->
-        (adapter as HomeTileAdapter).onTileLongClick = newValue
-    }
+    var homeTileLongClickListener: HomeTileLongClickListener? = null
 
     lateinit var onTileClicked: (value: String) -> Unit
     var urlSearchProvider: Provider<UrlSearcher?> = Provider()
@@ -66,7 +63,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
             if (urlStr.isNotEmpty()) {
                 onTileClicked.invoke(urlStr)
             }
-        }, onTileLongClick = openHomeTileContextMenu, onTileFocused = {
+        }, onTileFocused = {
             val prefInt = PreferenceManager.getDefaultSharedPreferences(context).getInt(SHOW_UNPIN_TOAST_COUNTER_PREF, 0)
             if (prefInt < MAX_UNPIN_TOAST_COUNT && canShowUpinToast) {
                 PreferenceManager.getDefaultSharedPreferences(context)
@@ -76,7 +73,8 @@ class HomeTileGridNavigation @JvmOverloads constructor(
                 Toast.makeText(context, R.string.homescreen_unpin_tutorial_toast, Toast.LENGTH_LONG).show()
                 canShowUpinToast = false
             }
-        }, urlSearchProvider = urlSearchProvider)
+        }, homeTileLongClickListenerProvider = { homeTileLongClickListener },
+        urlSearchProvider = urlSearchProvider)
         layoutManager = GridLayoutManager(context, COL_COUNT)
     }
 

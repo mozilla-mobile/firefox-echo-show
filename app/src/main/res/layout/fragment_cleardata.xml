@@ -25,7 +25,7 @@
 
     <Button
         android:id="@+id/cancelButton"
-        style="@style/SecondaryButtonNative"
+        style="@style/PlatformSecondaryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -36,7 +36,7 @@
 
     <Button
         android:id="@+id/confirmButton"
-        style="@style/PrimaryButtonNative"
+        style="@style/PlatformPrimaryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

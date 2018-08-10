@@ -33,6 +33,7 @@ import org.mozilla.focus.home.HomeTilePlaceholderGenerator
 import org.mozilla.focus.home.BundledTilesManager
 import org.mozilla.focus.home.TileAction
 import org.mozilla.focus.home.HomeTileScreenshotStore
+import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.FormattedDomain
 import org.mozilla.focus.utils.Provider
@@ -52,12 +53,9 @@ class HomeTileAdapter(
         private var tiles: MutableList<HomeTile>,
         private val loadUrl: (String) -> Unit,
         private val urlSearchProvider: Provider<UrlSearcher?>,
-        var onTileLongClick: (() -> Unit)?,
+        private val homeTileLongClickListenerProvider: () -> HomeTileLongClickListener?,
         var onTileFocused: (() -> Unit)?
 ) : RecyclerView.Adapter<TileViewHolder>() {
-
-    var lastLongClickedTile: HomeTile? = null
-        private set
 
     override fun onBindViewHolder(holder: TileViewHolder, position: Int) = with (holder) {
         val item = tiles[position]
@@ -121,8 +119,11 @@ class HomeTileAdapter(
     }
 
     private fun getDefaultLongClickListener(item: HomeTile) = View.OnLongClickListener {
-        onTileLongClick?.invoke()
-        lastLongClickedTile = item
+        homeTileLongClickListenerProvider()?.onHomeTileLongClick (unpinTile = {
+            HomeTilesManager.removeHomeTile(item, it.context)
+            removeTile(item.idToString())
+            TelemetryWrapper.homeTileRemovedEvent(item)
+        })
         true
     }
 
