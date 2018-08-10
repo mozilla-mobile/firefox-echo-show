@@ -80,6 +80,7 @@ object TelemetryWrapper {
         val OFF = "off"
         val TILE_BUNDLED = "bundled"
         val TILE_CUSTOM = "custom"
+        val OVERLAY = "overlay"
     }
 
     private object Extra {
@@ -243,6 +244,10 @@ object TelemetryWrapper {
             ToolbarEvent.LOAD_URL -> return
         }
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.TOOLBAR, telemetryValue).queue()
+    }
+
+    fun dismissHomeOverlayClickEvent() {
+        TelemetryEvent.create(Category.ACTION, Method.HIDE, Object.HOME, Value.OVERLAY)
     }
 
     fun homeTileRemovedEvent(removedTile: HomeTile) {

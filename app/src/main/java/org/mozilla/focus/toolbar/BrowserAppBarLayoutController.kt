@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_browser.*
 import mozilla.components.browser.toolbar.BrowserToolbar
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.ext.updateLayoutParams
+import org.mozilla.focus.telemetry.TelemetryWrapper
 
 private const val TOOLBAR_SCROLL_ENABLED_FLAGS = SCROLL_FLAG_SCROLL or
         SCROLL_FLAG_ENTER_ALWAYS or
@@ -33,6 +34,7 @@ class BrowserAppBarLayoutController(
         appBarOverlay.setOnClickListener {
             appBarOverlay.visibility = View.GONE
             getBrowserFragment()?.homeScreen?.setVisibilityWithAnimation(View.GONE)
+            TelemetryWrapper.dismissHomeOverlayClickEvent()
         }
     }
 
