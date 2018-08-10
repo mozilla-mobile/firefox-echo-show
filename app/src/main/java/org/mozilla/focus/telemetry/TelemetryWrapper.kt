@@ -58,7 +58,7 @@ object TelemetryWrapper {
     }
 
     private object Object {
-        val SEARCH_BAR = "search_bar"
+        val TOOLBAR = "search_bar" // search_bar to be consistent with other products.
         val SETTING = "setting"
         val APP = "app"
         val HOME = "home"
@@ -162,7 +162,7 @@ object TelemetryWrapper {
     }
 
     private fun browseEvent(autocompleteResult: AutocompleteResult, inputLocation: UrlTextInputLocation) {
-        val event = TelemetryEvent.create(Category.ACTION, Method.TYPE_URL, Object.SEARCH_BAR)
+        val event = TelemetryEvent.create(Category.ACTION, Method.TYPE_URL, Object.TOOLBAR)
                 .extra(Extra.AUTOCOMPLETE, (!autocompleteResult.isEmpty).toString())
                 .extra(Extra.SOURCE, inputLocation.extra)
 
@@ -177,7 +177,7 @@ object TelemetryWrapper {
     private fun searchEnterEvent(inputLocation: UrlTextInputLocation) {
         val telemetry = TelemetryHolder.get()
 
-        TelemetryEvent.create(Category.ACTION, Method.TYPE_QUERY, Object.SEARCH_BAR)
+        TelemetryEvent.create(Category.ACTION, Method.TYPE_QUERY, Object.TOOLBAR)
                 .extra(Extra.SOURCE, inputLocation.extra)
                 .queue()
 
