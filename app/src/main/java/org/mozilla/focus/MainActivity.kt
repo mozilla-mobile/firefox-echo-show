@@ -153,8 +153,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
                 null, null)
     }
 
-    override fun onTextInputUrlEntered(urlStr: String,
-                                       autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?,
+    fun onTextInputUrlEntered(urlStr: String,
+                                       autocompleteResult: InlineAutocompleteEditText.AutocompleteResult,
                                        inputLocation: UrlTextInputLocation?) {
         ViewUtils.hideKeyboard(container)
         // It'd be much cleaner/safer to do this with a kotlin callback.
@@ -176,6 +176,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
         if (event == ToolbarEvent.HOME && browserFragment?.homeScreen?.isVisible == true) {
             // The home button does nothing on when home is visible.
             return
+        } else if (event == ToolbarEvent.LOAD_URL) {
+            onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
+            return
         }
 
         TelemetryWrapper.toolbarEvent(event, value)
@@ -191,7 +194,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
         }
 
         if (browserFragment != null && browserFragment.isVisible) {
-            browserFragment.onToolbarEvent(event, value, autocompleteResult)
+            browserFragment.onToolbarEvent(event, value)
         } // BrowserFragment is our only fragment: this else case should never happen.
     }
 

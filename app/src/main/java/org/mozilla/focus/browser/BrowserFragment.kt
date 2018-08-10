@@ -21,7 +21,6 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.experimental.CancellationException
-import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
 import org.mozilla.focus.ext.isVisible
@@ -38,7 +37,6 @@ import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.NonFatalAssertionException
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.utils.ViewUtils.showCenteredTopToast
@@ -57,7 +55,6 @@ interface BrowserFragmentCallbacks {
     fun onFullScreenChange(isFullscreen: Boolean)
 
     fun onNonTextInputUrlEntered(urlStr: String)
-    fun onTextInputUrlEntered(urlStr: String, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?, inputLocation: UrlTextInputLocation?)
 }
 
 /**
@@ -134,8 +131,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         return session
     }
 
-    fun onToolbarEvent(event: ToolbarEvent, value: String?,
-                       autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
+    fun onToolbarEvent(event: ToolbarEvent, value: String?) {
         val context = context!!
         when (event) {
             ToolbarEvent.BACK -> if (webView?.canGoBack() ?: false) webView?.goBack()
@@ -155,10 +151,10 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             }
             ToolbarEvent.RELOAD -> webView?.reload()
             ToolbarEvent.SETTINGS -> Unit // No Settings in BrowserFragment
-            ToolbarEvent.LOAD_URL ->
-                callbacks?.onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
             ToolbarEvent.PIN_ACTION -> this@BrowserFragment.url?.let { url -> onPinToolbarEvent(context, url, value) }
             ToolbarEvent.HOME -> if (!homeScreen.isVisible) { homeScreen.setVisibilityWithAnimation(VISIBLE) }
+
+            ToolbarEvent.LOAD_URL -> throw IllegalStateException("Expected $event to be handled sooner")
         }
         Unit
     }
