@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.experimental.CancellationException
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
-import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
 import org.mozilla.focus.ext.isVisible
@@ -56,6 +55,9 @@ private val URLS_BLOCKED_FROM_USERS = setOf(
 interface BrowserFragmentCallbacks {
     fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean)
     fun onFullScreenChange(isFullscreen: Boolean)
+
+    fun onNonTextInputUrlEntered(urlStr: String)
+    fun onTextInputUrlEntered(urlStr: String, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?, inputLocation: UrlTextInputLocation?)
 }
 
 /**
@@ -154,7 +156,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             ToolbarEvent.RELOAD -> webView?.reload()
             ToolbarEvent.SETTINGS -> Unit // No Settings in BrowserFragment
             ToolbarEvent.LOAD_URL ->
-                (activity as MainActivity).onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
+                callbacks?.onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
             ToolbarEvent.PIN_ACTION -> this@BrowserFragment.url?.let { url -> onPinToolbarEvent(context, url, value) }
             ToolbarEvent.HOME -> if (!homeScreen.isVisible) { homeScreen.setVisibilityWithAnimation(VISIBLE) }
         }
@@ -194,7 +196,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         val layout = inflater.inflate(R.layout.fragment_browser, container, false)
 
         with (layout.homeScreen) {
-            onTileClicked = { (activity as MainActivity).onNonTextInputUrlEntered(it) }
+            onTileClicked = { callbacks?.onNonTextInputUrlEntered(it) }
             visibility = View.GONE
             onPreSetVisibilityListener = {
                 // It's a pre-set-visibility listener so we can't use isStartupHomePageVisible.

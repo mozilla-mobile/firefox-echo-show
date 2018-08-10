@@ -42,11 +42,10 @@ import org.mozilla.focus.toolbar.ToolbarCallbacks
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
-import org.mozilla.focus.utils.OnUrlEnteredListener
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 
-class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, BrowserFragmentCallbacks {
+class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
 
     private val sessionManager = SessionManager.getInstance()
 
