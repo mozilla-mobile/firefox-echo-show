@@ -149,17 +149,16 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
 
     override fun onNonTextInputUrlEntered(urlStr: String) {
         ViewUtils.hideKeyboard(container)
-        ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr, false,
-                null, null)
+        ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr)
     }
 
     private fun onTextInputUrlEntered(urlStr: String,
                                       autocompleteResult: InlineAutocompleteEditText.AutocompleteResult,
-                                      inputLocation: UrlTextInputLocation?) {
+                                      inputLocation: UrlTextInputLocation) {
         ViewUtils.hideKeyboard(container)
-        // It'd be much cleaner/safer to do this with a kotlin callback.
-        ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr, true,
-                autocompleteResult, inputLocation)
+        ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr) { isUrl ->
+            TelemetryWrapper.urlBarEvent(isUrl, autocompleteResult, inputLocation)
+        }
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {

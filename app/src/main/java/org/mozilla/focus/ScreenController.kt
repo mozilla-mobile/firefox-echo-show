@@ -9,15 +9,12 @@ import android.content.Context
 import android.support.v4.app.FragmentManager
 import android.text.TextUtils
 import org.mozilla.focus.browser.BrowserFragment
+import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.home.pocket.Pocket
 import org.mozilla.focus.home.pocket.PocketVideoFragment
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.session.Source
-import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.telemetry.UrlTextInputLocation
 import org.mozilla.focus.utils.UrlUtils
-import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
-import org.mozilla.focus.ext.getBrowserFragment
 
 object ScreenController {
     /**
@@ -25,8 +22,7 @@ object ScreenController {
      */
     fun onUrlEnteredInner(context: Context, fragmentManager: FragmentManager,
                           urlStr: String,
-                          isTextInput: Boolean,
-                          autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?, inputLocation: UrlTextInputLocation?) {
+                          onSuccess: ((isUrl: Boolean) -> Unit)? = null) {
         if (TextUtils.isEmpty(urlStr.trim())) {
             return
         }
@@ -35,18 +31,7 @@ object ScreenController {
         val updatedUrlStr = if (isUrl) UrlUtils.normalize(urlStr) else UrlUtils.createSearchUrl(context, urlStr)
 
         showBrowserScreenForUrl(fragmentManager, updatedUrlStr, Source.USER_ENTERED)
-
-        if (isTextInput) {
-            // Non-text input events are handled at the source, e.g. home tile click events.
-            if (autocompleteResult == null) {
-                throw IllegalArgumentException("Expected non-null autocomplete result for text input")
-            }
-            if (inputLocation == null) {
-                throw IllegalArgumentException("Expected non-null input location for text input")
-            }
-
-            TelemetryWrapper.urlBarEvent(isUrl, autocompleteResult, inputLocation)
-        }
+        onSuccess?.invoke(isUrl)
     }
 
     fun showBrowserScreenForCurrentSession(fragmentManager: FragmentManager, sessionManager: SessionManager) {
