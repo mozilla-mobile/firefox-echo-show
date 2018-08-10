@@ -77,7 +77,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
         layoutManager = GridLayoutManager(context, COL_COUNT)
     }
 
-    /** Sets the visibility: use method with more parameters instead. */
     override fun setVisibility(visibility: Int) {
         onPreSetVisibilityListener?.invoke(visibility == View.VISIBLE)
         super.setVisibility(visibility)
