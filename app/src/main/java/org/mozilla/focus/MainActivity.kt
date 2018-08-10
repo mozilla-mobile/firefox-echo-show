@@ -15,6 +15,7 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_browser.*
 import mozilla.components.support.utils.SafeIntent
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragment
@@ -39,6 +40,7 @@ import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
 import org.mozilla.focus.ext.getBrowserFragment
+import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.settings.SettingsActivity
 import org.mozilla.focus.settings.UserClearDataEvent
 import org.mozilla.focus.settings.UserClearDataEventObserver
@@ -170,6 +172,12 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
     }
 
     private fun onToolbarEvent(event: ToolbarEvent, value: String?, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
+        val browserFragment = supportFragmentManager.getBrowserFragment()
+        if (event == ToolbarEvent.HOME && browserFragment?.homeScreen?.isVisible == true) {
+            // The home button does nothing on when home is visible.
+            return
+        }
+
         when (event) {
             ToolbarEvent.SETTINGS -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
@@ -180,7 +188,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), OnUrlEnteredListener, Brows
             else -> Unit // Do nothing.
         }
 
-        val browserFragment = supportFragmentManager.getBrowserFragment()
         if (browserFragment != null && browserFragment.isVisible) {
             browserFragment.onToolbarEvent(event, value, autocompleteResult)
         } // BrowserFragment is our only fragment: this else case should never happen.
