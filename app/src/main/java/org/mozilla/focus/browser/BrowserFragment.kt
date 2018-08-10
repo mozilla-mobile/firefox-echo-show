@@ -5,6 +5,7 @@
 package org.mozilla.focus.browser
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.DisplayMetrics
@@ -20,6 +21,7 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.experimental.CancellationException
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
@@ -38,10 +40,9 @@ import org.mozilla.focus.telemetry.NonFatalAssertionException
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.UrlTextInputLocation
-import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.ToolbarEvent
+import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.utils.ViewUtils.showCenteredTopToast
-import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 
 private const val ARGUMENT_SESSION_UUID = "sessionUUID"
 
@@ -154,39 +155,39 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             ToolbarEvent.SETTINGS -> Unit // No Settings in BrowserFragment
             ToolbarEvent.LOAD_URL ->
                 (activity as MainActivity).onTextInputUrlEntered(value!!, autocompleteResult!!, UrlTextInputLocation.MENU)
-            ToolbarEvent.PIN_ACTION -> {
-                this@BrowserFragment.url?.let { url ->
-                    val brandName = context.getString(R.string.firefox_brand_name)
-                    when (value) {
-                        ToolbarEvent.VAL_CHECKED -> {
-                            CustomTilesManager.getInstance(context).pinSite(context, url,
-                                    webView?.takeScreenshot())
-                            homeScreen.refreshTilesForInsertion()
-                            showCenteredTopToast(context, context.getString(
-                                    R.string.notification_pinned_general2, brandName),
-                                    0, TOAST_Y_OFFSET)
-                        }
-                        ToolbarEvent.VAL_UNCHECKED -> {
-                            url.toUri()?.let {
-                                val tileId = BundledTilesManager.getInstance(context).unpinSite(context, it)
-                                        ?: CustomTilesManager.getInstance(context).unpinSite(context, url)
-                                // tileId should never be null, unless, for some reason we don't
-                                // have a reference to the tile/the tile isn't a Bundled or Custom tile
-                                if (tileId != null && !tileId.isEmpty()) {
-                                    homeScreen.removePinnedSiteFromTiles(tileId)
-                                    showCenteredTopToast(context, context.getString(
-                                            R.string.notification_unpinned_general2, brandName),
-                                            0, TOAST_Y_OFFSET)
-                                }
-                            }
-                        }
-                        else -> throw IllegalArgumentException("Unexpected value for PIN_ACTION: " + value)
-                    }
-                }
-            }
+            ToolbarEvent.PIN_ACTION -> this@BrowserFragment.url?.let { url -> onPinToolbarEvent(context, url, value) }
             ToolbarEvent.HOME -> if (!homeScreen.isVisible) { homeScreen.setVisibilityWithAnimation(VISIBLE) }
         }
         Unit
+    }
+
+    private fun onPinToolbarEvent(context: Context, url: String, value: String?) {
+        val brandName = context.getString(R.string.firefox_brand_name)
+        when (value) {
+            ToolbarEvent.VAL_CHECKED -> {
+                CustomTilesManager.getInstance(context).pinSite(context, url,
+                        webView?.takeScreenshot())
+                homeScreen.refreshTilesForInsertion()
+                showCenteredTopToast(context, context.getString(
+                        R.string.notification_pinned_general2, brandName),
+                        0, TOAST_Y_OFFSET)
+            }
+            ToolbarEvent.VAL_UNCHECKED -> {
+                url.toUri()?.let {
+                    val tileId = BundledTilesManager.getInstance(context).unpinSite(context, it)
+                            ?: CustomTilesManager.getInstance(context).unpinSite(context, url)
+                    // tileId should never be null, unless, for some reason we don't
+                    // have a reference to the tile/the tile isn't a Bundled or Custom tile
+                    if (tileId != null && !tileId.isEmpty()) {
+                        homeScreen.removePinnedSiteFromTiles(tileId)
+                        showCenteredTopToast(context, context.getString(
+                                R.string.notification_unpinned_general2, brandName),
+                                0, TOAST_Y_OFFSET)
+                    }
+                }
+            }
+            else -> throw IllegalArgumentException("Unexpected value for PIN_ACTION: " + value)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
