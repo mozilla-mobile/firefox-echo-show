@@ -184,18 +184,12 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
         TelemetryWrapper.toolbarEvent(event, value)
 
         when (event) {
-            ToolbarEvent.SETTINGS -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-                return
-            }
-
+            ToolbarEvent.SETTINGS -> startActivity(Intent(this, SettingsActivity::class.java))
 //            ToolbarEvent.TURBO -> Settings.getInstance(this).isBlockingEnabled = value == ToolbarEvent.VAL_CHECKED
-            else -> Unit // Do nothing.
-        }
 
-        if (browserFragment != null && browserFragment.isVisible) {
-            browserFragment.onToolbarEvent(event, value)
-        } // BrowserFragment is our only fragment: this else case should never happen.
+            // BrowserFragment is our only fragment so no other fragment should ever be visible.
+            else -> if (browserFragment?.isVisible == true) { browserFragment.onToolbarEvent(event, value) }
+        }
     }
 
     override fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean) {
