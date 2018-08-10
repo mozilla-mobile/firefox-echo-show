@@ -5,6 +5,7 @@
 package org.mozilla.focus.telemetry
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.StrictMode
 import android.preference.PreferenceManager
 import org.mozilla.focus.R
@@ -13,9 +14,22 @@ import org.mozilla.telemetry.TelemetryHolder
 private const val PREF_KEY_TELEMETRY = R.string.pref_key_telemetry
 
 /** A data container for for the "Send usage data" preference the user can switch. */
-internal object DataUploadPreference {
+internal object DataUploadPreference : SharedPreferences.OnSharedPreferenceChangeListener {
+    // Sentry needs a reference to the applicationContext. We do not store the Activity context.
+    private lateinit var appContext: Context
+    private lateinit var telemetryKey: String
 
-    @Suppress("UNUSED_PARAMETER")
+    fun init(context: Context) {
+        telemetryKey = context.getString(PREF_KEY_TELEMETRY)
+        appContext = context.applicationContext
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key.equals(telemetryKey) && sharedPreferences != null) {
+            onEnabledChanged(appContext, sharedPreferences.getBoolean(telemetryKey, false))
+        }
+    }
+
     fun isEnabled(context: Context): Boolean {
         // The first access to shared preferences will require a disk read.
         val threadPolicy = StrictMode.allowThreadDiskReads()
@@ -29,7 +43,7 @@ internal object DataUploadPreference {
         }
     }
 
-    fun onEnabledChanged(context: Context, enabled: Boolean) {
+    private fun onEnabledChanged(context: Context, enabled: Boolean) {
         TelemetryHolder.get()
                 .configuration
                 .setUploadEnabled(enabled).isCollectionEnabled = enabled

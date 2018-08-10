@@ -17,7 +17,6 @@ import android.view.View
 import org.mozilla.focus.R
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
-import org.mozilla.focus.telemetry.DataUploadPreference
 
 /**
  * Settings activity with nested settings screens.
@@ -110,13 +109,6 @@ class SettingsActivity : AppCompatActivity(),
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings)
-
-            // Listen for changes to data preference
-            val dataPreference = findPreference(getString(R.string.pref_key_telemetry))
-            dataPreference?.setOnPreferenceChangeListener { pref, newVal ->
-                DataUploadPreference.onEnabledChanged(pref.context, newVal as Boolean)
-                true
-            }
         }
     }
 }
