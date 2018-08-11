@@ -8,7 +8,6 @@ package org.mozilla.focus
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentManager.FragmentLifecycleCallbacks
@@ -35,7 +34,6 @@ import org.mozilla.focus.session.Source
 import org.mozilla.focus.settings.SettingsActivity
 import org.mozilla.focus.settings.UserClearDataEvent
 import org.mozilla.focus.settings.UserClearDataEventObserver
-import org.mozilla.focus.telemetry.DataUploadPreference
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
@@ -63,10 +61,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
         SentryWrapper.init(this)
         Pocket.init()
         PublicSuffix.init(this) // Used by Pocket Video feed & custom home tiles.
-
-        DataUploadPreference.init(this)
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(DataUploadPreference)
 
         val intent = SafeIntent(intent)
 

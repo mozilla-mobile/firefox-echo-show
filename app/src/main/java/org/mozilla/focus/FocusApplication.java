@@ -11,6 +11,7 @@ import android.support.v7.preference.PreferenceManager;
 import org.mozilla.focus.locale.LocaleAwareApplication;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.session.VisibilityLifeCycleCallback;
+import org.mozilla.focus.telemetry.DataUploadPreference;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
 
@@ -28,6 +29,8 @@ public class FocusApplication extends LocaleAwareApplication {
         SearchEngineManager.getInstance().init(this);
 
         TelemetryWrapper.init(this);
+
+        DataUploadPreference.init(this.getApplicationContext());
 
         registerActivityLifecycleCallbacks(visibilityLifeCycleCallback = new VisibilityLifeCycleCallback(this));
     }

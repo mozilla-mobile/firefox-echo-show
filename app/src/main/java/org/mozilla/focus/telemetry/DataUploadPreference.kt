@@ -19,9 +19,13 @@ internal object DataUploadPreference : SharedPreferences.OnSharedPreferenceChang
     private lateinit var appContext: Context
     private lateinit var telemetryKey: String
 
-    fun init(context: Context) {
-        telemetryKey = context.getString(PREF_KEY_TELEMETRY)
-        appContext = context.applicationContext
+    @JvmStatic
+    fun init(appContext: Context) {
+        telemetryKey = appContext.getString(PREF_KEY_TELEMETRY)
+        this.appContext = appContext.applicationContext
+
+        PreferenceManager.getDefaultSharedPreferences(appContext)
+                .registerOnSharedPreferenceChangeListener(DataUploadPreference)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
