@@ -84,9 +84,7 @@ object TelemetryWrapper {
     }
 
     private object Extra {
-        val TOTAL = "total"
         val AUTOCOMPLETE = "autocomplete"
-        val SOURCE = "source"
         val ERROR_CODE = "error_code"
 
         // We need this second source key because we use SOURCE when using this key.
@@ -163,15 +161,9 @@ object TelemetryWrapper {
     }
 
     private fun urlEnterEvent(autocompleteResult: AutocompleteResult) {
-        val event = TelemetryEvent.create(Category.ACTION, Method.TYPE_URL, Object.TOOLBAR)
+        TelemetryEvent.create(Category.ACTION, Method.TYPE_URL, Object.TOOLBAR)
                 .extra(Extra.AUTOCOMPLETE, (!autocompleteResult.isEmpty).toString())
-
-        if (!autocompleteResult.isEmpty) {
-            event.extra(Extra.TOTAL, autocompleteResult.totalItems.toString())
-            event.extra(Extra.AUTOCOMPLETE_SOURCE, autocompleteResult.source)
-        }
-
-        event.queue()
+                .queue()
     }
 
     private fun searchEnterEvent() {
