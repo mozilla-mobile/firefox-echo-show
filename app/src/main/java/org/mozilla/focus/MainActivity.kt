@@ -175,7 +175,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
             return
         } else if (event == ToolbarEvent.LOAD_URL) {
             onTextInputUrlEntered(value!!, autocompleteResult!!)
-            return
+            return // Telemetry is handled elsewhere.
         }
 
         TelemetryWrapper.toolbarEvent(event, value)
