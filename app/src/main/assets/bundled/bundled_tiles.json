@@ -8,7 +8,10 @@
     },
     {
         "id": "googleVideo",
-        "url": "https://www.google.com/",
+        /* URL does not make sense for tiles where action == SEARCH, but the field is required
+        as a unique identifier. This will be changed by the refactor described in
+        https://github.com/mozilla-mobile-skunkworks/firefox-connect/pull/258 */
+        "url": "https://www.not-a-url.this-is-used-only-as-a-unique-identifier.google-search.mozilla.com",
         "title": "Google Search",
         "img": "tile_google.png",
         "action": "SEARCH"

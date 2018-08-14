@@ -20,7 +20,9 @@ import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
+import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
+import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.ext.forceExhaustive
 import org.mozilla.focus.ext.toJavaURI
 import org.mozilla.focus.ext.withRoundedCorners
@@ -33,9 +35,7 @@ import org.mozilla.focus.home.TileAction
 import org.mozilla.focus.home.HomeTileScreenshotStore
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.FormattedDomain
-import org.mozilla.focus.utils.HiddenEditTextClickListener
-import org.mozilla.focus.utils.attachHiddenEditText
-import org.mozilla.focus.utils.removeHiddenEditText
+import org.mozilla.focus.utils.Provider
 
 /**
  * Duration of animation to show custom tile. If the duration is too short, the tile will just
@@ -45,10 +45,13 @@ import org.mozilla.focus.utils.removeHiddenEditText
 private const val CUSTOM_TILE_TO_SHOW_MILLIS = 200L
 private val CUSTOM_TILE_ICON_INTERPOLATOR = DecelerateInterpolator()
 
+typealias ExecuteSearch = (String, InlineAutocompleteEditText.AutocompleteResult) -> Unit
+
 class HomeTileAdapter(
         private val uiLifecycleCancelJob: Job,
         private var tiles: MutableList<HomeTile>,
         private val loadUrl: (String) -> Unit,
+        private val urlSearchProvider: Provider<UrlSearcher?>,
         var onTileLongClick: (() -> Unit)?,
         var onTileFocused: (() -> Unit)?
 ) : RecyclerView.Adapter<TileViewHolder>() {
@@ -69,32 +72,15 @@ class HomeTileAdapter(
             }
         }.forceExhaustive
 
-        val setSearchBehavior: ViewGroup.() -> Unit = {
-            attachHiddenEditText(this, item.title)
-            this.setOnClickListener {
-                HiddenEditTextClickListener().onClick(it)
-                TelemetryWrapper.homeTileClickEvent(item)
-            }
-        }
-        val setNavigateBehavior: View.() -> Unit = {
-            removeHiddenEditText(this)
-            this.setOnClickListener {
-                loadUrl(item.url)
-                TelemetryWrapper.homeTileClickEvent(item)
-            }
-        }
-        val removeTile = View.OnLongClickListener {
-            onTileLongClick?.invoke()
-            lastLongClickedTile = item
-            true
-        }
-
         if (item is BundledHomeTile && item.action == TileAction.SEARCH && itemView is ViewGroup) {
-            itemView.setSearchBehavior()
+            itemView.setSearchClickListeners(item, urlSearchProvider)
+
+            // This removes any existing listener. setOnLongClickListener(null)
+            // didn't clear the listener for an unknown reason
             itemView.setOnLongClickListener { true }
         } else {
-            itemView.setNavigateBehavior()
-            itemView.setOnLongClickListener(removeTile)
+            itemView.setNavigateClickListener(item)
+            itemView.setOnLongClickListener(getDefaultLongClickListener(item))
         }
 
         val tvWhiteColor = ContextCompat.getColor(holder.itemView.context, R.color.tv_white)
@@ -112,6 +98,31 @@ class HomeTileAdapter(
             titleView.setBackgroundResource(backgroundResource)
             titleView.setTextColor(textColor)
         }
+    }
+
+    private fun ViewGroup.setSearchClickListeners(item: HomeTile, urlSearchProvider: Provider<UrlSearcher?>) {
+        HiddenEditTextManager.attach(this, item.title)
+        this.setOnClickListener {
+            HiddenEditTextManager.openSoftKeyboard(it)
+            TelemetryWrapper.homeTileClickEvent(item)
+        }
+        HiddenEditTextManager.setKeyboardListener(this) { query, autocomplete ->
+            urlSearchProvider.getValue()?.onTextInputUrlEntered(query, autocomplete)
+        }
+    }
+
+    private fun View.setNavigateClickListener(item: HomeTile) {
+        if (this is ViewGroup) HiddenEditTextManager.removeIfPresent(this)
+        this.setOnClickListener {
+            loadUrl(item.url)
+            TelemetryWrapper.homeTileClickEvent(item)
+        }
+    }
+
+    private fun getDefaultLongClickListener(item: HomeTile) = View.OnLongClickListener {
+        onTileLongClick?.invoke()
+        lastLongClickedTile = item
+        true
     }
 
     private fun setIconLayoutMarginParams(iconView: View, tileMarginValue: Int) {

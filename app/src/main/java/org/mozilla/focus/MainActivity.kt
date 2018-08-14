@@ -44,7 +44,7 @@ import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 
-class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
+class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, UrlSearcher {
 
     private val sessionManager = SessionManager.getInstance()
 
@@ -151,8 +151,10 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks {
         ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr)
     }
 
-    fun onTextInputUrlEntered(urlStr: String,
-                              autocompleteResult: InlineAutocompleteEditText.AutocompleteResult) {
+    override fun onTextInputUrlEntered(
+            urlStr: String,
+            autocompleteResult: InlineAutocompleteEditText.AutocompleteResult
+    ) {
         ViewUtils.hideKeyboard(container)
         ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr) { isUrl ->
             TelemetryWrapper.urlBarEvent(isUrl, autocompleteResult)

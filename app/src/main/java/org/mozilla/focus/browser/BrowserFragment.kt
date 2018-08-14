@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.experimental.CancellationException
 import org.mozilla.focus.R
+import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
 import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.toUri
@@ -183,6 +184,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         with (layout.homeScreen) {
             onTileClicked = { callbacks?.onNonTextInputUrlEntered(it) }
+            urlSearchProvider.setValue(activity as? UrlSearcher)
             visibility = View.GONE
             onPreSetVisibilityListener = {
                 // It's a pre-set-visibility listener so we can't use isStartupHomePageVisible.

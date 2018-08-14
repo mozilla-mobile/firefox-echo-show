@@ -42,12 +42,17 @@ class BundledHomeTile(
 
     companion object {
         fun fromJSONObject(jsonObject: JSONObject): BundledHomeTile {
+            // Enum.valueOf will throw when passed a string that does not match
+            // ones of its values. This is intentional here, we want to fail
+            // fast upon encountering malformed JSON
+            val action = jsonObject.optString(KEY_ACTION, TileAction.NAVIGATE.name)
+                    .let { actionFromJson -> TileAction.valueOf(actionFromJson) }
+
             return BundledHomeTile(jsonObject.getString(KEY_URL),
                     jsonObject.getString(KEY_TITLE),
                     jsonObject.getString(KEY_IMG),
                     jsonObject.getString(KEY_ID),
-                    action = jsonObject.optString(KEY_ACTION, TileAction.NAVIGATE.name)
-                            .let { TileAction.valueOf(it) })
+                    action)
         }
     }
 }
@@ -72,6 +77,9 @@ class CustomHomeTile(
     }
 }
 
+/**
+ * Declares the type of action taken when the user interacts with the tile.
+ */
 enum class TileAction {
     NAVIGATE, SEARCH
 }
