@@ -41,7 +41,8 @@ internal object DataUploadPreference : SharedPreferences.OnSharedPreferenceChang
             val resources = context.resources
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-            return preferences.getBoolean(resources.getString(PREF_KEY_TELEMETRY), true)
+            val telemetryDefaultValue = resources.getBoolean(R.bool.pref_telemetry_default_value)
+            return preferences.getBoolean(resources.getString(PREF_KEY_TELEMETRY), telemetryDefaultValue)
         } finally {
             StrictMode.setThreadPolicy(threadPolicy)
         }
