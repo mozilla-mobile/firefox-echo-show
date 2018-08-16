@@ -2,19 +2,19 @@
     {
         "id": "youtube",
         /* Use this URL to ensure users see the best formatted website. */
-        "url": "https://www.youtube.com",
+        "url": "https://www.youtube.com/",
         "title": "YouTube",
         "img": "tile_youtube.png"
     },
     {
         "id": "googleVideo",
-        "url": "https://www.google.com",
+        "url": "https://www.google.com/",
         "title": "Google Search",
         "img": "tile_google.png"
     },
     {
         "id": "wikipedia",
-        "url": "https://www.wikipedia.org",
+        "url": "https://www.wikipedia.org/",
         "title": "Wikipedia",
         "img": "tile_wikipedia.png"
     }
