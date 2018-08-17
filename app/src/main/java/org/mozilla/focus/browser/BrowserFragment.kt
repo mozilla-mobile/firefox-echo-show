@@ -37,11 +37,9 @@ import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarStateProvider
-import org.mozilla.focus.utils.ViewUtils.showCenteredTopToast
+import org.mozilla.focus.utils.ToastManager
 
 private const val ARGUMENT_SESSION_UUID = "sessionUUID"
-
-private const val TOAST_Y_OFFSET = 200
 
 private val URLS_BLOCKED_FROM_USERS = setOf(
         APP_URL_STARTUP_HOME
@@ -137,12 +135,10 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             ToolbarEvent.TURBO -> {
                 when (value) {
                     ToolbarEvent.VAL_CHECKED -> {
-                        showCenteredTopToast(context, R.string.turbo_mode_enabled_toast,
-                                0, TOAST_Y_OFFSET)
+                        ToastManager.showToast(R.string.turbo_mode_enabled_toast, context)
                     }
                     ToolbarEvent.VAL_UNCHECKED -> {
-                        showCenteredTopToast(context, R.string.turbo_mode_disabled_toast,
-                            0, TOAST_Y_OFFSET)
+                        ToastManager.showToast(R.string.turbo_mode_disabled_toast, context)
                     }
                 }
                 webView?.reload()
@@ -159,15 +155,12 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     }
 
     private fun onPinToolbarEvent(context: Context, url: String, value: String?) {
-        val brandName = context.getString(R.string.firefox_brand_name)
         when (value) {
             ToolbarEvent.VAL_CHECKED -> {
                 CustomTilesManager.getInstance(context).pinSite(context, url,
                         webView?.takeScreenshot())
                 homeScreen.refreshTilesForInsertion()
-                showCenteredTopToast(context, context.getString(
-                        R.string.notification_pinned_general2, brandName),
-                        0, TOAST_Y_OFFSET)
+                ToastManager.showPinnedToast(context)
             }
             ToolbarEvent.VAL_UNCHECKED -> {
                 url.toUri()?.let {
@@ -177,9 +170,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                     // have a reference to the tile/the tile isn't a Bundled or Custom tile
                     if (tileId != null && !tileId.isEmpty()) {
                         homeScreen.removePinnedSiteFromTiles(tileId)
-                        showCenteredTopToast(context, context.getString(
-                                R.string.notification_unpinned_general2, brandName),
-                                0, TOAST_Y_OFFSET)
+                        ToastManager.showUnpinnedToast(context)
                     }
                 }
             }

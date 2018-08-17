@@ -9,17 +9,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
-import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.mozilla.focus.R;
 
 import java.lang.ref.WeakReference;
 
@@ -113,41 +105,7 @@ public class ViewUtils {
         return imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    /**
-     * Create a snackbar with Focus branding (See #193).
-     */
-    public static void showBrandedSnackbar(View view, @StringRes int resId, int delayMillis) {
-        final Context context = view.getContext();
-        final Snackbar snackbar = Snackbar.make(view, resId, Snackbar.LENGTH_LONG);
-
-        final View snackbarView = snackbar.getView();
-        snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.snackbarBackground));
-
-        final TextView snackbarTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        snackbarTextView.setTextColor(ContextCompat.getColor(context, R.color.snackbarTextColor));
-        snackbarTextView.setGravity(Gravity.CENTER);
-        snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                snackbar.show();
-            }
-        }, delayMillis);
-    }
-
     public static boolean isRTL(View view) {
         return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
-    }
-
-    public static void showCenteredTopToast(Context context, int resId, int xOffset, int yOffset) {
-        final String str = context.getString(resId);
-        showCenteredTopToast(context, str, xOffset, yOffset);
-    }
-
-    public static void showCenteredTopToast(Context context, CharSequence str, int xOffset, int yOffset) {
-        Toast toast = Toast.makeText(context, str, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, xOffset, yOffset);
-        toast.show();
     }
 }
