@@ -11,10 +11,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceScreen
+import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import kotlinx.android.synthetic.main.activity_settings.*
 import org.mozilla.focus.R
+import org.mozilla.focus.ext.children
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
 
@@ -57,6 +61,8 @@ class SettingsActivity : AppCompatActivity(),
         supportFragmentManager.beginTransaction()
                 .add(R.id.settings_container, SettingsFragment(), FRAGMENT_TAG)
                 .commit()
+
+        styleActionBar()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -110,5 +116,22 @@ class SettingsActivity : AppCompatActivity(),
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings)
         }
+    }
+
+    /**
+     * We were unable to find a way to apply these styles to the ActionBar
+     * through XML without providing an entirely custom layout.  These
+     * styles are necessary to match the native settings page styling
+     */
+    private fun styleActionBar() {
+        this.settings_container.rootView
+                .findViewById<Toolbar>(R.id.action_bar)
+                .children()
+                .forEach { toolbarChild ->
+                    val layoutParams = toolbarChild.layoutParams as? Toolbar.LayoutParams ?: return
+                    toolbarChild.layoutParams = layoutParams.apply {
+                        gravity = Gravity.CENTER_VERTICAL
+                    }
+                }
     }
 }

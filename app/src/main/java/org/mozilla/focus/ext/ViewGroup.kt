@@ -12,3 +12,11 @@ inline fun ViewGroup.forEachChild(functionBlock: (View) -> Unit) {
         functionBlock(getChildAt(i))
     }
 }
+
+fun ViewGroup.children(): List<View> {
+    val list = mutableListOf<View>()
+    for (i in 0 until this.childCount) {
+        getChildAt(i)?.let { list += it }
+    }
+    return list
+}
