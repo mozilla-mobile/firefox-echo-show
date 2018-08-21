@@ -13,7 +13,6 @@ import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.home.BundledHomeTile
 import org.mozilla.focus.home.CustomHomeTile
 import org.mozilla.focus.home.HomeTile
-import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.telemetry.Telemetry
@@ -105,7 +104,6 @@ object TelemetryWrapper {
                     .setAppName(TELEMETRY_APP_NAME)
                     .setUpdateChannel(BuildConfig.BUILD_TYPE)
                     .setPreferencesImportantForTelemetry(
-                            IWebView.TRACKING_PROTECTION_ENABLED_PREF,
                             TelemetrySettingsProvider.PREF_CUSTOM_HOME_TILE_COUNT,
                             TelemetrySettingsProvider.PREF_TOTAL_HOME_TILE_COUNT
                     )
