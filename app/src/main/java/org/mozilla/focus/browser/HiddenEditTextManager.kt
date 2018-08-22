@@ -34,7 +34,7 @@ object HiddenEditTextManager {
     /**
      * Attaches a hidden EditText to a ViewGroup
      */
-    fun attach(viewGroupToAttachTo: ViewGroup, hintText: String) {
+    fun attach(viewGroupToAttachTo: ViewGroup) {
         val editText = EditText(viewGroupToAttachTo.context).apply {
             setImeActionLabel(null, EditorInfo.IME_ACTION_SEARCH)
             // Elevation should be lower than the rest of the ViewGroup for this to
@@ -42,7 +42,8 @@ object HiddenEditTextManager {
             elevation = -8f
             id = HIDDEN_EDIT_TEXT_ID
             inputType = InputType.TYPE_CLASS_TEXT
-            hint = hintText
+//            hint = hintText TODO pass hint text as parameter
+            hint = viewGroupToAttachTo.context.getString(R.string.google_search_hint_text)
         }
         viewGroupToAttachTo.addView(editText)
         editText.layoutParams = editText.layoutParams.apply {

@@ -1,20 +1,20 @@
 [
     {
-        "id": "youtube",
-        /* Use this URL to ensure users see the best formatted website. */
-        "url": "https://www.youtube.com/",
-        "title": "YouTube",
-        "img": "tile_youtube.png"
-    },
-    {
         "id": "googleVideo",
         /* URL does not make sense for tiles where action == SEARCH, but the field is required
         as a unique identifier. This will be changed by the refactor described in
         https://github.com/mozilla-mobile-skunkworks/firefox-connect/pull/258 */
         "url": "https://www.not-a-url.this-is-used-only-as-a-unique-identifier.google-search.mozilla.com",
-        "title": "Google Search",
+        "title": "Search with Google",
         "img": "tile_google.png",
         "action": "SEARCH"
+    },
+    {
+        "id": "youtube",
+        /* Use this URL to ensure users see the best formatted website. */
+        "url": "https://www.youtube.com/",
+        "title": "YouTube",
+        "img": "tile_youtube.png"
     },
     {
         "id": "wikipedia",
