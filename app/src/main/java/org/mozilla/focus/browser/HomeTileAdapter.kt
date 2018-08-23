@@ -185,7 +185,14 @@ private fun onBindBundledHomeTile(holder: TileViewHolder, tile: BundledHomeTile)
     val bitmap = BundledTilesManager.getInstance(itemView.context).loadImageFromPath(itemView.context, tile.imagePath)
     iconView.setImageBitmap(bitmap)
 
-    titleView.text = tile.title
+    // TODO remove hardcoded search tile title
+    // This is necessary while bundled tiles are loaded from JSON (which cannot
+    // reference string resources)
+    if (tile.action == TileAction.SEARCH) {
+        titleView.text = iconView.resources.getString(R.string.google_search_tile_title)
+    } else {
+        titleView.text = tile.title
+    }
 }
 
 private fun onBindCustomHomeTile(uiLifecycleCancelJob: Job, holder: TileViewHolder, item: CustomHomeTile) = with (holder) {
