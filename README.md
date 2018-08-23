@@ -1,5 +1,8 @@
 # Firefox
 
+### Project resources
+* [Telemetry documentation](docs/telemetry.md)
+
 ## Build instructions
 1. Clone the repository:
 
