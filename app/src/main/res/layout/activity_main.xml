@@ -2,7 +2,7 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<android.support.design.widget.CoordinatorLayout
+<org.mozilla.focus.TouchInterceptorLayout
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -66,4 +66,4 @@
             android:text="@string/homescreen_tile_remove" />
     </FrameLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</org.mozilla.focus.TouchInterceptorLayout>

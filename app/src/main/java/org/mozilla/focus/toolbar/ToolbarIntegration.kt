@@ -14,6 +14,7 @@ import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
+import org.mozilla.focus.TouchInterceptorLayout
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
 import org.mozilla.focus.toolbar.ToolbarEvent.* // ktlint-disable no-wildcard-imports
 import mozilla.components.ui.icons.R as iconsR
@@ -144,10 +145,6 @@ object ToolbarIntegration {
                 "")
         toolbar.addBrowserAction(brandIcon)
 
-        toolbar.setOnEditFocusChangeListener { hasFocus ->
-            if (!hasFocus) toolbar.displayMode()
-        }
-
         /*
         val sharedPrefsListener = OnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == IWebView.TRACKING_PROTECTION_ENABLED_PREF) {
@@ -185,6 +182,11 @@ object ToolbarIntegration {
             val autocompleteResult = InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.size)
             onToolbarEvent(LOAD_URL, urlStr, autocompleteResult)
         }
+
+        toolbar.rootView?.findViewById<TouchInterceptorLayout>(R.id.main_content)
+                ?.setOnTouchOutsideViewListener(toolbar) {
+                    toolbar.displayMode()
+                }
     }
 }
 
