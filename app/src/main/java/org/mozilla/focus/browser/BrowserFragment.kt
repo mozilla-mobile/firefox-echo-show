@@ -184,7 +184,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         with (layout.homeScreen) {
             onTileClicked = { callbacks?.onNonTextInputUrlEntered(it) }
-            urlSearchProvider.setValue(activity as? UrlSearcher)
+            urlSearcher = activity as UrlSearcher
             visibility = View.GONE
             onPreSetVisibilityListener = {
                 // It's a pre-set-visibility listener so we can't use isStartupHomePageVisible.

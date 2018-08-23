@@ -36,7 +36,6 @@ import org.mozilla.focus.home.HomeTileScreenshotStore
 import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.FormattedDomain
-import org.mozilla.focus.utils.Provider
 
 /**
  * Duration of animation to show custom tile. If the duration is too short, the tile will just
@@ -52,7 +51,7 @@ class HomeTileAdapter(
         private val uiLifecycleCancelJob: Job,
         private var tiles: MutableList<HomeTile>,
         private val loadUrl: (String) -> Unit,
-        private val urlSearchProvider: Provider<UrlSearcher?>,
+        private val urlSearchProvider: () -> UrlSearcher?,
         private val homeTileLongClickListenerProvider: () -> HomeTileLongClickListener?,
         var onTileFocused: (() -> Unit)?
 ) : RecyclerView.Adapter<TileViewHolder>() {
@@ -98,7 +97,7 @@ class HomeTileAdapter(
         }
     }
 
-    private fun ViewGroup.setSearchClickListeners(item: HomeTile, urlSearchProvider: Provider<UrlSearcher?>) {
+    private fun ViewGroup.setSearchClickListeners(item: HomeTile, urlSearchProvider: () -> UrlSearcher?) {
         //TODO read hint text from Tile, pass through HiddenEditTextManager#attach
         HiddenEditTextManager.attach(this)
         this.setOnClickListener {
@@ -106,7 +105,7 @@ class HomeTileAdapter(
             TelemetryWrapper.homeTileClickEvent(item)
         }
         HiddenEditTextManager.setKeyboardListener(this) { query, autocomplete ->
-            urlSearchProvider.getValue()?.onTextInputUrlEntered(query, autocomplete)
+            urlSearchProvider()?.onTextInputUrlEntered(query, autocomplete)
         }
     }
 

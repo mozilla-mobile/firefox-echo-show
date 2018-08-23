@@ -18,7 +18,6 @@ import kotlinx.coroutines.experimental.Job
 import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.home.HomeTilesManager
-import org.mozilla.focus.utils.Provider
 
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
 private const val MAX_UNPIN_TOAST_COUNT = 3
@@ -45,7 +44,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     var homeTileLongClickListener: HomeTileLongClickListener? = null
 
     lateinit var onTileClicked: (value: String) -> Unit
-    var urlSearchProvider: Provider<UrlSearcher?> = Provider()
+    var urlSearcher: UrlSearcher? = null
     /** Called inside [setVisibility] right before super.setVisibility is called. */
     var onPreSetVisibilityListener: ((isVisible: Boolean) -> Unit)? = null
 
@@ -74,7 +73,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
                 canShowUpinToast = false
             }
         }, homeTileLongClickListenerProvider = { homeTileLongClickListener },
-        urlSearchProvider = urlSearchProvider)
+        urlSearchProvider = { urlSearcher })
         layoutManager = GridLayoutManager(context, COL_COUNT)
     }
 
