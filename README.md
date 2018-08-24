@@ -33,6 +33,14 @@ To push without running the pre-push hook (e.g. doc updates):
 git push <remote> --no-verify
 ```
 
+### Signing release builds
+To build and sign a release build with our production keys using Autograph, run:
+```sh
+./tools/sign_release.sh
+```
+
+See that script's source for further usage.
+
 ## License
 
     This Source Code Form is subject to the terms of the Mozilla Public
