@@ -7,40 +7,40 @@ package org.mozilla.focus.webview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.annotation.WorkerThread;
+//import android.os.AsyncTask;
+//import android.support.annotation.WorkerThread;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import org.mozilla.focus.R;
-import org.mozilla.focus.webview.matcher.UrlMatcher;
+//import org.mozilla.focus.R;
+//import org.mozilla.focus.webview.matcher.UrlMatcher;
 
 public class TrackingProtectionWebViewClient extends WebViewClient {
-    private static volatile UrlMatcher MATCHER;
+//    private static volatile UrlMatcher MATCHER;
 
     public static void triggerPreload(final Context context) {
-        // Only trigger loading if MATCHER is null. (If it's null, MATCHER could already be loading,
-        // but we don't have any way of being certain - and there's no real harm since we're not
-        // blocking anything else.)
-        if (MATCHER == null) {
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    // We don't need the result here - we just want to trigger loading
-                    getMatcher(context);
-                    return null;
-                }
-            }.execute();
-        }
+//        // Only trigger loading if MATCHER is null. (If it's null, MATCHER could already be loading,
+//        // but we don't have any way of being certain - and there's no real harm since we're not
+//        // blocking anything else.)
+//        if (MATCHER == null) {
+//            new AsyncTask<Void, Void, Void>() {
+//                @Override
+//                protected Void doInBackground(Void... voids) {
+//                    // We don't need the result here - we just want to trigger loading
+//                    getMatcher(context);
+//                    return null;
+//                }
+//            }.execute();
+//        }
     }
 
-    @WorkerThread private static synchronized UrlMatcher getMatcher(final Context context) {
-        if (MATCHER == null) {
-            MATCHER = UrlMatcher.loadMatcher(context, R.raw.blocklist, new int[] { R.raw.google_mapping }, R.raw.entitylist);
-        }
-        return MATCHER;
-    }
+//    @WorkerThread private static synchronized UrlMatcher getMatcher(final Context context) {
+//        if (MATCHER == null) {
+//            MATCHER = UrlMatcher.loadMatcher(context, R.raw.blocklist, new int[] { R.raw.google_mapping }, R.raw.entitylist);
+//        }
+//        return MATCHER;
+//    }
 
     /**
      * true if blocking is enabled, false otherwise.
@@ -107,17 +107,17 @@ public class TrackingProtectionWebViewClient extends WebViewClient {
             return new WebResourceResponse(null, null, null);
         }
 
-        final UrlMatcher blockedSiteMatcher = getMatcher(view.getContext());
-
-        // Don't block the main frame from being loaded. This also protects against cases where we
-        // open a link that redirects to another app (e.g. to the play store).
-        final Uri currentPageUri = Uri.parse(currentPageURL);
-
-        // Matches is true if the resourceUri is on the blocklist and is not a first party request.
-        // The matcher code could be better named to make this apparent.
-        if (blockedSiteMatcher.matches(resourceUri, currentPageUri)) {
-            return new WebResourceResponse(null, null, null);
-        }
+//        final UrlMatcher blockedSiteMatcher = getMatcher(view.getContext());
+//
+//        // Don't block the main frame from being loaded. This also protects against cases where we
+//        // open a link that redirects to another app (e.g. to the play store).
+//        final Uri currentPageUri = Uri.parse(currentPageURL);
+//
+//        // Matches is true if the resourceUri is on the blocklist and is not a first party request.
+//        // The matcher code could be better named to make this apparent.
+//        if (blockedSiteMatcher.matches(resourceUri, currentPageUri)) {
+//            return new WebResourceResponse(null, null, null);
+//        }
 
         return super.shouldInterceptRequest(view, request);
     }
