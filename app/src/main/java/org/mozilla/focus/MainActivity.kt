@@ -229,6 +229,13 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         unpinOverlay.setOnClickListener {
             VisibilityAnimator.animateVisibility(unpinOverlay, false)
         }
-        VisibilityAnimator.animateVisibility(unpinOverlay, true)
+
+        // In some cases, the VisibilityAnimator would not start so we replaced it with this.
+        unpinOverlay.visibility = View.VISIBLE
+        unpinOverlay.alpha = 0f
+        unpinOverlay.animate()
+                .setDuration(150)
+                .alpha(1f)
+                .start()
     }
 }
