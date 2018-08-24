@@ -25,7 +25,7 @@ class TouchInterceptorLayout(
 
     override fun onInterceptTouchEvent(event: MotionEvent?): Boolean {
         if (event?.action == MotionEvent.ACTION_DOWN) {
-            touchOutsideListeners.filter { (viewRef, _) -> event isWithinBoundsOf viewRef.get() }
+            touchOutsideListeners.filter { (viewRef, _) -> !(event isWithinBoundsOf viewRef.get()) }
                     .forEach { (_, action) -> action.invoke() }
         }
 
