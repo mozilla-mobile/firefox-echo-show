@@ -12,7 +12,7 @@
     {
         "id": "youtube",
         /* Use this URL to ensure users see the best formatted website. */
-        "url": "https://www.youtube.com/",
+        "url": "https://ftv.cdn.mozilla.net/ytfc",
         "title": "YouTube",
         "img": "tile_youtube.png"
     },
