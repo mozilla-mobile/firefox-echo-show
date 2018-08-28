@@ -6,9 +6,11 @@ package org.mozilla.focus.integration
 
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.IdlingRegistry
+import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.pressImeActionButton
 import android.support.test.espresso.action.ViewActions.typeText
-import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
+import android.support.test.espresso.matcher.ViewMatchers.withHint
 import android.support.test.espresso.web.assertion.WebViewAssertions.webMatches
 import android.support.test.espresso.web.sugar.Web.onWebView
 import android.support.test.espresso.web.webdriver.DriverAtoms.findElement
@@ -18,14 +20,15 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.equalTo
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mozilla.focus.R
 import org.mozilla.focus.MainActivity
+import org.mozilla.focus.R
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.helpers.SessionLoadedIdlingResource
 
@@ -63,7 +66,9 @@ class IWebViewExecuteJavascriptTest {
         val url = mockServer.url("").toString()
 
         // Load the mock page.
-        onView(withId(R.id.urlInputView))
+        onView(allOf(withHint(R.string.urlbar_hint), isDisplayed())) // Display mode.
+                .perform(click())
+        onView(allOf(withHint(R.string.urlbar_hint), isDisplayed())) // Edit mode.
                 .perform(typeText(url), pressImeActionButton())
 
         // Assert loaded.
