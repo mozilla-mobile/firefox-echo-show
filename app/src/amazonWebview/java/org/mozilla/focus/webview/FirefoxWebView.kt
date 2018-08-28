@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.support.annotation.VisibleForTesting
 import android.util.AttributeSet
 import android.view.View
+import android.webkit.JsPromptResult
+import android.webkit.JsResult
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import org.mozilla.focus.ext.deleteData
@@ -177,5 +179,17 @@ internal class FirefoxWebChromeClient : WebChromeClient() {
 
     override fun onHideCustomView() {
         callback?.onExitFullScreen()
+    }
+
+    // Consult with product before changing: we disable alerts to prevent them from being displayed
+    // a large number of times. We chose this implementation for speed but it isn't the best user
+    // experience and is open for being changed.
+    override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean = handleJsDialog(result)
+    override fun onJsPrompt(view: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?): Boolean =
+            handleJsDialog(result)
+    override fun onJsConfirm(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean = handleJsDialog(result)
+    private fun handleJsDialog(result: JsResult?): Boolean {
+        result?.cancel()
+        return true
     }
 }
