@@ -84,12 +84,11 @@ private fun initWebSettings(context: Context, settings: WebSettings) = with (set
     // TODO #33: TEXT_AUTOSIZING does not exist in AmazonWebSettings
     //settings.setLayoutAlgorithm(AmazonWebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
 
-    // Disable access to arbitrary local files by webpages - assets can still be loaded
-    // via file:///android_asset/res, so at least error page images won't be blocked.
+    // Consult with product before modifying these: for security reasons, we disable access to
+    // arbitrary local files by webpages. Note: assets and resources can still be loaded via
+    // file:///android_asset/...
     allowFileAccess = false
     allowFileAccessFromFileURLs = false
     allowUniversalAccessFromFileURLs = false
-
-    // Right now I do not know why we should allow loading content from a content provider
     allowContentAccess = false
 }
