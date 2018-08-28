@@ -18,6 +18,11 @@ import org.mozilla.focus.R
  */
 object ToolbarInteractor {
 
+    /**
+     * Enters and submits a URL.
+     *
+     * NB: this doesn't wait for the page to finish loading.
+     */
     fun enterAndSubmitURL(url: String) {
         onView(allOf(withHint(R.string.urlbar_hint), isDisplayed())) // Display mode.
                 .perform(click())
