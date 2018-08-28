@@ -5,16 +5,10 @@
 package org.mozilla.focus.integration
 
 import android.support.test.espresso.IdlingRegistry
-import android.support.test.espresso.web.assertion.WebViewAssertions.webMatches
-import android.support.test.espresso.web.sugar.Web.onWebView
-import android.support.test.espresso.web.webdriver.DriverAtoms.findElement
-import android.support.test.espresso.web.webdriver.DriverAtoms.getText
-import android.support.test.espresso.web.webdriver.Locator
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.hamcrest.Matchers.equalTo
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -22,6 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.MainActivity
 import org.mozilla.focus.browser.BrowserFragment
+import org.mozilla.focus.helpers.DOMAssert.assertBodyText
 import org.mozilla.focus.helpers.SessionLoadedIdlingResource
 import org.mozilla.focus.helpers.ToolbarInteractor
 
@@ -76,11 +71,5 @@ class IWebViewExecuteJavascriptTest {
 
         // Assert JS was injected.
         assertBodyText(expectedChangedText)
-    }
-
-    private fun assertBodyText(expected: String) {
-        onWebView()
-                .withElement(findElement(Locator.TAG_NAME, "body"))
-                .check(webMatches(getText(), equalTo(expected)))
     }
 }
