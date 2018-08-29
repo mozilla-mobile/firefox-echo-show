@@ -25,7 +25,6 @@ import org.mozilla.focus.browser.BrowserFragmentCallbacks
 import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.toSafeIntent
-import org.mozilla.focus.home.pocket.Pocket
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
@@ -60,8 +59,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
         // Enable crash reporting. Don't add anything above here because if it crashes, we won't know.
         SentryWrapper.init(this)
-        Pocket.init()
-        PublicSuffix.init(this) // Used by Pocket Video feed & custom home tiles.
+        PublicSuffix.init(this) // Used by custom home tiles.
 
         val intent = SafeIntent(intent)
 
@@ -131,12 +129,10 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
     override fun onStart() {
         super.onStart()
-        Pocket.startBackgroundUpdates()
     }
 
     override fun onStop() {
         super.onStop()
-        Pocket.stopBackgroundUpdates() // Don't regularly hit the network in the background.
         TelemetryWrapper.stopMainActivity()
     }
 

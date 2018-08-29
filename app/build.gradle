@@ -149,16 +149,6 @@ dependencies {
 
     implementation 'io.sentry:sentry-android:1.7.5'
 
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    implementation 'com.squareup.picasso:picasso:2.71828', {
-        // We temporarily don't include the packaged the support libs to avoid version mismatch.
-        // This can cause runtime errors so we should remove this ASAP! #883?
-        exclude group: 'com.android.support', module: 'exifinterface'
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-compat'
-        exclude group: 'com.android.support', module: 'support-fragment'
-    }
-
     implementation ("com.google.code.findbugs:annotations:3.0.1") {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
         // Without this we get weird failures due to dependencies.
@@ -297,7 +287,6 @@ def addSecretToBuildConfig(variant, fieldName, fileBaseName) {
 
 android.applicationVariants.all { variant ->
     addSecretToBuildConfig(variant, 'SENTRY_DSN', ".sentry_dsn")
-    addSecretToBuildConfig(variant, 'POCKET_KEY', ".pocket_key")
 }
 
 // -------------------------------------------------------------------------------------------------

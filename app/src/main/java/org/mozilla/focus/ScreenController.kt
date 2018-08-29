@@ -10,8 +10,6 @@ import android.support.v4.app.FragmentManager
 import android.text.TextUtils
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.ext.getBrowserFragment
-import org.mozilla.focus.home.pocket.Pocket
-import org.mozilla.focus.home.pocket.PocketVideoFragment
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.session.Source
 import org.mozilla.focus.utils.UrlUtils
@@ -91,12 +89,5 @@ object ScreenController {
 
         // Activates the start up code path, which creates a new session if there are none.
         SessionManager.getInstance().removeAllSessions()
-    }
-
-    fun showPocketScreen(fragmentManager: FragmentManager) {
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PocketVideoFragment.create(Pocket.getRecommendedVideos()))
-                .addToBackStack(null)
-                .commit()
     }
 }
