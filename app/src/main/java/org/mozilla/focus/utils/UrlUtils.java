@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
+import org.mozilla.focus.browser.LocalizedContent;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 
@@ -159,6 +160,11 @@ public class UrlUtils {
         }
 
         return host.substring(start);
+    }
+
+    public static boolean isLocalizedContent(@Nullable String url) {
+        return url != null &&
+                (url.equals(LocalizedContent.URL_ABOUT) || url.equals("about:blank"));
     }
 
 }

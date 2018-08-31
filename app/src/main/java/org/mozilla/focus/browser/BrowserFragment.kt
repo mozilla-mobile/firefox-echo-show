@@ -32,6 +32,7 @@ import org.mozilla.focus.session.NullSession
 import org.mozilla.focus.session.Session
 import org.mozilla.focus.session.SessionCallbackProxy
 import org.mozilla.focus.session.SessionManager
+import org.mozilla.focus.telemetry.LoadTimeObserver
 import org.mozilla.focus.telemetry.NonFatalAssertionException
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -115,6 +116,8 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         session = initSession()
         webView?.setBlockingEnabled(session.isBlockingEnabled)
         iWebViewCallback = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
+
+        LoadTimeObserver.addObservers(session, this)
     }
 
     override fun onResume() {

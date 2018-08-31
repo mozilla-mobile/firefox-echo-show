@@ -37,11 +37,15 @@ object TelemetryWrapper {
     private const val TELEMETRY_APP_NAME = "FirefoxConnect"
 
     private var APP_START_EVENT_SENT = false
+    private const val HISTOGRAM_SIZE = 200
+    private const val BUCKET_SIZE_MS = 100
+    private const val HISTOGRAM_MIN_INDEX = 0
 
     private object Category {
         val ACTION = "action"
         val AGGREGATE = "aggregate"
         val ERROR = "error"
+        val HISTOGRAM = "histogram"
     }
 
     private object Method {
@@ -143,6 +147,16 @@ object TelemetryWrapper {
 
     fun stopSession() {
         TelemetryHolder.get().recordSessionEnd()
+
+        val histogramEvent = TelemetryEvent.create(Category.HISTOGRAM, Method.FOREGROUND, Object.BROWSER)
+        for (bucketIndex in histogram.indices) {
+            histogramEvent.extra((bucketIndex * BUCKET_SIZE_MS).toString(), histogram[bucketIndex].toString())
+        }
+        histogramEvent.queue()
+
+        // Clear histogram array after queueing it
+        histogram = IntArray(HISTOGRAM_SIZE)
+
         TelemetryEvent.create(Category.ACTION, Method.BACKGROUND, Object.APP).queue()
     }
 
@@ -150,6 +164,20 @@ object TelemetryWrapper {
         if (APP_START_EVENT_SENT) return
         TelemetryEvent.create(Category.AGGREGATE, Method.STARTUP_COMPLETE, Object.APP, time.toString()).queue()
         APP_START_EVENT_SENT = true
+    }
+    private var histogram = IntArray(HISTOGRAM_SIZE)
+
+    @JvmStatic
+    fun addLoadToHistogram(newLoadTime: Long) {
+        var histogramLoadIndex = (newLoadTime / BUCKET_SIZE_MS).toInt()
+
+        if (histogramLoadIndex > (HISTOGRAM_SIZE - 2)) {
+            histogramLoadIndex = HISTOGRAM_SIZE - 1
+        } else if (histogramLoadIndex < HISTOGRAM_MIN_INDEX) {
+            histogramLoadIndex = HISTOGRAM_MIN_INDEX
+        }
+
+        histogram[histogramLoadIndex]++
     }
 
     fun stopMainActivity() {
