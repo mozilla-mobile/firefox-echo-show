@@ -7,6 +7,7 @@ package org.mozilla.focus.browser
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
+import android.os.SystemClock
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.KeyEvent
@@ -26,12 +27,14 @@ import org.mozilla.focus.home.BundledTilesManager
 import org.mozilla.focus.home.CustomTilesManager
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.IWebViewLifecycleFragment
+import org.mozilla.focus.locale.LocaleAwareApplication
 import org.mozilla.focus.session.NullSession
 import org.mozilla.focus.session.Session
 import org.mozilla.focus.session.SessionCallbackProxy
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.NonFatalAssertionException
 import org.mozilla.focus.telemetry.SentryWrapper
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.utils.ToastManager
@@ -112,6 +115,11 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         session = initSession()
         webView?.setBlockingEnabled(session.isBlockingEnabled)
         iWebViewCallback = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        TelemetryWrapper.startupCompleteEvent(SystemClock.uptimeMillis() - LocaleAwareApplication.APP_START_TIME)
     }
 
     private fun initSession(): Session {

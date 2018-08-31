@@ -35,6 +35,7 @@ The event ping contains a list of events ([see event format on readthedocs.io](h
 | Event                                  | category | method                | object     | value  | extras.    |
 |----------------------------------------|----------|-----------------------|------------|--------|------------|
 | Settings: confirms clear data dialog   | action   | change                | setting    | clear_data | |
+| Startup complete   | aggregate   | startup_complete                | app    | startup time in MS | |
 
 #### Toolbar
 | Event                                  | category | method                | object     | value  | extras.    |

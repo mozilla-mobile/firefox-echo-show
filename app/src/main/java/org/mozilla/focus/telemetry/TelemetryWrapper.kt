@@ -36,6 +36,8 @@ import org.mozilla.telemetry.storage.FileTelemetryStorage
 object TelemetryWrapper {
     private const val TELEMETRY_APP_NAME = "FirefoxConnect"
 
+    private var APP_START_EVENT_SENT = false
+
     private object Category {
         val ACTION = "action"
         val AGGREGATE = "aggregate"
@@ -54,6 +56,7 @@ object TelemetryWrapper {
         val PAGE = "page"
         val RESOURCE = "resource"
         val REMOVE = "remove"
+        val STARTUP_COMPLETE = "startup_complete"
     }
 
     private object Object {
@@ -141,6 +144,12 @@ object TelemetryWrapper {
     fun stopSession() {
         TelemetryHolder.get().recordSessionEnd()
         TelemetryEvent.create(Category.ACTION, Method.BACKGROUND, Object.APP).queue()
+    }
+
+    fun startupCompleteEvent(time: Long) {
+        if (APP_START_EVENT_SENT) return
+        TelemetryEvent.create(Category.AGGREGATE, Method.STARTUP_COMPLETE, Object.APP, time.toString()).queue()
+        APP_START_EVENT_SENT = true
     }
 
     fun stopMainActivity() {
