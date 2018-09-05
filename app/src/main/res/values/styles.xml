@@ -63,6 +63,7 @@
 
     <style name="SettingsActionBarTextAppearance" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textSize">28sp</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">@string/font_ember_regular</item>
         <item name="android:textColor">@color/amazon_settings_textcolor</item>
     </style>
