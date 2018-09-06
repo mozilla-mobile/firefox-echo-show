@@ -17,7 +17,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
 import org.mozilla.focus.toolbar.ToolbarEvent.* // ktlint-disable no-wildcard-imports
-import mozilla.components.ui.icons.R as iconsR
 
 enum class ToolbarEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, TURBO, PIN_ACTION;
@@ -85,30 +84,30 @@ object ToolbarIntegration {
         toolbar.urlBoxMargin = dp16
         val progressBarController = ProgressBarController(progressBar)
 
-        val homescreenButton = Toolbar.ActionButton(iconsR.drawable.mozac_ic_grid,
+        val homescreenButton = Toolbar.ActionButton(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title)) { onToolbarEvent(HOME, null, null) }
         toolbar.addNavigationAction(homescreenButton)
 
-        val backButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_back,
+        val backButton = BrowserToolbar.Button(R.drawable.ic_back,
                 context.getString(R.string.content_description_back),
                 background = R.drawable.toolbar_button_background,
                 visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) }
         toolbar.addNavigationAction(backButton)
 
-        val forwardButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_forward,
+        val forwardButton = BrowserToolbar.Button(R.drawable.ic_forward,
                 context.getString(R.string.content_description_forward),
                 toolbarStateProvider::isForwardEnabled,
                 background = R.drawable.toolbar_button_background) { onToolbarEvent(FORWARD, null, null) }
         toolbar.addNavigationAction(forwardButton)
 
-        val refreshButton = BrowserToolbar.Button(iconsR.drawable.mozac_ic_refresh,
+        val refreshButton = BrowserToolbar.Button(R.drawable.ic_refresh,
                 context.getString(R.string.content_description_reload),
                 background = R.drawable.toolbar_button_background,
                 visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) }
         toolbar.addPageAction(refreshButton)
 
-        val pinButton = ChangeableVisibilityButton(imageResource = iconsR.drawable.mozac_ic_pin,
-                imageResourceSelected = iconsR.drawable.mozac_ic_pin_filled,
+        val pinButton = ChangeableVisibilityButton(imageResource = R.drawable.ic_pin,
+                imageResourceSelected = R.drawable.ic_pin_filled,
                 contentDescription = context.getString(R.string.pin_label),
                 contentDescriptionSelected = context.getString(R.string.homescreen_unpin_a11y),
                 background = R.drawable.toolbar_toggle_background,
@@ -121,8 +120,8 @@ object ToolbarIntegration {
         toolbar.addBrowserAction(pinButton)
 
         /*
-        val turboButton = BrowserToolbar.ToggleButton(imageResource = iconsR.drawable.mozac_ic_rocket,
-                imageResourceSelected = iconsR.drawable.mozac_ic_rocket_filled,
+        val turboButton = BrowserToolbar.ToggleButton(imageResource = R.drawable.ic_rocket,
+                imageResourceSelected = R.drawable.ic_rocket_filled,
                 contentDescription = context.getString(R.string.turbo_mode_enable_a11y),
                 contentDescriptionSelected = context.getString(
                         R.string.turbo_mode_disable_a11y),
@@ -132,7 +131,7 @@ object ToolbarIntegration {
         }
         toolbar.addBrowserAction(turboButton)
         */
-        toolbar.addBrowserAction(Toolbar.ActionSpace(toolbar.dp(384)))
+        toolbar.addBrowserAction(Toolbar.ActionSpace(toolbar.dp(192)))
 
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),

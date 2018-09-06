@@ -20,7 +20,10 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/appbar_height">
+        android:layout_height="@dimen/appbar_height"
+        android:background="@color/photonGrey70"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp">
 
         <!-- CoordinatorLayout scroll flags are added dynamically: see
              BrowserAppBarLayoutController.updateCanScroll.
@@ -28,10 +31,9 @@
              For elevation concerns, see appBarOverlay below. -->
         <mozilla.components.browser.toolbar.BrowserToolbar
             android:id="@+id/toolbar"
-            android:background="@color/photonGrey70"
-            android:elevation="4dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:elevation="4dp" />
     </android.support.design.widget.AppBarLayout>
 
     <!-- We want the home tiles to seem like they're above the browser content and
