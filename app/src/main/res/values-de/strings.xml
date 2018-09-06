@@ -88,4 +88,6 @@
   <string name="google_search_tile_title">Mit Google suchen</string>
   <string name="google_search_hint_text">Mit Google suchen oder Adresse eingeben</string>
   <string name="blank_tile_title">Website hinzufügen</string>
+  <string name="preference_mozilla_telemetry_summary2">Mozilla ist bestrebt, nur die Informationen zu sammeln, mit denen wir %1$s anbieten und für alle Nutzer verbessern können.</string>
+  <string name="preference_mozilla_telemetry_summary">Mehr erfahren</string>
 </resources>

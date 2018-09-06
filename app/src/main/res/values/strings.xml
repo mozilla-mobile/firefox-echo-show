@@ -240,4 +240,9 @@ be temporary, and you can try again later.</li>
     <string name="google_search_hint_text">Search with Google or enter address</string>
     <!-- The title displayed below blank tiles -->
     <string name="blank_tile_title">Add website</string>
+
+    <!-- %1$s will be replaced with the name of the app (e.g. Firefox Focus) -->
+    <string name="preference_mozilla_telemetry_summary2">Mozilla strives to collect only what we need to provide and improve %1$s for everyone.</string>
+    <!-- A link to SUMO at the end of the summary (preference_mozilla_telemetry_summary2) of the "Send anonymous usage data" setting. -->
+    <string name="preference_mozilla_telemetry_summary">Learn more</string>
 </resources>
