@@ -1,7 +1,7 @@
 body, html {
     background: #151920;
     color: #F9F9FA;
-    font-family: sans-serif;
+    font-family: amazon-ember-display-regular, sans-serif;
     line-height: 40px;
     font-size: 30px;
 }
