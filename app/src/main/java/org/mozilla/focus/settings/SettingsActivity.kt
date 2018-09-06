@@ -131,6 +131,7 @@ class SettingsActivity : AppCompatActivity(),
                     val layoutParams = toolbarChild.layoutParams as? Toolbar.LayoutParams ?: return
                     toolbarChild.layoutParams = layoutParams.apply {
                         gravity = Gravity.CENTER_VERTICAL
+                        marginEnd = 40
                     }
                 }
     }
