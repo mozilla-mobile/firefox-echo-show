@@ -45,7 +45,9 @@ elements, like the starting ImageView -->
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"
             android:layout_alignStart="@android:id/title"
-            android:textAppearance="?android:attr/textAppearanceListItemSecondary"
+            android:textColor="@color/photonGrey10"
+            android:textSize="28sp"
+            android:fontFamily="@string/font_ember_bold"
             android:maxLines="10" />
 
     </RelativeLayout>
