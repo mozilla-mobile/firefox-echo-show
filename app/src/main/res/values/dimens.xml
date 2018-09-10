@@ -23,8 +23,8 @@
     <dimen name="home_tile_corner_radius">8dp</dimen>
     <dimen name="home_tile_placeholder_corner_radius">12dp</dimen>
     <dimen name="home_tile_placeholder_icon_size">50dp</dimen>
-    <dimen name="home_tile_width">210dp</dimen>
-    <dimen name="home_tile_height">140dp</dimen>
+    <dimen name="home_tile_width">265dp</dimen>
+    <dimen name="home_tile_height">176dp</dimen>
     <dimen name="urlbar_corner_radius">4dp</dimen>
 
     <dimen name="button_size">48dp</dimen>

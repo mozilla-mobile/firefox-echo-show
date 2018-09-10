@@ -28,16 +28,18 @@
             android:layout_width="@dimen/home_tile_width"
             android:layout_height="@dimen/home_tile_height"
             android:layout_gravity="center"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             tools:ignore="ContentDescription"
             tools:src="@drawable/tile_youtube" />
     </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/tile_title"
-        android:layout_width="220dp"
+        android:layout_width="match_parent"
         android:layout_height="36dp"
+        android:layout_marginTop="8dp"
         android:ellipsize="end"
+        android:fontFamily="@string/font_ember_regular"
         android:gravity="center"
         android:singleLine="true"
         android:textColor="@color/photonGrey10"
