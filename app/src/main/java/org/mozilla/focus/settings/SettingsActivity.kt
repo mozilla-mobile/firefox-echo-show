@@ -12,11 +12,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceScreen
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.mozilla.focus.R
 import org.mozilla.focus.SearchBus
@@ -131,6 +134,17 @@ class SettingsActivity : AppCompatActivity(),
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings)
+        }
+
+        override fun onCreateRecyclerView(inflater: LayoutInflater?, parent: ViewGroup?, savedInstanceState: Bundle?): RecyclerView {
+            // Removing start/end padding from this view fixes an issue where,
+            // when preferences without icons were used, dividers would stick
+            // out beyond their accompanying text. We attempted to solve the
+            // problem using PreferenceCategory.iconSpaceReserved, but saw no
+            // effect for unknown reasons
+            return super.onCreateRecyclerView(inflater, parent, savedInstanceState).apply {
+                setPaddingRelative(0, paddingTop, 0, paddingBottom)
+            }
         }
     }
 
