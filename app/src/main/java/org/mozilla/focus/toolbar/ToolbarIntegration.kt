@@ -66,17 +66,9 @@ object ToolbarIntegration {
         val context = toolbar.context
 
         toolbar.displaySiteSecurityIcon = false
-
-        val dp16 = toolbar.dp(16)
-        val dp48 = toolbar.dp(48)
-        val dp24 = toolbar.dp(24)
-
-        toolbar.setPadding(dp48, dp24, dp48, dp24)
-        toolbar.urlBoxMargin = dp16
-        toolbar.setUrlTextPadding(dp16, dp16, dp16, dp16)
-        toolbar.browserActionMargin = dp16
         toolbar.hint = toolbar.context.getString(R.string.urlbar_hint)
 
+        configureToolbarSpacing(toolbar)
         initTextChangeListeners(context, toolbar, onToolbarEvent)
 
         val progressBar = UrlBoxProgressView(context)
@@ -90,6 +82,17 @@ object ToolbarIntegration {
                 onLoadingUpdate = progressBarController::onLoadingUpdate,
                 onProgressUpdate = progressBarController::onProgressUpdate
         )
+    }
+
+    private fun configureToolbarSpacing(toolbar: BrowserToolbar) {
+        val dp16 = toolbar.dp(16)
+        val dp48 = toolbar.dp(48)
+        val dp24 = toolbar.dp(24)
+
+        toolbar.setPadding(dp48, dp24, dp48, dp24)
+        toolbar.urlBoxMargin = dp16
+        toolbar.setUrlTextPadding(dp16, dp16, dp16, dp16)
+        toolbar.browserActionMargin = dp16
     }
 
     private fun addToolbarButtons(
