@@ -71,11 +71,13 @@ object ToolbarIntegration {
         toolbar.displaySiteSecurityIcon = false
         toolbar.hint = toolbar.context.getString(R.string.urlbar_hint)
 
-        addCloseEditToolbarContentDescription(context, toolbar)
         configureToolbarSpacing(toolbar)
         initTextChangeListeners(context, toolbar, onToolbarEvent)
         val progressBarController = configureProgressBar(context, toolbar)
         val pinButton = addToolbarButtons(context, toolbar, toolbarStateProvider, onToolbarEvent)
+
+        // Some component workarounds.
+        addCloseEditToolbarContentDescription(context, toolbar)
 
         return ToolbarCallbacks(
                 onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) },
