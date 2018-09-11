@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.support.annotation.DrawableRes
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
@@ -68,6 +70,7 @@ object ToolbarIntegration {
         toolbar.displaySiteSecurityIcon = false
         toolbar.hint = toolbar.context.getString(R.string.urlbar_hint)
 
+        addCloseEditToolbarContentDescription(context, toolbar)
         configureToolbarSpacing(toolbar)
         initTextChangeListeners(context, toolbar, onToolbarEvent)
         val progressBarController = configureProgressBar(context, toolbar)
@@ -78,6 +81,23 @@ object ToolbarIntegration {
                 onLoadingUpdate = progressBarController::onLoadingUpdate,
                 onProgressUpdate = progressBarController::onProgressUpdate
         )
+    }
+
+    private fun addCloseEditToolbarContentDescription(context: Context, toolbar: BrowserToolbar) {
+        // The components don't include a content description for the EditToolbar layout's close
+        // button: filed https://github.com/mozilla-mobile/android-components/issues/744. However,
+        // we don't have time to wait for them to translate strings so we work around it.
+        val editLayout = toolbar.getChildAt(1)
+        if (editLayout !is ViewGroup ||
+                // The class is internal so we compare against its name instead of its type.
+                editLayout::class.java.simpleName != "EditToolbar") {
+            throw IllegalStateException("Unable to locate EditToolbar layout")
+        }
+
+        val closeEditLayoutButton = editLayout.getChildAt(1) as? ImageView
+                ?: throw IllegalStateException("Unable to locate close EditToolbar layout button")
+
+        closeEditLayoutButton.contentDescription = context.resources.getString(R.string.nav_close_hint)
     }
 
     private fun configureToolbarSpacing(toolbar: BrowserToolbar) {
