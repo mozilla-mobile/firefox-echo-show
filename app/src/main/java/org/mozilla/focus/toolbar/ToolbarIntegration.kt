@@ -19,6 +19,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
 import org.mozilla.focus.toolbar.ToolbarEvent.* // ktlint-disable no-wildcard-imports
+import org.mozilla.focus.ext.children
 
 enum class ToolbarEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, TURBO, PIN_ACTION;
