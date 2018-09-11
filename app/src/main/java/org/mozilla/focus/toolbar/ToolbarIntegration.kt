@@ -84,6 +84,21 @@ object ToolbarIntegration {
         toolbar.urlBoxMargin = dp16
         val progressBarController = ProgressBarController(progressBar)
 
+        val pinButton = addToolbarButtons(context, toolbar, toolbarStateProvider, onToolbarEvent)
+
+        return ToolbarCallbacks(
+                onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) },
+                onLoadingUpdate = progressBarController::onLoadingUpdate,
+                onProgressUpdate = progressBarController::onProgressUpdate
+        )
+    }
+
+    private fun addToolbarButtons(
+            context: Context,
+            toolbar: BrowserToolbar,
+            toolbarStateProvider: ToolbarStateProvider,
+            onToolbarEvent: OnToolbarEvent
+    ): ChangeableVisibilityButton {
         val homescreenButton = Toolbar.ActionButton(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title)) { onToolbarEvent(HOME, null, null) }
         toolbar.addNavigationAction(homescreenButton)
@@ -154,12 +169,7 @@ object ToolbarIntegration {
         Settings.getInstance(toolbar.context).preferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
         weakToolbarToSharedPrefListeners[toolbar] = sharedPrefsListener
         */
-
-        return ToolbarCallbacks(
-                onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) },
-                onLoadingUpdate = progressBarController::onLoadingUpdate,
-                onProgressUpdate = progressBarController::onProgressUpdate
-        )
+        return pinButton
     }
 
     private fun initTextChangeListeners(context: Context, toolbar: BrowserToolbar,
