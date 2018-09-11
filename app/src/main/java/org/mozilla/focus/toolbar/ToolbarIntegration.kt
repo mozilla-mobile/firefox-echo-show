@@ -7,9 +7,12 @@ package org.mozilla.focus.toolbar
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.support.annotation.DrawableRes
+import android.support.v4.content.ContextCompat
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
@@ -77,6 +80,7 @@ object ToolbarIntegration {
         val pinButton = addToolbarButtons(context, toolbar, toolbarStateProvider, onToolbarEvent)
 
         // Some component workarounds.
+        configureURLBarText(toolbar)
         addCloseEditToolbarContentDescription(context, toolbar)
 
         return ToolbarCallbacks(
@@ -84,6 +88,13 @@ object ToolbarIntegration {
                 onLoadingUpdate = progressBarController::onLoadingUpdate,
                 onProgressUpdate = progressBarController::onProgressUpdate
         )
+    }
+
+    private fun configureURLBarText(toolbar: BrowserToolbar) {
+        val urlBar = toolbar.displayToolbar.children().first { it is TextView } as TextView
+        urlBar.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
+        urlBar.setHintTextColor(ContextCompat.getColor(toolbar.context, R.color.photonGrey10))
+        // Default text color is already set to photonGrey10.
     }
 
     private fun addCloseEditToolbarContentDescription(context: Context, toolbar: BrowserToolbar) {
@@ -103,7 +114,7 @@ object ToolbarIntegration {
 
         toolbar.setPadding(dp48, dp24, dp48, dp24)
         toolbar.urlBoxMargin = dp16
-        toolbar.setUrlTextPadding(dp16, dp16, dp16, dp16)
+        toolbar.setUrlTextPadding(dp16, 0, dp16, 0)
         toolbar.browserActionMargin = dp16
     }
 
