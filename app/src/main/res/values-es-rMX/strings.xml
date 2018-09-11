@@ -68,6 +68,7 @@
   <string name="turbo_mode_enable_a11y">Activar el modo turbo</string>
   <string name="homescreen_unpin_tutorial_toast">Mantén presionado SELECT para desanclarlo de la pantalla de inicio</string>
   <string name="homescreen_tile_remove">Eliminar</string>
+  <string name="nav_close_hint">Cerrar</string>
   <string name="homescreen_unpin_a11y">Desanclar</string>
   <string name="homescreen_title">Pantalla de inicio</string>
   <string name="pin_label">Fijar a la pantalla inicio</string>
