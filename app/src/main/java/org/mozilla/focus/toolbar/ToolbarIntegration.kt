@@ -87,16 +87,11 @@ object ToolbarIntegration {
         // The components don't include a content description for the EditToolbar layout's close
         // button: filed https://github.com/mozilla-mobile/android-components/issues/744. However,
         // we don't have time to wait for them to translate strings so we work around it.
-        val editLayout = toolbar.getChildAt(1)
-        if (editLayout !is ViewGroup ||
+        val closeEditLayoutButton = toolbar.children()
                 // The class is internal so we compare against its name instead of its type.
-                editLayout::class.java.simpleName != "EditToolbar") {
-            throw IllegalStateException("Unable to locate EditToolbar layout")
-        }
-
-        val closeEditLayoutButton = editLayout.getChildAt(1) as? ImageView
+                .first { it::class.java.simpleName == "EditToolbar" }.let { it as ViewGroup }
+                .getChildAt(1) as? ImageView
                 ?: throw IllegalStateException("Unable to locate close EditToolbar layout button")
-
         closeEditLayoutButton.contentDescription = context.resources.getString(R.string.nav_close_hint)
     }
 
