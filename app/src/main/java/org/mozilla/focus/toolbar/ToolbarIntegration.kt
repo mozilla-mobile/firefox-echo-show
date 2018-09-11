@@ -81,7 +81,6 @@ object ToolbarIntegration {
 
         val progressBar = UrlBoxProgressView(context)
         toolbar.urlBoxView = progressBar
-        toolbar.urlBoxMargin = dp16
         val progressBarController = ProgressBarController(progressBar)
 
         val pinButton = addToolbarButtons(context, toolbar, toolbarStateProvider, onToolbarEvent)
