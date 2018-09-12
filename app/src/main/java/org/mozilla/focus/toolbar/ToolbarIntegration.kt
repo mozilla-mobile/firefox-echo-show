@@ -138,7 +138,7 @@ object ToolbarIntegration {
             toolbarStateProvider: ToolbarStateProvider,
             onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
-        val homescreenButton = Toolbar.ActionButton(R.drawable.ic_grid,
+        val homescreenButton = BrowserToolbar.Button(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title)) { onToolbarEvent(HOME, null, null) }
         toolbar.addNavigationAction(homescreenButton)
 
