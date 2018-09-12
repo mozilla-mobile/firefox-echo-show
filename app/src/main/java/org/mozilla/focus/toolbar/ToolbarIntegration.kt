@@ -100,6 +100,7 @@ object ToolbarIntegration {
     }
 
     private fun configureURLBarText(toolbar: BrowserToolbar) {
+        // Components doesn't configure the text properly.
         // TODO: Replace with the components implementation:
         // https://github.com/mozilla-mobile/android-components/issues/756
         val urlBar = toolbar.displayToolbar.children().first { it is TextView } as TextView
@@ -120,6 +121,7 @@ object ToolbarIntegration {
     }
 
     private fun addCloseEditToolbarContentDescription(context: Context, toolbar: BrowserToolbar) {
+        // Components doesn't have a content description for this button.
         // TODO: replace with the components implementation:
         // https://github.com/mozilla-mobile/android-components/issues/744.
         val closeEditLayoutButton = toolbar.editToolbar
