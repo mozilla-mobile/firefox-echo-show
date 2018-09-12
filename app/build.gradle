@@ -147,7 +147,7 @@ dependencies {
     implementation "com.android.support:preference-v7:$support_libraries_version"
     implementation "com.android.support:recyclerview-v7:$support_libraries_version"
 
-    implementation 'io.sentry:sentry-android:1.7.5'
+    implementation 'io.sentry:sentry-android:1.7.9'
 
     implementation ("com.google.code.findbugs:annotations:3.0.1") {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
