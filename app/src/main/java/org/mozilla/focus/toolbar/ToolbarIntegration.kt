@@ -109,10 +109,10 @@ object ToolbarIntegration {
 
     private fun configureToolbarSpacing(toolbar: BrowserToolbar) {
         val dp16 = toolbar.dp(16)
-        val dp48 = toolbar.dp(48)
-        val dp24 = toolbar.dp(24)
+        val dp20 = toolbar.dp(20)
+        val dp72 = toolbar.dp(72)
 
-        toolbar.setPadding(dp48, dp24, dp48, dp24)
+        toolbar.setPadding(dp72, dp20, dp72, dp20)
         toolbar.urlBoxMargin = dp16
         toolbar.setUrlTextPadding(dp16, 0, dp16, 0)
         toolbar.browserActionMargin = dp16

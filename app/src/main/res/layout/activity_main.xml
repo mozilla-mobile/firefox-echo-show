@@ -21,9 +21,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_height"
-        android:background="@color/photonGrey70"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp">
+        android:background="@color/photonGrey70">
 
         <!-- CoordinatorLayout scroll flags are added dynamically: see
              BrowserAppBarLayoutController.updateCanScroll.
