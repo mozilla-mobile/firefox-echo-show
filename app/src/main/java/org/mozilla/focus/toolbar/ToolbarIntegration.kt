@@ -91,6 +91,8 @@ object ToolbarIntegration {
     }
 
     private fun configureURLBarText(toolbar: BrowserToolbar) {
+        // TODO: Replace with the components implementation:
+        // https://github.com/mozilla-mobile/android-components/issues/756
         val urlBar = toolbar.displayToolbar.children().first { it is TextView } as TextView
         urlBar.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
         urlBar.setHintTextColor(ContextCompat.getColor(toolbar.context, R.color.photonGrey10))
@@ -98,9 +100,8 @@ object ToolbarIntegration {
     }
 
     private fun addCloseEditToolbarContentDescription(context: Context, toolbar: BrowserToolbar) {
-        // The components don't include a content description for the EditToolbar layout's close
-        // button: filed https://github.com/mozilla-mobile/android-components/issues/744. However,
-        // we don't have time to wait for them to translate strings so we work around it.
+        // TODO: replace with the components implementation:
+        // https://github.com/mozilla-mobile/android-components/issues/744.
         val closeEditLayoutButton = toolbar.editToolbar
                 .getChildAt(1) as? ImageView
                 ?: throw IllegalStateException("Unable to locate close EditToolbar layout button")
