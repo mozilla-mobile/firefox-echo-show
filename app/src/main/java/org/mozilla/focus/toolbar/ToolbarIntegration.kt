@@ -30,6 +30,8 @@ import org.mozilla.focus.toolbar.ToolbarEvent.PIN_ACTION
 import org.mozilla.focus.toolbar.ToolbarEvent.RELOAD
 import org.mozilla.focus.toolbar.ToolbarEvent.SETTINGS
 
+private const val TOOLBAR_BUTTON_BACKGROUND = R.drawable.toolbar_button_background
+
 enum class ToolbarEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, TURBO, PIN_ACTION;
 
@@ -139,24 +141,25 @@ object ToolbarIntegration {
             onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
         val homescreenButton = BrowserToolbar.Button(R.drawable.ic_grid,
-                context.getString(R.string.homescreen_title)) { onToolbarEvent(HOME, null, null) }
+                context.getString(R.string.homescreen_title),
+                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) }
         toolbar.addNavigationAction(homescreenButton)
 
         val backButton = BrowserToolbar.Button(R.drawable.ic_back,
                 context.getString(R.string.content_description_back),
-                background = R.drawable.toolbar_button_background,
+                background = TOOLBAR_BUTTON_BACKGROUND,
                 visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) }
         toolbar.addNavigationAction(backButton)
 
         val forwardButton = BrowserToolbar.Button(R.drawable.ic_forward,
                 context.getString(R.string.content_description_forward),
                 toolbarStateProvider::isForwardEnabled,
-                background = R.drawable.toolbar_button_background) { onToolbarEvent(FORWARD, null, null) }
+                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(FORWARD, null, null) }
         toolbar.addNavigationAction(forwardButton)
 
         val refreshButton = BrowserToolbar.Button(R.drawable.ic_refresh,
                 context.getString(R.string.content_description_reload),
-                background = R.drawable.toolbar_button_background,
+                background = TOOLBAR_BUTTON_BACKGROUND,
                 visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) }
         toolbar.addPageAction(refreshButton)
 
@@ -189,7 +192,7 @@ object ToolbarIntegration {
 
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),
-                background = R.drawable.toolbar_button_background) {
+                background = TOOLBAR_BUTTON_BACKGROUND) {
             onToolbarEvent(SETTINGS, null, null)
         }
         toolbar.addBrowserAction(settingsButton)
