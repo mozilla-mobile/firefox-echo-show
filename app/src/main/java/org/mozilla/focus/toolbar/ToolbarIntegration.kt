@@ -21,8 +21,14 @@ import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
-import org.mozilla.focus.toolbar.ToolbarEvent.* // ktlint-disable no-wildcard-imports
 import org.mozilla.focus.ext.children
+import org.mozilla.focus.toolbar.ToolbarEvent.BACK
+import org.mozilla.focus.toolbar.ToolbarEvent.FORWARD
+import org.mozilla.focus.toolbar.ToolbarEvent.HOME
+import org.mozilla.focus.toolbar.ToolbarEvent.LOAD_URL
+import org.mozilla.focus.toolbar.ToolbarEvent.PIN_ACTION
+import org.mozilla.focus.toolbar.ToolbarEvent.RELOAD
+import org.mozilla.focus.toolbar.ToolbarEvent.SETTINGS
 
 enum class ToolbarEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, TURBO, PIN_ACTION;
