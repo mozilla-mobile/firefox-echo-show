@@ -75,6 +75,11 @@ class UriTest {
                 Uri.parse(url).truncatedPath())
     }
 
+    @Test // regression test for #403.
+    fun `isYouTubeDesktop is false for null host`() {
+        assertFalse(Uri.parse("file:///whatever/").isYouTubeDesktop)
+    }
+
     @Test
     fun `isYouTubeDesktop is true for desktop YouTube URL`() {
         assertTrue(Uri.parse("https://www.youtube.com/watch?v=6E4TOHGO0Ms").isYouTubeDesktop)
