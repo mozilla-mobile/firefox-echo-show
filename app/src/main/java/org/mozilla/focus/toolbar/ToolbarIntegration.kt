@@ -89,6 +89,7 @@ object ToolbarIntegration {
 
         // Some component workarounds.
         configureURLBarText(toolbar)
+        configureToolbarButtonImages(toolbar)
         addCloseEditToolbarContentDescription(context, toolbar)
 
         return ToolbarCallbacks(
@@ -105,6 +106,17 @@ object ToolbarIntegration {
         urlBar.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
         urlBar.setHintTextColor(ContextCompat.getColor(toolbar.context, R.color.photonGrey10))
         // Default text color is already set to photonGrey10.
+    }
+
+    private fun configureToolbarButtonImages(toolbar: BrowserToolbar) {
+        val toolbarButtons = toolbar.displayToolbar.children()
+                .filterIsInstance(ImageView::class.java)
+        toolbarButtons.forEach {
+            // Components adds unnecessary padding to the ImageViews.
+            // TODO: replace with components implementation:
+            // https://github.com/mozilla-mobile/android-components/issues/772
+            it.setPadding(0, 0, 0, 0)
+        }
     }
 
     private fun addCloseEditToolbarContentDescription(context: Context, toolbar: BrowserToolbar) {
