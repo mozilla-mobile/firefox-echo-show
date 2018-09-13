@@ -112,14 +112,14 @@ object ToolbarIntegration {
     }
 
     private fun configureToolbarButtonImages(toolbar: BrowserToolbar) {
-        val toolbarButtons = toolbar.displayToolbar.children()
+        toolbar.displayToolbar.children()
                 .filterIsInstance(ImageView::class.java)
-        toolbarButtons.forEach {
-            // Components adds unnecessary padding to the ImageViews.
-            // TODO: replace with components implementation:
-            // https://github.com/mozilla-mobile/android-components/issues/772
-            it.setPadding(0, 0, 0, 0)
-        }
+                .forEach { toolbarButton ->
+                    // Components adds unnecessary padding to the ImageViews.
+                    // TODO: replace with components implementation:
+                    // https://github.com/mozilla-mobile/android-components/issues/772
+                    toolbarButton.setPadding(0, 0, 0, 0)
+                }
     }
 
     private fun addCloseEditToolbarContentDescription(context: Context, toolbar: BrowserToolbar) {
