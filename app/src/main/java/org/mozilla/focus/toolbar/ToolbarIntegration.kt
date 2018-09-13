@@ -144,9 +144,9 @@ object ToolbarIntegration {
     }
 
     private fun configureProgressBar(context: Context, toolbar: BrowserToolbar): ProgressBarController {
-        val progressBar = UrlBoxProgressView(context)
-        toolbar.urlBoxView = progressBar
-        val progressBarController = ProgressBarController(progressBar)
+        val urlBoxBackground = UrlBoxBackgroundWithProgress(context)
+        toolbar.urlBoxView = urlBoxBackground
+        val progressBarController = ProgressBarController(urlBoxBackground)
         return progressBarController
     }
 

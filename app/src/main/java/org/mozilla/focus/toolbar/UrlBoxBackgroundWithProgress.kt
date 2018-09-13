@@ -4,17 +4,18 @@
 
 package org.mozilla.focus.toolbar
 
-import android.graphics.Canvas
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.drawable.ClipDrawable
 import android.view.Gravity
 import android.view.View
 import org.mozilla.focus.R
 
 /**
- * A custom view to be drawn behind the URL and page actions. Acts as a custom progress view.
+ * A custom view to be drawn behind the URL and page actions. Acts as the background view,
+ * including while displaying loading progress.
  */
-class UrlBoxProgressView(
+class UrlBoxBackgroundWithProgress(
         context: Context
 ) : View(context) {
     var progress: Int = 0
