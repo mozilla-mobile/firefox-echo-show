@@ -31,6 +31,7 @@ import org.mozilla.focus.toolbar.ToolbarEvent.RELOAD
 import org.mozilla.focus.toolbar.ToolbarEvent.SETTINGS
 
 private const val TOOLBAR_BUTTON_BACKGROUND = R.drawable.toolbar_button_background
+private const val BUTTON_ACTION_MARGIN_DP = 16
 
 enum class ToolbarEvent {
     HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, TURBO, PIN_ACTION;
@@ -140,7 +141,7 @@ object ToolbarIntegration {
         toolbar.setPadding(dp72, dp20, dp72, dp20)
         toolbar.urlBoxMargin = dp16
         toolbar.setUrlTextPadding(dp16, 0, dp16, 0)
-        toolbar.browserActionMargin = dp16
+        toolbar.browserActionMargin = toolbar.dp(BUTTON_ACTION_MARGIN_DP)
     }
 
     private fun configureProgressBar(context: Context, toolbar: BrowserToolbar): ProgressBarController {
@@ -207,7 +208,10 @@ object ToolbarIntegration {
         }
         toolbar.addBrowserAction(turboButton)
         */
-        toolbar.addBrowserAction(Toolbar.ActionSpace(toolbar.dp(192)))
+
+        // A margin is added to either side of the space so we remove those margins from the width we want.
+        val actionSpaceWidth = 192 - toolbar.dp(BUTTON_ACTION_MARGIN_DP) * 2
+        toolbar.addBrowserAction(Toolbar.ActionSpace(actionSpaceWidth))
 
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),
