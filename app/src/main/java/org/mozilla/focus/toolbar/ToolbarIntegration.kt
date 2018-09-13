@@ -105,8 +105,10 @@ object ToolbarIntegration {
         // https://github.com/mozilla-mobile/android-components/issues/756
         val urlBar = toolbar.displayToolbar.children().first { it is TextView } as TextView
         urlBar.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
-        urlBar.setHintTextColor(ContextCompat.getColor(toolbar.context, R.color.photonGrey10))
-        // Default text color is already set to photonGrey10.
+
+        val textColor = ContextCompat.getColor(toolbar.context, R.color.photonGrey10)
+        urlBar.setHintTextColor(textColor)
+        urlBar.setTextColor(textColor)
     }
 
     private fun configureToolbarButtonImages(toolbar: BrowserToolbar) {
