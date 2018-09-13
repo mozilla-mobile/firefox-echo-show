@@ -90,7 +90,6 @@ object ToolbarIntegration {
 
         // Some component workarounds.
         configureURLBarText(toolbar)
-        configureToolbarButtonImages(toolbar)
         addCloseEditToolbarContentDescription(context, toolbar)
 
         return ToolbarCallbacks(
@@ -110,17 +109,6 @@ object ToolbarIntegration {
         val textColor = ContextCompat.getColor(toolbar.context, R.color.photonGrey10)
         urlBar.setHintTextColor(textColor)
         urlBar.setTextColor(textColor)
-    }
-
-    private fun configureToolbarButtonImages(toolbar: BrowserToolbar) {
-        toolbar.displayToolbar.children()
-                .filterIsInstance(ImageView::class.java)
-                .forEach { toolbarButton ->
-                    // Components adds unnecessary padding to the ImageViews.
-                    // TODO: replace with components implementation:
-                    // https://github.com/mozilla-mobile/android-components/issues/772
-                    toolbarButton.setPadding(0, 0, 0, 0)
-                }
     }
 
     private fun addCloseEditToolbarContentDescription(context: Context, toolbar: BrowserToolbar) {
@@ -160,27 +148,27 @@ object ToolbarIntegration {
         // Ideally, we tint these icons in code, rather than hard-coding the tint in their assets.
         // TODO: use the components tint implementation when available:
         // https://github.com/mozilla-mobile/android-components/issues/755
-        val homescreenButton = BrowserToolbar.Button(R.drawable.ic_grid,
+        val homescreenButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title),
-                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) }
+                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) })
         toolbar.addNavigationAction(homescreenButton)
 
-        val backButton = BrowserToolbar.Button(R.drawable.ic_back,
+        val backButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_back,
                 context.getString(R.string.content_description_back),
                 background = TOOLBAR_BUTTON_BACKGROUND,
-                visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) }
+                visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) })
         toolbar.addNavigationAction(backButton)
 
-        val forwardButton = BrowserToolbar.Button(R.drawable.ic_forward,
+        val forwardButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_forward,
                 context.getString(R.string.content_description_forward),
                 toolbarStateProvider::isForwardEnabled,
-                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(FORWARD, null, null) }
+                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(FORWARD, null, null) })
         toolbar.addNavigationAction(forwardButton)
 
-        val refreshButton = BrowserToolbar.Button(R.drawable.ic_refresh,
+        val refreshButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_refresh,
                 context.getString(R.string.content_description_reload),
                 background = TOOLBAR_BUTTON_BACKGROUND,
-                visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) }
+                visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) })
         toolbar.addPageAction(refreshButton)
 
         val pinButton = ChangeableVisibilityButton(imageResource = R.drawable.ic_pin,
@@ -213,15 +201,15 @@ object ToolbarIntegration {
         val actionSpaceWidth = 192 - toolbar.dp(BUTTON_ACTION_MARGIN_DP) * 2
         toolbar.addBrowserAction(Toolbar.ActionSpace(actionSpaceWidth))
 
-        val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
+        val settingsButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),
                 background = TOOLBAR_BUTTON_BACKGROUND) {
             onToolbarEvent(SETTINGS, null, null)
-        }
+        })
         toolbar.addBrowserAction(settingsButton)
 
-        val brandIcon = Toolbar.ActionImage(R.drawable.ic_firefox_and_workmark,
-                "")
+        val brandIcon = ActionNoPadding(Toolbar.ActionImage(R.drawable.ic_firefox_and_workmark,
+                ""))
         toolbar.addBrowserAction(brandIcon)
 
         /*
@@ -279,6 +267,12 @@ private fun onDisplayUrlUpdate(
     toolbar.invalidateActions()
 }
 
+private class ActionNoPadding(private val baseAction: Toolbar.Action) : Toolbar.Action by baseAction {
+    override fun createView(parent: ViewGroup) = baseAction.createView(parent).apply {
+        removePaddingAddedByComponents()
+    }
+}
+
 /**
  * A [BrowserToolbar.ToggleButton] that can be set to different visibilities
  */
@@ -302,6 +296,19 @@ private class ChangeableVisibilityButton(
         super.bind(view)
         view.visibility = visibility()
     }
+
+    override fun createView(parent: ViewGroup): View = super.createView(parent).apply {
+        // We can't use ActionNoPadding for this functionality because we need the
+        // Toolbar.ActionToggleButton return type.
+        removePaddingAddedByComponents()
+    }
+}
+
+private fun View.removePaddingAddedByComponents() {
+    // Components adds unnecessary padding to the ImageViews.
+    // TODO: replace with components implementation:
+    // https://github.com/mozilla-mobile/android-components/issues/772
+    setPadding(0, 0, 0, 0)
 }
 
 private val BrowserToolbar.displayToolbar: ViewGroup
