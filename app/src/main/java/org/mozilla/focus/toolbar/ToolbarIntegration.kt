@@ -156,6 +156,9 @@ object ToolbarIntegration {
             toolbarStateProvider: ToolbarStateProvider,
             onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
+        // Ideally, we tint these icons in code, rather than hard-coding the tint in their assets.
+        // TODO: use the components tint implementation when available:
+        // https://github.com/mozilla-mobile/android-components/issues/755
         val homescreenButton = BrowserToolbar.Button(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title),
                 background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) }
