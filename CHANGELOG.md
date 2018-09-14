@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Polish toolbar and home screen look-and-feel
 - Improve home screen tile images
 
+### Removed
+- System-wide VIEW intent handling
+
 ### Fixed
 - Crash with unknown STR
 
