@@ -44,6 +44,8 @@ object IntentValidator {
     fun validate(context: Context, intent: SafeIntent, onValidBrowserIntent: OnValidBrowserIntent) {
         val action = intent.action
 
+        // ACTION_VIEW is only sent internally: we want the preinstalled WebView
+        // application to handle system-wide HTTP(S) intents.
         if (Intent.ACTION_VIEW.equals(action)) {
             val dataString = intent.dataString
             if (dataString == null || dataString.isEmpty()) {
