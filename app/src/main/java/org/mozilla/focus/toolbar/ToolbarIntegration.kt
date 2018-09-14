@@ -128,7 +128,7 @@ object ToolbarIntegration {
 
         toolbar.setPadding(dp72, dp20, dp72, dp20)
         toolbar.urlBoxMargin = dp16
-        toolbar.setUrlTextPadding(dp16, 0, dp16, 0)
+        toolbar.setUrlTextPadding(dp16, 0, 0, 0)
         toolbar.browserActionMargin = toolbar.dp(BUTTON_ACTION_MARGIN_DP)
     }
 
