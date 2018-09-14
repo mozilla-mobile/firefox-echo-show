@@ -42,8 +42,8 @@ object HiddenEditTextManager {
             elevation = -8f
             id = HIDDEN_EDIT_TEXT_ID
             inputType = InputType.TYPE_CLASS_TEXT
-//            hint = hintText TODO pass hint text as parameter
             hint = viewGroupToAttachTo.context.getString(R.string.google_search_hint_text)
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
         viewGroupToAttachTo.addView(editText)
         editText.layoutParams = editText.layoutParams.apply {
