@@ -9,7 +9,6 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.preference.PreferenceManager
 import android.support.v4.view.animation.FastOutSlowInInterpolator
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
@@ -18,6 +17,7 @@ import kotlinx.coroutines.experimental.Job
 import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.home.HomeTilesManager
+import org.mozilla.focus.widget.AccessibleGridLayoutManager
 
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
 private const val MAX_UNPIN_TOAST_COUNT = 3
@@ -74,7 +74,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
             }
         }, homeTileLongClickListenerProvider = { homeTileLongClickListener },
         urlSearchProvider = { urlSearcher })
-        layoutManager = GridLayoutManager(context, COL_COUNT)
+        layoutManager = AccessibleGridLayoutManager(context, COL_COUNT)
     }
 
     override fun setVisibility(visibility: Int) {
