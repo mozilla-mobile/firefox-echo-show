@@ -11,6 +11,7 @@ import android.support.v7.preference.PreferenceManager;
 import org.mozilla.focus.locale.LocaleAwareApplication;
 import org.mozilla.focus.search.SearchEngineManager;
 import org.mozilla.focus.session.VisibilityLifeCycleCallback;
+import org.mozilla.focus.telemetry.AppStartupTimeMeasurement;
 import org.mozilla.focus.telemetry.DataUploadPreference;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.AppConstants;
@@ -20,6 +21,7 @@ public class FocusApplication extends LocaleAwareApplication {
 
     @Override
     public void onCreate() {
+        AppStartupTimeMeasurement.applicationOnCreate();
         super.onCreate();
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);

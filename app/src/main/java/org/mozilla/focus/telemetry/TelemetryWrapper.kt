@@ -36,7 +36,6 @@ import org.mozilla.telemetry.storage.FileTelemetryStorage
 object TelemetryWrapper {
     private const val TELEMETRY_APP_NAME = "FirefoxConnect"
 
-    private var APP_START_EVENT_SENT = false
     private const val HISTOGRAM_SIZE = 200
     private const val BUCKET_SIZE_MS = 100
     private const val HISTOGRAM_MIN_INDEX = 0
@@ -160,11 +159,11 @@ object TelemetryWrapper {
         TelemetryEvent.create(Category.ACTION, Method.BACKGROUND, Object.APP).queue()
     }
 
+    // This should only be called through AppStartupTimeMeasurement.
     fun startupCompleteEvent(time: Long) {
-        if (APP_START_EVENT_SENT) return
         TelemetryEvent.create(Category.AGGREGATE, Method.STARTUP_COMPLETE, Object.APP, time.toString()).queue()
-        APP_START_EVENT_SENT = true
     }
+
     private var histogram = IntArray(HISTOGRAM_SIZE)
 
     @JvmStatic

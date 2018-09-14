@@ -2,15 +2,12 @@ package org.mozilla.focus.locale;
 
 import android.app.Application;
 import android.content.res.Configuration;
-import android.os.SystemClock;
 
 public class LocaleAwareApplication extends Application {
     private boolean mInBackground;
-    public static long APP_START_TIME;
 
     @Override
     public void onCreate() {
-        APP_START_TIME = SystemClock.uptimeMillis();
         Locales.initializeLocale(this);
 
         super.onCreate();
