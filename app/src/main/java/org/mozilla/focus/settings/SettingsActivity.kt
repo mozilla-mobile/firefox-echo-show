@@ -5,7 +5,6 @@
 package org.mozilla.focus.settings
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -22,12 +21,9 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.mozilla.focus.R
-import org.mozilla.focus.SearchBus
 import org.mozilla.focus.ext.children
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
-import org.mozilla.focus.widget.INTENT_ORIGIN
-import org.mozilla.focus.widget.INTERNAL
 
 /**
  * Settings activity with nested settings screens.
@@ -89,18 +85,6 @@ class SettingsActivity : AppCompatActivity(),
             (webview as IWebView).setBlockingEnabled(false)
             return webview
         } else super.onCreateView(name, context, attrs)
-    }
-
-    override fun startActivity(intent: Intent?) {
-        if (intent?.action == Intent.ACTION_VIEW &&
-                intent.getStringExtra(INTENT_ORIGIN) == INTERNAL) {
-            intent.data?.also { SearchBus.push(it) }
-            // If the request came from inside the app, close this activity
-            // and forward the request to where it can be handled
-            finish()
-        } else {
-            super.startActivity(intent)
-        }
     }
 
     /*

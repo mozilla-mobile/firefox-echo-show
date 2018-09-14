@@ -19,10 +19,8 @@ import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
+import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
-
-const val INTENT_ORIGIN = "INTENT_ORIGIN"
-const val INTERNAL = "INTERNAL"
 
 /**
  * This class allows us to set a clickable link within a [PreferenceScreen] summary.
@@ -73,8 +71,8 @@ class TelemetrySwitchPreference(context: Context, attrs: AttributeSet)
 
     private fun linkTextSpan(): ClickableSpan = object : ClickableSpan() {
         override fun onClick(widget: View?) {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                putExtra(INTENT_ORIGIN, INTERNAL)
+            val intent = Intent(context, MainActivity::class.java).apply {
+                action = Intent.ACTION_VIEW
                 data = Uri.parse("https://www.mozilla.org/privacy/firefox/#health-report")
             }
             context.startActivity(intent)

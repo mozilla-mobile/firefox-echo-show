@@ -46,10 +46,6 @@ import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 
 class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, UrlSearcher {
 
-    init {
-        SearchBus.observe(this)
-    }
-
     private val sessionManager = SessionManager.getInstance()
 
     private val fragmentLifecycleCallbacks = MainActivityFragmentLifecycleCallbacks()
