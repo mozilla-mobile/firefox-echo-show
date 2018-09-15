@@ -96,7 +96,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
     private fun initViews() {
         appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, toolbar, appBarOverlay).apply {
-            initViews(supportFragmentManager::getBrowserFragment)
+            init(supportFragmentManager::getBrowserFragment)
         }
     }
 

@@ -10,9 +10,12 @@ import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_
 import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
 import android.view.View
+import android.view.accessibility.AccessibilityManager
 import kotlinx.android.synthetic.main.fragment_browser.*
 import mozilla.components.browser.toolbar.BrowserToolbar
 import org.mozilla.focus.browser.BrowserFragment
+import org.mozilla.focus.ext.getAccessibilityManager
+import org.mozilla.focus.ext.isVoiceViewEnabled
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.telemetry.TelemetryWrapper
 
@@ -26,10 +29,13 @@ class BrowserAppBarLayoutController(
         private val appBarLayout: AppBarLayout,
         private val toolbar: BrowserToolbar,
         private val appBarOverlay: View
-) {
+) : AccessibilityManager.TouchExplorationStateChangeListener {
+    private var isHomeVisible = false
 
-    fun initViews(getBrowserFragment: () -> BrowserFragment?) {
-        updateCanScroll(isHomeVisible = false) // The startup home screen may be added later.
+    fun init(getBrowserFragment: () -> BrowserFragment?) {
+        appBarOverlay.context.getAccessibilityManager().addTouchExplorationStateChangeListener(this)
+
+        updateCanScroll(isHomeVisible = isHomeVisible, isVoiceViewEnabled = appBarOverlay.context.isVoiceViewEnabled())
 
         appBarOverlay.setOnClickListener {
             appBarOverlay.visibility = View.GONE
@@ -38,8 +44,9 @@ class BrowserAppBarLayoutController(
         }
     }
 
-    private fun updateCanScroll(isHomeVisible: Boolean) {
-        toolbar.setIsScrollEnabled(!isHomeVisible)
+    private fun updateCanScroll(isHomeVisible: Boolean, isVoiceViewEnabled: Boolean) {
+        val canScroll = !isHomeVisible && !isVoiceViewEnabled
+        toolbar.setIsScrollEnabled(canScroll)
     }
 
     fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean) {
@@ -48,7 +55,12 @@ class BrowserAppBarLayoutController(
         // is another homescreen, we overlay the toolbar to prevent interacting with it and allow
         // dismissing, to show the web content, when clicked.
         appBarOverlay.visibility = if (isHomeVisible && !isHomescreenOnStartup) View.VISIBLE else View.GONE
-        updateCanScroll(isHomeVisible = isHomeVisible)
+        updateCanScroll(isHomeVisible = isHomeVisible, isVoiceViewEnabled = appBarOverlay.context.isVoiceViewEnabled())
+        this.isHomeVisible = isHomeVisible
+    }
+
+    override fun onTouchExplorationStateChanged(enabled: Boolean) { // touch exploration state = VoiceView
+        updateCanScroll(isHomeVisible = isHomeVisible, isVoiceViewEnabled = enabled)
     }
 
     fun onFullScreenChange(isFullscreen: Boolean) {
