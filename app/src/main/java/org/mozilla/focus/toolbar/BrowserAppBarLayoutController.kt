@@ -18,6 +18,8 @@ import org.mozilla.focus.ext.getAccessibilityManager
 import org.mozilla.focus.ext.isVoiceViewEnabled
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS as A11Y_NO_HIDE_DESCENDANTS
+import android.view.View.IMPORTANT_FOR_ACCESSIBILITY_YES as A11Y_YES
 
 private const val TOOLBAR_SCROLL_ENABLED_FLAGS = SCROLL_FLAG_SCROLL or
         SCROLL_FLAG_ENTER_ALWAYS or
@@ -54,7 +56,10 @@ class BrowserAppBarLayoutController(
         // the toolbar and be unable to dismiss the home page (which has no content behind it). If
         // is another homescreen, we overlay the toolbar to prevent interacting with it and allow
         // dismissing, to show the web content, when clicked.
-        appBarOverlay.visibility = if (isHomeVisible && !isHomescreenOnStartup) View.VISIBLE else View.GONE
+        val isOverlayVisible = isHomeVisible && !isHomescreenOnStartup
+        appBarOverlay.visibility = if (isOverlayVisible) View.VISIBLE else View.GONE
+        toolbar.importantForAccessibility = if (isOverlayVisible) A11Y_NO_HIDE_DESCENDANTS else A11Y_YES
+
         updateCanScroll(isHomeVisible = isHomeVisible, isVoiceViewEnabled = appBarOverlay.context.isVoiceViewEnabled())
         this.isHomeVisible = isHomeVisible
     }
