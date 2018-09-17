@@ -195,9 +195,9 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             onTileClicked = { callbacks?.onNonTextInputUrlEntered(it) }
             urlSearcher = activity as UrlSearcher
             visibility = View.GONE
-            onPreSetVisibilityListener = {
-                // It's a pre-set-visibility listener so we can't use isStartupHomePageVisible.
-                callbacks?.onHomeVisibilityChange(it, url == APP_URL_STARTUP_HOME)
+            onPreSetVisibilityListener = { isHomeVisible ->
+                // It's a pre-set-visibility listener so we can't use toolbarStateProvider.isStartupHomePageVisible.
+                callbacks?.onHomeVisibilityChange(isHomeVisible, url == APP_URL_STARTUP_HOME)
             }
             homeTileLongClickListener = object : HomeTileLongClickListener {
                 override fun onHomeTileLongClick(unpinTile: () -> Unit) {
