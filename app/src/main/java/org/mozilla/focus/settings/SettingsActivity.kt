@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.mozilla.focus.R
 import org.mozilla.focus.ext.children
@@ -138,15 +139,18 @@ class SettingsActivity : AppCompatActivity(),
      * styles are necessary to match the native settings page styling
      */
     private fun styleActionBar() {
-        this.settings_container.rootView
-                .findViewById<Toolbar>(R.id.action_bar)
-                .children()
+        val toolbar = settings_container.rootView.findViewById<Toolbar>(R.id.action_bar)
+        toolbar.children()
                 .forEach { toolbarChild ->
                     val layoutParams = toolbarChild.layoutParams as? Toolbar.LayoutParams ?: return
                     toolbarChild.layoutParams = layoutParams.apply {
                         gravity = Gravity.CENTER_VERTICAL
-                        marginEnd = 40
                     }
                 }
+
+        // Align the title with the settings items. Unfortunately, this is done relative to the start edge.
+        val settingsItemMarginStart = settings_container.paddingStart
+        val backButton = toolbar.children().first { it is ImageView }
+        toolbar.titleMarginStart = settingsItemMarginStart - backButton.width - toolbar.paddingStart
     }
 }
