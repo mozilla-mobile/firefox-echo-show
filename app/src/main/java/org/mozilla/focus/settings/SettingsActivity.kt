@@ -30,6 +30,7 @@ import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
 
 private val URI_PRIVACY_NOTICE = Uri.parse("https://www.mozilla.org/privacy/firefox-fire-tv/")
+private val URI_ABOUT = Uri.parse("firefox:about")
 
 /**
  * Settings activity with nested settings screens.
@@ -129,6 +130,7 @@ class SettingsActivity : AppCompatActivity(),
         override fun onPreferenceTreeClick(preference: Preference): Boolean {
             val browserIntentUri: Uri? = when (preference.key) {
                 getString(R.string.pref_key_privacy_notice) -> URI_PRIVACY_NOTICE
+                getString(R.string.pref_key_about) -> URI_ABOUT
                 else -> null
             }
 

@@ -11,14 +11,10 @@
         android:defaultValue="@bool/pref_telemetry_default_value"
         android:layout="@layout/preference_layout"/>
 
-    <PreferenceScreen
+    <Preference
+        android:key="@string/pref_key_about"
         android:title="@string/menu_about"
-        android:layout="@layout/preference_layout"
-        android:fragment="org.mozilla.focus.browser.InfoFragment">
-        <extra
-            android:name="url"
-            android:value="firefox:about"/>
-    </PreferenceScreen>
+        android:layout="@layout/preference_layout"/>
 
     <Preference
         android:key="@string/pref_key_privacy_notice"
