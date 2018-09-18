@@ -5,6 +5,8 @@
 package org.mozilla.focus.settings
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -21,10 +23,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_settings.*
+import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
 import org.mozilla.focus.ext.children
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
+
+private val URI_PRIVACY_NOTICE = Uri.parse("https://www.mozilla.org/privacy/firefox-fire-tv/")
 
 /**
  * Settings activity with nested settings screens.
@@ -119,6 +124,30 @@ class SettingsActivity : AppCompatActivity(),
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings)
+        }
+
+        override fun onPreferenceTreeClick(preference: Preference): Boolean {
+            val browserIntentUri: Uri? = when (preference.key) {
+                getString(R.string.pref_key_privacy_notice) -> URI_PRIVACY_NOTICE
+                else -> null
+            }
+
+            return if (browserIntentUri == null) {
+                super.onPreferenceTreeClick(preference)
+            } else {
+                // We're opening the settings links in the browser, instead of a standalone WebView,
+                // because the OS has a bug that only permits a single WebView at a time (#433).
+                //
+                // The recommended way to open an Activity through Preferences is defining the <intent>
+                // in XML. However, to specify a class, you must also specify a hard-coded package and
+                // our package changes on build type (debug suffix) so we must write code to start the Activity.
+                val browserIntent = Intent(preference.context, MainActivity::class.java).apply {
+                    action = Intent.ACTION_VIEW
+                    data = browserIntentUri
+                }
+                startActivity(browserIntent)
+                true
+            }
         }
 
         override fun onCreateRecyclerView(inflater: LayoutInflater?, parent: ViewGroup?, savedInstanceState: Bundle?): RecyclerView {
