@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
@@ -20,7 +21,9 @@ import kotlinx.coroutines.experimental.CancellationException
 import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
+import org.mozilla.focus.ext.getAccessibilityManager
 import org.mozilla.focus.ext.isVisible
+import org.mozilla.focus.ext.isVoiceViewEnabled
 import org.mozilla.focus.ext.toUri
 import org.mozilla.focus.home.BundledTilesManager
 import org.mozilla.focus.home.CustomTilesManager
@@ -59,7 +62,7 @@ interface HomeTileLongClickListener {
 /**
  * Fragment for displaying the browser UI.
  */
-class BrowserFragment : IWebViewLifecycleFragment() {
+class BrowserFragment : IWebViewLifecycleFragment(), TouchExplorationStateChangeListener {
     companion object {
         const val FRAGMENT_TAG = "browser"
         const val APP_URL_PREFIX = "firefox:"
@@ -116,6 +119,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         iWebViewCallback = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
 
         LoadTimeObserver.addObservers(session, this)
+        context?.getAccessibilityManager()?.addTouchExplorationStateChangeListener(this)
     }
 
     override fun onResume() {
@@ -198,6 +202,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             onPreSetVisibilityListener = { isHomeVisible ->
                 // It's a pre-set-visibility listener so we can't use toolbarStateProvider.isStartupHomePageVisible.
                 callbacks?.onHomeVisibilityChange(isHomeVisible, url == APP_URL_STARTUP_HOME)
+                updateWebViewVisibility(isVoiceViewEnabled = context.isVoiceViewEnabled(), isHomeVisible = isHomeVisible)
             }
             homeTileLongClickListener = object : HomeTileLongClickListener {
                 override fun onHomeTileLongClick(unpinTile: () -> Unit) {
@@ -233,6 +238,23 @@ class BrowserFragment : IWebViewLifecycleFragment() {
          * - Return false, as unhandled
          */
         return handleSpecialKeyEvent(event)
+    }
+
+    override fun onTouchExplorationStateChanged(isVoiceViewEnabled: Boolean) {
+        updateWebViewVisibility(isVoiceViewEnabled = isVoiceViewEnabled, isHomeVisible = homeScreen.isVisible)
+    }
+
+    private fun updateWebViewVisibility(isVoiceViewEnabled: Boolean, isHomeVisible: Boolean) {
+        // We want to disable accessibility on the WebView when the home screen is visible so users
+        // cannot focus the WebView content below home tiles. Unfortunately, isFocusable* and
+        // setImportantForAccessibility didn't work so the only way I could disable WebView
+        // accessibility was to hide it. However, hiding it here looks bad for visual users and
+        // hiding it in conjunction with home screen animations adds complexity. Also, future designs
+        // display the home tiles over the partially visible, unfocusable WebView, invalidating the
+        // hide-it-for-everyone approach so it seemed simpler to only hide the WebView for a11y users
+        // in this simple place.
+        val isWebViewVisible = !isVoiceViewEnabled || !isHomeVisible
+        webView?.setVisibility(if (isWebViewVisible) View.VISIBLE else View.GONE)
     }
 
     private fun handleSpecialKeyEvent(event: KeyEvent): Boolean {
