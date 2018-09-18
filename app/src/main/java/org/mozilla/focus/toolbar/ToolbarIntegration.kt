@@ -148,33 +148,38 @@ object ToolbarIntegration {
         return progressBarController
     }
 
+    @Suppress("ReplaceSingleLineLet") // Trailing let improves readability/removability of our workaround.
     private fun addToolbarButtons(
             context: Context,
             toolbar: BrowserToolbar,
             toolbarStateProvider: ToolbarStateProvider,
             onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
-        val homescreenButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_grid,
+        val homescreenButton = BrowserToolbar.Button(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title),
-                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) })
+                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) }
+                .let { WorkaroundAction(it) }
         toolbar.addNavigationAction(homescreenButton)
 
-        val backButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_back,
+        val backButton = BrowserToolbar.Button(R.drawable.ic_back,
                 context.getString(R.string.content_description_back),
                 background = TOOLBAR_BUTTON_BACKGROUND,
-                visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) })
+                visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) }
+                .let { WorkaroundAction(it) }
         toolbar.addNavigationAction(backButton)
 
-        val forwardButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_forward,
+        val forwardButton = BrowserToolbar.Button(R.drawable.ic_forward,
                 context.getString(R.string.content_description_forward),
                 toolbarStateProvider::isForwardEnabled,
-                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(FORWARD, null, null) })
+                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(FORWARD, null, null) }
+                .let { WorkaroundAction(it) }
         toolbar.addNavigationAction(forwardButton)
 
-        val refreshButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_refresh,
+        val refreshButton = BrowserToolbar.Button(R.drawable.ic_refresh,
                 context.getString(R.string.content_description_reload),
                 background = TOOLBAR_BUTTON_BACKGROUND,
-                visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) })
+                visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) }
+                .let { WorkaroundAction(it) }
         toolbar.addPageAction(refreshButton)
 
         val pinButton = ChangeableVisibilityButton(imageResource = R.drawable.ic_pin,
@@ -207,16 +212,14 @@ object ToolbarIntegration {
         val actionSpaceWidth = 192 - toolbar.dp(BUTTON_ACTION_MARGIN_DP) * 2
         toolbar.addBrowserAction(Toolbar.ActionSpace(actionSpaceWidth))
 
-        val settingsButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_settings,
+        val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),
-                background = TOOLBAR_BUTTON_BACKGROUND) {
-            onToolbarEvent(SETTINGS, null, null)
-        })
+                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(SETTINGS, null, null) }
+                .let { WorkaroundAction(it) }
         toolbar.addBrowserAction(settingsButton)
 
-        val brandIcon = WorkaroundAction(
-                Toolbar.ActionImage(R.drawable.ic_firefox_and_workmark, ""),
-                shouldTintIcon = false)
+        val brandIcon = Toolbar.ActionImage(R.drawable.ic_firefox_and_workmark, "")
+                .let { WorkaroundAction(it, shouldTintIcon = false) }
         toolbar.addBrowserAction(brandIcon)
 
         /*
