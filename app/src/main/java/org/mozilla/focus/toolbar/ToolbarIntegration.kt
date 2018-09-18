@@ -8,9 +8,11 @@ import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
+import android.text.InputType
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
@@ -109,6 +111,12 @@ object ToolbarIntegration {
         val textColor = ContextCompat.getColor(toolbar.context, R.color.photonGrey10)
         urlBar.setHintTextColor(textColor)
         urlBar.setTextColor(textColor)
+
+        // Components doesn't set the inputType correctly.
+        // TODO: Replace with the components implementation:
+        // https://github.com/mozilla-mobile/android-components/issues/800
+        val editModeEditText = toolbar.editToolbar.children().first { it is EditText } as EditText
+        editModeEditText.inputType += InputType.TYPE_CLASS_TEXT
     }
 
     private fun addCloseEditToolbarContentDescription(context: Context, toolbar: BrowserToolbar) {
