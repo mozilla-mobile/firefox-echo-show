@@ -19,6 +19,10 @@ object LocalizedContent {
     // a custom scheme.
     const val URL_ABOUT = "firefox:about"
 
+    // We can load android assets directly.
+    const val URL_ABOUT_LICENSES = "file:///android_asset/licenses.html"
+    const val URL_ABOUT_GPL = "file:///android_asset/gpl.html"
+
     @JvmStatic
     fun handleInternalContent(url: String, webView: WebView): Boolean {
         if (URL_ABOUT == url) {
@@ -80,7 +84,7 @@ object LocalizedContent {
 
         val data = HtmlLoader.loadResourceFile(context, R.raw.about, substitutionMap)
         // We use a file:/// base URL so that we have the right origin to load file:/// css and image resources.
-        webView.loadDataWithBaseURL("file:///android_asset/about.html", data, "text/html", "UTF-8", null)
+        webView.loadDataWithBaseURL("file:///android_asset/about.html", data, "text/html", "UTF-8", URL_ABOUT)
     }
 
     private fun putLayoutDirectionIntoMap(webView: WebView, substitutionMap: MutableMap<String, String>) {

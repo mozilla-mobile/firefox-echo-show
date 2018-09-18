@@ -24,6 +24,9 @@ import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
 import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
+import org.mozilla.focus.browser.LocalizedContent.URL_ABOUT
+import org.mozilla.focus.browser.LocalizedContent.URL_ABOUT_GPL
+import org.mozilla.focus.browser.LocalizedContent.URL_ABOUT_LICENSES
 import org.mozilla.focus.ext.children
 import org.mozilla.focus.toolbar.ToolbarEvent.BACK
 import org.mozilla.focus.toolbar.ToolbarEvent.FORWARD
@@ -268,6 +271,7 @@ private fun onDisplayUrlUpdate(
 ) {
     toolbar.url = when (url) {
         APP_URL_STARTUP_HOME -> "" // Uses hint instead
+        URL_ABOUT, URL_ABOUT_LICENSES, URL_ABOUT_GPL -> toolbar.context.getString(R.string.menu_about)
         null -> toolbar.url
         else -> url
     }
