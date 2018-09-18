@@ -6,6 +6,7 @@ package org.mozilla.focus.toolbar
 
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.res.ColorStateList
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.text.InputType
@@ -153,27 +154,24 @@ object ToolbarIntegration {
             toolbarStateProvider: ToolbarStateProvider,
             onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
-        // Ideally, we tint these icons in code, rather than hard-coding the tint in their assets.
-        // TODO: use the components tint implementation when available:
-        // https://github.com/mozilla-mobile/android-components/issues/755
-        val homescreenButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_grid,
+        val homescreenButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title),
                 background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) })
         toolbar.addNavigationAction(homescreenButton)
 
-        val backButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_back,
+        val backButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_back,
                 context.getString(R.string.content_description_back),
                 background = TOOLBAR_BUTTON_BACKGROUND,
                 visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) })
         toolbar.addNavigationAction(backButton)
 
-        val forwardButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_forward,
+        val forwardButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_forward,
                 context.getString(R.string.content_description_forward),
                 toolbarStateProvider::isForwardEnabled,
                 background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(FORWARD, null, null) })
         toolbar.addNavigationAction(forwardButton)
 
-        val refreshButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_refresh,
+        val refreshButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_refresh,
                 context.getString(R.string.content_description_reload),
                 background = TOOLBAR_BUTTON_BACKGROUND,
                 visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) })
@@ -209,15 +207,16 @@ object ToolbarIntegration {
         val actionSpaceWidth = 192 - toolbar.dp(BUTTON_ACTION_MARGIN_DP) * 2
         toolbar.addBrowserAction(Toolbar.ActionSpace(actionSpaceWidth))
 
-        val settingsButton = ActionNoPadding(BrowserToolbar.Button(R.drawable.ic_settings,
+        val settingsButton = WorkaroundAction(BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),
                 background = TOOLBAR_BUTTON_BACKGROUND) {
             onToolbarEvent(SETTINGS, null, null)
         })
         toolbar.addBrowserAction(settingsButton)
 
-        val brandIcon = ActionNoPadding(Toolbar.ActionImage(R.drawable.ic_firefox_and_workmark,
-                ""))
+        val brandIcon = WorkaroundAction(
+                Toolbar.ActionImage(R.drawable.ic_firefox_and_workmark, ""),
+                shouldTintIcon = false)
         toolbar.addBrowserAction(brandIcon)
 
         /*
@@ -275,8 +274,16 @@ private fun onDisplayUrlUpdate(
     toolbar.invalidateActions()
 }
 
-private class ActionNoPadding(private val baseAction: Toolbar.Action) : Toolbar.Action by baseAction {
+/** A [Toolbar.Action] that works around limitations in the components. */
+private class WorkaroundAction(
+        private val baseAction: Toolbar.Action,
+        private val shouldTintIcon: Boolean = true
+) : Toolbar.Action by baseAction {
     override fun createView(parent: ViewGroup) = baseAction.createView(parent).apply {
+        if (shouldTintIcon && this is ImageView) {
+            tintToolbarIconColor()
+        }
+
         removePaddingAddedByComponents()
     }
 }
@@ -306,8 +313,9 @@ private class ChangeableVisibilityButton(
     }
 
     override fun createView(parent: ViewGroup): View = super.createView(parent).apply {
-        // We can't use ActionNoPadding for this functionality because we need the
+        // We can't use WorkaroundAction for this functionality because we need the
         // Toolbar.ActionToggleButton return type.
+        (this as ImageView).tintToolbarIconColor()
         removePaddingAddedByComponents()
     }
 }
@@ -317,6 +325,13 @@ private fun View.removePaddingAddedByComponents() {
     // TODO: replace with components implementation:
     // https://github.com/mozilla-mobile/android-components/issues/772
     setPadding(0, 0, 0, 0)
+}
+
+private fun ImageView.tintToolbarIconColor() {
+    // TODO: use the components tint implementation when available:
+    // https://github.com/mozilla-mobile/android-components/issues/755
+    val iconColor = ContextCompat.getColor(context, R.color.photonGrey10)
+    imageTintList = ColorStateList.valueOf(iconColor)
 }
 
 private val BrowserToolbar.displayToolbar: ViewGroup
