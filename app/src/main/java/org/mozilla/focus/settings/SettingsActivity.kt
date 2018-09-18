@@ -25,12 +25,13 @@ import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
+import org.mozilla.focus.browser.LocalizedContent
 import org.mozilla.focus.ext.children
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
 
 private val URI_PRIVACY_NOTICE = Uri.parse("https://www.mozilla.org/privacy/firefox-fire-tv/")
-private val URI_ABOUT = Uri.parse("firefox:about")
+private val URI_ABOUT = Uri.parse(LocalizedContent.URL_ABOUT)
 
 /**
  * Settings activity with nested settings screens.
