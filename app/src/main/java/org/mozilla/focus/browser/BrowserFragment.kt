@@ -62,7 +62,7 @@ interface HomeTileLongClickListener {
 /**
  * Fragment for displaying the browser UI.
  */
-class BrowserFragment : IWebViewLifecycleFragment(), TouchExplorationStateChangeListener {
+class BrowserFragment : IWebViewLifecycleFragment() {
     companion object {
         const val FRAGMENT_TAG = "browser"
         const val APP_URL_PREFIX = "firefox:"
@@ -119,7 +119,8 @@ class BrowserFragment : IWebViewLifecycleFragment(), TouchExplorationStateChange
         iWebViewCallback = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
 
         LoadTimeObserver.addObservers(session, this)
-        context?.getAccessibilityManager()?.addTouchExplorationStateChangeListener(this)
+        context?.getAccessibilityManager()?.addTouchExplorationStateChangeListener(
+                BrowserTouchExplorationStateChangeListener())
     }
 
     override fun onResume() {
@@ -240,10 +241,6 @@ class BrowserFragment : IWebViewLifecycleFragment(), TouchExplorationStateChange
         return handleSpecialKeyEvent(event)
     }
 
-    override fun onTouchExplorationStateChanged(isVoiceViewEnabled: Boolean) {
-        updateWebViewVisibility(isVoiceViewEnabled = isVoiceViewEnabled, isHomeVisible = homeScreen.isVisible)
-    }
-
     private fun updateWebViewVisibility(isVoiceViewEnabled: Boolean, isHomeVisible: Boolean) {
         // We want to disable accessibility on the WebView when the home screen is visible so users
         // cannot focus the WebView content below home tiles. Unfortunately, isFocusable* and
@@ -286,6 +283,12 @@ class BrowserFragment : IWebViewLifecycleFragment(), TouchExplorationStateChange
             val uri = url?.toUri() ?: return
             val webView = webView ?: return
             WebCompat.onSessionLoadingChanged(isLoading, uri, webView)
+        }
+    }
+
+    private inner class BrowserTouchExplorationStateChangeListener : TouchExplorationStateChangeListener {
+        override fun onTouchExplorationStateChanged(isVoiceViewEnabled: Boolean) {
+            updateWebViewVisibility(isVoiceViewEnabled = isVoiceViewEnabled, isHomeVisible = homeScreen.isVisible)
         }
     }
 }
