@@ -6,7 +6,6 @@ package org.mozilla.focus.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.preference.PreferenceScreen
 import android.support.v7.preference.PreferenceViewHolder
@@ -19,8 +18,8 @@ import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
-import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
+import org.mozilla.focus.browser.Browser
 
 /**
  * This class allows us to set a clickable link within a [PreferenceScreen] summary.
@@ -71,10 +70,8 @@ class TelemetrySwitchPreference(context: Context, attrs: AttributeSet)
 
     private fun linkTextSpan(): ClickableSpan = object : ClickableSpan() {
         override fun onClick(widget: View?) {
-            val intent = Intent(context, MainActivity::class.java).apply {
-                action = Intent.ACTION_VIEW
-                data = Uri.parse("https://www.mozilla.org/privacy/firefox/#health-report")
-            }
+            val intent = Browser.getIntent(context,
+                    Uri.parse("https://www.mozilla.org/privacy/firefox/#health-report"))
             context.startActivity(intent)
         }
     }

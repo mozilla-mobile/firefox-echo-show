@@ -5,7 +5,6 @@
 package org.mozilla.focus.settings
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -23,8 +22,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_settings.*
-import org.mozilla.focus.MainActivity
 import org.mozilla.focus.R
+import org.mozilla.focus.browser.Browser
 import org.mozilla.focus.browser.LocalizedContent
 import org.mozilla.focus.ext.children
 import org.mozilla.focus.iwebview.IWebView
@@ -144,10 +143,7 @@ class SettingsActivity : AppCompatActivity(),
                 // The recommended way to open an Activity through Preferences is defining the <intent>
                 // in XML. However, to specify a class, you must also specify a hard-coded package and
                 // our package changes on build type (debug suffix) so we must write code to start the Activity.
-                val browserIntent = Intent(preference.context, MainActivity::class.java).apply {
-                    action = Intent.ACTION_VIEW
-                    data = browserIntentUri
-                }
+                val browserIntent = Browser.getIntent(preference.context, browserIntentUri)
                 startActivity(browserIntent)
                 true
             }
