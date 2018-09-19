@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Polish toolbar, home screen, and settings look-and-feel
 - Improve home screen tile images
+- Open links from Settings in the full browser
 
 ### Removed
 - System-wide VIEW intent handling
