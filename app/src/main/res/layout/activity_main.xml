@@ -47,6 +47,7 @@
         android:background="@color/photonGrey90_a60p"
         android:elevation="8dp"
         android:visibility="gone"
+        android:contentDescription="@string/nav_close_hint"
         />
 
     <FrameLayout
