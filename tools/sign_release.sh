@@ -16,6 +16,9 @@
 # https://mozilla.github.io/application-services/docs/applications/signing-android-apps.html
 #
 # For CI use, the documentation also links to a production TaskCluster configuration.
+#
+# If you're not creating a release but want to create a release build for local testing, you
+# can append the `--test` flag to ignore some release checks.
 
 BUILD_TOOLS=~/Library/Android/sdk/build-tools/28.0.2 # Update me on error!
 
@@ -36,19 +39,43 @@ if [ ! -d $BUILD_TOOLS ]; then
     echo "Error: Build tools not found; update BUILD_TOOLS variable in script to continue."
     exit 1
 fi
-if [ ! -f .sentry_dsn_release ]; then
-    echo "Error: expected <project-dir>/.sentry_dsn_release for Sentry key"
-    exit 1
-fi
 
-# via https://unix.stackexchange.com/a/155077
-if output=$(git status --porcelain) && [ -n "$output" ]; then
-    echo "Error: uncommited git changes: exiting."
-    exit 1
-fi
+# Assert pre-conditions, if test flag is not specified.
+if [[ $1 = "--test" ]]; then
+    echo "--test specified: DISABLING RELEASE CHECKS"
+else
+    if [ ! -f .sentry_dsn_release ]; then
+        echo "Error: expected <project-dir>/.sentry_dsn_release for Sentry key"
+        exit 1
+    fi
 
-# Ensure the tests are passing.
-./quality/pre-push-recommended.sh || exit 1
+    # via https://unix.stackexchange.com/a/155077
+    if output=$(git status --porcelain) && [ -n "$output" ]; then
+        echo "Error: uncommited git changes: exiting."
+        exit 1
+    fi
+
+    # git describe is fragile: it's "non-porcelain" which means not stable between versions.
+    # When a commit without a tag is checked out, it will be "v1.0-stuff". We check for the hyphen.
+    IS_ON_GIT_TAG=`git describe --tags | grep -v "-"`
+    if [[ -z $IS_ON_GIT_TAG ]]; then
+        echo "Error: currently checked out commit does not have a tag (as releases should)."
+        exit 1
+    fi
+
+    GIT_TAG_VERSION=`git describe --tags | grep -o "^v[0-9.]\+" | grep -o "[0-9.]\+"`
+    GRADLE_VERSION=`cat app/build.gradle | grep versionName | grep -o "[0-9.]\+"`
+    if [[ $GIT_TAG_VERSION != $GRADLE_VERSION ]]; then
+        echo "Error: git tag version - $GIT_TAG_VERSION - does not match gradle version - $GRADLE_VERSION."
+        echo "    Did you increment the build version?"
+        exit 1
+    fi
+
+    echo "Building release v$GRADLE_VERSION."
+
+    # Ensure the tests are passing.
+    ./quality/pre-push-recommended.sh || exit 1
+fi
 
 # Build the release build.
 ./gradlew --quiet clean assembleAmazonWebviewRelease || exit 1

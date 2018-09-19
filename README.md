@@ -39,6 +39,9 @@ To build and sign a release build with our production keys using Autograph, run:
 ./tools/sign_release.sh
 ```
 
+If you're not creating a release but want to create a release build for
+local testing, you can append `--test` to ignore some release checks.
+
 See that script's source for further usage.
 
 ## License
