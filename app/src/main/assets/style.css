@@ -1,37 +1,22 @@
 body, html {
-    background: #151920;
-    color: #F9F9FA;
+    background: #f9f9fa;
+    color: #0c0c0d;
     font-family: amazon-ember-display-regular, sans-serif;
-    line-height: 40px;
-    font-size: 30px;
+    font-size: 24px;
+    line-height: 36px;
 }
 
-body{
-    margin-left: 80px;
-    margin-right: 80px;
+body {
+    margin-left: 44px;
+    margin-right: 44px;
 }
 
 a {
-    color: #0A9AF4;
+    color: #0060df;
 }
 
-/* Make only about page links ("learn more") white */
-.about a {
-    color: #FFFFFF;
-}
-
-p.subtitle {
-    text-align: center;
-    opacity: .7;
-    margin: 0;
-}
-
-img#wordmark {
-    /* We need to set the dp size here, because by default webview assumes the image is not
-       density specific (but since it's an android resource, we get a density specific version). */
-    width: 180px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 24px;
+a[name],
+h2 a,
+h3 a {
+    color: #0c0c0d;
 }
