@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Page load and app startup telemetry events
 
 ### Changed
-- Polish toolbar and home screen look-and-feel
+- Polish toolbar, home screen, and settings look-and-feel
 - Improve home screen tile images
 
 ### Removed
@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Crash with unknown STR
+- Overhaul screen reader accessibility
+- Keyboard in toolbar includes ".com" option
 
 ### Security
 - Disable JS alerts
