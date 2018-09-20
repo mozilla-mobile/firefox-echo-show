@@ -263,22 +263,22 @@ object ToolbarIntegration {
                     toolbar.displayMode()
                 }
     }
-}
 
-private fun onDisplayUrlUpdate(
-        toolbar: BrowserToolbar, toolbarStateProvider: ToolbarStateProvider, url: String?,
-        pinButton: Toolbar.ActionToggleButton
-) {
-    toolbar.url = when (url) {
-        APP_URL_STARTUP_HOME -> "" // Uses hint instead
-        URL_ABOUT, URL_ABOUT_LICENSES, URL_ABOUT_GPL -> toolbar.context.getString(R.string.menu_about)
-        null -> toolbar.url
-        else -> url
+    private fun onDisplayUrlUpdate(
+            toolbar: BrowserToolbar, toolbarStateProvider: ToolbarStateProvider, url: String?,
+            pinButton: Toolbar.ActionToggleButton
+    ) {
+        toolbar.url = when (url) {
+            APP_URL_STARTUP_HOME -> "" // Uses hint instead
+            URL_ABOUT, URL_ABOUT_LICENSES, URL_ABOUT_GPL -> toolbar.context.getString(R.string.menu_about)
+            null -> toolbar.url
+            else -> url
+        }
+
+        pinButton.setSelected(toolbarStateProvider.isURLPinned(),
+                notifyListener = false) // We don't want to actually pin/unpin.
+        toolbar.invalidateActions()
     }
-
-    pinButton.setSelected(toolbarStateProvider.isURLPinned(),
-            notifyListener = false) // We don't want to actually pin/unpin.
-    toolbar.invalidateActions()
 }
 
 /** A [Toolbar.Action] that works around limitations in the components. */
