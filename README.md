@@ -21,6 +21,18 @@ can be connected to a Fire TV at a time. Note that while you can install on an
 Android TV emulator, the behavior is different from Fire TV's and should not be
 relied upon.
 
+### Testing
+To run a reasonable subset of the unit tests, we recommend:
+```sh
+./gradlew testAmazonWebViewDebug
+```
+To generate code coverage reports, run:
+```sh
+./gradlew -Pcoverage jacocoAmazonWebViewDebugTestReport
+```
+Reports can be found at
+`app/build/jacoco/jacoco<buildVariant>TestReport/html/index.html`
+
 ### Pre-push hooks
 Since we don't have CI, if you're pushing code, please add a pre-push hook. To use the
 recommended hook, run this command from the project root:
