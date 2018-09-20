@@ -19,9 +19,9 @@ before_install:
   - touch local.properties
 
 script:
-  - ./gradlew clean assemble
+  - ./gradlew -Pcoverage clean assembleAmazonWebViewDebug
   - echo "--" > .adjust_token
-  - ./gradlew jacocoTestReport
+  - ./gradlew -Pcoverage jacocoAmazonWebViewDebugTestReport
 
 after_success:
   - python <(curl -s https://raw.githubusercontent.com/TouK/sputnik-ci/master/sputnik-ci.py)
