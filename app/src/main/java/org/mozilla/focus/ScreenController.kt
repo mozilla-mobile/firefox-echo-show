@@ -57,7 +57,7 @@ object ScreenController {
         //
         // We should fix this by rewriting how we manage sessions when we integrate the session
         // android component.
-        showBrowserScreenForUrl(fragmentManager, BrowserFragment.APP_URL_STARTUP_HOME, Source.NONE)
+        showBrowserScreenForUrl(fragmentManager, BrowserFragment.APP_URL_STARTUP_HOME.toString(), Source.NONE)
     }
 
     fun showBrowserScreenForUrl(fragmentManager: FragmentManager?, url: String, source: Source) {

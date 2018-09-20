@@ -62,7 +62,7 @@ abstract class IWebViewLifecycleFragment : LocaleAwareFragment() {
             webView.restoreWebViewState(session)
 
         // We don't want the home screen in the back stack so we avoid loading it in the WebView.
-        } else if (!initialUrl.isEmpty() && initialUrl != BrowserFragment.APP_URL_STARTUP_HOME) {
+        } else if (!initialUrl.isEmpty() && initialUrl != BrowserFragment.APP_URL_STARTUP_HOME.toString()) {
             webView.loadUrl(initialUrl)
         }
     }

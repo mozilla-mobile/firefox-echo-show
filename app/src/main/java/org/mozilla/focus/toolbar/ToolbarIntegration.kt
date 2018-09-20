@@ -269,7 +269,7 @@ object ToolbarIntegration {
             pinButton: Toolbar.ActionToggleButton
     ) {
         toolbar.url = when (url) {
-            APP_URL_STARTUP_HOME -> "" // Uses hint instead
+            APP_URL_STARTUP_HOME.toString() -> "" // Uses hint instead
             URL_ABOUT, URL_ABOUT_LICENSES, URL_ABOUT_GPL -> toolbar.context.getString(R.string.menu_about)
             null -> toolbar.url
             else -> url
