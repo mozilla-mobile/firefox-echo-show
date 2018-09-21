@@ -83,6 +83,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     var onUrlUpdate: ((url: String?) -> Unit)? = null
     var onSessionLoadingUpdate: ((isLoading: Boolean) -> Unit)? = null
     var onSessionProgressUpdate: ((value: Int) -> Unit)? = null
+    private var touchExplorationStateChangeListener: TouchExplorationStateChangeListener? = null
 
     /**
      * The current URL.
@@ -117,8 +118,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         iWebViewCallback = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
 
         LoadTimeObserver.addObservers(session, this)
-        context?.getAccessibilityManager()?.addTouchExplorationStateChangeListener(
-                BrowserTouchExplorationStateChangeListener())
     }
 
     override fun onResume() {
@@ -209,11 +208,21 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                 }
             }
         }
+
+        touchExplorationStateChangeListener = BrowserTouchExplorationStateChangeListener(
+                layout.homeScreen, this::updateWebViewVisibility).also {
+            layout.context.getAccessibilityManager().addTouchExplorationStateChangeListener(it)
+        }
+
         return layout
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        context?.getAccessibilityManager()?.removeTouchExplorationStateChangeListener(touchExplorationStateChangeListener)
+        touchExplorationStateChangeListener = null
+
         // Since we start the async jobs in View.init and Android is inflating the view for us,
         // there's no good way to pass in the uiLifecycleJob. We could consider other solutions
         // but it'll add complexity that I don't think is probably worth it.
@@ -283,11 +292,14 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             WebCompat.onSessionLoadingChanged(isLoading, uri, webView)
         }
     }
+}
 
-    private inner class BrowserTouchExplorationStateChangeListener : TouchExplorationStateChangeListener {
-        override fun onTouchExplorationStateChanged(isVoiceViewEnabled: Boolean) {
-            updateWebViewVisibility(isVoiceViewEnabled = isVoiceViewEnabled, isHomeVisible = homeScreen.isVisible)
-        }
+private class BrowserTouchExplorationStateChangeListener(
+        private val homeScreen: HomeTileGridNavigation,
+        private val updateWebViewVisibility: (isVoiceViewEnabled: Boolean, isHomeVisible: Boolean) -> Unit
+) : TouchExplorationStateChangeListener {
+    override fun onTouchExplorationStateChanged(isVoiceViewEnabled: Boolean) { // touch exploration state = VoiceView
+        updateWebViewVisibility(isVoiceViewEnabled, homeScreen.isVisible)
     }
 }
 
