@@ -14,6 +14,7 @@ import android.view.View;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.mozilla.focus.browser.URLs;
 import org.mozilla.focus.session.Session;
 import org.mozilla.gecko.GeckoView;
 import org.mozilla.gecko.GeckoViewSettings;
@@ -49,7 +50,7 @@ public class WebViewProvider {
     @SuppressLint("ViewConstructor") // we construct only in code.
     public static class GeckoWebView extends org.mozilla.focus.iwebview.NestedGeckoView implements IWebView {
         private Callback callback;
-        private String currentUrl = "about:blank";
+        private String currentUrl = URLs.ABOUT_BLANK.toString();
         private boolean canGoBack;
         private boolean canGoForward;
         private boolean isSecure;

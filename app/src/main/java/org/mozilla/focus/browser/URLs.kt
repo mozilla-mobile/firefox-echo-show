@@ -18,6 +18,8 @@ object URLs {
     val APP_STARTUP_HOME = "$SCHEME_APP:home".toUri() as Uri
     @JvmField val APP_ABOUT = "$SCHEME_APP:about".toUri() as Uri
 
+    @JvmField val ABOUT_BLANK = "about:blank".toUri() as Uri
+
     // We can load android assets directly.
     const val URL_ABOUT_LICENSES = "file:///android_asset/licenses.html"
     const val URL_ABOUT_GPL = "file:///android_asset/gpl.html"

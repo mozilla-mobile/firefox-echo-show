@@ -17,6 +17,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import org.mozilla.focus.browser.LocalizedContent;
+import org.mozilla.focus.browser.URLs;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.UrlUtils;
@@ -241,7 +242,7 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
         // Allow pages to blank themselves by loading about:blank. While it's a little incorrect to let pages
         // access our internal URLs, Chrome allows loads to about:blank and, to ensure our behavior conforms
         // to the behavior that most of the web is developed against, we do too.
-        if (url.equals("about:blank")) {
+        if (url.equals(URLs.ABOUT_BLANK.toString())) {
             return false;
         }
 

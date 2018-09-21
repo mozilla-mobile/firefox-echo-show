@@ -164,7 +164,7 @@ public class UrlUtils {
 
     public static boolean isLocalizedContent(@Nullable String url) {
         return url != null &&
-                (url.equals(URLs.APP_ABOUT.toString()) || url.equals("about:blank"));
+                (url.equals(URLs.APP_ABOUT.toString()) || url.equals(URLs.ABOUT_BLANK.toString()));
     }
 
 }
