@@ -15,30 +15,30 @@ import org.robolectric.RobolectricTestRunner
 class ToolbarTextTest {
 
     @Test
-    fun `when getDisplayText receives the home URL then it returns a desire for hint text`() {
+    fun `WHEN getDisplayText receives the home URL THEN it returns a desire for hint text`() {
         assertEquals(HintText, ToolbarText.getDisplayText("firefox:home".toUri() as Uri).rightOrThrow)
     }
 
     @Test
-    fun `when getDisplayText receives an https URI then return it`() {
+    fun `WHEN getDisplayText receives an https URI THEN return it`() {
         val expected = "https://www.mozilla.org/en-US/privacy/firefox-fire-tv/"
         assertEquals(expected, ToolbarText.getDisplayText(expected.toUri() as Uri).leftOrThrow)
     }
 
     @Test
-    fun `when getDisplayText receives a file URI that is not an android asset return it`() {
+    fun `WHEN getDisplayText receives a file URI that is not an android asset THEN return it`() {
         val expected = "file:///index.html#anchor"
         assertEquals(expected, ToolbarText.getDisplayText(expected.toUri() as Uri).leftOrThrow)
     }
 
     @Test
-    fun `when getDisplayText receives an android asset URI then return the app scheme URI`() {
+    fun `WHEN getDisplayText receives an android asset URI THEN return the app scheme URI`() {
         val inputUri = "file:///android_asset/licenses.html#sentry".toUri() as Uri
         assertEquals("firefox:licenses#sentry", ToolbarText.getDisplayText(inputUri).leftOrThrow)
     }
 
     @Test
-    fun `when getDisplayText receives a uri without a scheme then return it`() {
+    fun `WHEN getDisplayText receives a uri without a scheme THEN return it`() {
         // Perhaps not the best behavior but this is unlikely to come up in the wild.
         val expected = "there/is/no/spoon"
         assertEquals(expected, ToolbarText.getDisplayText(expected.toUri() as Uri).leftOrThrow)
