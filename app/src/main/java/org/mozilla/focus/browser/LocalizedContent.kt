@@ -11,17 +11,11 @@ import android.view.View
 import android.webkit.WebView
 
 import org.mozilla.focus.R
+import org.mozilla.focus.browser.URLs.URL_ABOUT
 import org.mozilla.focus.locale.Locales
 import org.mozilla.focus.utils.HtmlLoader
 
 object LocalizedContent {
-    // We can't use "about:" because webview silently swallows about: pages, hence we use
-    // a custom scheme.
-    const val URL_ABOUT = "firefox:about"
-
-    // We can load android assets directly.
-    const val URL_ABOUT_LICENSES = "file:///android_asset/licenses.html"
-    const val URL_ABOUT_GPL = "file:///android_asset/gpl.html"
 
     @JvmStatic
     fun handleInternalContent(url: String, webView: WebView): Boolean {

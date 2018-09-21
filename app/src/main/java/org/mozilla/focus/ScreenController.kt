@@ -9,6 +9,7 @@ import android.content.Context
 import android.support.v4.app.FragmentManager
 import android.text.TextUtils
 import org.mozilla.focus.browser.BrowserFragment
+import org.mozilla.focus.browser.URLs.APP_URL_STARTUP_HOME
 import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.session.Source
@@ -57,7 +58,7 @@ object ScreenController {
         //
         // We should fix this by rewriting how we manage sessions when we integrate the session
         // android component.
-        showBrowserScreenForUrl(fragmentManager, BrowserFragment.APP_URL_STARTUP_HOME.toString(), Source.NONE)
+        showBrowserScreenForUrl(fragmentManager, APP_URL_STARTUP_HOME.toString(), Source.NONE)
     }
 
     fun showBrowserScreenForUrl(fragmentManager: FragmentManager?, url: String, source: Source) {

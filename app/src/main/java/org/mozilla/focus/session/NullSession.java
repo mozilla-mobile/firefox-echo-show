@@ -4,13 +4,13 @@
 
 package org.mozilla.focus.session;
 
-import org.mozilla.focus.browser.LocalizedContent;
+import static org.mozilla.focus.browser.URLs.URL_ABOUT;
 
 /**
  * An "empty" session object that can be used instead of <code>null</code>.
  */
 public class NullSession extends Session {
     public NullSession() {
-        super(Source.NONE, LocalizedContent.URL_ABOUT);
+        super(Source.NONE, URL_ABOUT);
     }
 }

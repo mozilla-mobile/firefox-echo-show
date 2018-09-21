@@ -23,10 +23,10 @@ import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
-import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
-import org.mozilla.focus.browser.LocalizedContent.URL_ABOUT
-import org.mozilla.focus.browser.LocalizedContent.URL_ABOUT_GPL
-import org.mozilla.focus.browser.LocalizedContent.URL_ABOUT_LICENSES
+import org.mozilla.focus.browser.URLs.APP_URL_STARTUP_HOME
+import org.mozilla.focus.browser.URLs.URL_ABOUT
+import org.mozilla.focus.browser.URLs.URL_ABOUT_GPL
+import org.mozilla.focus.browser.URLs.URL_ABOUT_LICENSES
 import org.mozilla.focus.ext.children
 import org.mozilla.focus.toolbar.ToolbarEvent.BACK
 import org.mozilla.focus.toolbar.ToolbarEvent.FORWARD

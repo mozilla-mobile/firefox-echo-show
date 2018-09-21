@@ -6,7 +6,6 @@ package org.mozilla.focus.browser
 
 import android.arch.lifecycle.Observer
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.DisplayMetrics
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.experimental.CancellationException
 import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
-import org.mozilla.focus.browser.BrowserFragment.Companion.APP_URL_STARTUP_HOME
+import org.mozilla.focus.browser.URLs.APP_URL_STARTUP_HOME
 import org.mozilla.focus.ext.getAccessibilityManager
 import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.isVoiceViewEnabled
@@ -66,8 +65,6 @@ interface HomeTileLongClickListener {
 class BrowserFragment : IWebViewLifecycleFragment() {
     companion object {
         const val FRAGMENT_TAG = "browser"
-        const val APP_URL_PREFIX = "firefox:"
-        val APP_URL_STARTUP_HOME = Uri.parse("${APP_URL_PREFIX}home")
 
         @JvmStatic
         fun createForSession(session: Session) = BrowserFragment().apply {

@@ -10,7 +10,7 @@ import android.support.annotation.UiThread
 import android.view.View
 import android.webkit.WebView
 import org.mozilla.focus.R
-import org.mozilla.focus.browser.BrowserFragment
+import org.mozilla.focus.browser.URLs.APP_URL_STARTUP_HOME
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.locale.LocaleManager
 import org.mozilla.focus.session.Session
@@ -62,7 +62,7 @@ abstract class IWebViewLifecycleFragment : LocaleAwareFragment() {
             webView.restoreWebViewState(session)
 
         // We don't want the home screen in the back stack so we avoid loading it in the WebView.
-        } else if (!initialUrl.isEmpty() && initialUrl != BrowserFragment.APP_URL_STARTUP_HOME.toString()) {
+        } else if (!initialUrl.isEmpty() && initialUrl != APP_URL_STARTUP_HOME.toString()) {
             webView.loadUrl(initialUrl)
         }
     }
