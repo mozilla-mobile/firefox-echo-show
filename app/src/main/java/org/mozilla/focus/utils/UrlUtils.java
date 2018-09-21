@@ -12,13 +12,12 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
+import org.mozilla.focus.browser.URLs;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import static org.mozilla.focus.browser.URLs.URL_ABOUT;
 
 public class UrlUtils {
     public static String normalize(@NonNull String input) {
@@ -165,7 +164,7 @@ public class UrlUtils {
 
     public static boolean isLocalizedContent(@Nullable String url) {
         return url != null &&
-                (url.equals(URL_ABOUT) || url.equals("about:blank"));
+                (url.equals(URLs.URL_ABOUT.toString()) || url.equals("about:blank"));
     }
 
 }

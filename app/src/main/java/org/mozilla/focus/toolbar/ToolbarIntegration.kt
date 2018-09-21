@@ -270,7 +270,7 @@ object ToolbarIntegration {
     ) {
         toolbar.url = when (url) {
             APP_URL_STARTUP_HOME.toString() -> "" // Uses hint instead
-            URL_ABOUT, URL_ABOUT_LICENSES, URL_ABOUT_GPL -> toolbar.context.getString(R.string.menu_about)
+            URL_ABOUT.toString(), URL_ABOUT_LICENSES, URL_ABOUT_GPL -> toolbar.context.getString(R.string.menu_about)
             null -> toolbar.url
             else -> url
         }
