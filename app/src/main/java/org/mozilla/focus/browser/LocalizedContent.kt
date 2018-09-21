@@ -11,7 +11,7 @@ import android.view.View
 import android.webkit.WebView
 
 import org.mozilla.focus.R
-import org.mozilla.focus.browser.URLs.URL_ABOUT
+import org.mozilla.focus.browser.URLs.APP_ABOUT
 import org.mozilla.focus.locale.Locales
 import org.mozilla.focus.utils.HtmlLoader
 
@@ -19,7 +19,7 @@ object LocalizedContent {
 
     @JvmStatic
     fun handleInternalContent(url: String, webView: WebView): Boolean {
-        if (URL_ABOUT.toString() == url) {
+        if (APP_ABOUT.toString() == url) {
             loadAbout(webView)
             return true
         }
@@ -78,7 +78,7 @@ object LocalizedContent {
 
         val data = HtmlLoader.loadResourceFile(context, R.raw.about, substitutionMap)
         // We use a file:/// base URL so that we have the right origin to load file:/// css and image resources.
-        webView.loadDataWithBaseURL("file:///android_asset/about.html", data, "text/html", "UTF-8", URL_ABOUT.toString())
+        webView.loadDataWithBaseURL("file:///android_asset/about.html", data, "text/html", "UTF-8", APP_ABOUT.toString())
     }
 
     private fun putLayoutDirectionIntoMap(webView: WebView, substitutionMap: MutableMap<String, String>) {

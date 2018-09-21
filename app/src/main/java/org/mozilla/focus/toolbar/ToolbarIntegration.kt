@@ -23,8 +23,8 @@ import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
-import org.mozilla.focus.browser.URLs.APP_URL_STARTUP_HOME
-import org.mozilla.focus.browser.URLs.URL_ABOUT
+import org.mozilla.focus.browser.URLs.APP_STARTUP_HOME
+import org.mozilla.focus.browser.URLs.APP_ABOUT
 import org.mozilla.focus.browser.URLs.URL_ABOUT_GPL
 import org.mozilla.focus.browser.URLs.URL_ABOUT_LICENSES
 import org.mozilla.focus.ext.children
@@ -269,8 +269,8 @@ object ToolbarIntegration {
             pinButton: Toolbar.ActionToggleButton
     ) {
         toolbar.url = when (url) {
-            APP_URL_STARTUP_HOME.toString() -> "" // Uses hint instead
-            URL_ABOUT.toString(), URL_ABOUT_LICENSES, URL_ABOUT_GPL -> toolbar.context.getString(R.string.menu_about)
+            APP_STARTUP_HOME.toString() -> "" // Uses hint instead
+            APP_ABOUT.toString(), URL_ABOUT_LICENSES, URL_ABOUT_GPL -> toolbar.context.getString(R.string.menu_about)
             null -> toolbar.url
             else -> url
         }

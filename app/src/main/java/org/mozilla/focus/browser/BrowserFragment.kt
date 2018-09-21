@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.experimental.CancellationException
 import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
-import org.mozilla.focus.browser.URLs.APP_URL_STARTUP_HOME
+import org.mozilla.focus.browser.URLs.APP_STARTUP_HOME
 import org.mozilla.focus.ext.getAccessibilityManager
 import org.mozilla.focus.ext.isVisible
 import org.mozilla.focus.ext.isVoiceViewEnabled
@@ -44,7 +44,7 @@ import org.mozilla.focus.utils.ToastManager
 private const val ARGUMENT_SESSION_UUID = "sessionUUID"
 
 private val URLS_BLOCKED_FROM_USERS = setOf(
-        APP_URL_STARTUP_HOME.toString()
+        APP_STARTUP_HOME.toString()
 )
 
 /** An interface expected to be implemented by the Activities that create a BrowserFragment. */
@@ -96,7 +96,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
             // We prevent users from typing this URL in loadUrl but this will still be called for
             // the initial URL set in the Session.
-            if (url == APP_URL_STARTUP_HOME.toString()) {
+            if (url == APP_STARTUP_HOME.toString()) {
                 homeScreen.visibility = View.VISIBLE
             }
 
@@ -106,7 +106,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     // If the URL is startup home, the home screen should always be visible. For defensiveness, we
     // also check this condition. It's probably not necessary (it was originally added when the startup
     // url was the empty string which I was concerned the WebView could pass to us while loading).
-    private val isStartupHomepageVisible: Boolean get() = url == APP_URL_STARTUP_HOME.toString() && homeScreen.isVisible
+    private val isStartupHomepageVisible: Boolean get() = url == APP_STARTUP_HOME.toString() && homeScreen.isVisible
 
     private val sessionManager = SessionManager.getInstance()
 
@@ -200,7 +200,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             visibility = View.GONE
             onPreSetVisibilityListener = { isHomeVisible ->
                 // It's a pre-set-visibility listener so we can't use toolbarStateProvider.isStartupHomePageVisible.
-                callbacks?.onHomeVisibilityChange(isHomeVisible, url == APP_URL_STARTUP_HOME.toString())
+                callbacks?.onHomeVisibilityChange(isHomeVisible, url == APP_STARTUP_HOME.toString())
                 updateWebViewVisibility(isVoiceViewEnabled = context.isVoiceViewEnabled(), isHomeVisible = isHomeVisible)
             }
             homeTileLongClickListener = object : HomeTileLongClickListener {

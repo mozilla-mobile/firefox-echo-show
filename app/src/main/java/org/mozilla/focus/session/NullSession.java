@@ -11,6 +11,6 @@ import org.mozilla.focus.browser.URLs;
  */
 public class NullSession extends Session {
     public NullSession() {
-        super(Source.NONE, URLs.URL_ABOUT.toString());
+        super(Source.NONE, URLs.APP_ABOUT.toString());
     }
 }

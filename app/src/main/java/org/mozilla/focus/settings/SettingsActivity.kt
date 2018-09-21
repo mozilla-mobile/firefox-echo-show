@@ -24,8 +24,8 @@ import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.Browser
-import org.mozilla.focus.browser.URLs.URL_ABOUT
-import org.mozilla.focus.browser.URLs.URL_PRIVACY_NOTICE
+import org.mozilla.focus.browser.URLs.APP_ABOUT
+import org.mozilla.focus.browser.URLs.PRIVACY_NOTICE
 import org.mozilla.focus.ext.children
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
@@ -127,8 +127,8 @@ class SettingsActivity : AppCompatActivity(),
 
         override fun onPreferenceTreeClick(preference: Preference): Boolean {
             val browserIntentUri: Uri? = when (preference.key) {
-                getString(R.string.pref_key_privacy_notice) -> URL_PRIVACY_NOTICE
-                getString(R.string.pref_key_about) -> URL_ABOUT
+                getString(R.string.pref_key_privacy_notice) -> PRIVACY_NOTICE
+                getString(R.string.pref_key_about) -> APP_ABOUT
                 else -> null
             }
 
