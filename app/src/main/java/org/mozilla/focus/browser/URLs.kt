@@ -12,9 +12,9 @@ import android.net.Uri
 object URLs {
     // We can't use "about:" because webview silently swallows about: pages,
     // hence we use a custom scheme.
-    private const val APP_URL_PREFIX = "firefox:"
-    val APP_URL_STARTUP_HOME = Uri.parse("${APP_URL_PREFIX}home")
-    const val URL_ABOUT = "${APP_URL_PREFIX}about"
+    private const val APP_URL_PREFIX = "firefox"
+    val APP_URL_STARTUP_HOME = Uri.parse("$APP_URL_PREFIX:home")
+    const val URL_ABOUT = "$APP_URL_PREFIX:about"
 
     // We can load android assets directly.
     const val URL_ABOUT_LICENSES = "file:///android_asset/licenses.html"
