@@ -78,7 +78,7 @@ object LocalizedContent {
 
         val data = HtmlLoader.loadResourceFile(context, R.raw.about, substitutionMap)
         // We use a file:/// base URL so that we have the right origin to load file:/// css and image resources.
-        webView.loadDataWithBaseURL("file:///android_asset/about.html", data, "text/html", "UTF-8", APP_ABOUT.toString())
+        webView.loadDataWithBaseURL(URLs.ASSET_ABOUT.toString(), data, "text/html", "UTF-8", URLs.APP_ABOUT.toString())
     }
 
     private fun putLayoutDirectionIntoMap(webView: WebView, substitutionMap: MutableMap<String, String>) {
