@@ -7,6 +7,7 @@ package org.mozilla.focus.toolbar
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.text.InputType
@@ -23,10 +24,6 @@ import mozilla.components.support.ktx.android.view.dp
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
-import org.mozilla.focus.browser.URLs.APP_STARTUP_HOME
-import org.mozilla.focus.browser.URLs.APP_ABOUT
-import org.mozilla.focus.browser.URLs.URL_ABOUT_GPL
-import org.mozilla.focus.browser.URLs.URL_ABOUT_LICENSES
 import org.mozilla.focus.ext.children
 import org.mozilla.focus.toolbar.ToolbarEvent.BACK
 import org.mozilla.focus.toolbar.ToolbarEvent.FORWARD
@@ -268,13 +265,15 @@ object ToolbarIntegration {
             toolbar: BrowserToolbar, toolbarStateProvider: ToolbarStateProvider, url: String?,
             pinButton: Toolbar.ActionToggleButton
     ) {
-        toolbar.url = when (url) {
-            APP_STARTUP_HOME.toString() -> "" // Uses hint instead
-            APP_ABOUT.toString(), URL_ABOUT_LICENSES, URL_ABOUT_GPL -> toolbar.context.getString(R.string.menu_about)
-            null -> toolbar.url
-            else -> url
+        fun updateDisplayToolbarText() {
+            if (url != null) {
+                toolbar.url = ToolbarText.getDisplayText(Uri.parse(url)).fold(
+                        { displayText -> displayText },
+                        { "" }) // HintText is returned. Passing empty str to a TextView will display the hint.
+            }
         }
 
+        updateDisplayToolbarText()
         pinButton.setSelected(toolbarStateProvider.isURLPinned(),
                 notifyListener = false) // We don't want to actually pin/unpin.
         toolbar.invalidateActions()
