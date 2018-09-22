@@ -41,13 +41,7 @@ object UserAgent {
             }
         }
 
-        // We want this to be a Mobile user agent
-        val baseUAString = if (existingUAString.indexOf("Mobile Safari") != -1)
-            existingUAString
-        else
-            existingUAString.replace("Safari", "Mobile Safari")
-
-        val tokens = baseUAString.substring(start).split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val tokens = existingUAString.substring(start).split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for (i in tokens.indices) {
             if (tokens[i].startsWith("Chrome")) {
                 tokens[i] = focusToken + " " + tokens[i]
