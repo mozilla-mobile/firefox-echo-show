@@ -22,8 +22,6 @@ import org.mozilla.focus.widget.AccessibleGridLayoutManager
 private const val SHOW_UNPIN_TOAST_COUNTER_PREF = "show_upin_toast_counter"
 private const val MAX_UNPIN_TOAST_COUNT = 3
 
-private const val COL_COUNT = 4
-
 class HomeTileGridNavigation @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyle: Int = 0 )
     : RecyclerView(context, attrs, defStyle) {
@@ -74,7 +72,9 @@ class HomeTileGridNavigation @JvmOverloads constructor(
             }
         }, homeTileLongClickListenerProvider = { homeTileLongClickListener },
         urlSearchProvider = { urlSearcher })
-        layoutManager = AccessibleGridLayoutManager(context, COL_COUNT)
+
+        val tileColumnCount = resources.getInteger(R.integer.home_tile_column_count)
+        layoutManager = AccessibleGridLayoutManager(context, tileColumnCount)
     }
 
     override fun setVisibility(visibility: Int) {
