@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.support.annotation.AnyThread
 import android.support.annotation.UiThread
+import android.support.annotation.VisibleForTesting
 import org.json.JSONArray
 import org.mozilla.focus.ext.toUri
 import org.mozilla.focus.utils.ToastManager
@@ -25,6 +26,8 @@ private const val CUSTOM_SITES_LIST = "customSitesList"
 private const val BUNDLED_HOME_TILES_DIR = "bundled"
 private const val HOME_TILES_JSON_PATH = "$BUNDLED_HOME_TILES_DIR/bundled_tiles.json"
 
+private typealias BundledTilesCache = LinkedHashMap<Uri, BundledHomeTile>
+
 /**
  * Static accessor for bundled tiles, which are loaded from assets/bundled/bundled_tiles.json.
  *
@@ -33,38 +36,43 @@ private const val HOME_TILES_JSON_PATH = "$BUNDLED_HOME_TILES_DIR/bundled_tiles.
  * That way we can clearly reflect "pinned" state of these sites on the homescreen by matching
  * by url.
  */
-class BundledTilesManager private constructor(context: Context) {
+class BundledTilesManager @VisibleForTesting internal constructor(
+        private val bundledTilesCache: BundledTilesCache
+) {
     companion object {
         private var thisInstance: BundledTilesManager? = null
         fun getInstance(context: Context): BundledTilesManager {
             if (thisInstance == null) {
-                thisInstance = BundledTilesManager(context)
+                val bundledTilesCache = loadBundledTilesCache(context)
+                thisInstance = BundledTilesManager(bundledTilesCache)
             }
             return thisInstance!!
         }
-    }
 
-    private var bundledTilesCache = loadBundledTilesCache(context)
+        private fun loadBundledTilesCache(context: Context): BundledTilesCache {
+            val tilesJSONString = context.assets.open(HOME_TILES_JSON_PATH).bufferedReader().use { it.readText() }
+            val tilesJSONArray = JSONArray(tilesJSONString)
+            val lhm = LinkedHashMap<Uri, BundledHomeTile>(tilesJSONArray.length())
+            val blacklist = loadBlacklist(context)
+            for (i in 0 until tilesJSONArray.length()) {
+                val tile = BundledHomeTile.fromJSONObject(tilesJSONArray.getJSONObject(i))
+                if (!blacklist.contains(tile.id)) {
+                    lhm.put(tile.url.toUri()!!, tile)
+                }
+            }
+            return lhm
+        }
+
+        private fun loadBlacklist(context: Context): MutableSet<String> {
+            return context.getSharedPreferences(PREF_HOME_TILES, MODE_PRIVATE).getStringSet(BUNDLED_SITES_ID_BLACKLIST, mutableSetOf())
+        }
+    }
 
     /**
      * The number of tiles in this manager. This is more performant than
      * [#getBundledHomeTilesList].size, which returns a copy of the data.
      */
     val tileCount get() = bundledTilesCache.size
-
-    private fun loadBundledTilesCache(context: Context): LinkedHashMap<Uri, BundledHomeTile> {
-        val tilesJSONString = context.assets.open(HOME_TILES_JSON_PATH).bufferedReader().use { it.readText() }
-        val tilesJSONArray = JSONArray(tilesJSONString)
-        val lhm = LinkedHashMap<Uri, BundledHomeTile>(tilesJSONArray.length())
-        val blacklist = loadBlacklist(context)
-        for (i in 0 until tilesJSONArray.length()) {
-            val tile = BundledHomeTile.fromJSONObject(tilesJSONArray.getJSONObject(i))
-            if (!blacklist.contains(tile.id)) {
-                lhm.put(tile.url.toUri()!!, tile)
-            }
-        }
-        return lhm
-    }
 
     @UiThread
     fun isURLPinned(uri: Uri): Boolean {
@@ -109,10 +117,6 @@ class BundledTilesManager private constructor(context: Context) {
     fun loadImageFromPath(context: Context, path: String) = context.assets.open(
             "$BUNDLED_HOME_TILES_DIR/$path").use {
         BitmapFactory.decodeStream(it)
-    }
-
-    private fun loadBlacklist(context: Context): MutableSet<String> {
-        return context.getSharedPreferences(PREF_HOME_TILES, MODE_PRIVATE).getStringSet(BUNDLED_SITES_ID_BLACKLIST, mutableSetOf())
     }
 
     @UiThread
