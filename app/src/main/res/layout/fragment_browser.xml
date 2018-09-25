@@ -21,11 +21,18 @@
         android:background="@android:color/black"
         android:visibility="gone" />
 
+    <!-- From our desired horizontal padding, we must subtract the "margins" introduced by
+         the extended list item width (see home_tile.xml for details).
+         At the time of writing, 44dp padding is expected on the parent and between elements.
+         Each list item adds half of this (22dp) so the parent must specify half as well (22 + 22 = 44). -->
     <org.mozilla.focus.browser.HomeTileGridNavigation
         android:id="@+id/homeScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="44dp"
+        android:paddingStart="22dp"
+        android:paddingEnd="22dp"
+        android:paddingTop="44dp"
+        android:paddingBottom="44dp"
         android:background="@color/browser_overlay_background"
         android:clipChildren="false"
         android:clipToPadding="false"
