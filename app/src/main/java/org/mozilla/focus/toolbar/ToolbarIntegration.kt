@@ -209,7 +209,7 @@ object ToolbarIntegration {
         */
 
         // A margin is added to either side of the space so we remove those margins from the width we want.
-        val actionSpaceWidth = 192 - toolbar.dp(BUTTON_ACTION_MARGIN_DP) * 2
+        val actionSpaceWidth = 200 - toolbar.dp(BUTTON_ACTION_MARGIN_DP) * 2
         toolbar.addBrowserAction(Toolbar.ActionSpace(actionSpaceWidth))
 
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
