@@ -1,6 +1,7 @@
 # Firefox
 
 ### Project resources
+* [Device reference](docs/device_reference.md)
 * [Telemetry documentation](docs/telemetry.md)
 
 ## Build instructions
