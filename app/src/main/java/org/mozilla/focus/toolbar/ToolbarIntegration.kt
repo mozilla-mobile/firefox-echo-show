@@ -25,6 +25,7 @@ import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
 import org.mozilla.focus.ext.children
+import org.mozilla.focus.ext.isScreenXLarge
 import org.mozilla.focus.toolbar.ToolbarEvent.BACK
 import org.mozilla.focus.toolbar.ToolbarEvent.FORWARD
 import org.mozilla.focus.toolbar.ToolbarEvent.HOME
@@ -208,9 +209,12 @@ object ToolbarIntegration {
         toolbar.addBrowserAction(turboButton)
         */
 
-        // A margin is added to either side of the space so we remove those margins from the width we want.
-        val actionSpaceWidth = 200 - toolbar.dp(BUTTON_ACTION_MARGIN_DP) * 2
-        toolbar.addBrowserAction(Toolbar.ActionSpace(actionSpaceWidth))
+        // Non-xlarge screens use the margin between action items.
+        if (context.resources.configuration.isScreenXLarge) {
+            // A margin is added to either side of the space so we remove those margins from the width we want.
+            val actionSpaceWidth = 200 - toolbar.dp(BUTTON_ACTION_MARGIN_DP) * 2
+            toolbar.addBrowserAction(Toolbar.ActionSpace(actionSpaceWidth))
+        }
 
         val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
                 context.getString(R.string.menu_settings),
