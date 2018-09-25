@@ -6,6 +6,9 @@
         https://github.com/mozilla-mobile-skunkworks/firefox-connect/pull/258 */
         "url": "https://www.not-a-url.this-is-used-only-as-a-unique-identifier.google-search.mozilla.com",
         "title": "Search with Google",
+
+        /* We are not using the resources system so we can only store an image for one configuration.
+           All devices are currently mdpi but we chose hdpi to be future proof. */
         "img": "tile_google.png",
         "action": "SEARCH"
     },

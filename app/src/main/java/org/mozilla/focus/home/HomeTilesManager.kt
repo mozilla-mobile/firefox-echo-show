@@ -7,6 +7,7 @@ package org.mozilla.focus.home
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -14,6 +15,7 @@ import android.support.annotation.AnyThread
 import android.support.annotation.UiThread
 import android.support.annotation.VisibleForTesting
 import org.json.JSONArray
+import org.mozilla.focus.ext.isScreenXLarge
 import org.mozilla.focus.ext.toUri
 import org.mozilla.focus.utils.ToastManager
 import org.mozilla.focus.utils.UrlUtils
@@ -114,9 +116,25 @@ class BundledTilesManager @VisibleForTesting internal constructor(
     }
 
     @AnyThread
-    fun loadImageFromPath(context: Context, path: String) = context.assets.open(
-            "$BUNDLED_HOME_TILES_DIR/$path").use {
-        BitmapFactory.decodeStream(it)
+    fun loadImageFromPath(context: Context, filename: String): Bitmap {
+        val assetPath = getImagePathInAssets(context.resources.configuration, filename)
+        return context.assets.open(assetPath).use {
+            BitmapFactory.decodeStream(it)
+        }
+    }
+
+    @VisibleForTesting
+    internal fun getImagePathInAssets(configuration: Configuration, filename: String): String {
+        // The assets are notably artifacted after resizing on these low resolution displays so we
+        // must deliver the home tile assets at multiple sizes.
+        // TODO #1197: We're working around the resources system to deliver these assets so we
+        // should come up with a (components?) solution that leverages the resources system.
+        val assetDirScreenSizeSuffix = if (configuration.isScreenXLarge) {
+            "-xlarge"
+        } else {
+            ""
+        }
+        return "$BUNDLED_HOME_TILES_DIR$assetDirScreenSizeSuffix/$filename"
     }
 
     @UiThread
