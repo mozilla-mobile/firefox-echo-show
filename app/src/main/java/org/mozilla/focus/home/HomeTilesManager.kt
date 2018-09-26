@@ -38,7 +38,7 @@ private typealias BundledTilesCache = LinkedHashMap<Uri, BundledHomeTile>
  * That way we can clearly reflect "pinned" state of these sites on the homescreen by matching
  * by url.
  */
-class BundledTilesManager @VisibleForTesting internal constructor(
+class BundledTilesManager @VisibleForTesting constructor(
         private val bundledTilesCache: BundledTilesCache
 ) {
     companion object {
@@ -124,7 +124,7 @@ class BundledTilesManager @VisibleForTesting internal constructor(
     }
 
     @VisibleForTesting
-    internal fun getImagePathInAssets(configuration: Configuration, filename: String): String {
+    fun getImagePathInAssets(configuration: Configuration, filename: String): String {
         // The assets are notably artifacted after resizing on these low resolution displays so we
         // must deliver the home tile assets at multiple sizes.
         // TODO #1197: We're working around the resources system to deliver these assets so we
