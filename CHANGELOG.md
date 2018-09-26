@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Page load and app startup telemetry events
+- Support for 1st generation Echo Show
 
 ### Changed
 - Polish toolbar, home screen, and settings look-and-feel
