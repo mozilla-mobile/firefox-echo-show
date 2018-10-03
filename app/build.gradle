@@ -39,20 +39,13 @@ android {
     }
 
     // We have a three dimensional build configuration:
-    // BUILD TYPE (debug, beta, release) X PRODUCT FLAVOR (focus) X ENGINE FLAVOR (webview, gecko)
+    // BUILD TYPE (debug, release) X PRODUCT FLAVOR (focus) X ENGINE FLAVOR (webview, gecko)
 
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        beta {
-            initWith debug
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".beta"
         }
         debug {
             applicationIdSuffix ".debug"
@@ -82,8 +75,8 @@ android {
 
     variantFilter { variant ->
         def flavors = variant.flavors*.name
-        // We only need a gecko debug and beta build for now.
-        if (flavors.contains("gecko") && ((variant.buildType.name != "debug" && variant.buildType.name != "beta"))) {
+        // We only need a gecko debug build for now.
+        if (flavors.contains("gecko") && variant.buildType.name != "debug") {
             setIgnore(true)
         }
     }
@@ -188,9 +181,7 @@ dependencies {
 
 android.applicationVariants.all { variant ->
     def buildType = variant.buildType.name
-    def isBetaOrRelease = buildType == "release" || buildType == "beta"
-
-    if (isBetaOrRelease) {
+    if (buildType == "release") {
         variant.outputs.all { output ->
             setVersionCodeOverride(generatedVersionCode)
         }
@@ -241,7 +232,7 @@ def addSecretToBuildConfig(variant, fieldName, fileBaseName) {
     def fileSuffix
     if (variantName.contains("Debug")) {
         fileSuffix = "debug"
-    } else if (variantName.contains("Beta") || variantName.contains("Release")) {
+    } else if (variantName.contains("Release")) {
         fileSuffix = "release"
     } else {
         throw new IllegalStateException("Unhandled variant $variantName")
