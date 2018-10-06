@@ -18,6 +18,7 @@
         ktlint \
         pmd \
         detekt \
+        assembleAmazonWebViewDebugAndroidTest \
         testAmazonWebViewDebug
 
 # Tasks omitted because they take a long time to run:
