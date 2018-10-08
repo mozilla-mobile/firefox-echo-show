@@ -100,8 +100,8 @@ object HiddenEditTextManager {
 }
 
 private class SearchOnGoEditorActionListener(
-        private val searchField: EditText,
-        private val executeSearch: ExecuteSearch
+    private val searchField: EditText,
+    private val executeSearch: ExecuteSearch
 ) : TextView.OnEditorActionListener {
 
     // Different devices emit different events when the soft keyboard search

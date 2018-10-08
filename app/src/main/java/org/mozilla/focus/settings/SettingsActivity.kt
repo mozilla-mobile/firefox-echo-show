@@ -95,8 +95,10 @@ class SettingsActivity : AppCompatActivity(),
     /*
      * Handle showing a nested PreferenceScreen.
      */
-    override fun onPreferenceStartScreen(preferenceFragmentCompat: PreferenceFragmentCompat,
-                                         preferenceScreen: PreferenceScreen): Boolean {
+    override fun onPreferenceStartScreen(
+        preferenceFragmentCompat: PreferenceFragmentCompat,
+        preferenceScreen: PreferenceScreen
+    ): Boolean {
         supportActionBar?.title = preferenceScreen.title
         preferenceFragmentCompat.preferenceScreen = preferenceScreen
         return true

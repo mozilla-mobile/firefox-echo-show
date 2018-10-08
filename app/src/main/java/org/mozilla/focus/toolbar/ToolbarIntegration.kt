@@ -48,13 +48,16 @@ enum class ToolbarEvent {
 
 /** A collection of callbacks to modify the toolbar. */
 class ToolbarCallbacks(
-        val onDisplayUrlUpdate: (url: String?) -> Unit,
-        val onLoadingUpdate: (isLoading: Boolean) -> Unit,
-        val onProgressUpdate: (progress: Int) -> Unit
+    val onDisplayUrlUpdate: (url: String?) -> Unit,
+    val onLoadingUpdate: (isLoading: Boolean) -> Unit,
+    val onProgressUpdate: (progress: Int) -> Unit
 )
 
-typealias OnToolbarEvent = (event: ToolbarEvent, value: String?,
-                            autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) -> Unit
+typealias OnToolbarEvent = (
+    event: ToolbarEvent,
+    value: String?,
+    autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?
+) -> Unit
 
 /**
  * Helper class for constructing and using the shared toolbar for navigation and homescreen.
@@ -67,7 +70,7 @@ object ToolbarIntegration {
      * because [SharedPreferences.registerOnSharedPreferenceChangeListener] doesn't keep strong
      * references so someone else, this object, has to.
      */
-    //private val weakToolbarToSharedPrefListeners = WeakHashMap<BrowserToolbar, OnSharedPreferenceChangeListener>()
+    // private val weakToolbarToSharedPrefListeners = WeakHashMap<BrowserToolbar, OnSharedPreferenceChangeListener>()
 
     /**
      * Add the components of toolbar and returns a collection of callbacks to modify the toolbar
@@ -79,9 +82,11 @@ object ToolbarIntegration {
      * - Make the code more testable, due to the "interface" ^
      */
     @SuppressWarnings("LongMethod")
-    fun setup(toolbar: BrowserToolbar,
-              toolbarStateProvider: ToolbarStateProvider,
-              onToolbarEvent: OnToolbarEvent): ToolbarCallbacks {
+    fun setup(
+        toolbar: BrowserToolbar,
+        toolbarStateProvider: ToolbarStateProvider,
+        onToolbarEvent: OnToolbarEvent
+    ): ToolbarCallbacks {
         val context = toolbar.context
 
         toolbar.displaySiteSecurityIcon = false
@@ -151,10 +156,10 @@ object ToolbarIntegration {
 
     @Suppress("ReplaceSingleLineLet") // Trailing let improves readability/removability of our workaround.
     private fun addToolbarButtons(
-            context: Context,
-            toolbar: BrowserToolbar,
-            toolbarStateProvider: ToolbarStateProvider,
-            onToolbarEvent: OnToolbarEvent
+        context: Context,
+        toolbar: BrowserToolbar,
+        toolbarStateProvider: ToolbarStateProvider,
+        onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
         val homescreenButton = BrowserToolbar.Button(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title),
@@ -239,8 +244,11 @@ object ToolbarIntegration {
         return pinButton
     }
 
-    private fun initTextChangeListeners(context: Context, toolbar: BrowserToolbar,
-                                        onToolbarEvent: OnToolbarEvent) {
+    private fun initTextChangeListeners(
+        context: Context,
+        toolbar: BrowserToolbar,
+        onToolbarEvent: OnToolbarEvent
+    ) {
         val domainAutoCompleteProvider = DomainAutoCompleteProvider().apply {
             initialize(context)
         }
@@ -266,8 +274,10 @@ object ToolbarIntegration {
     }
 
     private fun onDisplayUrlUpdate(
-            toolbar: BrowserToolbar, toolbarStateProvider: ToolbarStateProvider, url: String?,
-            pinButton: Toolbar.ActionToggleButton
+        toolbar: BrowserToolbar,
+        toolbarStateProvider: ToolbarStateProvider,
+        url: String?,
+        pinButton: Toolbar.ActionToggleButton
     ) {
         fun updateDisplayToolbarText() {
             if (url != null) {
@@ -286,8 +296,8 @@ object ToolbarIntegration {
 
 /** A [Toolbar.Action] that works around limitations in the components. */
 private class WorkaroundAction(
-        private val baseAction: Toolbar.Action,
-        private val shouldTintIcon: Boolean = true
+    private val baseAction: Toolbar.Action,
+    private val shouldTintIcon: Boolean = true
 ) : Toolbar.Action by baseAction {
     override fun createView(parent: ViewGroup) = baseAction.createView(parent).apply {
         if (shouldTintIcon && this is ImageView) {
@@ -302,13 +312,13 @@ private class WorkaroundAction(
  * A [BrowserToolbar.ToggleButton] that can be set to different visibilities
  */
 private class ChangeableVisibilityButton(
-        @DrawableRes imageResource: Int,
-        @DrawableRes imageResourceSelected: Int,
-        contentDescription: String,
-        contentDescriptionSelected: String,
-        @DrawableRes background: Int? = null,
-        val visibility: () -> Int,
-        listener: (Boolean) -> Unit
+    @DrawableRes imageResource: Int,
+    @DrawableRes imageResourceSelected: Int,
+    contentDescription: String,
+    contentDescriptionSelected: String,
+    @DrawableRes background: Int? = null,
+    val visibility: () -> Int,
+    listener: (Boolean) -> Unit
 ) : BrowserToolbar.ToggleButton(
         imageResource,
         imageResourceSelected,

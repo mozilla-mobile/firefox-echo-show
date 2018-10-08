@@ -7,6 +7,8 @@ package org.mozilla.focus
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 
 interface UrlSearcher {
-    fun onTextInputUrlEntered(urlStr: String,
-                              autocompleteResult: InlineAutocompleteEditText.AutocompleteResult)
+    fun onTextInputUrlEntered(
+        urlStr: String,
+        autocompleteResult: InlineAutocompleteEditText.AutocompleteResult
+    )
 }

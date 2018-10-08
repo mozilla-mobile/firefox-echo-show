@@ -12,10 +12,10 @@ import android.support.v7.widget.GridLayoutManager as AndroidGridLayoutManager
  * A GridLayoutManager that fixes a11y errors in the Android framework implementation.
  */
 class AccessibleGridLayoutManager(
-        context: Context,
-        spanCount: Int,
-        orientation: Int = VERTICAL,
-        reverseLayout: Boolean = false
+    context: Context,
+    spanCount: Int,
+    orientation: Int = VERTICAL,
+    reverseLayout: Boolean = false
 ) : AndroidGridLayoutManager(
         context,
         spanCount,

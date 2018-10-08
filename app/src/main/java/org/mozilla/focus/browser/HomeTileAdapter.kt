@@ -48,15 +48,15 @@ private val CUSTOM_TILE_ICON_INTERPOLATOR = DecelerateInterpolator()
 typealias ExecuteSearch = (String, InlineAutocompleteEditText.AutocompleteResult) -> Unit
 
 class HomeTileAdapter(
-        private val uiLifecycleCancelJob: Job,
-        private var tiles: MutableList<HomeTile>,
-        private val loadUrl: (String) -> Unit,
-        private val urlSearchProvider: () -> UrlSearcher?,
-        private val homeTileLongClickListenerProvider: () -> HomeTileLongClickListener?,
-        var onTileFocused: (() -> Unit)?
+    private val uiLifecycleCancelJob: Job,
+    private var tiles: MutableList<HomeTile>,
+    private val loadUrl: (String) -> Unit,
+    private val urlSearchProvider: () -> UrlSearcher?,
+    private val homeTileLongClickListenerProvider: () -> HomeTileLongClickListener?,
+    var onTileFocused: (() -> Unit)?
 ) : RecyclerView.Adapter<TileViewHolder>() {
 
-    override fun onBindViewHolder(holder: TileViewHolder, position: Int) = with (holder) {
+    override fun onBindViewHolder(holder: TileViewHolder, position: Int) = with(holder) {
         val item = tiles[position]
         when (item) {
             is BundledHomeTile -> {
@@ -98,7 +98,7 @@ class HomeTileAdapter(
     }
 
     private fun ViewGroup.setSearchClickListeners(item: HomeTile, urlSearchProvider: () -> UrlSearcher?) {
-        //TODO read hint text from Tile, pass through HiddenEditTextManager#attach
+        // TODO read hint text from Tile, pass through HiddenEditTextManager#attach
         HiddenEditTextManager.attach(this)
         this.setOnClickListener {
             HiddenEditTextManager.openSoftKeyboard(it)
@@ -118,7 +118,7 @@ class HomeTileAdapter(
     }
 
     private fun getDefaultLongClickListener(item: HomeTile) = View.OnLongClickListener {
-        homeTileLongClickListenerProvider()?.onHomeTileLongClick (unpinTile = {
+        homeTileLongClickListenerProvider()?.onHomeTileLongClick(unpinTile = {
             HomeTilesManager.removeHomeTile(item, it.context)
             removeTile(item.idToString())
             TelemetryWrapper.homeTileRemovedEvent(item)
@@ -180,7 +180,7 @@ class HomeTileAdapter(
     )
 }
 
-private fun onBindBundledHomeTile(holder: TileViewHolder, tile: BundledHomeTile) = with (holder) {
+private fun onBindBundledHomeTile(holder: TileViewHolder, tile: BundledHomeTile) = with(holder) {
     val bitmap = BundledTilesManager.getInstance(itemView.context).loadImageFromPath(itemView.context, tile.imagePath)
     iconView.setImageBitmap(bitmap)
 
@@ -194,7 +194,7 @@ private fun onBindBundledHomeTile(holder: TileViewHolder, tile: BundledHomeTile)
     }
 }
 
-private fun onBindCustomHomeTile(uiLifecycleCancelJob: Job, holder: TileViewHolder, item: CustomHomeTile) = with (holder) {
+private fun onBindCustomHomeTile(uiLifecycleCancelJob: Job, holder: TileViewHolder, item: CustomHomeTile) = with(holder) {
     launch(uiLifecycleCancelJob + UI, CoroutineStart.UNDISPATCHED) {
         val validUri = item.url.toJavaURI()
 
@@ -239,7 +239,7 @@ private fun onBindCustomHomeTile(uiLifecycleCancelJob: Job, holder: TileViewHold
 }
 
 class TileViewHolder(
-        itemView: View
+    itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
     val iconView = itemView.tile_icon
     val titleView = itemView.tile_title

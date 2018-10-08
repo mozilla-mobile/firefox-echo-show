@@ -16,7 +16,7 @@ import org.mozilla.focus.R
  * including while displaying loading progress.
  */
 class UrlBoxBackgroundWithProgress(
-        context: Context
+    context: Context
 ) : View(context) {
     var progress: Int = 0
         set(value) {

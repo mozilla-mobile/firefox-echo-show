@@ -62,8 +62,8 @@ fun Uri.truncatedPath(): String {
     return when (segments.size) {
         0 -> ""
         1 -> "/" + segments[0]
-        2 -> "/" + segments.joinToString(separator = "/" )
-        else -> "/" + listOf(segments.first(), Char.ELLIPSIS, segments.last()).joinToString(separator = "/" )
+        2 -> "/" + segments.joinToString(separator = "/")
+        else -> "/" + listOf(segments.first(), Char.ELLIPSIS, segments.last()).joinToString(separator = "/")
     }
 }
 

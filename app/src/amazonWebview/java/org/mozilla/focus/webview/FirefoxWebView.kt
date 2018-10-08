@@ -28,9 +28,10 @@ import org.mozilla.focus.utils.UrlUtils
  */
 @Suppress("ViewConstructor") // We only construct this in code.
 internal class FirefoxWebView(
-        context: Context, attrs: AttributeSet,
-        private val client: FocusWebViewClient,
-        private val chromeClient: FirefoxWebChromeClient
+    context: Context,
+    attrs: AttributeSet,
+    private val client: FocusWebViewClient,
+    private val chromeClient: FirefoxWebChromeClient
 ) : NestedWebView(context, attrs), IWebView {
 
     @get:VisibleForTesting

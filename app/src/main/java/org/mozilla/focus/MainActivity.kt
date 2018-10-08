@@ -149,8 +149,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     override fun onTextInputUrlEntered(
-            urlStr: String,
-            autocompleteResult: InlineAutocompleteEditText.AutocompleteResult
+        urlStr: String,
+        autocompleteResult: InlineAutocompleteEditText.AutocompleteResult
     ) {
         ViewUtils.hideKeyboard(container)
         ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr) { isUrl ->

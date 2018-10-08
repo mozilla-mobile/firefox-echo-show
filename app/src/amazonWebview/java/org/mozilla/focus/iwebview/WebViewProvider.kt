@@ -46,7 +46,7 @@ object WebViewProvider {
     }
 }
 
-private fun initWebview(webView: FirefoxWebView) = with (webView) {
+private fun initWebview(webView: FirefoxWebView) = with(webView) {
     isVerticalScrollBarEnabled = true
     isHorizontalScrollBarEnabled = true
 
@@ -57,7 +57,7 @@ private fun initWebview(webView: FirefoxWebView) = with (webView) {
 
 @SuppressLint("SetJavaScriptEnabled") // We explicitly want to enable JavaScript
 @Suppress("DEPRECATION") // To be safe, we'll use delete methods as long as they're there.
-private fun initWebSettings(context: Context, settings: WebSettings) = with (settings) {
+private fun initWebSettings(context: Context, settings: WebSettings) = with(settings) {
     val appName = context.resources.getString(R.string.useragent_appname)
     userAgentString = UserAgent.buildUserAgentString(context, settings, appName)
 
@@ -82,7 +82,7 @@ private fun initWebSettings(context: Context, settings: WebSettings) = with (set
     // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
     // Chrome does this in the current Chrome Dev, but not Chrome release).
     // TODO #33: TEXT_AUTOSIZING does not exist in AmazonWebSettings
-    //settings.setLayoutAlgorithm(AmazonWebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+    // settings.setLayoutAlgorithm(AmazonWebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
 
     // Consult with product before modifying these: for security reasons, we disable access to
     // arbitrary local files by webpages. Note: assets and resources can still be loaded via

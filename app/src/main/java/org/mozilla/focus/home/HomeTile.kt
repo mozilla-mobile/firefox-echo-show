@@ -27,12 +27,12 @@ sealed class HomeTile(val url: String, val title: String) {
 }
 
 class BundledHomeTile(
-        url: String,
-        title: String,
-        val imagePath: String,
-        /** Unique id used to identify specific home tiles, e.g. for deletion, etc. **/
-        val id: String,
-        val action: TileAction
+    url: String,
+    title: String,
+    val imagePath: String,
+    /** Unique id used to identify specific home tiles, e.g. for deletion, etc. **/
+    val id: String,
+    val action: TileAction
 ) : HomeTile(url, title) {
 
     public override fun toJSONObject() = super.toJSONObject().apply {
@@ -58,10 +58,10 @@ class BundledHomeTile(
 }
 
 class CustomHomeTile(
-        url: String,
-        title: String,
-        /** Used by [HomeTileScreenshotStore] to uniquely identify tiles. */
-        val id: UUID
+    url: String,
+    title: String,
+    /** Used by [HomeTileScreenshotStore] to uniquely identify tiles. */
+    val id: UUID
 ) : HomeTile(url, title) {
 
     public override fun toJSONObject() = super.toJSONObject().apply {

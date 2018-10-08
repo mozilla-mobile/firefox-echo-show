@@ -39,7 +39,7 @@ private typealias BundledTilesCache = LinkedHashMap<Uri, BundledHomeTile>
  * by url.
  */
 class BundledTilesManager @VisibleForTesting constructor(
-        private val bundledTilesCache: BundledTilesCache
+    private val bundledTilesCache: BundledTilesCache
 ) {
     companion object {
         private var thisInstance: BundledTilesManager? = null

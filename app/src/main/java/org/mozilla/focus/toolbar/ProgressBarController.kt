@@ -15,7 +15,7 @@ private const val MAX_UI_PROGRESS = 100
 
 /** Controls the appearance of the progress bar. */
 class ProgressBarController(
-        private val progressBar: UrlBoxBackgroundWithProgress
+    private val progressBar: UrlBoxBackgroundWithProgress
 ) {
     private var isLoading = false
     private var hideProgressBarJob: Job? = null

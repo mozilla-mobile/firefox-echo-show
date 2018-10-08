@@ -193,7 +193,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val layout = inflater.inflate(R.layout.fragment_browser, container, false)
 
-        with (layout.homeScreen) {
+        with(layout.homeScreen) {
             onTileClicked = { callbacks?.onNonTextInputUrlEntered(it) }
             urlSearcher = activity as UrlSearcher
             visibility = View.GONE
@@ -295,8 +295,8 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 }
 
 private class BrowserTouchExplorationStateChangeListener(
-        private val homeScreen: HomeTileGridNavigation,
-        private val updateWebViewVisibility: (isVoiceViewEnabled: Boolean, isHomeVisible: Boolean) -> Unit
+    private val homeScreen: HomeTileGridNavigation,
+    private val updateWebViewVisibility: (isVoiceViewEnabled: Boolean, isHomeVisible: Boolean) -> Unit
 ) : TouchExplorationStateChangeListener {
     override fun onTouchExplorationStateChanged(isVoiceViewEnabled: Boolean) { // touch exploration state = VoiceView
         updateWebViewVisibility(isVoiceViewEnabled, homeScreen.isVisible)
@@ -304,7 +304,7 @@ private class BrowserTouchExplorationStateChangeListener(
 }
 
 private class BrowserIWebViewCallback(
-        private val browserFragment: BrowserFragment
+    private val browserFragment: BrowserFragment
 ) : IWebView.Callback {
 
     private var fullscreenCallback: IWebView.FullscreenCallback? = null
@@ -326,7 +326,7 @@ private class BrowserIWebViewCallback(
         fullscreenCallback = callback
         if (view == null) return
 
-        with (browserFragment) {
+        with(browserFragment) {
             callbacks?.onFullScreenChange(true)
 
             webView?.setVisibility(View.GONE)
@@ -348,7 +348,7 @@ private class BrowserIWebViewCallback(
     }
 
     override fun onExitFullScreen() {
-        with (browserFragment) {
+        with(browserFragment) {
             callbacks?.onFullScreenChange(false)
 
             videoContainer.removeAllViews()

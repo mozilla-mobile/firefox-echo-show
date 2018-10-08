@@ -28,9 +28,9 @@ private const val TOOLBAR_SCROLL_ENABLED_FLAGS = SCROLL_FLAG_SCROLL or
 
 /** A view controller for the [AppBarLayout] and the [BrowserToolbar] it contains. */
 class BrowserAppBarLayoutController(
-        private val appBarLayout: AppBarLayout,
-        private val toolbar: BrowserToolbar,
-        private val appBarOverlay: View
+    private val appBarLayout: AppBarLayout,
+    private val toolbar: BrowserToolbar,
+    private val appBarOverlay: View
 ) : AccessibilityManager.TouchExplorationStateChangeListener {
     private var isHomeVisible = false
 
