@@ -17,7 +17,7 @@
         checkstyle \
         ktlint \
         pmd \
-        detektCheck \
+        detekt \
         testAmazonWebViewDebug
 
 # Tasks omitted because they take a long time to run:
