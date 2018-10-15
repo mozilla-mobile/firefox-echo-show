@@ -20,7 +20,7 @@ import android.widget.TextView
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
-import mozilla.components.support.ktx.android.view.dp
+import mozilla.components.support.ktx.android.content.res.pxToDp
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
@@ -137,14 +137,15 @@ object ToolbarIntegration {
     }
 
     private fun configureToolbarSpacing(toolbar: BrowserToolbar) {
-        val dp16 = toolbar.dp(16)
-        val dp20 = toolbar.dp(20)
-        val dp72 = toolbar.dp(72)
+        val res = toolbar.context.resources
+        val dp16 = res.pxToDp(16)
+        val dp20 = res.pxToDp(20)
+        val dp72 = res.pxToDp(72)
 
         toolbar.setPadding(dp72, dp20, dp72, dp20)
         toolbar.urlBoxMargin = dp16
         toolbar.setUrlTextPadding(dp16, 0, 0, 0)
-        toolbar.browserActionMargin = toolbar.dp(BUTTON_ACTION_MARGIN_DP)
+        toolbar.browserActionMargin = res.pxToDp(BUTTON_ACTION_MARGIN_DP)
     }
 
     private fun configureProgressBar(context: Context, toolbar: BrowserToolbar): ProgressBarController {
@@ -161,6 +162,8 @@ object ToolbarIntegration {
         toolbarStateProvider: ToolbarStateProvider,
         onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
+        val res = context.resources
+
         val homescreenButton = BrowserToolbar.Button(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title),
                 background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) }
@@ -215,9 +218,9 @@ object ToolbarIntegration {
         */
 
         // Non-xlarge screens use the margin between action items.
-        if (context.resources.configuration.isScreenXLarge) {
+        if (res.configuration.isScreenXLarge) {
             // A margin is added to either side of the space so we remove those margins from the width we want.
-            val actionSpaceWidth = 200 - toolbar.dp(BUTTON_ACTION_MARGIN_DP) * 2
+            val actionSpaceWidth = 200 - res.pxToDp(BUTTON_ACTION_MARGIN_DP) * 2
             toolbar.addBrowserAction(Toolbar.ActionSpace(actionSpaceWidth))
         }
 
