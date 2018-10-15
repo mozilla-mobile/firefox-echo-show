@@ -105,6 +105,9 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+    maven {
+        url "https://maven.mozilla.org/maven2"
+    }
     mavenCentral()
 }
 
@@ -127,13 +130,13 @@ dependencies {
         transitive = false
     }
 
-    implementation "org.mozilla.photon:colors:$moz_components_version"
-    implementation "org.mozilla.photon:fonts:$moz_components_version"
-    implementation "org.mozilla.components:telemetry:$moz_components_version"
-    implementation "org.mozilla.components:toolbar:$moz_components_version"
-    implementation "org.mozilla.components:utils:$moz_components_version"
-    implementation "org.mozilla.components:domains:$moz_components_version"
-    implementation "org.mozilla.components:autocomplete:$moz_components_version"
+    implementation "org.mozilla.components:browser-domains:$moz_components_version"
+    implementation "org.mozilla.components:browser-toolbar:$moz_components_version"
+    implementation "org.mozilla.components:service-telemetry:$moz_components_version"
+    implementation "org.mozilla.components:support-utils:$moz_components_version"
+    implementation "org.mozilla.components:ui-autocomplete:$moz_components_version"
+    implementation "org.mozilla.components:ui-colors:$moz_components_version"
+    implementation "org.mozilla.components:ui-fonts:$moz_components_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.19.3"
