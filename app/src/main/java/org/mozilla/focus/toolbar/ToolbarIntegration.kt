@@ -10,11 +10,9 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
-import android.text.InputType
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
@@ -99,7 +97,6 @@ object ToolbarIntegration {
 
         // Some component workarounds.
         configureURLBarText(toolbar)
-        addCloseEditToolbarContentDescription(context, toolbar)
 
         return ToolbarCallbacks(
                 onDisplayUrlUpdate = { url -> onDisplayUrlUpdate(toolbar, toolbarStateProvider, url, pinButton) },
@@ -118,22 +115,6 @@ object ToolbarIntegration {
         val textColor = ContextCompat.getColor(toolbar.context, R.color.photonGrey10)
         urlBar.setHintTextColor(textColor)
         urlBar.setTextColor(textColor)
-
-        // Components doesn't set the inputType correctly.
-        // TODO: Replace with the components implementation:
-        // https://github.com/mozilla-mobile/android-components/issues/800
-        val editModeEditText = toolbar.editToolbar.children().first { it is EditText } as EditText
-        editModeEditText.inputType += InputType.TYPE_CLASS_TEXT
-    }
-
-    private fun addCloseEditToolbarContentDescription(context: Context, toolbar: BrowserToolbar) {
-        // Components doesn't have a content description for this button.
-        // TODO: replace with the components implementation:
-        // https://github.com/mozilla-mobile/android-components/issues/744.
-        val closeEditLayoutButton = toolbar.editToolbar
-                .getChildAt(1) as? ImageView
-                ?: throw IllegalStateException("Unable to locate close EditToolbar layout button")
-        closeEditLayoutButton.contentDescription = context.resources.getString(R.string.nav_close_hint)
     }
 
     private fun configureToolbarSpacing(toolbar: BrowserToolbar) {
