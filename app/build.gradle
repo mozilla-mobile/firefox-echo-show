@@ -48,7 +48,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            applicationIdSuffix ".debug"
+            // The device has an extended screen timeout for our release app ID but not for our
+            // debug app ID. it's difficult to debug with a 30s screen timeout so we do not
+            // change the debug app ID here, making it the same as release.
         }
     }
     testOptions {
