@@ -1,3 +1,5 @@
+import org.mozilla.gradle.tasks.VerifyWebViewCount
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'findbugs'
@@ -179,6 +181,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
 }
+
+task verifyWebViewCount(type: VerifyWebViewCount)
 
 // -------------------------------------------------------------------------------------------------
 //  Dynamically set versionCode (See tools/build/versionCode.gradle
