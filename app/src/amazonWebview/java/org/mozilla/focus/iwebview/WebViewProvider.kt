@@ -9,8 +9,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.webkit.CookieManager
 import android.webkit.WebSettings
+import android.webkit.WebStorage
 import android.webkit.WebView.setWebContentsDebuggingEnabled
+import android.webkit.WebViewDatabase
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.UserAgent
 import org.mozilla.focus.webview.FirefoxWebChromeClient
@@ -43,6 +46,18 @@ object WebViewProvider {
             initWebview(this)
             initWebSettings(context, settings)
         }
+    }
+
+    @Suppress("DEPRECATION") // To be safe, we'll use delete methods as long as they're there.
+    fun deleteGlobalData(context: Context) {
+        // We don't care about the callback - we just want to make sure cookies are gone
+        CookieManager.getInstance().removeAllCookies(null)
+
+        WebStorage.getInstance().deleteAllData()
+
+        val webViewDatabase = WebViewDatabase.getInstance(context)
+        webViewDatabase.clearFormData() // Unclear how this differs from WebView.clearFormData()
+        webViewDatabase.clearHttpAuthUsernamePassword()
     }
 }
 

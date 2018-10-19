@@ -47,6 +47,9 @@ public class WebViewProvider {
         // Nothing: a WebKit work-around.
     }
 
+    public static void deleteGlobalData(Context context) {
+    }
+
     @SuppressLint("ViewConstructor") // we construct only in code.
     public static class GeckoWebView extends org.mozilla.focus.iwebview.NestedGeckoView implements IWebView {
         private Callback callback;
