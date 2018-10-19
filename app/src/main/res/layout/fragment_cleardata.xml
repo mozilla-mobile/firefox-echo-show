@@ -41,10 +41,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Webview for clearing webview data -->
-    <org.mozilla.focus.iwebview.IWebView
-        android:id="@+id/settingsWebView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"/>
 </android.support.constraint.ConstraintLayout>

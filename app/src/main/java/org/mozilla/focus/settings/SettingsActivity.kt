@@ -4,7 +4,6 @@
 
 package org.mozilla.focus.settings
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,11 +13,9 @@ import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceScreen
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -27,8 +24,6 @@ import org.mozilla.focus.browser.Browser
 import org.mozilla.focus.browser.URLs.APP_ABOUT
 import org.mozilla.focus.browser.URLs.PRIVACY_NOTICE
 import org.mozilla.focus.ext.children
-import org.mozilla.focus.iwebview.IWebView
-import org.mozilla.focus.iwebview.WebViewProvider
 
 /**
  * Settings activity with nested settings screens.
@@ -81,15 +76,6 @@ class SettingsActivity : AppCompatActivity(),
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        return if (name == IWebView::class.java.name) {
-            // Inject our implementation of IWebView from the WebViewProvider.
-            val webview = WebViewProvider.create(this, attrs)
-            (webview as IWebView).setBlockingEnabled(false)
-            return webview
-        } else super.onCreateView(name, context, attrs)
     }
 
     /*

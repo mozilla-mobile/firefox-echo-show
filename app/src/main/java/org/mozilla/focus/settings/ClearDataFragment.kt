@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_cleardata.*
 import org.mozilla.focus.R
+import org.mozilla.focus.iwebview.WebViewProvider
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.LiveDataEvent
 
@@ -43,8 +44,8 @@ class ClearDataFragment : Fragment() {
         confirmButton.apply {
             isSelected = true
             setOnClickListener {
-                settingsWebView.cleanup() // This will only clear global WebView settings.
-                sendUserClearDataEvent()
+                WebViewProvider.deleteGlobalData(view.context)
+                sendUserClearDataEvent() // to delete WebView instance data.
                 TelemetryWrapper.clearDataEvent()
                 finishFragment()
             }
