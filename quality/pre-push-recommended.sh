@@ -18,6 +18,7 @@
         ktlint \
         pmd \
         detekt \
+        verifyWebViewCount \
         assembleAmazonWebViewDebugAndroidTest \
         testAmazonWebViewDebug
 
