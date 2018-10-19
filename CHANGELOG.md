@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Fixed
 - Infrequently after removing autocomplete, the keyboard would be unusable until it was dismissed and reopened (#484)
+- A crash that occurs after clearing browsing data (#540)
 
 ## [1.1] - 2018-10-11
 ### Added
