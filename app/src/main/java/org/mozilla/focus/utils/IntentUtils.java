@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 
@@ -21,7 +20,6 @@ import java.util.List;
 
 public class IntentUtils {
 
-    private static String MARKET_INTENT_URI_PACKAGE_PREFIX = "market://details?id=";
     private static String EXTRA_BROWSER_FALLBACK_URL = "browser_fallback_url";
 
     /**
@@ -57,7 +55,7 @@ public class IntentUtils {
         final List<ResolveInfo> matchingActivities = packageManager.queryIntentActivities(intent, 0);
 
         if (matchingActivities.size() == 0) {
-            return handleUnsupportedLink(context, webView, intent);
+            return handleUnsupportedLink(webView, intent);
         } else if (matchingActivities.size() == 1) {
             final ResolveInfo info;
 
@@ -88,33 +86,18 @@ public class IntentUtils {
         }
     }
 
-    private static boolean handleUnsupportedLink(final Context context, final IWebView webView, final Intent intent) {
+    private static boolean handleUnsupportedLink(final IWebView webView, final Intent intent) {
         final String fallbackUrl = intent.getStringExtra(EXTRA_BROWSER_FALLBACK_URL);
         if (fallbackUrl != null) {
             webView.loadUrl(fallbackUrl);
             return true;
         }
 
-        if (intent.getPackage() != null) {
-            // The url included the target package:
-            final String marketUri = MARKET_INTENT_URI_PACKAGE_PREFIX + intent.getPackage();
-            final Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marketUri));
-            marketIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-
-            final PackageManager packageManager = context.getPackageManager();
-            final ResolveInfo info = packageManager.resolveActivity(marketIntent, 0);
-            final CharSequence marketTitle = info.loadLabel(packageManager);
-            showConfirmationDialog(context, marketIntent,
-                    context.getString(R.string.external_app_prompt_no_app_title),
-                    R.string.external_app_prompt_no_app, marketTitle);
-
-            // Stop loading, we essentially have a result.
-            return true;
-        }
-
-        // If there's really no way to handle this, we just let the browser handle this URL
-        // (which then shows the unsupported protocol page).
-        return false;
+        // There is no way to handle this. We return true so the browser does nothing on unsupported
+        // URIs. While showing an error page is more correct, Chrome does not do this so web sites
+        // are developed around this implementation and we're forced to do it too. See fennec for history:
+        // https://searchfox.org/mozilla-central/rev/fcfb479e6ff63aea017d063faa17877ff750b4e5/mobile/android/base/java/org/mozilla/gecko/IntentHelper.java#544
+        return true;
     }
 
     // We only need one param for both scenarios, hence we use just one "param" argument. If we ever
