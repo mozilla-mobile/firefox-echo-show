@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - A crash when loading Android Intent URIs (#500)
 
 ## [1.1] - 2018-10-11
+*OTA update released to all devices on gen 2's release day (most users will not have seen v1.0)*
+
 ### Added
 - Page load and app startup telemetry events
 - Support for 1st generation Echo Show
@@ -36,7 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Disable JS alerts
 
 ## [1.0] - 2018-10-11
-*Initial release: a web browser with customizable home tiles to access your favorite sites quickly.*
+*Initial release shipped on gen 2 devices: a web browser with customizable home tiles to access your favorite sites quickly.*
 
 ### Added
 - Home page with default home times: Google search, YouTube, and Wikipedia
