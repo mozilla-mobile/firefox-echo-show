@@ -20,6 +20,8 @@
     <string name="menu_about">About</string>
     <string name="preference_language">Language</string>
 
+    <string name="fullscreen_hint_pinch_to_exit">Pinch to exit fullscreen mode</string>
+
     <!-- This is shown when the user hasn't set a Firefox for Fire TV specific language, i.e. when Firefox for Fire TV
          is using the system default language. -->
     <string name="preference_language_systemdefault">System default</string>
