@@ -94,16 +94,16 @@ interface IWebView {
     }
 
     interface Callback {
-        fun onPageStarted(url: String)
-        fun onPageFinished(isSecure: Boolean)
-        fun onProgress(progress: Int)
+        fun onPageStarted(url: String) {}
+        fun onPageFinished(isSecure: Boolean) {}
+        fun onProgress(progress: Int) {}
 
-        fun onURLChanged(url: String)
+        fun onURLChanged(url: String) {}
 
-        fun onRequest(isTriggeredByUserGesture: Boolean)
+        fun onRequest(isTriggeredByUserGesture: Boolean) {}
 
-        fun onLongPress(hitTarget: HitTarget)
-        fun onShouldInterceptRequest(url: String)
+        fun onLongPress(hitTarget: HitTarget) {}
+        fun onShouldInterceptRequest(url: String) {}
 
         /**
          * Notify the host application that the current page has entered full screen mode.
@@ -113,7 +113,7 @@ interface IWebView {
          * Some IWebView implementations may pass a custom View which contains the web contents in
          * full screen mode.
          */
-        fun onEnterFullScreen(callback: FullscreenCallback, view: View?)
+        fun onEnterFullScreen(callback: FullscreenCallback, view: View?) {}
 
         /**
          * Notify the host application that the current page has exited full screen mode.
@@ -121,9 +121,9 @@ interface IWebView {
          * If a View was passed when the application entered full screen mode then this view must
          * be hidden now.
          */
-        fun onExitFullScreen()
+        fun onExitFullScreen() {}
 
-        fun onBlockingStateChanged(isBlockingEnabled: Boolean)
+        fun onBlockingStateChanged(isBlockingEnabled: Boolean) {}
     }
 
     interface FullscreenCallback {
