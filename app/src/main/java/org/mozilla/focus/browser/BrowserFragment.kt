@@ -8,13 +8,11 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.DisplayMetrics
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener
-import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fragment_browser.*
 import kotlinx.android.synthetic.main.fragment_browser.view.*
 import kotlinx.coroutines.experimental.CancellationException
@@ -35,8 +33,6 @@ import org.mozilla.focus.session.SessionCallbackProxy
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.AppStartupTimeMeasurement
 import org.mozilla.focus.telemetry.LoadTimeObserver
-import org.mozilla.focus.telemetry.NonFatalAssertionException
-import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.utils.ToastManager
@@ -115,7 +111,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         super.onCreate(savedInstanceState)
         session = initSession()
         webView?.setBlockingEnabled(session.isBlockingEnabled)
-        iWebViewCallback = SessionCallbackProxy(session, BrowserIWebViewCallback(this))
+        iWebViewCallback = SessionCallbackProxy(session, FullscreenCallbacks(this))
 
         LoadTimeObserver.addObservers(session, this)
     }
@@ -300,64 +296,5 @@ private class BrowserTouchExplorationStateChangeListener(
 ) : TouchExplorationStateChangeListener {
     override fun onTouchExplorationStateChanged(isVoiceViewEnabled: Boolean) { // touch exploration state = VoiceView
         updateWebViewVisibility(isVoiceViewEnabled, homeScreen.isVisible)
-    }
-}
-
-private class BrowserIWebViewCallback(
-    private val browserFragment: BrowserFragment
-) : IWebView.Callback {
-
-    private var fullscreenCallback: IWebView.FullscreenCallback? = null
-
-    override fun onPageStarted(url: String) {}
-
-    override fun onPageFinished(isSecure: Boolean) {}
-    override fun onProgress(progress: Int) {}
-
-    override fun onURLChanged(url: String) {}
-    override fun onRequest(isTriggeredByUserGesture: Boolean) {}
-
-    override fun onBlockingStateChanged(isBlockingEnabled: Boolean) {}
-
-    override fun onLongPress(hitTarget: IWebView.HitTarget) {}
-    override fun onShouldInterceptRequest(url: String) {}
-
-    override fun onEnterFullScreen(callback: IWebView.FullscreenCallback, view: View?) {
-        fullscreenCallback = callback
-        if (view == null) return
-
-        with(browserFragment) {
-            callbacks?.onFullScreenChange(true)
-
-            webView?.setVisibility(View.GONE)
-            val activity = this.activity
-            val height = if (activity != null) {
-                val displayMetrics = DisplayMetrics()
-                activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
-                displayMetrics.heightPixels
-            } else {
-                SentryWrapper.capture(NonFatalAssertionException("activity null when entering fullscreen"))
-                ViewGroup.LayoutParams.MATCH_PARENT
-            }
-
-            val params = FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, height)
-            videoContainer.addView(view, params)
-            videoContainer.visibility = View.VISIBLE
-        }
-    }
-
-    override fun onExitFullScreen() {
-        with(browserFragment) {
-            callbacks?.onFullScreenChange(false)
-
-            videoContainer.removeAllViews()
-            videoContainer.visibility = View.GONE
-
-            webView?.setVisibility(View.VISIBLE)
-        }
-
-        fullscreenCallback?.fullScreenExited()
-        fullscreenCallback = null
     }
 }
