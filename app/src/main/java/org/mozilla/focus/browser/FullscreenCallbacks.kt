@@ -29,8 +29,8 @@ class FullscreenCallbacks(
 
             val params = FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            videoContainer.addView(view, params)
-            videoContainer.visibility = View.VISIBLE
+            fullscreenContainer.addView(view, params)
+            fullscreenContainer.visibility = View.VISIBLE
         }
     }
 
@@ -39,8 +39,8 @@ class FullscreenCallbacks(
             callbacks?.onFullScreenChange(false)
             webView?.setVisibility(View.VISIBLE)
 
-            videoContainer.removeAllViews()
-            videoContainer.visibility = View.GONE
+            fullscreenContainer.removeAllViews()
+            fullscreenContainer.visibility = View.GONE
         }
 
         fullscreenCallback?.fullScreenExited()
