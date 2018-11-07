@@ -4,14 +4,11 @@
 
 package org.mozilla.focus.browser
 
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fragment_browser.*
 import org.mozilla.focus.iwebview.IWebView
-import org.mozilla.focus.telemetry.NonFatalAssertionException
-import org.mozilla.focus.telemetry.SentryWrapper
 
 /**
  * An [IWebView.Callback] that only handles the fullscreen related callbacks.
@@ -28,20 +25,10 @@ class FullscreenCallbacks(
 
         with(browserFragment) {
             callbacks?.onFullScreenChange(true)
-
             webView?.setVisibility(View.GONE)
-            val activity = this.activity
-            val height = if (activity != null) {
-                val displayMetrics = DisplayMetrics()
-                activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
-                displayMetrics.heightPixels
-            } else {
-                SentryWrapper.capture(NonFatalAssertionException("activity null when entering fullscreen"))
-                ViewGroup.LayoutParams.MATCH_PARENT
-            }
 
             val params = FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, height)
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             videoContainer.addView(view, params)
             videoContainer.visibility = View.VISIBLE
         }
@@ -50,11 +37,10 @@ class FullscreenCallbacks(
     override fun onExitFullScreen() {
         with(browserFragment) {
             callbacks?.onFullScreenChange(false)
+            webView?.setVisibility(View.VISIBLE)
 
             videoContainer.removeAllViews()
             videoContainer.visibility = View.GONE
-
-            webView?.setVisibility(View.VISIBLE)
         }
 
         fullscreenCallback?.fullScreenExited()
