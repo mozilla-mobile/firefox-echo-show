@@ -8,6 +8,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <!-- The EngineView, or its fullscreen container, always covers the whole screen so we don't
+             need the background: removing it should reduce overdraw and improve performance. -->
+        <item name="android:windowBackground">@null</item>
         <item name="android:windowContentTransitions">true</item>
 
         <item name="popupMenuStyle">@style/PopupMenu</item>
