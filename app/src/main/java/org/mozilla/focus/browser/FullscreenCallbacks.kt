@@ -11,7 +11,9 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_browser.*
+import org.mozilla.focus.R
 import org.mozilla.focus.iwebview.IWebView
 
 /**
@@ -44,6 +46,8 @@ class FullscreenCallbacks(
             val scaleGestureDetector = ScaleGestureDetector(view.context, exitOnScaleGestureListener)
             fullscreenContainer.onInterceptTouchEventObserver = { scaleGestureDetector.onTouchEvent(it) }
         }
+
+        Toast.makeText(view.context, R.string.fullscreen_hint_pinch_to_exit, Toast.LENGTH_SHORT).show()
     }
 
     override fun onExitFullScreen() {
