@@ -268,7 +268,7 @@ object TelemetryWrapper {
     }
 
     fun dismissHomeOverlayClickEvent() {
-        TelemetryEvent.create(Category.ACTION, Method.HIDE, Object.HOME, Value.OVERLAY)
+        TelemetryEvent.create(Category.ACTION, Method.HIDE, Object.HOME, Value.OVERLAY).queue()
     }
 
     fun homeTileRemovedEvent(removedTile: HomeTile) {
