@@ -14,7 +14,10 @@
         android:layout_height="match_parent"
         android:scrollbarThumbVertical="@drawable/scrollbar_thumb"/>
 
-    <FrameLayout
+    <!-- We need a background on the fullscreen view because the content  does not always fill the
+         screen. We insert the fullscreen view into this container with a background, instead of
+         the parent container, to avoid overdraw with the WebView. -->
+    <org.mozilla.focus.widget.OnInterceptTouchEventFrameLayout
         android:id="@+id/fullscreenContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
