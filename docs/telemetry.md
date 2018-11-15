@@ -60,9 +60,6 @@ The event ping contains a list of events ([see event format on readthedocs.io](h
 
 | Event                                  | category  | method                | object     | value                   | extras.    |
 |----------------------------------------|-----------|-----------------------|------------|-------------------------|------------|
-| URL start loading (via url bar)        | action    | type_url              | search_bar |                         | `url`*     |
-| Search query start loading (via url bar)| action   | type_query            | search_bar |                         | `query`*   |
-| Remote: back pressed **                | action    | page                  | browser    | back                    | `back`*    |
 | Page load histogram                    | histogram | foreground            | browser    | histogram of page loads |
 
 #### SSL Errors
