@@ -1,9 +1,9 @@
 # Telemetry
-For clients that have "Send usage data" enabled, Firefox Connect sends a "core" ping and an "event" ping to Mozilla's telemetry service. Sending telemetry can be disabled in the app's settings. Builds of Firefox Connect have telemetry enabled by default ("opt-out").
+For clients that have "Send usage data" enabled, Firefox for Echo Show sends a "core" ping and an "event" ping to Mozilla's telemetry service. Sending telemetry can be disabled in the app's settings. Builds of Firefox for Echo Show have telemetry enabled by default ("opt-out").
 
 ## Core ping
 
-Firefox Connect creates and tries to send a "core" ping whenever the app goes to the background. This core ping uses the same format as Firefox for Android and is [documented on firefox-source-docs.mozilla.org](https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/data/core-ping.html).
+Firefox for Echo Show creates and tries to send a "core" ping whenever the app goes to the background. This core ping uses the same format as Firefox for Android and is [documented on firefox-source-docs.mozilla.org](https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/data/core-ping.html).
 
 ## Event ping
 
