@@ -37,6 +37,7 @@ The event ping contains a list of events ([see event format on readthedocs.io](h
 | Settings: confirms clear data dialog   | action   | change                | setting    | clear_data | |
 | Startup complete   | aggregate   | startup_complete                | app    | startup time in MS | |
 | Page load histogram                    | histogram| foreground            | browser    | histogram of page loads | |
+| Fullscreen exited                      | action   | hide                  | fullscreen |        | `{"scale_gesture": "true"/"false"}` |
 
 #### Toolbar
 | Event                                  | category | method                | object     | value  | extras.    |
