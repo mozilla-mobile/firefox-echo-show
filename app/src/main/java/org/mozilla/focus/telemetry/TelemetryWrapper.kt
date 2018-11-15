@@ -8,6 +8,8 @@ package org.mozilla.focus.telemetry
 import android.content.Context
 import android.net.http.SslError
 import android.os.StrictMode
+import android.support.annotation.VisibleForTesting
+import android.support.annotation.VisibleForTesting.PRIVATE
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText.AutocompleteResult
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.home.BundledHomeTile
@@ -71,6 +73,7 @@ object TelemetryWrapper {
         const val HOME_TILE = "home_tile"
         val TURBO_MODE = "turbo_mode"
         val PIN_PAGE = "pin_page"
+        const val FULLSCREEN = "fullscreen"
     }
 
     internal object Value {
@@ -91,10 +94,18 @@ object TelemetryWrapper {
     private object Extra {
         val AUTOCOMPLETE = "autocomplete"
         val ERROR_CODE = "error_code"
+        const val SCALE_GESTURE = "scale_gesture"
 
         // We need this second source key because we use SOURCE when using this key.
         // For the value, "autocomplete_source" exceeds max extra key length.
         val AUTOCOMPLETE_SOURCE = "autocompl_src"
+    }
+
+    @VisibleForTesting(otherwise = PRIVATE) object ExtraValue {
+        const val TRUE = "true"
+        const val FALSE = "false"
+
+        fun fromBoolean(bool: Boolean) = if (bool) TRUE else FALSE
     }
 
     @JvmStatic
@@ -269,6 +280,12 @@ object TelemetryWrapper {
 
     fun dismissHomeOverlayClickEvent() {
         TelemetryEvent.create(Category.ACTION, Method.HIDE, Object.HOME, Value.OVERLAY).queue()
+    }
+
+    fun fullscreenExitEvent(wasExitedByScaleGesture: Boolean) {
+        TelemetryEvent.create(Category.ACTION, Method.HIDE, Object.FULLSCREEN)
+                .extra(Extra.SCALE_GESTURE, ExtraValue.fromBoolean(wasExitedByScaleGesture))
+                .queue()
     }
 
     fun homeTileRemovedEvent(removedTile: HomeTile) {

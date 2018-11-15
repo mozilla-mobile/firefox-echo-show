@@ -15,6 +15,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_browser.*
 import org.mozilla.focus.R
 import org.mozilla.focus.iwebview.IWebView
+import org.mozilla.focus.telemetry.TelemetryWrapper
 
 /**
  * An [IWebView.Callback] that only handles the fullscreen related callbacks.
@@ -23,12 +24,14 @@ class FullscreenCallbacks(
         private val browserFragment: BrowserFragment
 ) : IWebView.Callback {
 
+    private var isInFullScreen = false
     private var fullscreenCallback: IWebView.FullscreenCallback? = null
     private var exitOnScaleGestureListener: ExitFullscreenOnScaleGestureListener? = null
 
     override fun onEnterFullScreen(callback: IWebView.FullscreenCallback, view: View?) {
         if (view == null) return
 
+        isInFullScreen = true
         fullscreenCallback = callback
         exitOnScaleGestureListener = ExitFullscreenOnScaleGestureListener(callback, view)
 
@@ -67,14 +70,30 @@ class FullscreenCallbacks(
         fullscreenCallback?.fullScreenExited()
         fullscreenCallback = null
 
+        // This method may be erroneously called multiple times for each `onEnterFullScreen` (see
+        // above and from goBack/goForward, pre-Android components). To prevent telemetry from being
+        // recorded more than once per full screen session, we only record telemetry if this flag is
+        // true, which *only* happens if we've actually entered full screen.
+        if (isInFullScreen) {
+            isInFullScreen = false
+            val wasExitedByScaleGesture = exitOnScaleGestureListener?.wasExitCalledByGesture!!
+            TelemetryWrapper.fullscreenExitEvent(wasExitedByScaleGesture)
+        }
         exitOnScaleGestureListener = null
     }
 
+    /**
+     * A listener that will exit fullscreen if a scale gesture is used. This class assumes a new
+     * instance will be created for each enter fullscreen event.
+     */
     @VisibleForTesting(otherwise = PRIVATE)
     class ExitFullscreenOnScaleGestureListener(
             private val callback: IWebView.FullscreenCallback,
             private val fullscreenView: View
     ) : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+
+        var wasExitCalledByGesture = false
+            private set
 
         override fun onScaleEnd(detector: ScaleGestureDetector) {
             if (fullscreenView.scaleX < 1) {
@@ -83,6 +102,7 @@ class FullscreenCallbacks(
                 // resulting in `onExitFullScreen` being called twice, worked on the emulator.
                 // However, this implementation is simpler and more correct (e.g. recording telemetry
                 // is hard if it gets called twice) so we accept this caveat.
+                wasExitCalledByGesture = true // Must be called before callback.
                 callback.fullScreenExited()
             }
         }

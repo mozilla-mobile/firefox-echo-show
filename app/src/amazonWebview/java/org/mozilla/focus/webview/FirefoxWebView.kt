@@ -95,13 +95,15 @@ internal class FirefoxWebView(
 
     override fun goBack() {
         super.goBack()
-        // onHideCustomView calls through to fullscreen callbacks.
+        // In my interpretation of the docs, this is not the correct way to exit full screen mode:
+        // we should call WebChromeClient.CustomViewCallback.onCustomViewHidden instead. However,
+        // this implementation will be fixed with components so we don't fix it now.
         chromeClient.onHideCustomView()
     }
 
     override fun goForward() {
         super.goForward()
-        // onHideCustomView calls through to fullscreen callbacks.
+        // See goBack for details.
         chromeClient.onHideCustomView()
     }
 
