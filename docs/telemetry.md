@@ -36,6 +36,7 @@ The event ping contains a list of events ([see event format on readthedocs.io](h
 |----------------------------------------|----------|-----------------------|------------|--------|------------|
 | Settings: confirms clear data dialog   | action   | change                | setting    | clear_data | |
 | Startup complete   | aggregate   | startup_complete                | app    | startup time in MS | |
+| Page load histogram                    | histogram| foreground            | browser    | histogram of page loads | |
 
 #### Toolbar
 | Event                                  | category | method                | object     | value  | extras.    |
@@ -55,12 +56,6 @@ The event ping contains a list of events ([see event format on readthedocs.io](h
 | Tile clicked                           | action   | click                 | home_tile  | bundled/custom | |
 | Tile removed                           | action   | remove                | home_tile  | bundled/custom | |
 | Dismiss home (by clicking toolbar overlay)|action | hide                  | home       | overlay| |
-
-#### Browsing
-
-| Event                                  | category  | method                | object     | value                   | extras.    |
-|----------------------------------------|-----------|-----------------------|------------|-------------------------|------------|
-| Page load histogram                    | histogram | foreground            | browser    | histogram of page loads |
 
 #### SSL Errors
 
