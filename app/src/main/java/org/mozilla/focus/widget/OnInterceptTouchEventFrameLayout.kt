@@ -14,8 +14,8 @@ import android.widget.FrameLayout
  * A [FrameLayout] that has an [onInterceptTouchEvent] equivalent to [View.setOnTouchListener].
  */
 class OnInterceptTouchEventFrameLayout(
-        context: Context,
-        attrs: AttributeSet
+    context: Context,
+    attrs: AttributeSet
 ) : FrameLayout(context, attrs) {
     var onInterceptTouchEventObserver: ((MotionEvent?) -> Unit)? = null
 
