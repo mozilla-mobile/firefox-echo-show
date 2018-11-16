@@ -118,9 +118,9 @@ class FullscreenCallbacksTest {
     }
 
     private class ExitFullscreenOnScaleGestureMocks(
-            val listener: ExitFullscreenOnScaleGestureListener,
-            val detector: ScaleGestureDetector,
-            val callback: IWebView.FullscreenCallback
+        val listener: ExitFullscreenOnScaleGestureListener,
+        val detector: ScaleGestureDetector,
+        val callback: IWebView.FullscreenCallback
     ) {
 
         companion object {

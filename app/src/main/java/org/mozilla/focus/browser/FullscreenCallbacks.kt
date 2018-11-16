@@ -96,8 +96,8 @@ open class FullscreenCallbacks(
      */
     @VisibleForTesting(otherwise = PRIVATE)
     class ExitFullscreenOnScaleGestureListener(
-            private val callback: IWebView.FullscreenCallback,
-            private val fullscreenView: View
+        private val callback: IWebView.FullscreenCallback,
+        private val fullscreenView: View
     ) : ScaleGestureDetector.SimpleOnScaleGestureListener() {
 
         var wasExitCalledByGesture = false
