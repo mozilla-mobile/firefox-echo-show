@@ -16,17 +16,25 @@ import kotlinx.android.synthetic.main.fragment_browser.*
 import org.mozilla.focus.R
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.widget.OnInterceptTouchEventFrameLayout
 
 /**
  * An [IWebView.Callback] that only handles the fullscreen related callbacks.
  */
-class FullscreenCallbacks(
-        private val browserFragment: BrowserFragment
+open class FullscreenCallbacks(
+    private val browserFragment: BrowserFragment,
+    private val telemetryWrapper: TelemetryWrapper = TelemetryWrapper
 ) : IWebView.Callback {
 
     private var isInFullScreen = false
     private var fullscreenCallback: IWebView.FullscreenCallback? = null
     private var exitOnScaleGestureListener: ExitFullscreenOnScaleGestureListener? = null
+
+    // N.B: call this instead of using fullscreenContainer directly! It throws an NPE when used in
+    // tests so we wrap it to modify the behavior in testing. Unfortunately, mocking did not work.
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    open val fullscreenContainerOverride: OnInterceptTouchEventFrameLayout
+        get() = browserFragment.fullscreenContainer
 
     override fun onEnterFullScreen(callback: IWebView.FullscreenCallback, view: View?) {
         if (view == null) return
@@ -41,13 +49,13 @@ class FullscreenCallbacks(
 
             val params = FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            fullscreenContainer.addView(view, params)
-            fullscreenContainer.visibility = View.VISIBLE
+            fullscreenContainerOverride.addView(view, params)
+            fullscreenContainerOverride.visibility = View.VISIBLE
 
             // We intercept touch events from the fullscreen view's parent container because
             // listening for touch events on the fullscreen view didn't work for an unknown reason.
             val scaleGestureDetector = ScaleGestureDetector(view.context, exitOnScaleGestureListener)
-            fullscreenContainer.onInterceptTouchEventObserver = { scaleGestureDetector.onTouchEvent(it) }
+            fullscreenContainerOverride.onInterceptTouchEventObserver = { scaleGestureDetector.onTouchEvent(it) }
         }
 
         Toast.makeText(view.context, R.string.fullscreen_hint_pinch_to_exit, Toast.LENGTH_SHORT).show()
@@ -58,9 +66,9 @@ class FullscreenCallbacks(
             callbacks?.onFullScreenChange(false)
             webView?.setVisibility(View.VISIBLE)
 
-            fullscreenContainer.removeAllViews()
-            fullscreenContainer.visibility = View.GONE
-            fullscreenContainer.onInterceptTouchEventObserver = null
+            fullscreenContainerOverride.removeAllViews()
+            fullscreenContainerOverride.visibility = View.GONE
+            fullscreenContainerOverride.onInterceptTouchEventObserver = null
         }
 
         // In my interpretation of the docs, fullScreenExited is supposed to be called when the
@@ -77,7 +85,7 @@ class FullscreenCallbacks(
         if (isInFullScreen) {
             isInFullScreen = false
             val wasExitedByScaleGesture = exitOnScaleGestureListener?.wasExitCalledByGesture!!
-            TelemetryWrapper.fullscreenExitEvent(wasExitedByScaleGesture)
+            telemetryWrapper.fullscreenExitEvent(wasExitedByScaleGesture)
         }
         exitOnScaleGestureListener = null
     }
