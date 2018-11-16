@@ -4,11 +4,14 @@
 
 package org.mozilla.focus.browser
 
+import android.util.AttributeSet
 import android.view.ScaleGestureDetector
 import android.view.View
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
@@ -16,11 +19,52 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mozilla.focus.browser.FullscreenCallbacks.ExitFullscreenOnScaleGestureListener
 import org.mozilla.focus.iwebview.IWebView
+import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.widget.OnInterceptTouchEventFrameLayout
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class FullscreenCallbacksTest {
+
+    private lateinit var callbacks: FullscreenCallbacks
+
+    private lateinit var browserFragment: BrowserFragment
+    private lateinit var telemetry: TelemetryWrapper
+
+    @Before
+    fun setUp() {
+        browserFragment = mock(BrowserFragment::class.java)
+        telemetry = mock(TelemetryWrapper::class.java)
+        callbacks = TestFullscreenCallbacks(browserFragment, telemetry)
+    }
+
+    @Test
+    fun `WHEN full screen is entered and exited THEN one exit fullscreen telemetry event is recorded`() {
+        callbacks.onEnterFullScreenWithMocks()
+        callbacks.onExitFullScreen()
+        verify(telemetry, times(1)).fullscreenExitEvent(ArgumentMatchers.anyBoolean())
+    }
+
+    @Test
+    fun `WHEN full screen is exited without being entered THEN no exit fullscreen telemetry event is recorded`() {
+        callbacks.onExitFullScreen()
+        verify(telemetry, never()).fullscreenExitEvent(ArgumentMatchers.anyBoolean())
+    }
+
+    @Test
+    fun `WHEN full screen is entered and exited twice THEN one exit fullscreen telemetry event is recorded`() {
+        callbacks.onEnterFullScreenWithMocks()
+        callbacks.onExitFullScreen()
+        callbacks.onExitFullScreen()
+        verify(telemetry, times(1)).fullscreenExitEvent(ArgumentMatchers.anyBoolean())
+    }
+
+    @Test
+    fun `WHEN full screen is entered THEN no exit fullscreen telemetry event is recorded`() {
+        callbacks.onEnterFullScreenWithMocks()
+        verify(telemetry, never()).fullscreenExitEvent(ArgumentMatchers.anyBoolean())
+    }
 
     @Test
     fun `WHEN the scale gesture listener receives scale down events THEN exit fullscreen is called`() {
@@ -88,4 +132,20 @@ class FullscreenCallbacksTest {
             }
         }
     }
+
+    class TestFullscreenCallbacks(
+        browserFragment: BrowserFragment,
+        telemetry: TelemetryWrapper
+    ) : FullscreenCallbacks(browserFragment, telemetry) {
+
+        private val layout = OnInterceptTouchEventFrameLayout(RuntimeEnvironment.application, mock(AttributeSet::class.java))
+
+        // See production code comment for details.
+        override val fullscreenContainerOverride: OnInterceptTouchEventFrameLayout
+            get() = layout
+    }
+}
+
+private fun FullscreenCallbacks.onEnterFullScreenWithMocks() {
+    onEnterFullScreen(mock(IWebView.FullscreenCallback::class.java), View(RuntimeEnvironment.application))
 }
