@@ -27,7 +27,6 @@ open class FullscreenCallbacks(
 ) : IWebView.Callback {
 
     private var isInFullScreen = false
-    private var fullscreenCallback: IWebView.FullscreenCallback? = null
     private var exitOnScaleGestureListener: ExitFullscreenOnScaleGestureListener? = null
 
     // N.B: call this instead of using fullscreenContainer directly! It throws an NPE when used in
@@ -40,7 +39,6 @@ open class FullscreenCallbacks(
         if (view == null) return
 
         isInFullScreen = true
-        fullscreenCallback = callback
         exitOnScaleGestureListener = ExitFullscreenOnScaleGestureListener(callback, view)
 
         with(browserFragment) {
@@ -71,17 +69,10 @@ open class FullscreenCallbacks(
             fullscreenContainerOverride.onInterceptTouchEventObserver = null
         }
 
-        // In my interpretation of the docs, fullScreenExited is supposed to be called when the
-        // application wants to exit fullscreen, not when the application is exiting fullscreen so
-        // this is unnecessary. In fact, it actually forces this method to be called twice. However,
-        // without it, the emulator does not exit fullscreen correctly: the WebView never redraws.
-        fullscreenCallback?.fullScreenExited()
-        fullscreenCallback = null
-
         // This method may be erroneously called multiple times for each `onEnterFullScreen` (see
-        // above and from goBack/goForward, pre-Android components). To prevent telemetry from being
-        // recorded more than once per full screen session, we only record telemetry if this flag is
-        // true, which *only* happens if we've actually entered full screen.
+        // FirefoxWebView.goBack/goForward; this should be fixed with android components). To prevent
+        // telemetry from being recorded more than once per full screen session, we only record
+        // telemetry if this flag is true, which *only* happens if we've actually entered full screen.
         if (isInFullScreen) {
             isInFullScreen = false
             val wasExitedByScaleGesture = exitOnScaleGestureListener?.wasExitCalledByGesture!!
