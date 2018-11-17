@@ -142,15 +142,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         }
     }
 
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        val browserFragment = supportFragmentManager.getBrowserFragment()
-        return if (browserFragment != null && browserFragment.isVisible) {
-            browserFragment.dispatchKeyEvent(event) || super.dispatchKeyEvent(event)
-        } else {
-            super.dispatchKeyEvent(event)
-        }
-    }
-
     private fun onToolbarEvent(event: ToolbarEvent, value: String?, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
         val browserFragment = supportFragmentManager.getBrowserFragment()
         if (event == ToolbarEvent.HOME && browserFragment?.homeScreen?.isVisible == true) {
