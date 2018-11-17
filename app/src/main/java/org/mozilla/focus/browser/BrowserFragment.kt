@@ -235,16 +235,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         }
     }
 
-    fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        /**
-         * Key handling order:
-         * - Menu to control overlay
-         * - Youtube remap of BACK to ESC
-         * - Return false, as unhandled
-         */
-        return handleSpecialKeyEvent(event)
-    }
-
     private fun updateWebViewVisibility(isVoiceViewEnabled: Boolean, isHomeVisible: Boolean) {
         // We want to disable accessibility on the WebView when the home screen is visible so users
         // cannot focus the WebView content below home tiles. Unfortunately, isFocusable* and
@@ -256,16 +246,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         // in this simple place.
         val isWebViewVisible = !isVoiceViewEnabled || !isHomeVisible
         webView?.setVisibility(if (isWebViewVisible) View.VISIBLE else View.GONE)
-    }
-
-    private fun handleSpecialKeyEvent(event: KeyEvent): Boolean {
-        if (!homeScreen.isVisible && webView!!.isYoutubeTV &&
-                event.keyCode == KeyEvent.KEYCODE_BACK) {
-            val escKeyEvent = KeyEvent(event.action, KeyEvent.KEYCODE_ESCAPE)
-            activity?.dispatchKeyEvent(escKeyEvent)
-            return true
-        }
-        return false
     }
 
     inner class BrowserToolbarStateProvider : ToolbarStateProvider {
