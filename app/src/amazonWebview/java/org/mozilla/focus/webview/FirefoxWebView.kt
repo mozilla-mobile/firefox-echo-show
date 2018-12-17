@@ -13,6 +13,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.webkit.JsPromptResult
 import android.webkit.JsResult
+import android.webkit.PermissionRequest
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import org.mozilla.focus.ext.deleteData
@@ -167,6 +168,15 @@ internal class FirefoxWebChromeClient : WebChromeClient() {
                 callback.onURLChanged(viewURL)
             }
             callback.onProgress(newProgress)
+        }
+    }
+
+    override fun onPermissionRequest(request: PermissionRequest) {
+        val drmPermission = PermissionRequest.RESOURCE_PROTECTED_MEDIA_ID
+        if (request.resources.contains(drmPermission)) {
+            request.grant(arrayOf(drmPermission))
+        } else {
+            request.deny()
         }
     }
 
