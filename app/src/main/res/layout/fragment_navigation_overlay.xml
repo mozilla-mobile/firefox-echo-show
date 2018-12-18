@@ -33,7 +33,7 @@
             android:paddingEnd="22dp"
             android:paddingTop="44dp"
             android:paddingBottom="44dp"
-            android:background="@color/browser_overlay_background"
+            android:background="@color/photonGrey70"
             android:clipChildren="false"
             android:clipToPadding="false"/>
 
