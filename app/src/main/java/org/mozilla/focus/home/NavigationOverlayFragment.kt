@@ -6,6 +6,10 @@ package org.mozilla.focus.home
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.annotation.IdRes
+import android.support.constraint.ConstraintLayout
+import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
+import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_WRAP
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
@@ -77,12 +81,25 @@ class NavigationOverlayFragment : Fragment() {
 
     private fun setOverlayHeight(homeTiles: HomeTileGridNavigation) {
         homeTiles.updateLayoutParams {
-            // Since we're attached to a full screen view decoupled from the app bar, we need to use
-            // the app bar height to position the navigation below the app bar.
-            //
-            // The current layout implementation makes setting the height through margins convenient.
-            val params = it as ViewGroup.MarginLayoutParams
-            params.topMargin = resources.getDimensionPixelSize(R.dimen.appbar_height)
+            val verticalBias: Float
+            val heightConstraintType: Int
+            @IdRes val topToBottom: Int
+            if (isInitialHomescreen) {
+                // Fill constraints from top to bottom (app bar to bottom of screen).
+                verticalBias = 0f
+                heightConstraintType = MATCH_CONSTRAINT_SPREAD
+                topToBottom = R.id.overlayTopAsInitialHomescreen
+            } else {
+                // Set height based on content size, expanding up from the bottom.
+                verticalBias = 1f
+                heightConstraintType = MATCH_CONSTRAINT_WRAP
+                topToBottom = R.id.overlayTopAsDialog
+            }
+
+            val params = it as ConstraintLayout.LayoutParams
+            params.verticalBias = verticalBias
+            params.matchConstraintDefaultHeight = heightConstraintType
+            params.topToBottom = topToBottom
         }
     }
 
