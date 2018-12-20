@@ -9,17 +9,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
-import android.view.KeyEvent
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_browser.*
 import mozilla.components.support.utils.SafeIntent
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.animation.VisibilityAnimator
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
 import org.mozilla.focus.ext.getBrowserFragment
-import org.mozilla.focus.ext.isVisible
+import org.mozilla.focus.ext.getNavigationOverlay
+import org.mozilla.focus.ext.isVisibleAndNonNull
 import org.mozilla.focus.ext.toSafeIntent
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
@@ -88,8 +87,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     private fun initViews() {
-        appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, toolbar, appBarOverlay).apply {
-            init(supportFragmentManager::getBrowserFragment)
+        appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, toolbar).apply {
+            init()
         }
     }
 
@@ -143,8 +142,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     private fun onToolbarEvent(event: ToolbarEvent, value: String?, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
-        val browserFragment = supportFragmentManager.getBrowserFragment()
-        if (event == ToolbarEvent.HOME && browserFragment?.homeScreen?.isVisible == true) {
+        if (event == ToolbarEvent.HOME && supportFragmentManager.getNavigationOverlay().isVisibleAndNonNull) {
             // The home button does nothing on when home is visible.
             return
         } else if (event == ToolbarEvent.LOAD_URL) {
@@ -154,6 +152,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
         TelemetryWrapper.toolbarEvent(event, value)
 
+        val browserFragment = supportFragmentManager.getBrowserFragment()
         when (event) {
             ToolbarEvent.SETTINGS -> startActivity(Intent(this, SettingsActivity::class.java))
 //            ToolbarEvent.TURBO -> Settings.getInstance(this).isBlockingEnabled = value == ToolbarEvent.VAL_CHECKED
@@ -164,7 +163,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     override fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean) {
-        appBarLayoutController.onHomeVisibilityChange(isHomeVisible, isHomescreenOnStartup)
+        appBarLayoutController.onHomeVisibilityChange(isHomeVisible)
     }
 
     override fun onFullScreenChange(isFullscreen: Boolean) {

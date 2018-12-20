@@ -6,6 +6,10 @@ package org.mozilla.focus.ext
 
 import android.support.v4.app.FragmentManager
 import org.mozilla.focus.browser.BrowserFragment
+import org.mozilla.focus.home.NavigationOverlayFragment
 
-fun FragmentManager.getBrowserFragment(): BrowserFragment? =
-        findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
+fun FragmentManager?.getBrowserFragment(): BrowserFragment? =
+        this?.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
+
+fun FragmentManager?.getNavigationOverlay(): NavigationOverlayFragment? =
+        this?.findFragmentByTag(NavigationOverlayFragment.FRAGMENT_TAG) as NavigationOverlayFragment?
