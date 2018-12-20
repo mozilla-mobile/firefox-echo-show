@@ -34,22 +34,6 @@
             android:elevation="4dp" />
     </android.support.design.widget.AppBarLayout>
 
-    <!-- We want the home tiles to seem like they're above the browser content and
-         toolbar so users don't think interacting with the toolbar will affect the
-         home tiles: we use this view obscure the toolbar.
-
-         The elevation of this view must be greater than the elevation of the toolbar
-         for it to draw on top. -->
-    <View
-        android:id="@+id/appBarOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/appbar_height"
-        android:background="@color/photonGrey90_a60p"
-        android:elevation="8dp"
-        android:visibility="gone"
-        android:contentDescription="@string/nav_close_hint"
-        />
-
     <FrameLayout
         android:id="@+id/unpinOverlay"
         android:layout_width="match_parent"
@@ -66,5 +50,11 @@
             android:elevation="18dp"
             android:text="@string/homescreen_tile_remove" />
     </FrameLayout>
+
+    <FrameLayout
+            android:id="@+id/navigationOverlayContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
 </org.mozilla.focus.TouchInterceptorLayout>

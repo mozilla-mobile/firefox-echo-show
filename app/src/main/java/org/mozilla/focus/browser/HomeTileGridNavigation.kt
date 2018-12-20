@@ -26,8 +26,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-)
-    : RecyclerView(context, attrs, defStyle) {
+) : RecyclerView(context, attrs, defStyle) {
 
     /**
      * Used to cancel background->UI threads: we attach them as children to this job
