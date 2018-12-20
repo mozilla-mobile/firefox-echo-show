@@ -54,6 +54,8 @@ class NavigationOverlayFragment : Fragment() {
             }
         }
 
+        overlay.initialHomescreenBackground.visibility = if (isInitialHomescreen) View.VISIBLE else View.GONE
+
         with(overlay.homeTiles) {
             onTileClicked = { callbacks?.onNonTextInputUrlEntered(it) }
             urlSearcher = activity as UrlSearcher
