@@ -17,6 +17,16 @@
             android:layout_height="match_parent"
             android:background="@color/photonGrey90_a60p"/>
 
+    <!-- The Visibility changed dynamically based on layout mode. -->
+    <View
+            android:id="@+id/initialHomescreenBackground"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="@id/overlayTopAsInitialHomescreen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/photonGrey70"/>
+
     <View
             android:id="@+id/backgroundView"
             android:layout_width="0dp"
@@ -25,7 +35,7 @@
             app:layout_constraintBottom_toBottomOf="@id/homeTiles"
             app:layout_constraintStart_toStartOf="@id/homeTiles"
             app:layout_constraintEnd_toEndOf="@id/homeTiles"
-            android:background="@color/photonGrey70"/>
+            android:background="@drawable/navigation_overlay_background"/>
 
     <!-- This view defines the dimensions of most other views in this layout. The height constraint configuration and
          bias changes dynamically based on mode. In dialog mode, the height will wrap this view's content: one
