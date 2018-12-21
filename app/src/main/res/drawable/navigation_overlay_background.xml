@@ -5,8 +5,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <corners
-            android:topLeftRadius="40dp"
-            android:topRightRadius="40dp"/>
+            android:topLeftRadius="@dimen/navigation_overlay_corner_radius"
+            android:topRightRadius="@dimen/navigation_overlay_corner_radius"/>
 
     <solid
             android:color="@color/photonGrey70"/>

@@ -17,21 +17,21 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
+    <!-- Ideally, we have no elevation on the initial homescreen and elevation over web content. However, the elevation
+         over web content is broken so we set it to 0 for all cases. -->
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_height"
-        android:background="@color/photonGrey70">
+        android:background="@color/photonGrey70"
+        app:elevation="0dp">
 
         <!-- CoordinatorLayout scroll flags are added dynamically: see
-             BrowserAppBarLayoutController.updateCanScroll.
-
-             For elevation concerns, see appBarOverlay below. -->
+             BrowserAppBarLayoutController.updateCanScroll. -->
         <mozilla.components.browser.toolbar.BrowserToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:elevation="4dp" />
+            android:layout_height="match_parent"/>
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
