@@ -18,27 +18,30 @@ import org.mozilla.focus.ext.onGlobalLayoutOnce
  */
 object NavigationOverlayAnimations {
 
-    fun onCreateViewAnimateIn(overlay: View, isInitialHomescreen: Boolean) {
-        if (isInitialHomescreen) return
+    fun onCreateViewAnimateIn(overlay: View, isInitialHomescreen: Boolean, onAnimationEnd: () -> Unit) {
+        if (isInitialHomescreen) {
+            onAnimationEnd()
+            return
+        }
 
         // View positions are not set in onCreateView so we must wait for layout.
         overlay.onGlobalLayoutOnce {
-            getAnimation(overlay, isAnimateIn = true).start()
+            getAnimation(overlay, isAnimateIn = true, onAnimationEnd = onAnimationEnd).start()
         }
     }
 
     fun animateOut(overlay: View, isInitialHomescreen: Boolean, onAnimationEnd: () -> Unit) {
-        val animation = getAnimation(overlay, isAnimateIn = false, isInitialHomescreen = isInitialHomescreen)
-        animation.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                onAnimationEnd()
-            }
-        })
-        animation.start()
+        getAnimation(overlay, isAnimateIn = false, isInitialHomescreen = isInitialHomescreen, onAnimationEnd = onAnimationEnd)
+            .start()
     }
 
     @Suppress("SpreadOperator") // It reduces repetition and the arrays are small so perf impact is negligible.
-    private fun getAnimation(overlay: View, isAnimateIn: Boolean, isInitialHomescreen: Boolean = false): Animator {
+    private fun getAnimation(
+        overlay: View,
+        isAnimateIn: Boolean,
+        isInitialHomescreen: Boolean = false,
+        onAnimationEnd: () -> Unit
+    ): Animator {
         val fadeValues = if (isAnimateIn) floatArrayOf(0f, 1f) else floatArrayOf(1f, 0f)
         val semiOpaqueBackgroundAnimator = ObjectAnimator.ofFloat(overlay.semiOpaqueBackground, "alpha", *fadeValues)
 
@@ -65,6 +68,12 @@ object NavigationOverlayAnimations {
                 animatorSetBuilder.with(getTranslateUpAnimator(it))
             }
             initialHomescreenBackgroundAnimator?.let { animatorSetBuilder.with(it) }
+
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    onAnimationEnd()
+                }
+            })
         }
     }
 }

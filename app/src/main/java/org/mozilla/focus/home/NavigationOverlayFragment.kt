@@ -46,29 +46,16 @@ class NavigationOverlayFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val overlay = inflater.inflate(R.layout.fragment_navigation_overlay, container, false)
 
-        with(overlay.semiOpaqueBackground) {
-            visibility = if (isInitialHomescreen) View.GONE else View.VISIBLE
-            setOnClickListener {
-                dismiss()
-                TelemetryWrapper.dismissHomeOverlayClickEvent()
-            }
-        }
-
+        overlay.semiOpaqueBackground.visibility = if (isInitialHomescreen) View.GONE else View.VISIBLE
         overlay.initialHomescreenBackground.visibility = if (isInitialHomescreen) View.VISIBLE else View.GONE
-
-        with(overlay.homeTiles) {
-            onTileClicked = { callbacks?.onNonTextInputUrlEntered(it) }
-            urlSearcher = activity as UrlSearcher
-
-            homeTileLongClickListener = object : HomeTileLongClickListener {
-                override fun onHomeTileLongClick(unpinTile: () -> Unit) {
-                    callbacks?.onHomeTileLongClick(unpinTile)
-                }
-            }
-        }
+        overlay.homeTiles.urlSearcher = activity as UrlSearcher
 
         setOverlayHeight(overlay.homeTiles)
-        NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isInitialHomescreen)
+        NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isInitialHomescreen) {
+            // We defer setting click listeners until the animation completes
+            // so the animation will not be interrupted.
+            setOnClickListeners(overlay)
+        }
 
         return overlay
     }
@@ -103,6 +90,37 @@ class NavigationOverlayFragment : Fragment() {
             params.verticalBias = verticalBias
             params.matchConstraintDefaultHeight = heightConstraintType
             params.topToBottom = topToBottom
+        }
+    }
+
+    private fun setOnClickListeners(overlay: View) {
+        // We remove the click listeners when dismissing the overlay
+        // so that clicking them doesn't restart the animation.
+        fun removeClickListeners() {
+            overlay.semiOpaqueBackground.setOnClickListener(null)
+            with(overlay.homeTiles) {
+                onTileClicked = {}
+                homeTileLongClickListener = null
+            }
+        }
+
+        overlay.semiOpaqueBackground.setOnClickListener {
+            removeClickListeners()
+            dismiss()
+            TelemetryWrapper.dismissHomeOverlayClickEvent()
+        }
+
+        with(overlay.homeTiles) {
+            onTileClicked = {
+                removeClickListeners()
+                callbacks?.onNonTextInputUrlEntered(it)
+            }
+
+            homeTileLongClickListener = object : HomeTileLongClickListener {
+                override fun onHomeTileLongClick(unpinTile: () -> Unit) {
+                    callbacks?.onHomeTileLongClick(unpinTile)
+                }
+            }
         }
     }
 

@@ -40,7 +40,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     // thus we need to use Delegates.observable to update onTileLongClick.
     var homeTileLongClickListener: HomeTileLongClickListener? = null
 
-    lateinit var onTileClicked: (value: String) -> Unit
+    var onTileClicked: ((value: String) -> Unit)? = null
     var urlSearcher: UrlSearcher? = null
     /** Called inside [setVisibility] right before super.setVisibility is called. */
     var onPreSetVisibilityListener: ((isVisible: Boolean) -> Unit)? = null
@@ -57,7 +57,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
 
         adapter = HomeTileAdapter(uiLifecycleCancelJob, homeTiles, loadUrl = { urlStr ->
             if (urlStr.isNotEmpty()) {
-                onTileClicked.invoke(urlStr)
+                onTileClicked?.invoke(urlStr)
             }
         }, onTileFocused = {
             val prefInt = PreferenceManager.getDefaultSharedPreferences(context).getInt(SHOW_UNPIN_TOAST_COUNTER_PREF, 0)
