@@ -27,6 +27,32 @@
             app:layout_constraintStart_toStartOf="parent"
             android:background="@color/photonGrey70"/>
 
+    <!-- Android's elevation only creates shadows facing downward so we create our own upward facing shadow,
+         inspired by https://stackoverflow.com/a/41651284.
+
+         The height must be tuned such that it is large enough that the bottom of this view is not visible and that
+         the gradient fades at the correct speed.
+
+         This shadow is not to spec: creating a shadow that has an equal drop off on corners and the top edge is
+         complex. The current implementation was created to be good enough with much trial and error. -->
+    <View
+            android:id="@+id/backgroundShadowView"
+            android:layout_height="48dp"
+            android:layout_width="0dp"
+            app:layout_constraintTop_toTopOf="@id/backgroundShadowOffset"
+            app:layout_constraintStart_toStartOf="@id/backgroundView"
+            app:layout_constraintEnd_toEndOf="@id/backgroundView"
+            android:background="@drawable/navigation_overlay_background_shadow"/>
+
+    <!-- The height of this view determines the height of the shadow. Unfortunately, offseting a constraint
+         (constraintTop_toTopOf=backgroundView - 8dp) doesn't seem otherwise possible so we use this spacer. -->
+    <Space
+            android:id="@+id/backgroundShadowOffset"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/backgroundView"/>
+
     <View
             android:id="@+id/backgroundView"
             android:layout_width="0dp"
