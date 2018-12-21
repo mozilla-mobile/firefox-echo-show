@@ -68,6 +68,7 @@ class NavigationOverlayFragment : Fragment() {
         }
 
         setOverlayHeight(overlay.homeTiles)
+        NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isInitialHomescreen)
 
         return overlay
     }
@@ -113,10 +114,12 @@ class NavigationOverlayFragment : Fragment() {
     }
 
     fun dismiss() {
-        activity!!.getNavigationOverlayContainer().visibility = View.GONE
-        fragmentManager!!.beginTransaction()
-            .remove(this)
-            .commit()
+        NavigationOverlayAnimations.animateOut(view!!, isInitialHomescreen) {
+            activity!!.getNavigationOverlayContainer().visibility = View.GONE
+            fragmentManager!!.beginTransaction()
+                .remove(this)
+                .commit()
+        }
     }
 
     fun refreshTilesForInsertion() {
