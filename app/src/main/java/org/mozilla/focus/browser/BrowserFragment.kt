@@ -49,6 +49,10 @@ interface BrowserFragmentCallbacks : HomeTileLongClickListener {
     fun onFullScreenChange(isFullscreen: Boolean)
 
     fun onNonTextInputUrlEntered(urlStr: String)
+
+    fun onUrlUpdate(url: String?)
+    fun onSessionLoadingUpdate(isLoading: Boolean)
+    fun onSessionProgressUpdate(progress: Int)
 }
 
 interface HomeTileLongClickListener {
@@ -76,9 +80,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     internal val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
     val toolbarStateProvider = BrowserToolbarStateProvider()
-    var onUrlUpdate: ((url: String?) -> Unit)? = null
-    var onSessionLoadingUpdate: ((isLoading: Boolean) -> Unit)? = null
-    var onSessionProgressUpdate: ((value: Int) -> Unit)? = null
     private var touchExplorationStateChangeListener: TouchExplorationStateChangeListener? = null
 
     /**
@@ -97,7 +98,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
                 homeScreen.visibility = View.VISIBLE
             }
 
-            onUrlUpdate?.invoke(url) // This should be called last so app state is up-to-date.
+            callbacks?.onUrlUpdate(url) // This should be called last so app state is up-to-date.
         }
 
     // If the URL is startup home, the home screen should always be visible. For defensiveness, we
@@ -131,7 +132,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         session.url.observe(this, Observer { url -> this@BrowserFragment.url = url })
         session.loading.observe(this, SessionLoadingObserver())
-        session.progress.observe(this, Observer { it?.let { onSessionProgressUpdate?.invoke(it) } })
+        session.progress.observe(this, Observer { it?.let { callbacks?.onSessionProgressUpdate(it) } })
         return session
     }
 
@@ -281,7 +282,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     private inner class SessionLoadingObserver : Observer<Boolean> {
         override fun onChanged(isLoading: Boolean?) {
             if (isLoading == null) { return }
-            onSessionLoadingUpdate?.invoke(isLoading)
+            callbacks?.onSessionLoadingUpdate(isLoading)
 
             val uri = url?.toUri() ?: return
             val webView = webView ?: return
