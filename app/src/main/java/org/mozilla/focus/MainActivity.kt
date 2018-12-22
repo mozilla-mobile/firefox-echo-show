@@ -8,9 +8,6 @@ package org.mozilla.focus
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentManager.FragmentLifecycleCallbacks
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
@@ -20,7 +17,6 @@ import mozilla.components.support.utils.SafeIntent
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.animation.VisibilityAnimator
 import org.mozilla.focus.architecture.NonNullObserver
-import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
 import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.ext.isVisible
@@ -47,8 +43,6 @@ import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, UrlSearcher {
 
     private val sessionManager = SessionManager.getInstance()
-
-    private val fragmentLifecycleCallbacks = MainActivityFragmentLifecycleCallbacks()
 
     private lateinit var toolbarCallbacks: ToolbarCallbacks
     private val toolbarStateProvider = DelegateToBrowserToolbarStateProvider()
@@ -90,7 +84,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         initViews()
         WebViewProvider.preload(this)
         toolbarCallbacks = ToolbarIntegration.setup(toolbar, toolbarStateProvider, ::onToolbarEvent)
-        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
         UserClearDataEvent.liveData.observe(this, UserClearDataEventObserver(this))
     }
 
@@ -98,11 +91,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, toolbar, appBarOverlay).apply {
             init(supportFragmentManager::getBrowserFragment)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {
@@ -125,10 +113,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     override fun onPause() {
         super.onPause()
         TelemetryWrapper.stopSession()
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     override fun onStop() {
@@ -196,15 +180,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         appBarLayoutController.onFullScreenChange(isFullscreen)
     }
 
-    private inner class MainActivityFragmentLifecycleCallbacks : FragmentLifecycleCallbacks() {
-        override fun onFragmentAttached(fragmentManager: FragmentManager, fragment: Fragment, context: Context) {
-            if (fragment is BrowserFragment) {
-                fragment.onUrlUpdate = toolbarCallbacks.onDisplayUrlUpdate
-                fragment.onSessionLoadingUpdate = toolbarCallbacks.onLoadingUpdate
-                fragment.onSessionProgressUpdate = toolbarCallbacks.onProgressUpdate
-            }
-        }
-    }
+    override fun onUrlUpdate(url: String?) = toolbarCallbacks.onDisplayUrlUpdate(url)
+    override fun onSessionLoadingUpdate(isLoading: Boolean) = toolbarCallbacks.onLoadingUpdate(isLoading)
+    override fun onSessionProgressUpdate(progress: Int) = toolbarCallbacks.onProgressUpdate(progress)
 
     private inner class DelegateToBrowserToolbarStateProvider : ToolbarStateProvider {
         private fun getBrowserToolbarProvider() =
