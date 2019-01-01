@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Pinch to exit full screen web content like videos (#75)
 
+### Changed
+- Appearance and animations of navigation overlay to more clearly overlay browser content
+
 ### Fixed
 - Toolbar not updating correctly after application state is restored (#145)
 
