@@ -51,7 +51,8 @@ class NavigationOverlayFragment : Fragment() {
         overlay.homeTiles.urlSearcher = activity as UrlSearcher
 
         setOverlayHeight(overlay.homeTiles)
-        NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isInitialHomescreen) {
+
+        NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isInitialHomescreen, isBeingRestored = savedInstanceState != null) {
             // We defer setting click listeners until the animation completes
             // so the animation will not be interrupted.
             setOnClickListeners(overlay)

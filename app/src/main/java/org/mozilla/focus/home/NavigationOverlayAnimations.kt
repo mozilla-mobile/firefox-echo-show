@@ -18,8 +18,8 @@ import org.mozilla.focus.ext.onGlobalLayoutOnce
  */
 object NavigationOverlayAnimations {
 
-    fun onCreateViewAnimateIn(overlay: View, isInitialHomescreen: Boolean, onAnimationEnd: () -> Unit) {
-        if (isInitialHomescreen) {
+    fun onCreateViewAnimateIn(overlay: View, isInitialHomescreen: Boolean, isBeingRestored: Boolean, onAnimationEnd: () -> Unit) {
+        if (isInitialHomescreen || isBeingRestored) {
             onAnimationEnd()
             return
         }
