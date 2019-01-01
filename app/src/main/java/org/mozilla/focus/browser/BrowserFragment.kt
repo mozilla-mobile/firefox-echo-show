@@ -210,7 +210,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
         if (isVisible) {
             NavigationOverlayFragment.newInstance(isInitialHomescreen = isHomescreenOnStartup)
-                .show(fragmentManager!!, activity!!)
+                .show(fragmentManager!!)
         } else if (!isHomescreenOnStartup) {
             fragmentManager.getNavigationOverlay()?.dismiss()
         }

@@ -4,7 +4,6 @@
 
 package org.mozilla.focus.home
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.constraint.ConstraintLayout
@@ -125,8 +124,7 @@ class NavigationOverlayFragment : Fragment() {
         }
     }
 
-    fun show(fragmentManager: FragmentManager, activity: Activity) {
-        activity.getNavigationOverlayContainer().visibility = View.VISIBLE
+    fun show(fragmentManager: FragmentManager) {
         fragmentManager.beginTransaction()
             .replace(R.id.navigationOverlayContainer, this, FRAGMENT_TAG)
             .commit()
@@ -134,7 +132,6 @@ class NavigationOverlayFragment : Fragment() {
 
     fun dismiss() {
         NavigationOverlayAnimations.animateOut(view!!, isInitialHomescreen) {
-            activity!!.getNavigationOverlayContainer().visibility = View.GONE
             fragmentManager!!.beginTransaction()
                 .remove(this)
                 .commit()
@@ -159,5 +156,3 @@ class NavigationOverlayFragment : Fragment() {
         }
     }
 }
-
-private fun Activity.getNavigationOverlayContainer(): ViewGroup = findViewById(R.id.navigationOverlayContainer)
