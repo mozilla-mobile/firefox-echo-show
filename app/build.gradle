@@ -22,6 +22,7 @@ android {
         // override this with a generated versionCode at build time.
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
 
         multiDexEnabled true
     }
