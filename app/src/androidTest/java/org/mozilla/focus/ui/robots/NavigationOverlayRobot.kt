@@ -27,7 +27,7 @@ class NavigationOverlayRobot private constructor() {
         homeTiles().check(matches(isDisplayed(isDisplayed)))
     }
 
-    class Transition {
+    inner class Transition {
 
         /**
          * Long presses the tile at the given index and returns the same screen: the Google search tile cannot be
@@ -35,11 +35,13 @@ class NavigationOverlayRobot private constructor() {
          */
         fun longPressTileIsNoOp(index: Int, interact: NavigationOverlayRobot.() -> Unit): NavigationOverlayRobot.Transition {
             longPressTile(index)
+            assertIsDisplayed()
             return NavigationOverlayRobot.interactAndTransition(interact)
         }
 
         fun longPressTileToUnpinOverlay(index: Int, interact: UnpinOverlayRobot.() -> Unit): UnpinOverlayRobot.Transition {
             longPressTile(index)
+            assertIsDisplayed()
             return UnpinOverlayRobot.interactAndTransition(interact)
         }
 
@@ -55,7 +57,7 @@ class NavigationOverlayRobot private constructor() {
                 assertIsDisplayed()
                 interact()
             }
-            return NavigationOverlayRobot.Transition()
+            return NavigationOverlayRobot().Transition()
         }
     }
 }

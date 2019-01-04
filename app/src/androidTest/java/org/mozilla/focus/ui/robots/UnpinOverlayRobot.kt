@@ -20,10 +20,11 @@ class UnpinOverlayRobot private constructor() {
         unpinButton().check(matches(isDisplayed(isDisplayed)))
     }
 
-    class Transition {
+    inner class Transition {
 
         fun unpinTileToNavigationOverlay(interact: NavigationOverlayRobot.() -> Unit): NavigationOverlayRobot.Transition {
             unpinButton().perform(click())
+            assertIsDisplayed(false)
             return NavigationOverlayRobot.interactAndTransition(interact)
         }
 
@@ -32,6 +33,7 @@ class UnpinOverlayRobot private constructor() {
             throw NotImplementedError("TODO: fix this method. the simple implementation clicks the center of the " +
                 "overlay, i.e. the remove button, and does not dismiss without removing")
 //            semiOpaqueOverlay().perform(click())
+//            assertIsDisplayed(false)
 //            return NavigationOverlayRobot.interactAndTransition(interact)
         }
     }
@@ -42,7 +44,7 @@ class UnpinOverlayRobot private constructor() {
                 assertIsDisplayed()
                 interact()
             }
-            return UnpinOverlayRobot.Transition()
+            return UnpinOverlayRobot().Transition()
         }
     }
 }
