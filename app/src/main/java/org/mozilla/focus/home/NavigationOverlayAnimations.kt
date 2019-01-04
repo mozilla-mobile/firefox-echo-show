@@ -10,8 +10,11 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.view.View
+import android.view.animation.LinearInterpolator
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
 import org.mozilla.focus.ext.onGlobalLayoutOnce
+
+private const val TRANSLATION_MILLIS_FOR_FULL_SCREEN = 400
 
 /**
  * Encapsulation of animation code for the navigation overlay.
@@ -42,13 +45,32 @@ object NavigationOverlayAnimations {
         isInitialHomescreen: Boolean = false,
         onAnimationEnd: () -> Unit
     ): Animator {
+        fun getAnimationDuration(): Long {
+            // Animations feel snappy when they have a high velocity. That velocity is normally defined by the animation
+            // duration for the distance traveled. Since in this view the travel distance changes based on the view
+            // height (determined by the number of items), we need to set the duration dynamically based on the view
+            // height. We use screen percentage traveled because it's simple and the visuals look good enough.
+            val screenHeight = overlay.context.resources.displayMetrics.heightPixels
+            val percentOfScreen = overlay.backgroundView.height / screenHeight.toDouble()
+            return Math.round(TRANSLATION_MILLIS_FOR_FULL_SCREEN * percentOfScreen)
+        }
+
+        // Linear animations look bad for translation but the translation interpolator we use pops in too quickly when
+        // executed with a short duration for alpha animations so we use different interpolators for different use cases.
+        val alphaInterpolator = LinearInterpolator()
+        val translationInterpolator = FastOutSlowInInterpolator()
+
         val fadeValues = if (isAnimateIn) floatArrayOf(0f, 1f) else floatArrayOf(1f, 0f)
-        val semiOpaqueBackgroundAnimator = ObjectAnimator.ofFloat(overlay.semiOpaqueBackground, "alpha", *fadeValues)
+        val semiOpaqueBackgroundAnimator = ObjectAnimator.ofFloat(overlay.semiOpaqueBackground, "alpha", *fadeValues).apply {
+            interpolator = alphaInterpolator
+        }
 
         val initialHomescreenBackgroundAnimator = if (!isInitialHomescreen) {
             null
         } else {
-            ObjectAnimator.ofFloat(overlay.initialHomescreenBackground, "alpha", 1f, 0f)
+            ObjectAnimator.ofFloat(overlay.initialHomescreenBackground, "alpha", 1f, 0f).apply {
+                interpolator = alphaInterpolator
+            }
         }
 
         val screenHeight = overlay.resources.displayMetrics.heightPixels.toFloat()
@@ -56,12 +78,13 @@ object NavigationOverlayAnimations {
             val viewOffsetToBottomOfScreen = screenHeight - view.y
             val translateValues =
                 if (isAnimateIn) floatArrayOf(viewOffsetToBottomOfScreen, 0f) else floatArrayOf(0f, viewOffsetToBottomOfScreen)
-            return ObjectAnimator.ofFloat(view, "translationY", *translateValues)
+            return ObjectAnimator.ofFloat(view, "translationY", *translateValues).apply {
+                interpolator = translationInterpolator
+            }
         }
 
         return AnimatorSet().apply {
-            duration = 400
-            interpolator = FastOutSlowInInterpolator()
+            duration = getAnimationDuration()
 
             val animatorSetBuilder = play(semiOpaqueBackgroundAnimator)
             arrayOf(overlay.homeTiles, overlay.backgroundView, overlay.backgroundShadowView).forEach {
