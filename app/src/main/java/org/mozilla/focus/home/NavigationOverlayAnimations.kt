@@ -26,17 +26,17 @@ object NavigationOverlayAnimations {
 
         // View positions are not set in onCreateView so we must wait for layout.
         overlay.onGlobalLayoutOnce {
-            getAnimation(overlay, isAnimateIn = true, onAnimationEnd = onAnimationEnd).start()
+            getAnimator(overlay, isAnimateIn = true, onAnimationEnd = onAnimationEnd).start()
         }
     }
 
     fun animateOut(overlay: View, isInitialHomescreen: Boolean, onAnimationEnd: () -> Unit) {
-        getAnimation(overlay, isAnimateIn = false, isInitialHomescreen = isInitialHomescreen, onAnimationEnd = onAnimationEnd)
+        getAnimator(overlay, isAnimateIn = false, isInitialHomescreen = isInitialHomescreen, onAnimationEnd = onAnimationEnd)
             .start()
     }
 
     @Suppress("SpreadOperator") // It reduces repetition and the arrays are small so perf impact is negligible.
-    private fun getAnimation(
+    private fun getAnimator(
         overlay: View,
         isAnimateIn: Boolean,
         isInitialHomescreen: Boolean = false,
