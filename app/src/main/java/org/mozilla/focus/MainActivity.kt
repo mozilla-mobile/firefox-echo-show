@@ -8,8 +8,6 @@ package org.mozilla.focus
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.util.AttributeSet
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,7 +20,6 @@ import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.ext.getNavigationOverlay
 import org.mozilla.focus.ext.isVisibleAndNonNull
 import org.mozilla.focus.ext.toSafeIntent
-import org.mozilla.focus.home.NavigationOverlayFragment
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
@@ -87,7 +84,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         WebViewProvider.preload(this)
         toolbarCallbacks = ToolbarIntegration.setup(toolbar, toolbarStateProvider, ::onToolbarEvent)
         UserClearDataEvent.liveData.observe(this, UserClearDataEventObserver(this))
-        supportFragmentManager.registerFragmentLifecycleCallbacks(MainActivityFragmentLifecycleCallbacks(), true)
     }
 
     private fun initViews() {
@@ -187,32 +183,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         override fun getCurrentUrl() = getBrowserToolbarProvider()?.getCurrentUrl()
         override fun isURLPinned() = getBrowserToolbarProvider()?.isURLPinned() ?: false
         override fun isStartupHomepageVisible() = getBrowserToolbarProvider()?.isStartupHomepageVisible() ?: false
-    }
-
-    private inner class MainActivityFragmentLifecycleCallbacks : FragmentManager.FragmentLifecycleCallbacks() {
-        override fun onFragmentViewCreated(
-            fragmentManager: FragmentManager?,
-            fragment: Fragment?,
-            view: View?,
-            savedInstanceState: Bundle?
-        ) {
-            if (fragment is NavigationOverlayFragment) {
-                setNavigationOverlayContainerIsVisible(true)
-            }
-        }
-
-        override fun onFragmentViewDestroyed(fragmentManager: FragmentManager?, fragment: Fragment?) {
-            if (fragment is NavigationOverlayFragment) {
-                setNavigationOverlayContainerIsVisible(false)
-            }
-        }
-
-        private fun setNavigationOverlayContainerIsVisible(isVisible: Boolean) {
-            // We set the visibility with fragment lifecycle callbacks to ensure the container visibility reflects the
-            // fragment view hierarchy state. This seamlessly handles cases where the fragments are modified but we
-            // didn't initiate it (e.g. during state restoration, active fragments will be restored but not the view hierarchy).
-            navigationOverlayContainer.visibility = if (isVisible) View.VISIBLE else View.GONE
-        }
     }
 
     override fun onHomeTileLongClick(unpinTile: () -> Unit) {
