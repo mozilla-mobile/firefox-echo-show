@@ -99,7 +99,7 @@ class NavigationOverlayFragment : Fragment() {
             // so that clicking them doesn't restart the animation.
             overlay.semiOpaqueBackground.setOnClickListener(null)
             with(overlay.homeTiles) {
-                onTileClicked = {}
+                onTileClicked = null
                 homeTileLongClickListener = null
             }
         }
