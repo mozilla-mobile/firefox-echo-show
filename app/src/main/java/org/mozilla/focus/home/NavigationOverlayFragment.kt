@@ -94,9 +94,9 @@ class NavigationOverlayFragment : Fragment() {
     }
 
     private fun setOnClickListeners(overlay: View) {
-        // We remove the click listeners when dismissing the overlay
-        // so that clicking them doesn't restart the animation.
         fun removeClickListeners() {
+            // We remove the click listeners when dismissing the overlay
+            // so that clicking them doesn't restart the animation.
             overlay.semiOpaqueBackground.setOnClickListener(null)
             with(overlay.homeTiles) {
                 onTileClicked = {}
