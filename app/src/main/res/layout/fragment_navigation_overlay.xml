@@ -3,21 +3,26 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<!-- This layout can be used in multiple modes: see class kdoc for details. -->
+<!-- This layout can be used in multiple modes: see class kdoc for details.
+     Adding comments to explain how these views are used is redundant to the
+     source code and liable to go out of date: however, this file is too confusing
+     without the redundant comments so we use them anyway. -->
 <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <!-- Visibility changed dynamically based on layout mode. -->
+    <!-- Visible in dialog mode, this is the semi opaque background that obscures the URL bar. -->
     <View
             android:id="@+id/semiOpaqueBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/photonGrey90_a60p"/>
 
-    <!-- The Visibility changed dynamically based on layout mode. -->
+    <!-- Visible in initial homescreen mode, this view sits below the toolbar, where the WebView
+         would be. It's only visible under the main overlay background's rounded corners. Without
+         it, the white WebView (or garbage graphics buffer) would be shown. -->
     <View
             android:id="@+id/initialHomescreenBackground"
             android:layout_width="match_parent"
