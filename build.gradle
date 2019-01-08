@@ -8,8 +8,8 @@ buildscript {
     ext.moz_components_version = '0.26.0'
 
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 
     dependencies {
@@ -36,8 +36,8 @@ detekt {
 
 allprojects {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 }
 
