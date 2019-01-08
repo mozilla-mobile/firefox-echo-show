@@ -30,6 +30,17 @@ The event ping contains a list of events ([see event format on readthedocs.io](h
 | Start session (App is in the foreground) | action   | foreground | app    |        |
 | Stop session (App is in the background)  | action   | background | app    |        |
 
+N.B. Sessions as recorded today are unlikely to match your intuitive definition of a "session". Sessions will sometimes stop when the browser part of the application is partially obscured (`onPause/onResume`). On Echo Show, the session ends for:
+- Opening Firefox settings
+- Opening the device settings
+- Unrelated voice commands that display visuals
+
+The session does not end for:
+- Unrelated voice commands that do not display visuals (N.B: only tested Alexa error responses)
+- Opening the virtual keyboard
+
+If this session probe doesn't fit your use case, you might be able to use the `process_start_timestamp` probe - recorded by telemetry library when the process starts - to make your queries.
+
 #### General
 
 | Event                                  | category | method                | object     | value  | extras.    |
