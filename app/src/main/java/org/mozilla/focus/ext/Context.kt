@@ -6,8 +6,12 @@ package org.mozilla.focus.ext
 
 import android.content.Context
 import android.view.accessibility.AccessibilityManager
+import org.mozilla.focus.FocusApplication
+import org.mozilla.focus.widget.ServiceLocator
 
 // Extension functions for the Context class
+
+val Context.serviceLocator: ServiceLocator get() = (applicationContext as FocusApplication).serviceLocator
 
 /**
  * The (visible) version name of the application, as specified by the <manifest> tag's versionName
