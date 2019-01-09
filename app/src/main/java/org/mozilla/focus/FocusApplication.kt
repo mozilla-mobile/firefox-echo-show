@@ -15,8 +15,13 @@ import org.mozilla.focus.telemetry.AppStartupTimeMeasurement
 import org.mozilla.focus.telemetry.DataUploadPreference
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
+import org.mozilla.focus.widget.ServiceLocator
 
 class FocusApplication : LocaleAwareApplication() {
+
+    lateinit var serviceLocator: ServiceLocator
+        private set
+
     var visibilityLifeCycleCallback: VisibilityLifeCycleCallback? = null
         private set
 
@@ -28,10 +33,10 @@ class FocusApplication : LocaleAwareApplication() {
 
         enableStrictMode()
 
+        serviceLocator = ServiceLocator()
+
         SearchEngineManager.getInstance().init(this)
-
         TelemetryWrapper.init(this)
-
         DataUploadPreference.init(this.applicationContext)
 
         registerActivityLifecycleCallbacks(VisibilityLifeCycleCallback(this))
