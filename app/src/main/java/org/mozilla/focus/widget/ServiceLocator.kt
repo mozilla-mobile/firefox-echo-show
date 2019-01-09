@@ -38,4 +38,6 @@ import org.mozilla.focus.ScreenRepo
  *   ```
  */
 open class ServiceLocator {
+
+    open val screenRepo = ScreenRepo()
 }
