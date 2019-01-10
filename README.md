@@ -36,9 +36,9 @@ git clone https://github.com/mozilla-mobile/firefox-echo-show.git
 3. Make sure to select the right build variant in Android Studio: **amazonWebviewDebug**
 
 ### Running
-You can run from Android Studio or adb. You can run on an Android emulator but the
-behavior may not be the same: see the [device reference] documentation for
-more details on emulator device selection and other changed behaviors.
+You can run from Android Studio or adb.
+
+For recommendations on which devices and emulators to run on, see [device reference].
 
 ### Testing
 To run a reasonable subset of the unit tests, we recommend:
