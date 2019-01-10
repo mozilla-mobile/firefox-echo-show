@@ -12,7 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener
+import org.mozilla.focus.ActiveScreen.NAVIGATION_OVERLAY_ON_STARTUP
 import org.mozilla.focus.R
+import org.mozilla.focus.architecture.FirefoxViewModelProviders
 import org.mozilla.focus.browser.URLs.APP_STARTUP_HOME
 import org.mozilla.focus.ext.getAccessibilityManager
 import org.mozilla.focus.ext.getNavigationOverlay
@@ -42,7 +44,6 @@ private val URLS_BLOCKED_FROM_USERS = setOf(
 
 /** An interface expected to be implemented by the Activities that create a BrowserFragment. */
 interface BrowserFragmentCallbacks : HomeTileLongClickListener {
-    fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean)
     fun onFullScreenChange(isFullscreen: Boolean)
 
     fun onNonTextInputUrlEntered(urlStr: String)
@@ -75,6 +76,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override val initialUrl get() = session.url.value
     override lateinit var iWebViewCallback: IWebView.Callback
 
+    private var viewModel: BrowserViewModel? = null
     internal val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
     val toolbarStateProvider = BrowserToolbarStateProvider()
     private var touchExplorationStateChangeListener: TouchExplorationStateChangeListener? = null
@@ -92,17 +94,11 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             // We prevent users from typing this URL in loadUrl but this will still be called for
             // the initial URL set in the Session.
             if (url == APP_STARTUP_HOME.toString()) {
-                setNavigationOverlayIsVisible(true, isHomescreenOnStartup = true)
+                viewModel?.startupUrlSet()
             }
 
             callbacks?.onUrlUpdate(url) // This should be called last so app state is up-to-date.
         }
-
-    // If the URL is startup home, the home screen should always be visible. For defensiveness, we
-    // also check this condition. It's probably not necessary (it was originally added when the startup
-    // url was the empty string which I was concerned the WebView could pass to us while loading).
-    private val isStartupHomepageVisible: Boolean
-        get() = url == APP_STARTUP_HOME.toString() && fragmentManager.getNavigationOverlay().isVisibleAndNonNull
 
     private val sessionManager = SessionManager.getInstance()
 
@@ -153,11 +149,9 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             ToolbarEvent.RELOAD -> webView?.reload()
             ToolbarEvent.SETTINGS -> Unit // No Settings in BrowserFragment
             ToolbarEvent.PIN_ACTION -> this@BrowserFragment.url?.let { url -> onPinToolbarEvent(context, url, value) }
-            ToolbarEvent.HOME -> if (!fragmentManager.getNavigationOverlay().isVisibleAndNonNull) {
-                setNavigationOverlayIsVisible(true)
-            }
 
             ToolbarEvent.LOAD_URL -> throw IllegalStateException("Expected $event to be handled sooner")
+            ToolbarEvent.HOME -> throw java.lang.IllegalStateException("Expected $event to be handled by ToolbarViewModel")
         }
         Unit
     }
@@ -187,7 +181,17 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val viewModel = FirefoxViewModelProviders.of(this)[BrowserViewModel::class.java]
+        this.viewModel = viewModel
+
         val layout = inflater.inflate(R.layout.fragment_browser, container, false)
+
+        // todo: test that bug is fixed.
+        // todo: viewLifecycleOwner, newer version? SDK 28 and androidX 1.0.0
+        viewModel.activeScreen.observe(this, Observer {
+            updateWebViewVisibility(isVoiceViewEnabled = context!!.isVoiceViewEnabled(),
+                isHomescreenOnStartup = it!! == NAVIGATION_OVERLAY_ON_STARTUP)
+        })
 
         touchExplorationStateChangeListener = BrowserTouchExplorationStateChangeListener(
                 fragmentManager::getNavigationOverlay, this::updateWebViewVisibility).also {
@@ -204,21 +208,9 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         touchExplorationStateChangeListener = null
     }
 
-    private fun setNavigationOverlayIsVisible(isVisible: Boolean, isHomescreenOnStartup: Boolean = false) {
-        callbacks?.onHomeVisibilityChange(isVisible, isHomescreenOnStartup = isHomescreenOnStartup)
-        updateWebViewVisibility(isVoiceViewEnabled = context!!.isVoiceViewEnabled(), isHomescreenOnStartup = isHomescreenOnStartup)
-
-        if (isVisible) {
-            NavigationOverlayFragment.newInstance(isInitialHomescreen = isHomescreenOnStartup)
-                .show(fragmentManager!!)
-        } else if (!isHomescreenOnStartup) {
-            fragmentManager.getNavigationOverlay()?.dismiss()
-        }
-    }
-
     fun loadUrl(url: String) {
         // Intents can trigger loadUrl, and we need to make sure the navigation overlay is always hidden.
-        setNavigationOverlayIsVisible(false)
+        viewModel?.loadUrlCalled()
         val webView = webView
         if (webView != null && !TextUtils.isEmpty(url) && !URLS_BLOCKED_FROM_USERS.contains(url)) {
             webView.loadUrl(url)
@@ -244,7 +236,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     inner class BrowserToolbarStateProvider : ToolbarStateProvider {
         override fun isBackEnabled() = webView?.canGoBack() ?: false
         override fun isForwardEnabled() = webView?.canGoForward() ?: false
-        override fun isStartupHomepageVisible() = isStartupHomepageVisible
+        override fun isStartupHomepageVisible() = viewModel?.activeScreen == NAVIGATION_OVERLAY_ON_STARTUP
         override fun getCurrentUrl() = url
         override fun isURLPinned() = url.toUri()?.let {
             // TODO: #569 fix CustomTilesManager to use Uri too

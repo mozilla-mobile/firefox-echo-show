@@ -26,7 +26,6 @@ import org.mozilla.focus.ext.children
 import org.mozilla.focus.ext.isScreenXLarge
 import org.mozilla.focus.toolbar.ToolbarEvent.BACK
 import org.mozilla.focus.toolbar.ToolbarEvent.FORWARD
-import org.mozilla.focus.toolbar.ToolbarEvent.HOME
 import org.mozilla.focus.toolbar.ToolbarEvent.LOAD_URL
 import org.mozilla.focus.toolbar.ToolbarEvent.PIN_ACTION
 import org.mozilla.focus.toolbar.ToolbarEvent.RELOAD
@@ -36,7 +35,12 @@ private const val TOOLBAR_BUTTON_BACKGROUND = R.drawable.toolbar_button_backgrou
 private const val BUTTON_ACTION_MARGIN_DP = 16
 
 enum class ToolbarEvent {
-    HOME, SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, TURBO, PIN_ACTION;
+    // These values are handled in our legacy architecture.
+    SETTINGS, BACK, FORWARD, RELOAD, LOAD_URL, TURBO, PIN_ACTION,
+
+    // These values are handled in the ViewModel, which means they can be deleted,
+    // but are kept around so they can be used by telemetry.
+    HOME;
 
     companion object {
         const val VAL_CHECKED = "checked"
@@ -78,12 +82,17 @@ object ToolbarIntegration {
      * - Group all the low-level toolbar logic in this file
      * - Put all toolbar interactions behind an "interface" rather than coupling code to raw toolbar views
      * - Make the code more testable, due to the "interface" ^
+     *
      */
     @SuppressWarnings("LongMethod")
     fun setup(
         toolbar: BrowserToolbar,
         toolbarStateProvider: ToolbarStateProvider,
-        onToolbarEvent: OnToolbarEvent
+        onToolbarEvent: OnToolbarEvent,
+
+        // We're in the process of refactoring from toolbarStateProvider
+        // + onToolbarEvent to an MVVM architecture.
+        viewModel: ToolbarViewModel
     ): ToolbarCallbacks {
         val context = toolbar.context
 
@@ -93,7 +102,7 @@ object ToolbarIntegration {
         configureToolbarSpacing(toolbar)
         initTextChangeListeners(context, toolbar, onToolbarEvent)
         val progressBarController = configureProgressBar(context, toolbar)
-        val pinButton = addToolbarButtons(context, toolbar, toolbarStateProvider, onToolbarEvent)
+        val pinButton = addToolbarButtons(context, toolbar, toolbarStateProvider, viewModel, onToolbarEvent)
 
         // Some component workarounds.
         configureURLBarText(toolbar)
@@ -141,13 +150,14 @@ object ToolbarIntegration {
         context: Context,
         toolbar: BrowserToolbar,
         toolbarStateProvider: ToolbarStateProvider,
+        viewModel: ToolbarViewModel,
         onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
         val res = context.resources
 
         val homescreenButton = BrowserToolbar.Button(R.drawable.ic_grid,
                 context.getString(R.string.homescreen_title),
-                background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) }
+                background = TOOLBAR_BUTTON_BACKGROUND) { viewModel.homeButtonClick() }
                 .let { WorkaroundAction(it) }
         toolbar.addNavigationAction(homescreenButton)
 

@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.*
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
 import kotlinx.coroutines.experimental.CancellationException
+import org.mozilla.focus.architecture.FirefoxViewModelProviders
 import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
@@ -38,11 +39,12 @@ private const val KEY_IS_INITIAL_HOMESCREEN = "isInitialHomescreen"
  */
 class NavigationOverlayFragment : Fragment() {
 
-    private val isInitialHomescreen: Boolean by lazy { arguments!!.getBoolean(KEY_IS_INITIAL_HOMESCREEN) }
+    val isInitialHomescreen: Boolean by lazy { arguments!!.getBoolean(KEY_IS_INITIAL_HOMESCREEN) }
 
     private val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val viewModel = FirefoxViewModelProviders.of(this)[NavigationOverlayViewModel::class.java]
         val overlay = inflater.inflate(R.layout.fragment_navigation_overlay, container, false)
 
         overlay.semiOpaqueBackground.visibility = if (isInitialHomescreen) View.GONE else View.VISIBLE
@@ -54,7 +56,7 @@ class NavigationOverlayFragment : Fragment() {
         NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isInitialHomescreen, isBeingRestored = savedInstanceState != null) {
             // We defer setting click listeners until the animation completes
             // so the animation will not be interrupted.
-            setOnClickListeners(overlay)
+            setOnClickListeners(overlay, viewModel)
         }
 
         return overlay
@@ -93,7 +95,7 @@ class NavigationOverlayFragment : Fragment() {
         }
     }
 
-    private fun setOnClickListeners(overlay: View) {
+    private fun setOnClickListeners(overlay: View, viewModel: NavigationOverlayViewModel) {
         fun removeClickListeners() {
             // We remove the click listeners when dismissing the overlay
             // so that clicking them doesn't restart the animation.
@@ -106,7 +108,7 @@ class NavigationOverlayFragment : Fragment() {
 
         overlay.semiOpaqueBackground.setOnClickListener {
             removeClickListeners()
-            dismiss()
+            viewModel.dismissOverlayClick()
             TelemetryWrapper.dismissHomeOverlayClickEvent()
         }
 

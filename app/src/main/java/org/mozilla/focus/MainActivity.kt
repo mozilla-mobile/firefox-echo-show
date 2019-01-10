@@ -5,21 +5,29 @@
 
 package org.mozilla.focus
 
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import mozilla.components.support.utils.SafeIntent
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.ActiveScreen.BROWSER
+import org.mozilla.focus.ActiveScreen.NAVIGATION_OVERLAY
+import org.mozilla.focus.ActiveScreen.NAVIGATION_OVERLAY_ON_STARTUP
 import org.mozilla.focus.animation.VisibilityAnimator
+import org.mozilla.focus.architecture.FirefoxViewModelProviders
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
+import org.mozilla.focus.ext.forceExhaustive
 import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.ext.getNavigationOverlay
-import org.mozilla.focus.ext.isVisibleAndNonNull
 import org.mozilla.focus.ext.toSafeIntent
+import org.mozilla.focus.home.NavigationOverlayAnimations
+import org.mozilla.focus.home.NavigationOverlayFragment
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
@@ -32,10 +40,12 @@ import org.mozilla.focus.settings.UserClearDataEventObserver
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
+import org.mozilla.focus.toolbar.BrowserAppBarLayoutViewModel
 import org.mozilla.focus.toolbar.ToolbarCallbacks
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
+import org.mozilla.focus.toolbar.ToolbarViewModel
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 
@@ -82,13 +92,24 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
         initViews()
         WebViewProvider.preload(this)
-        toolbarCallbacks = ToolbarIntegration.setup(toolbar, toolbarStateProvider, ::onToolbarEvent)
         UserClearDataEvent.liveData.observe(this, UserClearDataEventObserver(this))
     }
 
     private fun initViews() {
-        appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, toolbar).apply {
-            init(lifecycle)
+        FirefoxViewModelProviders.of(this)[MainActivityViewModel::class.java].let { viewModel ->
+            viewModel.activeScreen.observe(this, Observer {
+                updateActiveScreen(it!!) // TODO: receive events if unchanged?
+            })
+        }
+
+        FirefoxViewModelProviders.of(this)[BrowserAppBarLayoutViewModel::class.java].let { viewModel ->
+            appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, toolbar, viewModel).apply {
+                init(lifecycle, this@MainActivity)
+            }
+        }
+
+        FirefoxViewModelProviders.of(this)[ToolbarViewModel::class.java].let { viewModel ->
+            toolbarCallbacks = ToolbarIntegration.setup(toolbar, toolbarStateProvider, ::onToolbarEvent, viewModel)
         }
     }
 
@@ -126,6 +147,33 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         } else super.onCreateView(name, context, attrs)
     }
 
+    private fun updateActiveScreen(activeScreen: ActiveScreen) {
+        Log.e("lol", "called")
+        when (activeScreen) {
+            NAVIGATION_OVERLAY, NAVIGATION_OVERLAY_ON_STARTUP -> {
+                if (supportFragmentManager.getNavigationOverlay() != null) {
+                    throw IllegalStateException("Setting navigation overlay but it is already added.")
+                }
+
+                val isOverlayOnStartup = activeScreen == NAVIGATION_OVERLAY_ON_STARTUP
+                val navigationOverlay = NavigationOverlayFragment.newInstance(isOverlayOnStartup)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.navigationOverlayContainer, navigationOverlay, NavigationOverlayFragment.FRAGMENT_TAG)
+                    .commit()
+                Unit
+            }
+
+            BROWSER -> {
+                val navigationOverlay = supportFragmentManager.getNavigationOverlay() ?: return
+                NavigationOverlayAnimations.animateOut(navigationOverlay.view!!, navigationOverlay.isInitialHomescreen) {
+                    supportFragmentManager.beginTransaction()
+                        .remove(navigationOverlay)
+                        .commit()
+                }
+            }
+        }.forceExhaustive
+    }
+
     override fun onNonTextInputUrlEntered(urlStr: String) {
         ViewUtils.hideKeyboard(container)
         ScreenController.onUrlEnteredInner(this, supportFragmentManager, urlStr)
@@ -142,10 +190,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     private fun onToolbarEvent(event: ToolbarEvent, value: String?, autocompleteResult: InlineAutocompleteEditText.AutocompleteResult?) {
-        if (event == ToolbarEvent.HOME && supportFragmentManager.getNavigationOverlay().isVisibleAndNonNull) {
-            // The home button does nothing on when home is visible.
-            return
-        } else if (event == ToolbarEvent.LOAD_URL) {
+        if (event == ToolbarEvent.LOAD_URL) {
             onTextInputUrlEntered(value!!, autocompleteResult!!)
             return // Telemetry is handled elsewhere.
         }
@@ -160,10 +205,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
             // BrowserFragment is our only fragment so no other fragment should ever be visible.
             else -> if (browserFragment?.isVisible == true) { browserFragment.onToolbarEvent(event, value) }
         }
-    }
-
-    override fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean) {
-        appBarLayoutController.onHomeVisibilityChange(isHomeVisible)
     }
 
     override fun onFullScreenChange(isFullscreen: Boolean) {
