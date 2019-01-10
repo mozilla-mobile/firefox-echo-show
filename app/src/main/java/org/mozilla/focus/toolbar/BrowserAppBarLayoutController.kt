@@ -9,6 +9,8 @@ import android.arch.lifecycle.Lifecycle.Event.ON_START
 import android.arch.lifecycle.Lifecycle.Event.ON_STOP
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import android.support.annotation.VisibleForTesting
+import android.support.annotation.VisibleForTesting.PRIVATE
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
@@ -38,14 +40,16 @@ class BrowserAppBarLayoutController(
         lifecycle.addObserver(this)
     }
 
+    @VisibleForTesting(otherwise = PRIVATE)
     @OnLifecycleEvent(ON_START)
-    private fun onStart() {
+    fun onStart() {
         context.getAccessibilityManager().addTouchExplorationStateChangeListener(this)
         updateCanScroll(isHomeVisible = isHomeVisible, isVoiceViewEnabled = context.isVoiceViewEnabled())
     }
 
+    @VisibleForTesting(otherwise = PRIVATE)
     @OnLifecycleEvent(ON_STOP)
-    private fun onStop() {
+    fun onStop() {
         context.getAccessibilityManager().removeTouchExplorationStateChangeListener(this)
     }
 
