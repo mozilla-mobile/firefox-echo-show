@@ -4,6 +4,11 @@
 
 package org.mozilla.focus.toolbar
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.Lifecycle.Event.ON_START
+import android.arch.lifecycle.Lifecycle.Event.ON_STOP
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 import android.support.design.widget.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
@@ -24,14 +29,24 @@ private const val TOOLBAR_SCROLL_ENABLED_FLAGS = SCROLL_FLAG_SCROLL or
 class BrowserAppBarLayoutController(
     private val appBarLayout: AppBarLayout,
     private val toolbar: BrowserToolbar
-) : AccessibilityManager.TouchExplorationStateChangeListener {
+) : AccessibilityManager.TouchExplorationStateChangeListener, LifecycleObserver {
 
     private val context = appBarLayout.context
     private var isHomeVisible = false
 
-    fun init() {
+    fun init(lifecycle: Lifecycle) {
+        lifecycle.addObserver(this)
+    }
+
+    @OnLifecycleEvent(ON_START)
+    private fun onStart() {
         context.getAccessibilityManager().addTouchExplorationStateChangeListener(this)
         updateCanScroll(isHomeVisible = isHomeVisible, isVoiceViewEnabled = context.isVoiceViewEnabled())
+    }
+
+    @OnLifecycleEvent(ON_STOP)
+    private fun onStop() {
+        context.getAccessibilityManager().removeTouchExplorationStateChangeListener(this)
     }
 
     private fun updateCanScroll(isHomeVisible: Boolean, isVoiceViewEnabled: Boolean) {
