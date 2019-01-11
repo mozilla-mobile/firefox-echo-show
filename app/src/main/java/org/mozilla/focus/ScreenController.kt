@@ -6,7 +6,6 @@
 package org.mozilla.focus
 
 import android.content.Context
-import android.support.design.widget.AppBarLayout
 import android.support.v4.app.FragmentManager
 import android.text.TextUtils
 import org.mozilla.focus.browser.BrowserFragment
@@ -113,7 +112,7 @@ object ScreenController {
                 throw IllegalStateException("Did not expect navigation overlay to exist")
             }
 
-            val newOverlay = NavigationOverlayFragment.newInstance(isInitialHomescreen = isOverlayOnStartup)
+            val newOverlay = NavigationOverlayFragment.newInstance(isOverlayOnStartup = isOverlayOnStartup)
             fragmentManager.beginTransaction()
                 .replace(R.id.navigationOverlayContainer, newOverlay, NavigationOverlayFragment.FRAGMENT_TAG)
                 .commit()
