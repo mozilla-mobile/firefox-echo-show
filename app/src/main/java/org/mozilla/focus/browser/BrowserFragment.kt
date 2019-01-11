@@ -7,6 +7,7 @@ package org.mozilla.focus.browser
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
+import android.support.annotation.UiThread
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -42,7 +43,9 @@ private val URLS_BLOCKED_FROM_USERS = setOf(
 
 /** An interface expected to be implemented by the Activities that create a BrowserFragment. */
 interface BrowserFragmentCallbacks : HomeTileLongClickListener {
-    fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean)
+
+    @UiThread // performs a fragment transaction.
+    fun setNavigationOverlayIsVisible(isVisible: Boolean, isOverlayOnStartup: Boolean = false)
     fun onFullScreenChange(isFullscreen: Boolean)
 
     fun onNonTextInputUrlEntered(urlStr: String)
@@ -92,7 +95,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             // We prevent users from typing this URL in loadUrl but this will still be called for
             // the initial URL set in the Session.
             if (url == APP_STARTUP_HOME.toString()) {
-                setNavigationOverlayIsVisible(true, isHomescreenOnStartup = true)
+                callbacks?.setNavigationOverlayIsVisible(true, isOverlayOnStartup = true)
             }
 
             callbacks?.onUrlUpdate(url) // This should be called last so app state is up-to-date.
@@ -154,7 +157,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             ToolbarEvent.SETTINGS -> Unit // No Settings in BrowserFragment
             ToolbarEvent.PIN_ACTION -> this@BrowserFragment.url?.let { url -> onPinToolbarEvent(context, url, value) }
             ToolbarEvent.HOME -> if (!fragmentManager.getNavigationOverlay().isVisibleAndNonNull) {
-                setNavigationOverlayIsVisible(true)
+                callbacks?.setNavigationOverlayIsVisible(true)
             }
 
             ToolbarEvent.LOAD_URL -> throw IllegalStateException("Expected $event to be handled sooner")
@@ -204,21 +207,14 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         touchExplorationStateChangeListener = null
     }
 
-    private fun setNavigationOverlayIsVisible(isVisible: Boolean, isHomescreenOnStartup: Boolean = false) {
-        callbacks?.onHomeVisibilityChange(isVisible, isHomescreenOnStartup = isHomescreenOnStartup)
-        updateWebViewVisibility(isVoiceViewEnabled = context!!.isVoiceViewEnabled(), isHomescreenOnStartup = isHomescreenOnStartup)
-
-        if (isVisible) {
-            NavigationOverlayFragment.newInstance(isInitialHomescreen = isHomescreenOnStartup)
-                .show(fragmentManager!!)
-        } else if (!isHomescreenOnStartup) {
-            fragmentManager.getNavigationOverlay()?.dismiss()
-        }
+    fun onNavigationOverlayVisibilityChange(isOverlayOnStartup: Boolean = false) {
+        updateWebViewVisibility(isVoiceViewEnabled = context!!.isVoiceViewEnabled(),
+            isHomescreenOnStartup = isOverlayOnStartup)
     }
 
     fun loadUrl(url: String) {
         // Intents can trigger loadUrl, and we need to make sure the navigation overlay is always hidden.
-        setNavigationOverlayIsVisible(false)
+        callbacks?.setNavigationOverlayIsVisible(false)
         val webView = webView
         if (webView != null && !TextUtils.isEmpty(url) && !URLS_BLOCKED_FROM_USERS.contains(url)) {
             webView.loadUrl(url)

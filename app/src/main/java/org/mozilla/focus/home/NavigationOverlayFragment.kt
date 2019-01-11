@@ -10,7 +10,6 @@ import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
 import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_WRAP
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,7 +105,7 @@ class NavigationOverlayFragment : Fragment() {
 
         overlay.semiOpaqueBackground.setOnClickListener {
             removeClickListeners()
-            dismiss()
+            callbacks?.setNavigationOverlayIsVisible(false)
             TelemetryWrapper.dismissHomeOverlayClickEvent()
         }
 
@@ -121,20 +120,6 @@ class NavigationOverlayFragment : Fragment() {
                     callbacks?.onHomeTileLongClick(unpinTile)
                 }
             }
-        }
-    }
-
-    fun show(fragmentManager: FragmentManager) {
-        fragmentManager.beginTransaction()
-            .replace(R.id.navigationOverlayContainer, this, FRAGMENT_TAG)
-            .commit()
-    }
-
-    fun dismiss() {
-        NavigationOverlayAnimations.animateOut(view!!, isInitialHomescreen) {
-            fragmentManager!!.beginTransaction()
-                .remove(this)
-                .commit()
         }
     }
 

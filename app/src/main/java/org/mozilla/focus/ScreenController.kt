@@ -6,13 +6,18 @@
 package org.mozilla.focus
 
 import android.content.Context
+import android.support.design.widget.AppBarLayout
 import android.support.v4.app.FragmentManager
 import android.text.TextUtils
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.browser.URLs.APP_STARTUP_HOME
 import org.mozilla.focus.ext.getBrowserFragment
+import org.mozilla.focus.ext.getNavigationOverlay
+import org.mozilla.focus.home.NavigationOverlayAnimations
+import org.mozilla.focus.home.NavigationOverlayFragment
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.session.Source
+import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
 import org.mozilla.focus.utils.UrlUtils
 
 object ScreenController {
@@ -93,5 +98,36 @@ object ScreenController {
 
         // Activates the start up code path, which creates a new session if there are none.
         SessionManager.getInstance().removeAllSessions()
+    }
+
+    fun setNavigationOverlayIsVisible(
+        fragmentManager: FragmentManager,
+        appBarLayoutController: BrowserAppBarLayoutController,
+        isVisible: Boolean,
+        isOverlayOnStartup: Boolean
+    ) {
+        fun getNavOverlay() = fragmentManager.getNavigationOverlay()
+
+        if (isVisible) {
+            if (getNavOverlay() != null) {
+                throw IllegalStateException("Did not expect navigation overlay to exist")
+            }
+
+            val newOverlay = NavigationOverlayFragment.newInstance(isInitialHomescreen = isOverlayOnStartup)
+            fragmentManager.beginTransaction()
+                .replace(R.id.navigationOverlayContainer, newOverlay, NavigationOverlayFragment.FRAGMENT_TAG)
+                .commit()
+        } else {
+            // todo: get if current state is initial homescreen or not for animation out.
+            val existingOverlay = getNavOverlay()!!
+            NavigationOverlayAnimations.animateOut(existingOverlay.view!!, isInitialHomescreen = false) {
+                fragmentManager.beginTransaction()
+                    .remove(existingOverlay)
+                    .commit()
+            }
+        }
+
+        fragmentManager.getBrowserFragment()?.onNavigationOverlayVisibilityChange(isOverlayOnStartup = isOverlayOnStartup)
+        appBarLayoutController.onHomeVisibilityChange(isVisible)
     }
 }
