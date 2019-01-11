@@ -162,8 +162,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         }
     }
 
-    override fun onHomeVisibilityChange(isHomeVisible: Boolean, isHomescreenOnStartup: Boolean) {
-        appBarLayoutController.onHomeVisibilityChange(isHomeVisible)
+    override fun setNavigationOverlayIsVisible(isVisible: Boolean, isOverlayOnStartup: Boolean) {
+        ScreenController.setNavigationOverlayIsVisible(supportFragmentManager, appBarLayoutController,
+            isVisible = isVisible, isOverlayOnStartup = isOverlayOnStartup)
     }
 
     override fun onFullScreenChange(isFullscreen: Boolean) {
