@@ -24,7 +24,7 @@ import org.mozilla.focus.browser.HomeTileLongClickListener
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.telemetry.TelemetryWrapper
 
-private const val KEY_IS_INITIAL_HOMESCREEN = "isInitialHomescreen"
+private const val KEY_IS_OVERLAY_ON_STARTUP = "isOverlayOnStartup"
 
 /**
  * An overlay that allows the user to navigate to new pages including via the home tiles. The overlay
@@ -37,20 +37,20 @@ private const val KEY_IS_INITIAL_HOMESCREEN = "isInitialHomescreen"
  */
 class NavigationOverlayFragment : Fragment() {
 
-    val isInitialHomescreen: Boolean by lazy { arguments!!.getBoolean(KEY_IS_INITIAL_HOMESCREEN) }
+    val isOverlayOnStartup: Boolean by lazy { arguments!!.getBoolean(KEY_IS_OVERLAY_ON_STARTUP) }
 
     private val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val overlay = inflater.inflate(R.layout.fragment_navigation_overlay, container, false)
 
-        overlay.semiOpaqueBackground.visibility = if (isInitialHomescreen) View.GONE else View.VISIBLE
-        overlay.initialHomescreenBackground.visibility = if (isInitialHomescreen) View.VISIBLE else View.GONE
+        overlay.semiOpaqueBackground.visibility = if (isOverlayOnStartup) View.GONE else View.VISIBLE
+        overlay.initialHomescreenBackground.visibility = if (isOverlayOnStartup) View.VISIBLE else View.GONE
         overlay.homeTiles.urlSearcher = activity as UrlSearcher
 
         setOverlayHeight(overlay.homeTiles)
 
-        NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isInitialHomescreen, isBeingRestored = savedInstanceState != null) {
+        NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isOverlayOnStartup, isBeingRestored = savedInstanceState != null) {
             // We defer setting click listeners until the animation completes
             // so the animation will not be interrupted.
             setOnClickListeners(overlay)
@@ -73,7 +73,7 @@ class NavigationOverlayFragment : Fragment() {
             val verticalBias: Float
             val heightConstraintType: Int
             @IdRes val topToBottom: Int
-            if (isInitialHomescreen) {
+            if (isOverlayOnStartup) {
                 // Fill constraints from top to bottom (app bar to bottom of screen).
                 verticalBias = 0f
                 heightConstraintType = MATCH_CONSTRAINT_SPREAD
@@ -134,9 +134,9 @@ class NavigationOverlayFragment : Fragment() {
     companion object {
         const val FRAGMENT_TAG = "navOverlay"
 
-        fun newInstance(isInitialHomescreen: Boolean) = NavigationOverlayFragment().apply {
+        fun newInstance(isOverlayOnStartup: Boolean) = NavigationOverlayFragment().apply {
             arguments = Bundle().apply {
-                putBoolean(KEY_IS_INITIAL_HOMESCREEN, isInitialHomescreen)
+                putBoolean(KEY_IS_OVERLAY_ON_STARTUP, isOverlayOnStartup)
             }
         }
     }

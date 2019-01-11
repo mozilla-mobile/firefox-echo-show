@@ -21,8 +21,8 @@ private const val TRANSLATION_MILLIS_FOR_FULL_SCREEN = 400
  */
 object NavigationOverlayAnimations {
 
-    fun onCreateViewAnimateIn(overlay: View, isInitialHomescreen: Boolean, isBeingRestored: Boolean, onAnimationEnd: () -> Unit) {
-        if (isInitialHomescreen || isBeingRestored) {
+    fun onCreateViewAnimateIn(overlay: View, isOverlayOnStartup: Boolean, isBeingRestored: Boolean, onAnimationEnd: () -> Unit) {
+        if (isOverlayOnStartup || isBeingRestored) {
             onAnimationEnd()
             return
         }
@@ -34,7 +34,7 @@ object NavigationOverlayAnimations {
     }
 
     fun animateOut(overlay: NavigationOverlayFragment, onAnimationEnd: () -> Unit) {
-        getAnimator(overlay.view!!, isAnimateIn = false, isInitialHomescreen = overlay.isInitialHomescreen, onAnimationEnd = onAnimationEnd)
+        getAnimator(overlay.view!!, isAnimateIn = false, isOverlayOnStartup = overlay.isOverlayOnStartup, onAnimationEnd = onAnimationEnd)
             .start()
     }
 
@@ -42,7 +42,7 @@ object NavigationOverlayAnimations {
     private fun getAnimator(
         overlay: View,
         isAnimateIn: Boolean,
-        isInitialHomescreen: Boolean = false,
+        isOverlayOnStartup: Boolean = false,
         onAnimationEnd: () -> Unit
     ): Animator {
         fun getAnimationDuration(): Long {
@@ -65,7 +65,7 @@ object NavigationOverlayAnimations {
             interpolator = alphaInterpolator
         }
 
-        val initialHomescreenBackgroundAnimator = if (!isInitialHomescreen) {
+        val initialHomescreenBackgroundAnimator = if (!isOverlayOnStartup) {
             null
         } else {
             ObjectAnimator.ofFloat(overlay.initialHomescreenBackground, "alpha", 1f, 0f).apply {
