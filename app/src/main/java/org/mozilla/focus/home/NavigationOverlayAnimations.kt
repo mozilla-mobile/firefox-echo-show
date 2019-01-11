@@ -33,8 +33,8 @@ object NavigationOverlayAnimations {
         }
     }
 
-    fun animateOut(overlay: View, isInitialHomescreen: Boolean, onAnimationEnd: () -> Unit) {
-        getAnimator(overlay, isAnimateIn = false, isInitialHomescreen = isInitialHomescreen, onAnimationEnd = onAnimationEnd)
+    fun animateOut(overlay: NavigationOverlayFragment, onAnimationEnd: () -> Unit) {
+        getAnimator(overlay.view!!, isAnimateIn = false, isInitialHomescreen = overlay.isInitialHomescreen, onAnimationEnd = onAnimationEnd)
             .start()
     }
 
