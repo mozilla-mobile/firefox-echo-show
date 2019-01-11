@@ -37,7 +37,7 @@ private const val KEY_IS_INITIAL_HOMESCREEN = "isInitialHomescreen"
  */
 class NavigationOverlayFragment : Fragment() {
 
-    private val isInitialHomescreen: Boolean by lazy { arguments!!.getBoolean(KEY_IS_INITIAL_HOMESCREEN) }
+    val isInitialHomescreen: Boolean by lazy { arguments!!.getBoolean(KEY_IS_INITIAL_HOMESCREEN) }
 
     private val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
 

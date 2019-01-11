@@ -118,9 +118,8 @@ object ScreenController {
                 .replace(R.id.navigationOverlayContainer, newOverlay, NavigationOverlayFragment.FRAGMENT_TAG)
                 .commit()
         } else {
-            // todo: get if current state is initial homescreen or not for animation out.
             val existingOverlay = getNavOverlay()!!
-            NavigationOverlayAnimations.animateOut(existingOverlay.view!!, isInitialHomescreen = false) {
+            NavigationOverlayAnimations.animateOut(existingOverlay) {
                 fragmentManager.beginTransaction()
                     .remove(existingOverlay)
                     .commit()
