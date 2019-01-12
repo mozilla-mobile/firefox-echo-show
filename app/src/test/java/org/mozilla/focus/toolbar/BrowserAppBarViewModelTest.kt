@@ -5,10 +5,14 @@
 package org.mozilla.focus.toolbar
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.lifecycle.MutableLiveData
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.helpers.ext.assertValues
 import org.robolectric.RobolectricTestRunner
 
@@ -19,30 +23,40 @@ class BrowserAppBarViewModelTest {
 
     private lateinit var viewModel: BrowserAppBarViewModel
 
+    private lateinit var frameworkRepo: FrameworkRepo
+    private lateinit var isVoiceViewEnabled: MutableLiveData<Boolean>
+
     @Before
     fun setUp() {
-        viewModel = BrowserAppBarViewModel()
+        isVoiceViewEnabled = MutableLiveData()
+        frameworkRepo = mock(FrameworkRepo::class.java).also {
+            `when`(it.isVoiceViewEnabled).thenReturn(isVoiceViewEnabled)
+        }
+
+        viewModel = BrowserAppBarViewModel(frameworkRepo)
     }
 
     @Test
     fun `GIVEN voiceView is disabled WHEN navigation overlay is visible THEN toolbar scroll is disabled`() {
-        viewModel.setIsVoiceViewEnabled(false)
-        viewModel.setIsNavigationOverlayVisible(true)
-        viewModel.isToolbarScrollEnabled.assertValues(false) {}
+        viewModel.isToolbarScrollEnabled.assertValues(false) {
+            isVoiceViewEnabled.value = false
+            viewModel.setIsNavigationOverlayVisible(true)
+        }
     }
 
     @Test
     fun `GIVEN voiceView is disabled WHEN navigation overlay is not visible THEN toolbar scroll is enabled`() {
-        viewModel.setIsVoiceViewEnabled(false)
-        viewModel.setIsNavigationOverlayVisible(false)
-        viewModel.isToolbarScrollEnabled.assertValues(true) {}
+        viewModel.isToolbarScrollEnabled.assertValues(true) {
+            isVoiceViewEnabled.value = false
+            viewModel.setIsNavigationOverlayVisible(false)
+        }
     }
 
     @Test
     fun `GIVEN voiceView is enabled THEN toolbar scroll is always disabled`() {
-        viewModel.setIsVoiceViewEnabled(true)
-        viewModel.setIsNavigationOverlayVisible(false)
         viewModel.isToolbarScrollEnabled.assertValues(false, false) {
+            isVoiceViewEnabled.value = true
+            viewModel.setIsNavigationOverlayVisible(false)
             viewModel.setIsNavigationOverlayVisible(true)
         }
     }

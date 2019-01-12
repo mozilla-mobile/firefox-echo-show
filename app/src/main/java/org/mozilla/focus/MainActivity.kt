@@ -9,14 +9,22 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat.startActivity
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
+import mozilla.components.support.ktx.android.view.forEach
 import mozilla.components.support.utils.SafeIntent
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+import org.mozilla.focus.R.id.unpinButton
+import org.mozilla.focus.R.id.unpinOverlay
 import org.mozilla.focus.animation.VisibilityAnimator
+import org.mozilla.focus.architecture.FirefoxViewModelProviders
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
+import org.mozilla.focus.ext.children
 import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.ext.getNavigationOverlay
 import org.mozilla.focus.ext.isVisibleAndNonNull
@@ -89,7 +97,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     private fun initViews() {
-        ViewModelProviders.of(this)[BrowserAppBarViewModel::class.java].let { viewModel ->
+        FirefoxViewModelProviders.of(this)[BrowserAppBarViewModel::class.java].let { viewModel ->
             appBarLayoutController = BrowserAppBarLayoutController(viewModel, appBarLayout, toolbar).apply {
                 init(this@MainActivity)
             }
