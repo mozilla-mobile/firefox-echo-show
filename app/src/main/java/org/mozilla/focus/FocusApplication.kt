@@ -33,7 +33,7 @@ class FocusApplication : LocaleAwareApplication() {
 
         enableStrictMode()
 
-        serviceLocator = ServiceLocator()
+        serviceLocator = ServiceLocator(this)
 
         SearchEngineManager.getInstance().init(this)
         TelemetryWrapper.init(this)
@@ -61,7 +61,6 @@ class FocusApplication : LocaleAwareApplication() {
 
     override fun onLowMemory() {
         super.onLowMemory()
-        //        OkHttpWrapper.onLowMemory(); // Disabled because it throws NPE.
-        // If you need to dump more memory, you may be able to clear the Picasso cache.
+        serviceLocator.imageLoader.onLowMemory()
     }
 }

@@ -4,6 +4,9 @@
 
 package org.mozilla.focus.widget
 
+import android.content.Context
+import org.mozilla.connect.firefox.integrations.ImageLoader
+
 /**
  * Implementation of the Service Locator pattern. Use this class to provide dependencies without
  * making client code aware of their specific implementations (i.e., make it easier to program to
@@ -35,5 +38,7 @@ package org.mozilla.focus.widget
  *   open val telemetry: TelemetryInterface by lazy { SentryWrapper() }
  *   ```
  */
-open class ServiceLocator {
+open class ServiceLocator(applicationContext: Context) {
+
+    val imageLoader = ImageLoader.newInstance(applicationContext)
 }

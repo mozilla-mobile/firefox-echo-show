@@ -15,7 +15,9 @@ import android.support.annotation.AnyThread
 import android.support.annotation.UiThread
 import android.support.annotation.VisibleForTesting
 import org.json.JSONArray
+import org.mozilla.connect.firefox.integrations.ImageLoader
 import org.mozilla.focus.ext.isScreenXLarge
+import org.mozilla.focus.ext.serviceLocator
 import org.mozilla.focus.ext.toUri
 import org.mozilla.focus.utils.ToastManager
 import org.mozilla.focus.utils.UrlUtils
@@ -116,11 +118,9 @@ class BundledTilesManager @VisibleForTesting constructor(
     }
 
     @AnyThread
-    fun loadImageFromPath(context: Context, filename: String): Bitmap {
-        val assetPath = getImagePathInAssets(context.resources.configuration, filename)
-        return context.assets.open(assetPath).use {
-            BitmapFactory.decodeStream(it)
-        }
+    fun loadImageFromPath(context: Context, filename: String): ImageLoader.RequestCreator {
+        val pathInAssets = getImagePathInAssets(context.resources.configuration, filename)
+        return context.serviceLocator.imageLoader.loadFromAssets(pathInAssets)
     }
 
     @VisibleForTesting

@@ -13,7 +13,9 @@ import android.support.annotation.WorkerThread
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.sync.Mutex
 import kotlinx.coroutines.experimental.sync.withLock
+import org.mozilla.connect.firefox.integrations.ImageLoader
 import org.mozilla.focus.ext.arePixelsAllTheSame
+import org.mozilla.focus.ext.serviceLocator
 import org.mozilla.focus.home.HomeTileScreenshotStore.DIR
 import org.mozilla.focus.home.HomeTileScreenshotStore.uuidToFileSystemMutex
 import java.io.File
@@ -128,15 +130,17 @@ object HomeTileScreenshotStore {
      * @return The decoded [Bitmap], or null if the file DNE or the bitmap could not be decoded.
      */
     @WorkerThread // file access.
-    suspend fun read(context: Context, uuid: UUID) = getMutex(uuid).withLock { // TODO: consider timeout: #610
+    suspend fun read(context: Context, uuid: UUID): ImageLoader.RequestCreator = getMutex(uuid).withLock {
+        // TODO: consider timeout: #610
         val file = getFileForUUID(context, uuid)
-        if (!file.exists()) {
-            null
-        } else {
-            file.inputStream().use {
-                BitmapFactory.decodeStream(it, null, BITMAP_FACTORY_OPTIONS)
-            }
-        }
+        return context.serviceLocator.imageLoader.load(file)
+//        if (!file.exists()) {
+//            null
+//        } else {
+//            file.inputStream().use {
+//                BitmapFactory.decodeStream(it, null, BITMAP_FACTORY_OPTIONS)
+//            }
+//        }
     }
 
     @VisibleForTesting internal fun getFileForUUID(context: Context, uuid: UUID) = File(context.filesDir, getPathForUUID(uuid))

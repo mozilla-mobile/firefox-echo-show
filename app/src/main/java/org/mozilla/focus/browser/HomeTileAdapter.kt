@@ -181,8 +181,9 @@ class HomeTileAdapter(
 }
 
 private fun onBindBundledHomeTile(holder: TileViewHolder, tile: BundledHomeTile) = with(holder) {
-    val bitmap = BundledTilesManager.getInstance(itemView.context).loadImageFromPath(itemView.context, tile.imagePath)
-    iconView.setImageBitmap(bitmap)
+    BundledTilesManager.getInstance(itemView.context)
+        .loadImageFromPath(itemView.context, tile.imagePath)
+        .into(iconView)
 
     // TODO remove hardcoded search tile title
     // This is necessary while bundled tiles are loaded from JSON (which cannot
@@ -198,13 +199,19 @@ private fun onBindCustomHomeTile(uiLifecycleCancelJob: Job, holder: TileViewHold
     launch(uiLifecycleCancelJob + UI, CoroutineStart.UNDISPATCHED) {
         val validUri = item.url.toJavaURI()
 
-        val screenshotDeferred = async {
-            val homeTileCornerRadius = itemView.resources.getDimension(R.dimen.home_tile_corner_radius)
-            val homeTilePlaceholderCornerRadius = itemView.resources.getDimension(R.dimen.home_tile_placeholder_corner_radius)
-            val screenshot = HomeTileScreenshotStore.read(itemView.context, item.id)?.withRoundedCorners(homeTileCornerRadius)
-            screenshot ?: HomeTilePlaceholderGenerator.generate(itemView.context, item.url)
-                    .withRoundedCorners(homeTilePlaceholderCornerRadius)
-        }
+//        val screenshotDeferred = async {
+//            val homeTileCornerRadius = itemView.resources.getDimension(R.dimen.home_tile_corner_radius)
+//            val homeTilePlaceholderCornerRadius = itemView.resources.getDimension(R.dimen.home_tile_placeholder_corner_radius)
+//            val screenshot = HomeTileScreenshotStore.read(itemView.context, item.id)?.withRoundedCorners(homeTileCornerRadius)
+//            screenshot ?: HomeTilePlaceholderGenerator.generate(itemView.context, item.url)
+//                    .withRoundedCorners(homeTilePlaceholderCornerRadius)
+//        }
+
+        HomeTileScreenshotStore.read(itemView.context, item.id)
+            .fit()
+            .centerInside()
+            .withRoundedCorners(20f)
+            .into(iconView)
 
         val titleDeferred = if (validUri == null) {
             CompletableDeferred(item.url)
@@ -216,13 +223,13 @@ private fun onBindCustomHomeTile(uiLifecycleCancelJob: Job, holder: TileViewHold
         }
 
         // We wait for both to complete so we can animate them together.
-        val screenshot = screenshotDeferred.await()
+//        val screenshot = screenshotDeferred.await()
         val title = titleDeferred.await()
 
         // NB: Don't suspend after this point (i.e. between view updates like setImage)
         // so we don't see intermediate view states.
         // TODO: It'd be less error-prone to launch { /* bg work */ launch(UI) { /* UI work */ } }
-        iconView.setImageBitmap(screenshot)
+//        iconView.setImageBitmap(screenshot)
         titleView.text = title
 
         // Animate to avoid pop-in due to thread hand-offs. TODO: animation is janky.
@@ -230,10 +237,11 @@ private fun onBindCustomHomeTile(uiLifecycleCancelJob: Job, holder: TileViewHold
             interpolator = CUSTOM_TILE_ICON_INTERPOLATOR
             duration = CUSTOM_TILE_TO_SHOW_MILLIS
 
-            val iconAnim = ObjectAnimator.ofInt(iconView, "imageAlpha", 0, 255)
+//            val iconAnim = ObjectAnimator.ofInt(iconView, "imageAlpha", 0, 255)
             val titleAnim = ObjectAnimator.ofFloat(titleView, "alpha", 0f, 1f)
 
-            playTogether(iconAnim, titleAnim)
+//            playTogether(iconAnim, titleAnim)
+            playTogether(titleAnim)
         }.start()
     }
 }
