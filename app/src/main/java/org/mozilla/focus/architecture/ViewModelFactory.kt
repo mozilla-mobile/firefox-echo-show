@@ -6,6 +6,7 @@ package org.mozilla.focus.architecture
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import org.mozilla.focus.browser.BrowserViewModel
 import org.mozilla.focus.toolbar.BrowserAppBarViewModel
 import org.mozilla.focus.widget.ServiceLocator
 
@@ -20,6 +21,7 @@ class ViewModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = with(serviceLocator) {
         when (modelClass) {
             BrowserAppBarViewModel::class.java -> BrowserAppBarViewModel(frameworkRepo) as T
+            BrowserViewModel::class.java -> BrowserViewModel(frameworkRepo) as T
 
             else -> throw IllegalArgumentException("Unknown modelClass $modelClass")
         }
