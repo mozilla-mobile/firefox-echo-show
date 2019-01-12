@@ -8,6 +8,8 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.Lifecycle.Event.ON_START
 import android.arch.lifecycle.Lifecycle.Event.ON_STOP
 import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.OnLifecycleEvent
 import android.support.annotation.VisibleForTesting
 import android.support.annotation.VisibleForTesting.PRIVATE
@@ -29,22 +31,27 @@ private const val TOOLBAR_SCROLL_ENABLED_FLAGS = SCROLL_FLAG_SCROLL or
 
 /** A view controller for the [AppBarLayout] and the [BrowserToolbar] it contains. */
 class BrowserAppBarLayoutController(
+    private val viewModel: BrowserAppBarViewModel,
     private val appBarLayout: AppBarLayout,
     private val toolbar: BrowserToolbar
 ) : AccessibilityManager.TouchExplorationStateChangeListener, LifecycleObserver {
 
     private val context = appBarLayout.context
-    private var isHomeVisible = false
 
-    fun init(lifecycle: Lifecycle) {
+    fun init(lifecycle: Lifecycle, lifecycleOwner: LifecycleOwner) {
         lifecycle.addObserver(this)
+        viewModel.isToolbarScrollEnabled.observe(lifecycleOwner, Observer {
+            toolbar.setIsScrollEnabled(it!!)
+        })
     }
 
     @VisibleForTesting(otherwise = PRIVATE)
     @OnLifecycleEvent(ON_START)
     fun onStart() {
         context.getAccessibilityManager().addTouchExplorationStateChangeListener(this)
-        updateCanScroll(isHomeVisible = isHomeVisible, isVoiceViewEnabled = context.isVoiceViewEnabled())
+
+        // The state may have changed while the listener was unattached: refresh it.
+        viewModel.setIsVoiceViewEnabled(context.isVoiceViewEnabled())
     }
 
     @VisibleForTesting(otherwise = PRIVATE)
@@ -53,18 +60,12 @@ class BrowserAppBarLayoutController(
         context.getAccessibilityManager().removeTouchExplorationStateChangeListener(this)
     }
 
-    private fun updateCanScroll(isHomeVisible: Boolean, isVoiceViewEnabled: Boolean) {
-        val canScroll = !isHomeVisible && !isVoiceViewEnabled
-        toolbar.setIsScrollEnabled(canScroll)
-    }
-
     fun onHomeVisibilityChange(isHomeVisible: Boolean) {
-        updateCanScroll(isHomeVisible = isHomeVisible, isVoiceViewEnabled = context.isVoiceViewEnabled())
-        this.isHomeVisible = isHomeVisible
+        viewModel.setIsNavigationOverlayVisible(isHomeVisible)
     }
 
-    override fun onTouchExplorationStateChanged(enabled: Boolean) { // touch exploration state = VoiceView
-        updateCanScroll(isHomeVisible = isHomeVisible, isVoiceViewEnabled = enabled)
+    override fun onTouchExplorationStateChanged(enabled: Boolean) {
+        viewModel.setIsVoiceViewEnabled(enabled) // touch exploration state = VoiceView
     }
 
     fun onFullScreenChange(isFullscreen: Boolean) {

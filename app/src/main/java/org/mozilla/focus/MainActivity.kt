@@ -5,6 +5,7 @@
 
 package org.mozilla.focus
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -32,6 +33,7 @@ import org.mozilla.focus.settings.UserClearDataEventObserver
 import org.mozilla.focus.telemetry.SentryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
+import org.mozilla.focus.toolbar.BrowserAppBarViewModel
 import org.mozilla.focus.toolbar.ToolbarCallbacks
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarIntegration
@@ -87,8 +89,10 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     private fun initViews() {
-        appBarLayoutController = BrowserAppBarLayoutController(appBarLayout, toolbar).apply {
-            init(lifecycle)
+        ViewModelProviders.of(this)[BrowserAppBarViewModel::class.java].let { viewModel ->
+            appBarLayoutController = BrowserAppBarLayoutController(viewModel, appBarLayout, toolbar).apply {
+                init(lifecycle, this@MainActivity)
+            }
         }
     }
 
