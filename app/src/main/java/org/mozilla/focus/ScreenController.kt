@@ -128,7 +128,7 @@ object ScreenController {
             }
         }
 
-        fragmentManager.getBrowserFragment()?.onNavigationOverlayVisibilityChange(isOverlayOnStartup = isOverlayOnStartup)
+        fragmentManager.getBrowserFragment()?.onNavigationOverlayVisibilityChange(isVisible)
         appBarLayoutController.onHomeVisibilityChange(isVisible)
     }
 }
