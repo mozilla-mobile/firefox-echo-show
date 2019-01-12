@@ -12,17 +12,14 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener
 import org.mozilla.focus.R
+import org.mozilla.focus.architecture.FirefoxViewModelProviders
 import org.mozilla.focus.browser.URLs.APP_STARTUP_HOME
-import org.mozilla.focus.ext.getAccessibilityManager
 import org.mozilla.focus.ext.getNavigationOverlay
 import org.mozilla.focus.ext.isVisibleAndNonNull
-import org.mozilla.focus.ext.isVoiceViewEnabled
 import org.mozilla.focus.ext.toUri
 import org.mozilla.focus.home.BundledTilesManager
 import org.mozilla.focus.home.CustomTilesManager
-import org.mozilla.focus.home.NavigationOverlayFragment
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.IWebViewLifecycleFragment
 import org.mozilla.focus.session.NullSession
@@ -80,7 +77,10 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     internal val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
     val toolbarStateProvider = BrowserToolbarStateProvider()
-    private var touchExplorationStateChangeListener: TouchExplorationStateChangeListener? = null
+    private var isWebViewVisibleObserver: IsWebViewVisibleViewModelObserver? = null
+
+    private val viewModel: BrowserViewModel
+        get() = FirefoxViewModelProviders.of(this)[BrowserViewModel::class.java]
 
     /**
      * The current URL.
@@ -192,9 +192,12 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val layout = inflater.inflate(R.layout.fragment_browser, container, false)
 
-        touchExplorationStateChangeListener = BrowserTouchExplorationStateChangeListener(
-                fragmentManager::getNavigationOverlay, this::updateWebViewVisibility).also {
-            layout.context.getAccessibilityManager().addTouchExplorationStateChangeListener(it)
+        if (isWebViewVisibleObserver != null) {
+            throw IllegalStateException("WebViewVisibleObserver unexpectedly already exists: bad lifecycle assumptions?")
+        }
+        isWebViewVisibleObserver = IsWebViewVisibleViewModelObserver().also {
+            // TODO: After SDK 28 upgrade (#72), observe over viewLifecycleOwner, remove obs removal in destroyView.
+            viewModel.isWebViewVisible.observe(this@BrowserFragment, it)
         }
 
         return layout
@@ -203,13 +206,14 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        context?.getAccessibilityManager()?.removeTouchExplorationStateChangeListener(touchExplorationStateChangeListener)
-        touchExplorationStateChangeListener = null
+        isWebViewVisibleObserver?.let {
+            viewModel.isWebViewVisible.removeObserver(it)
+            isWebViewVisibleObserver = null
+        }
     }
 
-    fun onNavigationOverlayVisibilityChange(isOverlayOnStartup: Boolean = false) {
-        updateWebViewVisibility(isVoiceViewEnabled = context!!.isVoiceViewEnabled(),
-            isHomescreenOnStartup = isOverlayOnStartup)
+    fun onNavigationOverlayVisibilityChange(isVisible: Boolean) {
+        viewModel.onNavigationOverlayVisibilityChange(isVisible)
     }
 
     fun loadUrl(url: String) {
@@ -219,22 +223,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         if (webView != null && !TextUtils.isEmpty(url) && !URLS_BLOCKED_FROM_USERS.contains(url)) {
             webView.loadUrl(url)
         }
-    }
-
-    private fun updateWebViewVisibility(
-        isVoiceViewEnabled: Boolean,
-        isHomescreenOnStartup: Boolean
-    ) {
-        // We want to disable accessibility on the WebView when the home screen is visible so users
-        // cannot focus the WebView content below home tiles. Unfortunately, isFocusable* and
-        // setImportantForAccessibility didn't work so the only way I could disable WebView
-        // accessibility was to hide it. However, hiding it here looks bad for visual users and
-        // hiding it in conjunction with home screen animations adds complexity. Also, future designs
-        // display the home tiles over the partially visible, unfocusable WebView, invalidating the
-        // hide-it-for-everyone approach so it seemed simpler to only hide the WebView for a11y users
-        // in this simple place.
-        val isWebViewHidden = isVoiceViewEnabled && isHomescreenOnStartup
-        webView?.setVisibility(if (isWebViewHidden) View.GONE else View.VISIBLE)
     }
 
     inner class BrowserToolbarStateProvider : ToolbarStateProvider {
@@ -258,13 +246,10 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             WebCompat.onSessionLoadingChanged(isLoading, uri, webView)
         }
     }
-}
 
-private class BrowserTouchExplorationStateChangeListener(
-    private val navigationOverlayProvider: () -> NavigationOverlayFragment?,
-    private val updateWebViewVisibility: (isVoiceViewEnabled: Boolean, isHomeVisible: Boolean) -> Unit
-) : TouchExplorationStateChangeListener {
-    override fun onTouchExplorationStateChanged(isVoiceViewEnabled: Boolean) { // touch exploration state = VoiceView
-        updateWebViewVisibility(isVoiceViewEnabled, navigationOverlayProvider().isVisibleAndNonNull)
+    private inner class IsWebViewVisibleViewModelObserver : Observer<Boolean> {
+        override fun onChanged(isVisible: Boolean?) {
+            webView?.setVisibility(if (isVisible!!) View.VISIBLE else View.GONE)
+        }
     }
 }
