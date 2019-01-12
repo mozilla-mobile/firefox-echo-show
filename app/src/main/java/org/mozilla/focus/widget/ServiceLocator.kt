@@ -4,6 +4,8 @@
 
 package org.mozilla.focus.widget
 
+import org.mozilla.focus.architecture.FrameworkRepo
+
 /**
  * Implementation of the Service Locator pattern. Use this class to provide dependencies without
  * making client code aware of their specific implementations (i.e., make it easier to program to
@@ -36,4 +38,6 @@ package org.mozilla.focus.widget
  *   ```
  */
 open class ServiceLocator {
+
+    val frameworkRepo = FrameworkRepo()
 }

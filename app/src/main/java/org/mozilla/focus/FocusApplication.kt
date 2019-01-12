@@ -7,6 +7,7 @@ package org.mozilla.focus
 
 import android.os.StrictMode
 import android.support.v7.preference.PreferenceManager
+import org.mozilla.focus.ext.getAccessibilityManager
 
 import org.mozilla.focus.locale.LocaleAwareApplication
 import org.mozilla.focus.search.SearchEngineManager
@@ -33,7 +34,10 @@ class FocusApplication : LocaleAwareApplication() {
 
         enableStrictMode()
 
-        serviceLocator = ServiceLocator()
+        serviceLocator = ServiceLocator().apply {
+            // The listener gets called even when the application is backgrounded.
+            frameworkRepo.init(getAccessibilityManager())
+        }
 
         SearchEngineManager.getInstance().init(this)
         TelemetryWrapper.init(this)
