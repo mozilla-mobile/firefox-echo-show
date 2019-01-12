@@ -6,6 +6,7 @@ package org.mozilla.focus.architecture
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import org.mozilla.focus.toolbar.BrowserAppBarViewModel
 import org.mozilla.focus.widget.ServiceLocator
 
 /**
@@ -16,7 +17,11 @@ class ViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST") // necessary to get generic types to match, unfortunately.
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = when (modelClass) {
-        else -> throw IllegalArgumentException("Unknown modelClass $modelClass")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = with(serviceLocator) {
+        when (modelClass) {
+            BrowserAppBarViewModel::class.java -> BrowserAppBarViewModel(frameworkRepo) as T
+
+            else -> throw IllegalArgumentException("Unknown modelClass $modelClass")
+        }
     }
 }

@@ -4,44 +4,31 @@
 
 package org.mozilla.focus.toolbar
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.UiThread
-import kotlin.properties.ObservableProperty
-import kotlin.reflect.KProperty
+import org.mozilla.focus.architecture.FrameworkRepo
+import org.mozilla.focus.ext.LiveDataCombiners
 
 /**
  * The view state, and UI event callbacks, for the app bar layout.
  */
-class BrowserAppBarViewModel : ViewModel() {
+class BrowserAppBarViewModel(
+    frameworkRepo: FrameworkRepo
+) : ViewModel() {
 
-    private var _isToolbarScrollEnabled = MutableLiveData<Boolean>()
-    val isToolbarScrollEnabled: LiveData<Boolean> = _isToolbarScrollEnabled
+    private val isNavigationOverlayVisible = MutableLiveData<Boolean>()
 
-    // The initial values are unimportant because they're immediately updated.
-    // TODO: these properties should be reactively pushed from the model.
-    private var isNavigationOverlayVisible: Boolean by ToolbarScrollAffectingProperty(false)
-    private var isVoiceViewEnabled: Boolean by ToolbarScrollAffectingProperty(false)
+    val isToolbarScrollEnabled = LiveDataCombiners.combineLatest(
+        frameworkRepo.isVoiceViewEnabled,
+        isNavigationOverlayVisible
+    ) { isVoiceViewEnabled, isNavigationOverlayVisible ->
+        !isVoiceViewEnabled && !isNavigationOverlayVisible
+    }
 
+    // TODO: this property should be reactively pushed from the model.
     @UiThread
     fun setIsNavigationOverlayVisible(isVisible: Boolean) {
-        isNavigationOverlayVisible = isVisible
-    }
-
-    @UiThread
-    fun setIsVoiceViewEnabled(isEnabled: Boolean) {
-        isVoiceViewEnabled = isEnabled
-    }
-
-    /**
-     * A delegated property to be used for properties whose value affect the [isToolbarScrollEnabled] property.
-     * This is used to reduce code duplication over multiple observables.
-     */
-    private inner class ToolbarScrollAffectingProperty(initialValue: Boolean) : ObservableProperty<Boolean>(initialValue) {
-        override fun afterChange(property: KProperty<*>, oldValue: Boolean, newValue: Boolean) {
-            // For simplicity, update on the UI thread. This property affects UI so it should be UI thread anyway.
-            _isToolbarScrollEnabled.value = !isNavigationOverlayVisible && !isVoiceViewEnabled
-        }
+        isNavigationOverlayVisible.value = isVisible
     }
 }
