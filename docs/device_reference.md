@@ -11,7 +11,7 @@ There are currently two devices:
 
 We recommend **developing** on Android tablet emulators for developer efficiency: the recommended Android emulator images are mentioned above.
 
-However, we ultimately recommend **verifying behavior** on device: the behavior on device differs from the emulator. Important note: **locally built apps cannot be installed on production Echo Show devices** so if you do not have a developer device, use th the emulators.
+However, we ultimately recommend **verifying behavior** on device: the behavior on device differs from the emulator. Important note: **locally built apps cannot be installed on production Echo Show devices** so if you do not have a developer device, use the emulators.
 
 ### Known differences between Echo Show devices and Android tablet emulators
 From a user experience perspective, we've noticed the following differences:
@@ -23,7 +23,15 @@ From a user experience perspective, we've noticed the following differences:
 
 From an implementation perspective, we've noticed the following differences:
 - `onStop` is not called when the device times out ([#172](https://github.com/mozilla-mobile/firefox-echo-show/issues/172))
-- If more than one WebView is created, the app will crash
+- If more than one WebView is created on the Echo Show device, the app will crash unlike Android
 
 ## Distinguishing devices in code
-Within Android resources, we use the screen size metric to distinguish devices: no qualifiers selects a 1st generation device and `xlarge` overrides the no-qualifier resources for a 2nd generation device. We use screen size because it's simple and less prescriptive compared to other resource metrics like `sw*dp` and `w*dp`.
+We distinguish devices using [the screen size metric][res size] from the Android resources system:
+- All devices will use resources with no qualifiers (e.g. `layout`)
+- You can target the 2nd generation Show by overriding the no qualifier resources with `xlarge` resources (e.g. `layout-xlarge`)
+
+See the table above to see which screen size metric each device uses.
+
+We use screen size because it's simple and less prescriptive compared to other resource metrics like `sw*dp` and `w*dp`.
+
+[res size]: https://developer.android.com/guide/topics/resources/providing-resources#ScreenSizeQualifier
