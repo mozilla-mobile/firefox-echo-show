@@ -47,7 +47,9 @@
             app:layout_constraintTop_toTopOf="@id/backgroundShadowOffset"
             app:layout_constraintStart_toStartOf="@id/backgroundView"
             app:layout_constraintEnd_toEndOf="@id/backgroundView"
-            android:background="@drawable/navigation_overlay_background_shadow"/>
+            android:background="@drawable/navigation_overlay_background_shadow"
+            android:visibility="gone"
+    />
 
     <!-- The height of this view determines the height of the shadow. Unfortunately, offseting a constraint
          (constraintTop_toTopOf=backgroundView - 8dp) doesn't seem otherwise possible so we use this spacer. -->
@@ -56,17 +58,16 @@
             android:layout_width="match_parent"
             android:layout_height="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/backgroundView"/>
+            app:layout_constraintBottom_toTopOf="@id/homeTiles"/>
 
-    <View
+    <org.mozilla.focus.home.NavigationOverlayBackgroundShadowView
             android:id="@+id/backgroundView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@id/homeTiles"
+            app:layout_constraintTop_toTopOf="@id/backgroundShadowOffset"
             app:layout_constraintBottom_toBottomOf="@id/homeTiles"
             app:layout_constraintStart_toStartOf="@id/homeTiles"
-            app:layout_constraintEnd_toEndOf="@id/homeTiles"
-            android:background="@drawable/navigation_overlay_background"/>
+            app:layout_constraintEnd_toEndOf="@id/homeTiles"/>
 
     <!-- This view defines the dimensions of most other views in this layout. The height constraint configuration and
          bias changes dynamically based on mode. In dialog mode, the height will wrap this view's content: one
