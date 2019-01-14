@@ -4,7 +4,6 @@
 
 package org.mozilla.focus.toolbar
 
-import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.Lifecycle.Event.ON_START
 import android.arch.lifecycle.Lifecycle.Event.ON_STOP
 import android.arch.lifecycle.LifecycleObserver
@@ -38,8 +37,8 @@ class BrowserAppBarLayoutController(
 
     private val context = appBarLayout.context
 
-    fun init(lifecycle: Lifecycle, lifecycleOwner: LifecycleOwner) {
-        lifecycle.addObserver(this)
+    fun init(lifecycleOwner: LifecycleOwner) {
+        lifecycleOwner.lifecycle.addObserver(this)
         viewModel.isToolbarScrollEnabled.observe(lifecycleOwner, Observer {
             toolbar.setIsScrollEnabled(it!!)
         })
