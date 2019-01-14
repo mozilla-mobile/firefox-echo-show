@@ -43,37 +43,37 @@ If this session probe doesn't fit your use case, you might be able to use the `p
 
 #### General
 
-| Event                                  | category | method                | object     | value  | extras.    |
-|----------------------------------------|----------|-----------------------|------------|--------|------------|
-| Settings: confirms clear data dialog   | action   | change                | setting    | clear_data | |
-| Startup complete   | aggregate   | startup_complete                | app    | startup time in MS | |
-| Page load histogram                    | histogram| foreground            | browser    | histogram of page loads | |
-| Fullscreen exited                      | action   | hide                  | fullscreen |        | `{"scale_gesture": "true"/"false"}` |
+| Event                                  | category | method                | object     | value                   | extras.                             |
+|----------------------------------------|----------|-----------------------|------------|-------------------------|-------------------------------------|
+| Settings: confirms clear data dialog   | action   | change                | setting    | clear_data              |                                     |
+| Startup complete                       | aggregate| startup_complete      | app        | startup time in MS      |                                     |
+| Page load histogram                    | histogram| foreground            | browser    | histogram of page loads |                                     |
+| Fullscreen exited                      | action   | hide                  | fullscreen |                         | `{"scale_gesture": "true"/"false"}` |
 
 #### Toolbar
-| Event                                  | category | method                | object     | value  | extras.    |
-|----------------------------------------|----------|-----------------------|------------|--------|------------|
-| Home clicked                           | action   | click                 | toolbar    | home   | |
-| Back clicked                           | action   | click                 | toolbar    | back   | |
-| Forward clicked                        | action   | click                 | toolbar    | forward| |
-| Refresh clicked                        | action   | click                 | toolbar    | refresh| |
-| Settings clicked                       | action   | click                 | toolbar    | settings| |
-| Pin/unpin clicked                      | action   | change                | pin_page   | on/off | |
-| URL entered                            | action   | type_url              | search_bar |        | `{autocomplete: true/false}` |
-| Search query entered                   | action   | type_query            | search_bar |        | |
+| Event                                  | category | method                | object     | value   | extras.                      |
+|----------------------------------------|----------|-----------------------|------------|---------|------------------------------|
+| Home clicked                           | action   | click                 | toolbar    | home    |                              |
+| Back clicked                           | action   | click                 | toolbar    | back    |                              |
+| Forward clicked                        | action   | click                 | toolbar    | forward |                              |
+| Refresh clicked                        | action   | click                 | toolbar    | refresh |                              |
+| Settings clicked                       | action   | click                 | toolbar    | settings|                              |
+| Pin/unpin clicked                      | action   | change                | pin_page   | on/off  |                              |
+| URL entered                            | action   | type_url              | search_bar |         | `{autocomplete: true/false}` |
+| Search query entered                   | action   | type_query            | search_bar |         |                              |
 
 #### Home
-| Event                                  | category | method                | object     | value  | extras.    |
-|----------------------------------------|----------|-----------------------|------------|--------|------------|
-| Tile clicked                           | action   | click                 | home_tile  | bundled/custom | |
-| Tile removed                           | action   | remove                | home_tile  | bundled/custom | |
-| Dismiss home (by clicking toolbar overlay)|action | hide                  | home       | overlay| |
+| Event                                  | category | method                | object     | value          | extras.    |
+|----------------------------------------|----------|-----------------------|------------|----------------|------------|
+| Tile clicked                           | action   | click                 | home_tile  | bundled/custom |            |
+| Tile removed                           | action   | remove                | home_tile  | bundled/custom |            |
+| Dismiss home (by clicking toolbar overlay)|action | hide                  | home       | overlay        |            |
 
 #### SSL Errors
 
 | Event                                      | category | method   | object  | extras  |
 |--------------------------------------------|----------|----------|---------|---------|
-| SSL Error From Page                        | error    | page     | browser |`error`*|
+| SSL Error From Page                        | error    | page     | browser |`error`* |
 | SSL Error From Resource                    | error    | resource | browser |`error`* |
 
 (*)`error` is a JSON map containing the primary SSL Error 
