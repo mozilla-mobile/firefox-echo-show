@@ -99,6 +99,12 @@ object ScreenController {
         SessionManager.getInstance().removeAllSessions()
     }
 
+    /**
+     * Sets the navigation overlay visibility based on the given params.
+     *
+     * This method will throw if this method is called to set the nav overlay visible
+     * but it is already visible and vice versa.
+     */
     fun setNavigationOverlayIsVisible(
         fragmentManager: FragmentManager,
         appBarLayoutController: BrowserAppBarLayoutController,
@@ -117,7 +123,7 @@ object ScreenController {
                 .replace(R.id.navigationOverlayContainer, newOverlay, NavigationOverlayFragment.FRAGMENT_TAG)
                 .commit()
         } else {
-            val existingOverlay = getNavOverlay()!!
+            val existingOverlay = getNavOverlay() ?: throw IllegalStateException("Expected navigation overlay to exist")
             NavigationOverlayAnimations.animateOut(existingOverlay) {
                 fragmentManager.beginTransaction()
                     .remove(existingOverlay)
