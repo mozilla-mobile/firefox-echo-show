@@ -30,7 +30,7 @@ The event ping contains a list of events ([see event format on readthedocs.io](h
 | Start session (App is in the foreground) | action   | foreground | app    |        |
 | Stop session (App is in the background)  | action   | background | app    |        |
 
-N.B. Sessions as recorded today are unlikely to match your intuitive definition of a "session". Sessions will sometimes stop when the browser part of the application is partially obscured (`onPause/onResume`). On Echo Show, the session ends for:
+N.B. Sessions as recorded today are unlikely to match your intuitive definition of a "session". Sessions will sometimes stop when the browser part of the application is partially obscured (`onPause/onResume`). In addition to situations where the session intuitively stops (e.g. device sleep or switching apps), on Echo Show the session also ends for:
 - Opening Firefox settings
 - Opening the device settings
 - Unrelated voice commands that display visuals
