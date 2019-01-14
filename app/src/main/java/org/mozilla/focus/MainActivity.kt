@@ -91,7 +91,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     private fun initViews() {
         ViewModelProviders.of(this)[BrowserAppBarViewModel::class.java].let { viewModel ->
             appBarLayoutController = BrowserAppBarLayoutController(viewModel, appBarLayout, toolbar).apply {
-                init(lifecycle, this@MainActivity)
+                init(this@MainActivity)
             }
         }
     }
