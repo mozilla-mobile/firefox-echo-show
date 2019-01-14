@@ -5,12 +5,11 @@
 package org.mozilla.focus.toolbar
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mozilla.focus.helpers.ext.assertValues
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -29,21 +28,22 @@ class BrowserAppBarViewModelTest {
     fun `GIVEN voiceView is disabled WHEN navigation overlay is visible THEN toolbar scroll is disabled`() {
         viewModel.setIsVoiceViewEnabled(false)
         viewModel.setIsNavigationOverlayVisible(true)
-        viewModel.isToolbarScrollEnabled.observeForever { assertFalse(it!!) }
+        viewModel.isToolbarScrollEnabled.assertValues(false) {}
     }
 
     @Test
     fun `GIVEN voiceView is disabled WHEN navigation overlay is not visible THEN toolbar scroll is enabled`() {
         viewModel.setIsVoiceViewEnabled(false)
         viewModel.setIsNavigationOverlayVisible(false)
-        viewModel.isToolbarScrollEnabled.observeForever { assertTrue(it!!) }
+        viewModel.isToolbarScrollEnabled.assertValues(true) {}
     }
 
     @Test
     fun `GIVEN voiceView is enabled THEN toolbar scroll is always disabled`() {
         viewModel.setIsVoiceViewEnabled(true)
         viewModel.setIsNavigationOverlayVisible(false)
-        viewModel.isToolbarScrollEnabled.observeForever { assertFalse(it!!) }
-        viewModel.setIsNavigationOverlayVisible(true)
+        viewModel.isToolbarScrollEnabled.assertValues(false, false) {
+            viewModel.setIsNavigationOverlayVisible(true)
+        }
     }
 }
