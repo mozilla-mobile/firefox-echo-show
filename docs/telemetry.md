@@ -65,9 +65,11 @@ If this session probe doesn't fit your use case, you might be able to use the `p
 #### Home
 | Event                                  | category | method                | object     | value          | extras.    |
 |----------------------------------------|----------|-----------------------|------------|----------------|------------|
-| Tile clicked                           | action   | click                 | home_tile  | bundled/custom |            |
+| Tile clicked                           | action   | click                 | home_tile  | bundled/custom/youtube* |            |
 | Tile removed                           | action   | remove                | home_tile  | bundled/custom |            |
 | Dismiss home (by clicking toolbar overlay)|action | hide                  | home       | overlay        |            |
+
+(*)YouTube tile clicks are a sub-category of bundled tile clicks- each click will count towards both values.
 
 #### SSL Errors
 
