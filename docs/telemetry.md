@@ -63,13 +63,13 @@ If this session probe doesn't fit your use case, you might be able to use the `p
 | Search query entered                   | action   | type_query            | search_bar |         |                              |
 
 #### Home
-| Event                                  | category | method                | object     | value          | extras.    |
-|----------------------------------------|----------|-----------------------|------------|----------------|------------|
+| Event                                  | category | method                | object     | value                   | extras.    |
+|----------------------------------------|----------|-----------------------|------------|-------------------------|------------|
 | Tile clicked                           | action   | click                 | home_tile  | bundled/custom/youtube* |            |
-| Tile removed                           | action   | remove                | home_tile  | bundled/custom |            |
-| Dismiss home (by clicking toolbar overlay)|action | hide                  | home       | overlay        |            |
+| Tile removed                           | action   | remove                | home_tile  | bundled/custom          |            |
+| Dismiss home (by clicking toolbar overlay)|action | hide                  | home       | overlay                 |            |
 
-(*)YouTube tile clicks are a sub-category of bundled tile clicks- each click will count towards both values.
+(*) A click on the YouTube tile will result in 1 'bundled' event and 1 'youtube' event being sent
 
 #### SSL Errors
 
