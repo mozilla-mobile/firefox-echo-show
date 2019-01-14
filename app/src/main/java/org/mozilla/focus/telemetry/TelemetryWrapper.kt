@@ -41,6 +41,7 @@ object TelemetryWrapper {
     private const val HISTOGRAM_SIZE = 200
     private const val BUCKET_SIZE_MS = 100
     private const val HISTOGRAM_MIN_INDEX = 0
+    private const val YOUTUBE_TILE_ID = "youtube"
 
     private object Category {
         val ACTION = "action"
@@ -89,6 +90,7 @@ object TelemetryWrapper {
         val TILE_BUNDLED = "bundled"
         val TILE_CUSTOM = "custom"
         val OVERLAY = "overlay"
+        val YOUTUBE_TILE = "youtube_tile"
     }
 
     private object Extra {
@@ -238,6 +240,11 @@ object TelemetryWrapper {
     }
 
     fun homeTileClickEvent(tile: HomeTile) {
+        if (tile.idToString() == YOUTUBE_TILE_ID) {
+            TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.HOME_TILE,
+                    Value.YOUTUBE_TILE).queue()
+        }
+
         TelemetryEvent.create(Category.ACTION, Method.CLICK, Object.HOME_TILE,
                 getTileTypeAsStringValue(tile)).queue()
     }
