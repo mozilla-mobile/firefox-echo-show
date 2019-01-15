@@ -5,6 +5,7 @@
   <string name="urlbar_hint">検索語またはアドレスを入力</string>
   <string name="menu_settings">設定</string>
   <string name="menu_about">製品情報</string>
+  <string name="fullscreen_toast_pinch_to_exit">ピンチ操作で全画面表示モードを終了します</string>
   <string name="preference_mozilla_telemetry2">使用状況データを送信</string>
   <string name="preference_privacy_notice">プライバシー通知</string>
   <string name="content_description_forward">次のページへ進む</string>

@@ -5,6 +5,7 @@
   <string name="urlbar_hint">Buscar o escribir dirección</string>
   <string name="menu_settings">Ajustes</string>
   <string name="menu_about">Acerca de</string>
+  <string name="fullscreen_toast_pinch_to_exit">Reduce con dos dedos para salir de pantalla completa</string>
   <string name="preference_mozilla_telemetry2">Enviar datos de consumo</string>
   <string name="preference_privacy_notice">Aviso de privacidad</string>
   <string name="content_description_forward">Ir hacia delante</string>

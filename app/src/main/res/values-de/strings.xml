@@ -5,6 +5,7 @@
   <string name="urlbar_hint">Suchen oder Adresse eingeben</string>
   <string name="menu_settings">Einstellungen</string>
   <string name="menu_about">Über</string>
+  <string name="fullscreen_toast_pinch_to_exit">Zusammenziehen, um Vollbildmodus zu beenden</string>
   <string name="preference_mozilla_telemetry2">Nutzungsdaten senden</string>
   <string name="preference_privacy_notice">Datenschutzhinweis</string>
   <string name="content_description_forward">Vorwärts navigieren</string>
