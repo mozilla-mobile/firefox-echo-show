@@ -44,7 +44,7 @@ class NavigationOverlayFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val overlay = inflater.inflate(R.layout.fragment_navigation_overlay, container, false)
 
-        val isVisibleInDialogMode = arrayOf(overlay.semiOpaqueBackground, overlay.dismissHitTarget)
+        val isVisibleInDialogMode = arrayOf(overlay.semiOpaqueBackground, overlay.dismissHitTarget, overlay.overlayHandle)
         isVisibleInDialogMode.forEach { it.visibility = if (isOverlayOnStartup) View.GONE else View.VISIBLE }
         val isVisibleInStartupMode = arrayOf(overlay.initialHomescreenBackground)
         isVisibleInStartupMode.forEach { it.visibility = if (isOverlayOnStartup) View.VISIBLE else View.GONE }

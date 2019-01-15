@@ -55,7 +55,6 @@
         app:layout_constraintBottom_toTopOf="@id/backgroundShadowOffset"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <!--TODO should this be visible on initial load? -->
 
     <!-- Android's elevation only creates shadows facing downward so we create our own upward facing shadow,
          inspired by https://stackoverflow.com/a/41651284.
