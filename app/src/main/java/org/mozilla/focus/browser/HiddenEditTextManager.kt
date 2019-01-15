@@ -8,6 +8,7 @@ import android.content.Context
 import android.text.InputType
 import android.view.KeyEvent
 import android.view.View
+import android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -43,7 +44,10 @@ object HiddenEditTextManager {
             id = HIDDEN_EDIT_TEXT_ID
             inputType = InputType.TYPE_CLASS_TEXT
             hint = viewGroupToAttachTo.context.getString(R.string.google_search_hint_text)
-            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+
+            // For some reason, to prevent focusing on startup and in linear navigation, both of these are necessary.
+            isFocusable = false
+            importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_NO
         }
         viewGroupToAttachTo.addView(editText)
         editText.layoutParams = editText.layoutParams.apply {
