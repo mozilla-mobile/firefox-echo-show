@@ -50,11 +50,11 @@
         android:id="@+id/overlayHandle"
         android:layout_width="64dp"
         android:layout_height="8dp"
-        android:background="@color/photonRed50"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/overlay_handle_background"
         app:layout_constraintBottom_toTopOf="@id/backgroundShadowOffset"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <!--TODO style handle. it's just a red box -->
     <!--TODO should this be visible on initial load? -->
 
     <!-- Android's elevation only creates shadows facing downward so we create our own upward facing shadow,
