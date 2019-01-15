@@ -5,6 +5,7 @@
   <string name="urlbar_hint">搜索或输入网址</string>
   <string name="menu_settings">设置</string>
   <string name="menu_about">关于</string>
+  <string name="fullscreen_toast_pinch_to_exit">双指捏合即可退出全屏模式</string>
   <string name="preference_mozilla_telemetry2">发送使用统计</string>
   <string name="preference_privacy_notice">隐私声明</string>
   <string name="content_description_forward">浏览下一页</string>

@@ -5,6 +5,7 @@
   <string name="urlbar_hint">Pesquisar ou navegar</string>
   <string name="menu_settings">Configurações</string>
   <string name="menu_about">Sobre</string>
+  <string name="fullscreen_toast_pinch_to_exit">Reduza com os dedos para sair do modo de tela cheia</string>
   <string name="preference_mozilla_telemetry2">Enviar dados de utilização</string>
   <string name="preference_privacy_notice">Política de Privacidade</string>
   <string name="content_description_forward">Navegar para a frente</string>

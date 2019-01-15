@@ -5,6 +5,7 @@
   <string name="urlbar_hint">Cerca o inserisci un indirizzo</string>
   <string name="menu_settings">Impostazioni</string>
   <string name="menu_about">Informazioni su</string>
+  <string name="fullscreen_toast_pinch_to_exit">Avvicina due dita per uscire dalla modalità Schermo intero</string>
   <string name="preference_mozilla_telemetry2">Invia dati sull’uso</string>
   <string name="preference_privacy_notice">Informativa sulla privacy</string>
   <string name="content_description_forward">Naviga in avanti</string>
