@@ -46,6 +46,17 @@
             app:layout_constraintStart_toStartOf="parent"
             android:background="@color/photonGrey70"/>
 
+    <View
+        android:id="@+id/overlayHandle"
+        android:layout_width="30dp"
+        android:layout_height="10dp"
+        android:background="@color/photonRed50"
+        app:layout_constraintBottom_toTopOf="@id/backgroundShadowOffset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <!--TODO style handle. it's just a red box -->
+    <!--TODO figure out intended dimensions -->
+
     <!-- Android's elevation only creates shadows facing downward so we create our own upward facing shadow,
          inspired by https://stackoverflow.com/a/41651284.
 

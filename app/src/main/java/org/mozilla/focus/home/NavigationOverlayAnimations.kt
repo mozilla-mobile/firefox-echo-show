@@ -87,7 +87,12 @@ object NavigationOverlayAnimations {
             duration = getAnimationDuration()
 
             val animatorSetBuilder = play(semiOpaqueBackgroundAnimator)
-            arrayOf(overlay.homeTiles, overlay.backgroundView, overlay.backgroundShadowView).forEach {
+            arrayOf(
+                    overlay.homeTiles,
+                    overlay.backgroundView,
+                    overlay.backgroundShadowView,
+                    overlay.overlayHandle
+            ).forEach {
                 animatorSetBuilder.with(getTranslateUpAnimator(it))
             }
             initialHomescreenBackgroundAnimator?.let { animatorSetBuilder.with(it) }
