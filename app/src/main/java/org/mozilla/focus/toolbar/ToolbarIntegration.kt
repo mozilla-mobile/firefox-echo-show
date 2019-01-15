@@ -4,6 +4,8 @@
 
 package org.mozilla.focus.toolbar
 
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.ColorStateList
@@ -81,11 +83,17 @@ object ToolbarIntegration {
      */
     @SuppressWarnings("LongMethod")
     fun setup(
+        lifecycleOwner: LifecycleOwner,
+        viewModel: ToolbarViewModel,
         toolbar: BrowserToolbar,
         toolbarStateProvider: ToolbarStateProvider,
         onToolbarEvent: OnToolbarEvent
     ): ToolbarCallbacks {
         val context = toolbar.context
+
+        viewModel.isToolbarImportantForAccessibility.observe(lifecycleOwner, Observer {
+            toolbar.setIsImportantForAccessibility(it!!)
+        })
 
         toolbar.displaySiteSecurityIcon = false
         toolbar.hint = toolbar.context.getString(R.string.urlbar_hint)
@@ -345,3 +353,16 @@ private val BrowserToolbar.displayToolbar: ViewGroup
 private val BrowserToolbar.editToolbar: ViewGroup
     // The class is internal so we compare against its name instead of its type.
     get() = children().first { it::class.java.simpleName == "EditToolbar" } as ViewGroup
+
+private fun BrowserToolbar.setIsImportantForAccessibility(isImportantForAccessibility: Boolean) {
+    // The open-navigation-overlay button will remain focused unless another view requests focus
+    // (which we expect to happen). We could clear focus here to decouple this code but it's
+    // unfortunately non-trivial.
+    //
+    // Changing focusability doesn't seem to work so we change importantForAccessibility.
+    importantForAccessibility = if (isImportantForAccessibility) {
+        View.IMPORTANT_FOR_ACCESSIBILITY_YES
+    } else {
+        View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+    }
+}
