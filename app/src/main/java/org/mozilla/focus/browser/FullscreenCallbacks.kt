@@ -56,7 +56,7 @@ open class FullscreenCallbacks(
             fullscreenContainerOverride.onInterceptTouchEventObserver = { scaleGestureDetector.onTouchEvent(it) }
         }
 
-        Toast.makeText(view.context, R.string.fullscreen_hint_pinch_to_exit, Toast.LENGTH_SHORT).show()
+        Toast.makeText(view.context, R.string.fullscreen_toast_pinch_to_exit, Toast.LENGTH_SHORT).show()
     }
 
     override fun onExitFullScreen() {
