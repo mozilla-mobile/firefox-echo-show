@@ -30,7 +30,7 @@ public class FocusStringTest {
         final String fullStringRaw = "abcd";
         final FocusString fullString = FocusString.create(fullStringRaw);
 
-        final FocusString substring = fullString.substring(5);
+        fullString.substring(5);
     }
 
     @Test (expected = StringIndexOutOfBoundsException.class)
@@ -38,7 +38,7 @@ public class FocusStringTest {
         final String fullStringRaw = "abcd";
         final FocusString fullString = FocusString.create(fullStringRaw);
 
-        final FocusString substring = fullString.substring(-1);
+        fullString.substring(-1);
     }
 
 
