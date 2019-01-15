@@ -7,6 +7,7 @@ package org.mozilla.focus.utils;
 
 import org.mozilla.focus.BuildConfig;
 
+@SuppressWarnings("unused") // These methods may be useful in the future.
 public final class AppConstants {
     private static final String BUILD_TYPE_DEBUG = "debug";
     private static final String BUILD_TYPE_RELEASE = "release";
