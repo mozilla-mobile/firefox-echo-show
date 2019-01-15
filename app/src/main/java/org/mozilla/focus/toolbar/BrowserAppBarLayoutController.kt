@@ -35,7 +35,7 @@ class BrowserAppBarLayoutController(
     }
 
     fun onHomeVisibilityChange(isHomeVisible: Boolean) {
-        viewModel.setIsNavigationOverlayVisible(isHomeVisible)
+        viewModel.onNavigationOverlayVisibilityChange(isHomeVisible)
     }
 
     fun onFullScreenChange(isFullscreen: Boolean) {

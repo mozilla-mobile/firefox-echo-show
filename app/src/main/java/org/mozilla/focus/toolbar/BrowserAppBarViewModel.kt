@@ -28,7 +28,7 @@ class BrowserAppBarViewModel(
 
     // TODO: this property should be reactively pushed from the model.
     @UiThread
-    fun setIsNavigationOverlayVisible(isVisible: Boolean) {
+    fun onNavigationOverlayVisibilityChange(isVisible: Boolean) {
         isNavigationOverlayVisible.value = isVisible
     }
 }
