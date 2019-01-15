@@ -5,26 +5,18 @@
 
 package org.mozilla.focus
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat.startActivity
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
-import mozilla.components.support.ktx.android.view.forEach
 import mozilla.components.support.utils.SafeIntent
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
-import org.mozilla.focus.R.id.unpinButton
-import org.mozilla.focus.R.id.unpinOverlay
 import org.mozilla.focus.animation.VisibilityAnimator
 import org.mozilla.focus.architecture.FirefoxViewModelProviders
 import org.mozilla.focus.architecture.NonNullObserver
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
-import org.mozilla.focus.ext.children
 import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.ext.getNavigationOverlay
 import org.mozilla.focus.ext.isVisibleAndNonNull
@@ -46,6 +38,7 @@ import org.mozilla.focus.toolbar.ToolbarCallbacks
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
+import org.mozilla.focus.toolbar.ToolbarViewModel
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 
@@ -56,6 +49,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     private lateinit var toolbarCallbacks: ToolbarCallbacks
     private val toolbarStateProvider = DelegateToBrowserToolbarStateProvider()
     private lateinit var appBarLayoutController: BrowserAppBarLayoutController
+
+    private val toolbarViewModel: ToolbarViewModel
+        get() = FirefoxViewModelProviders.of(this)[ToolbarViewModel::class.java]
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +88,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
         initViews()
         WebViewProvider.preload(this)
-        toolbarCallbacks = ToolbarIntegration.setup(toolbar, toolbarStateProvider, ::onToolbarEvent)
         UserClearDataEvent.liveData.observe(this, UserClearDataEventObserver(this))
     }
 
@@ -102,6 +97,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
                 init(this@MainActivity)
             }
         }
+
+        toolbarCallbacks = ToolbarIntegration.setup(this, toolbarViewModel, toolbar, toolbarStateProvider,
+            ::onToolbarEvent)
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {
@@ -175,7 +173,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     override fun setNavigationOverlayIsVisible(isVisible: Boolean, isOverlayOnStartup: Boolean) {
-        ScreenController.setNavigationOverlayIsVisible(supportFragmentManager, appBarLayoutController,
+        ScreenController.setNavigationOverlayIsVisible(supportFragmentManager, appBarLayoutController, toolbarViewModel,
             isVisible = isVisible, isOverlayOnStartup = isOverlayOnStartup)
     }
 

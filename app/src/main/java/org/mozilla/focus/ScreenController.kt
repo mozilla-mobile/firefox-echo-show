@@ -17,6 +17,7 @@ import org.mozilla.focus.home.NavigationOverlayFragment
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.session.Source
 import org.mozilla.focus.toolbar.BrowserAppBarLayoutController
+import org.mozilla.focus.toolbar.ToolbarViewModel
 import org.mozilla.focus.utils.UrlUtils
 
 object ScreenController {
@@ -108,6 +109,7 @@ object ScreenController {
     fun setNavigationOverlayIsVisible(
         fragmentManager: FragmentManager,
         appBarLayoutController: BrowserAppBarLayoutController,
+        toolbarViewModel: ToolbarViewModel,
         isVisible: Boolean,
         isOverlayOnStartup: Boolean
     ) {
@@ -133,5 +135,6 @@ object ScreenController {
 
         fragmentManager.getBrowserFragment()?.onNavigationOverlayVisibilityChange(isVisible)
         appBarLayoutController.onHomeVisibilityChange(isVisible)
+        toolbarViewModel.onNavigationOverlayVisibilityChange(isVisible, isOverlayOnStartup)
     }
 }
