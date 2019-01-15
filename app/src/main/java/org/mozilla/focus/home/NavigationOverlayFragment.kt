@@ -44,8 +44,11 @@ class NavigationOverlayFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val overlay = inflater.inflate(R.layout.fragment_navigation_overlay, container, false)
 
-        overlay.semiOpaqueBackground.visibility = if (isOverlayOnStartup) View.GONE else View.VISIBLE
-        overlay.initialHomescreenBackground.visibility = if (isOverlayOnStartup) View.VISIBLE else View.GONE
+        val isVisibleInDialogMode = arrayOf(overlay.semiOpaqueBackground, overlay.dismissHitTarget)
+        isVisibleInDialogMode.forEach { it.visibility = if (isOverlayOnStartup) View.GONE else View.VISIBLE }
+        val isVisibleInStartupMode = arrayOf(overlay.initialHomescreenBackground)
+        isVisibleInStartupMode.forEach { it.visibility = if (isOverlayOnStartup) View.VISIBLE else View.GONE }
+
         overlay.homeTiles.urlSearcher = activity as UrlSearcher
 
         setOverlayHeight(overlay.homeTiles)
@@ -96,14 +99,14 @@ class NavigationOverlayFragment : Fragment() {
         fun removeClickListeners() {
             // We remove the click listeners when dismissing the overlay
             // so that clicking them doesn't restart the animation.
-            overlay.semiOpaqueBackground.setOnClickListener(null)
+            overlay.dismissHitTarget.setOnClickListener(null)
             with(overlay.homeTiles) {
                 onTileClicked = null
                 homeTileLongClickListener = null
             }
         }
 
-        overlay.semiOpaqueBackground.setOnClickListener {
+        overlay.dismissHitTarget.setOnClickListener {
             removeClickListeners()
             callbacks?.setNavigationOverlayIsVisible(false)
             TelemetryWrapper.dismissHomeOverlayClickEvent()

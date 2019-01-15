@@ -13,12 +13,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <!-- Visible in dialog mode, this is the semi opaque background that obscures the URL bar. -->
+    <!-- Visible in dialog mode, this is the semi opaque background that obscures the URL bar. If focusable,
+         this view is accessible by the screen reader through the overlay background where there aren't home tiles. -->
     <View
             android:id="@+id/semiOpaqueBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/photonGrey90_a60p"/>
+            android:background="@color/photonGrey90_a60p"
+            android:focusable="false"/>
+
+    <!-- Available in dialog mode, this is the hit target - i.e. not visible - to dismiss the overlay because the
+         semi opaque background does not work for screen readers (see view comment for details). -->
+    <View
+            android:id="@+id/dismissHitTarget"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/backgroundView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/nav_close_hint"/>
 
     <!-- Visible in initial homescreen mode, this view sits below the toolbar, where the WebView
          would be. It's only visible under the main overlay background's rounded corners. Without
