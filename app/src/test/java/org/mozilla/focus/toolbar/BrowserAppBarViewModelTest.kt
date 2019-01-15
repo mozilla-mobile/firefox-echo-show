@@ -40,7 +40,7 @@ class BrowserAppBarViewModelTest {
     fun `GIVEN voiceView is disabled WHEN navigation overlay is visible THEN toolbar scroll is disabled`() {
         viewModel.isToolbarScrollEnabled.assertValues(false) {
             isVoiceViewEnabled.value = false
-            viewModel.setIsNavigationOverlayVisible(true)
+            viewModel.onNavigationOverlayVisibilityChange(true)
         }
     }
 
@@ -48,7 +48,7 @@ class BrowserAppBarViewModelTest {
     fun `GIVEN voiceView is disabled WHEN navigation overlay is not visible THEN toolbar scroll is enabled`() {
         viewModel.isToolbarScrollEnabled.assertValues(true) {
             isVoiceViewEnabled.value = false
-            viewModel.setIsNavigationOverlayVisible(false)
+            viewModel.onNavigationOverlayVisibilityChange(false)
         }
     }
 
@@ -56,8 +56,8 @@ class BrowserAppBarViewModelTest {
     fun `GIVEN voiceView is enabled THEN toolbar scroll is always disabled`() {
         viewModel.isToolbarScrollEnabled.assertValues(false, false) {
             isVoiceViewEnabled.value = true
-            viewModel.setIsNavigationOverlayVisible(false)
-            viewModel.setIsNavigationOverlayVisible(true)
+            viewModel.onNavigationOverlayVisibilityChange(false)
+            viewModel.onNavigationOverlayVisibilityChange(true)
         }
     }
 }
