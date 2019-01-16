@@ -124,22 +124,4 @@
         <item name="android:fontFamily">@string/font_ember_regular</item>
     </style>
 
-    <style name="NavigationButton" parent="Widget.AppCompat.ImageButton">
-        <item name="android:layout_width">@dimen/button_size</item>
-        <item name="android:layout_height">@dimen/button_size</item>
-        <item name="android:layout_marginEnd">24dp</item>
-        <item name="android:padding">12dp</item>
-        <item name="android:background">@drawable/navigation_button_background</item>
-        <item name="android:tint">@color/tv_white</item>
-    </style>
-
-    <!-- These images won't crop or change their aspect ratio so if you modify the dimensions,
-         they need to maintain a 16:9 aspect ratio or else there will be dead-space in the ImageView. -->
-    <style name="PocketVideoMegaTileThumbnail">
-        <item name="android:layout_width">150dp</item>
-        <item name="android:layout_height">84.375dp</item>
-        <item name="android:layout_marginStart">12dp</item>
-        <item name="android:layout_marginEnd">12dp</item>
-    </style>
-
 </resources>
