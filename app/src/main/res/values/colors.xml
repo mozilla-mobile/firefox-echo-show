@@ -9,32 +9,14 @@
 
     <color name="colorAccentSettings">@color/photonBlue50</color>
 
-    <color name="snackbarBackground">#FF414146</color>
-    <color name="snackbarTextColor">#ffffffff</color>
-
     <color name="scrollbarThumb">#b2b2b2b2</color>
-    <color name="teal50">#00feff</color>
-    <color name="teal_nav">#03d8ff</color>
-    <color name="blue_nav">#0060df</color>
-    <color name="ink70">#474959</color>
-    <color name="ink80">#333540</color>
 
     <color name="onboarding_background">#e60c0c0d</color>
 
-    <color name="button_highlight">#64ffffff</color>
-    <color name="button_default">@color/translucent_tv_ink</color>
-    <color name="button_disabled">@color/tv_ink</color>
-    <color name="button_focused">@color/tv_blue50</color>
-    <color name="button_pressed">@color/tv_blue60</color>
-    <color name="button_checked">@color/translucent_tv_ink2</color>
-    <color name="button_border">@color/translucent_tv_gray40</color>
-
-    <color name="photonGrey10_a60p">#99F9F9FA</color>
     <color name="photonGrey10_a80p">#CCF9F9FA</color>
     <color name="photonGrey90_a60p">#990c0c0d</color>
 
     <!-- via https://github.com/mozilla-mobile/firefox-tv/issues/759#issuecomment-381702769 -->
-    <color name="pocket_coral">#EF4056</color>
 
     <color name="amazon_settings_background">#151920</color>
     <color name="amazon_settings_textcolor">@color/photonGrey10</color>
