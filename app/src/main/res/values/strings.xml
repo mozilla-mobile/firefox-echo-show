@@ -5,9 +5,6 @@
 <resources>
     <string name="firefox_brand_name">Firefox</string>
 
-    <!-- The brand name of our partner company, Pocket. -->
-    <string name="pocket_brand_name">Pocket</string>
-
     <!-- Label used for buttons, e.g. in dialogs -->
     <string name="action_cancel">Cancel</string>
     <!-- Label used for buttons, e.g. in dialogs -->
@@ -18,41 +15,13 @@
 
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>
-    <string name="preference_language">Language</string>
 
     <string name="fullscreen_hint_pinch_to_exit">Pinch to exit fullscreen mode</string>
-
-    <!-- This is shown when the user hasn't set a Firefox for Fire TV specific language, i.e. when Firefox for Fire TV
-         is using the system default language. -->
-    <string name="preference_language_systemdefault">System default</string>
-
-    <string name="preference_category_privacy">Privacy</string>
-    <string name="preference_privacy_block_ads">Block ad trackers</string>
-    <string name="preference_privacy_block_ads_summary">Some ads track site visits, even if you don’t click the ads</string>
-    <string name="preference_privacy_block_analytics">Block analytic trackers</string>
-    <string name="preference_privacy_block_analytics_summary">Used to collect, analyze and measure activities like tapping and scrolling</string>
-    <string name="preference_privacy_block_social">Block social trackers</string>
-    <string name="preference_privacy_block_social_summary">Embedded on sites to track your visits and to display functionality like share buttons</string>
-    <string name="preference_privacy_block_content">Block other content trackers</string>
-    <string name="preference_privacy_block_content_summary2">Enabling may cause some pages to behave unexpectedly</string>
-
-    <string name="preference_category_performance">Performance</string>
-    <string name="preference_performance_block_webfonts">Block Web fonts</string>
-    <!-- This text is shown below the setting for disabling web fonts. Some websites use icons/images from a font and those do not show up if fonts are blocked.-->
-    <string name="preference_performance_block_webfonts_summary">May result in missing icons or images</string>
 
     <string name="preference_mozilla_telemetry2">Send usage data</string>
 
     <!-- In-app link (in settings) to Firefox for Fire TV privacy notice. -->
     <string name="preference_privacy_notice">Privacy Notice</string>
-
-    <!-- This text is not visible. Instead it will be read by the accessibility service once we start
-     loading a website -->
-    <string name="accessibility_announcement_loading">Loading</string>
-
-    <!-- This text is not visible. Instead it will be read by the accessibility service once we
-     finished loading a website -->
-    <string name="accessibility_announcement_loading_finished">Website loaded</string>
 
     <!-- Content description (not visible, for screen readers etc.): Navigate forward (browsing history) -->
     <string name="content_description_forward">Navigate forward</string>
@@ -163,17 +132,13 @@ be temporary, and you can try again later.</li>
     %3$s will be replaced with a URL linking to the tracking protection wiki page (e.g. https://wiki.mozilla.org/Security/Tracking_protection#Lists) -->
     <string name="your_rights_content5"><![CDATA[%1$s also uses blocklists provided by Disconnect, Inc. as separate and independent works under the <a href="%2$s">GNU General Public License v3</a>, and available <a href="%3$s">here</a>.]]></string>
 
-    <!-- Firefox for Fire TV
-    video strings -->
     <!-- Settings strings -->
+
     <string name="settings_cookies_dialog_title">Clear all cookies and site data</string>
     <string name="settings_cookies_dialog_content2">This will clear all cookies and site data. Clearing this information may sign you out of websites and delete web content that is stored offline.</string>
 
-    <string name="turbo_mode">Turbo Mode</string>
     <string name="onboarding_turbo_mode_title">Turbo Mode helps you browse faster</string>
     <string name="onboarding_turbo_mode_body">Turbo Mode automatically blocks trackers and ads to help get you where you\'re going faster. If there\'s a speed bump – like a site that isn\'t behaving the way you expect – just turn Turbo Mode off.</string>
-    <string name="onboarding_turbo_mode_button_on">Keep Turbo Mode Enabled</string>
-    <string name="onboarding_turbo_mode_button_off">Turn Turbo Mode Off</string>
     <!-- Displayed as notification when Turbo mode is turned on -->
     <string name="turbo_mode_enabled_toast">Turbo Mode enabled</string>
     <!-- Displayed as notification when Turbo mode is turned off -->
@@ -182,16 +147,11 @@ be temporary, and you can try again later.</li>
     <string name="button_keep_enabled">Keep enabled</string>
     <!-- Button text for turning off Turbo Mode in onboarding -->
     <string name="button_turn_off">Turn off</string>
-    <!-- Spoken to screen reader users to explain "off" action of Turbo mode button -->
-    <string name="turbo_mode_disable_a11y">Turn Turbo Mode Off</string>
-    <!-- Spoken to screen reader users to explain "on" action of Turbo mode button -->
-    <string name="turbo_mode_enable_a11y">Turn Turbo Mode On</string>
 
     <!-- Text displayed in a toast to explain to the user how to unpin a tile from the homescreen.
          SELECT refers to a button on the remote: the button at the center of the 4-way directional navigation. -->
     <string name="homescreen_unpin_tutorial_toast">Press and hold SELECT to unpin from homescreen</string>
     <string name="homescreen_tile_remove">Remove</string>
-    <string name="nav_close_hint">Close</string>
     <!-- Spoken to screen reader users to explain action of deactivating Pin button state -->
     <string name="homescreen_unpin_a11y">Unpin</string>
 
@@ -205,39 +165,10 @@ be temporary, and you can try again later.</li>
     <!-- Short version of notification displayed when a site is removed from homescreen. %1$s will be replaced with the name of the app -->
     <string name="notification_unpinned_general2">Removed from %1$s homescreen</string>
 
-
-    <!-- The title of a tutorial shown to introduce Pocket video recommendations.
-    %1$s will be replaced with the Pocket brand name. -->
-    <string name="pocket_home_tutorial_title">Introducing videos recommended by %1$s</string>
-    <!-- The description text of a tutorial shown to introduce Pocket video recommendations.
-    %1$s will be replaced with the Pocket brand name. -->
-    <string name="pocket_home_tutorial_description">The most interesting videos on the web. Recommended by %1$s, now part of Mozilla.</string>
-    <!-- The text on the dismiss button of a tutorial shown to introduce Pocket video recommendations. -->
-    <string name="pocket_home_tutorial_dismiss_button">Ok, got it</string>
-    <!-- Spoken to screen reader users when they focus the Pocket tile. Clicking this tile will take them to the
-         Pocket video recommendations feed.
-    %1$s will be replaced with the Pocket brand name. -->
-    <string name="pocket_home_a11y_tile_focused">Video recommendation by %1$s</string>
-
-    <string name="pocket_video_feed_recommended_videos_title">Recommended videos</string>
-    <!-- Text displayed when the Pocket video recommendations feed failed to load.
-    %1$s will be replaced with the Pocket brand name. -->
-    <string name="pocket_video_feed_failed_to_load">Hmm. We’re having trouble displaying video recommendations by %1$s.</string>
-    <!-- Text displayed on a button to reload the Pocket video recommendations feed if it failed to load. -->
-    <string name="pocket_video_feed_reload_button">Try again</string>
-    <!-- Spoken to screen reader users to describe how to navigate on the Pocket video recommendations feed. -->
-    <string name="pocket_video_feed_a11y_navigation">Use left and right to move between videos</string>
-    <!-- Spoken to screen reader users when they to describe a Pocket video recommendation they have focused.
-    %1$s will be the title of the recommended video
-    %2$s will be the source of the video (e.g. YouTube). -->
-    <string name="pocket_video_feed_a11y_feed_item_focused">%1$s on %2$s</string>
-
     <!-- The title displayed below the Google Search tile -->
     <string name="google_search_tile_title">Search with Google</string>
     <!-- Hint text shown in an EditText that captures user input for Google Searches -->
     <string name="google_search_hint_text">Search with Google or enter address</string>
-    <!-- The title displayed below blank tiles -->
-    <string name="blank_tile_title">Add website</string>
 
     <!-- %1$s will be replaced with the name of the app (e.g. Firefox Focus) -->
     <string name="preference_mozilla_telemetry_summary2">Mozilla strives to collect only what we need to provide and improve %1$s for everyone.</string>

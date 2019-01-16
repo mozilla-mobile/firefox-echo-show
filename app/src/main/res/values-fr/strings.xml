@@ -1,36 +1,17 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="pocket_brand_name">Pocket</string>
   <string name="action_cancel">Annuler</string>
   <string name="action_ok">OK</string>
   <string name="urlbar_hint">Recherche ou adresse</string>
   <string name="menu_settings">Paramètres</string>
   <string name="menu_about">À propos</string>
-  <string name="preference_language">Langue</string>
-  <string name="preference_language_systemdefault">Valeur par défaut du système</string>
-  <string name="preference_category_privacy">Vie privée</string>
-  <string name="preference_privacy_block_ads">Bloquer les traqueurs publicitaires</string>
-  <string name="preference_privacy_block_ads_summary">Certaines publicités pistent vos visites sur les sites, même sans cliquer sur les publicités</string>
-  <string name="preference_privacy_block_analytics">Bloquer les traqueurs de statistiques</string>
-  <string name="preference_privacy_block_analytics_summary">Ils servent à collecter, analyser et mesurer les actions telles qu’appuyer sur l’écran ou faire défiler la page</string>
-  <string name="preference_privacy_block_social">Bloquer les traqueurs de réseaux sociaux</string>
-  <string name="preference_privacy_block_social_summary">Ils sont insérés sur certains sites pour pister vos visites et afficher des fonctionnalités comme des boutons de partage</string>
-  <string name="preference_privacy_block_content">Bloquer les autres traqueurs de contenu</string>
-  <string name="preference_privacy_block_content_summary2">Activer cette option peut provoquer des problèmes sur certaines pages</string>
-  <string name="preference_category_performance">Performances</string>
-  <string name="preference_performance_block_webfonts">Bloquer les polices web</string>
-  <string name="preference_performance_block_webfonts_summary">Peut empêcher certaines icônes ou images de s’afficher</string>
   <string name="preference_mozilla_telemetry2">Envoyer des données d’utilisation</string>
   <string name="preference_privacy_notice">Politique de confidentialité</string>
-  <string name="accessibility_announcement_loading">Chargement…</string>
-  <string name="accessibility_announcement_loading_finished">Site web chargé</string>
   <string name="content_description_forward">Avancer dans l’historique</string>
   <string name="content_description_reload">Actualiser la page web</string>
   <string name="content_description_back">Précédent</string>
   <string name="external_app_prompt_title">Ouvrir le lien dans une autre application</string>
   <string name="external_app_prompt">Vous allez quitter %1$s pour ouvrir ce lien dans %2$s.</string>
-  <string name="external_app_prompt_no_app_title">Trouver une application capable d’ouvrir ce lien</string>
-  <string name="external_app_prompt_no_app">Aucune des applications de votre appareil n’est capable d’ouvrir ce lien. Vous pouvez quitter %1$s pour rechercher dans %2$s une application qui en est capable.</string>
   <string name="external_multiple_apps_matched_exit">Quitter la navigation privée ?</string>
   <string name="errorpage_title">Erreur de chargement de la page</string>
   <string name="errorpage_refresh">Réessayer</string>
@@ -57,17 +38,11 @@
   <string name="your_rights_content5"><![CDATA["%1$s utilise aussi des listes de blocage fournies par Disconnect Inc, en tant que créations sous la licence "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>" et qui sont disponibles "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">ici</a>.]]></string>
   <string name="settings_cookies_dialog_title">Effacer les cookies et les données de sites</string>
   <string name="settings_cookies_dialog_content2">Cette action effacera l’ensemble des cookies et des données de sites. Effacer ces données peut vous déconnecter de certains sites web et supprimer du contenu web stocké hors connexion.</string>
-  <string name="turbo_mode">Mode turbo</string>
   <string name="turbo_mode_enabled_toast">Mode turbo activé</string>
   <string name="turbo_mode_disabled_toast">Mode turbo désactivé</string>
   <string name="onboarding_turbo_mode_title">Le mode turbo vous permet de naviguer plus rapidement</string>
   <string name="onboarding_turbo_mode_body">Le mode turbo bloque automatiquement les traqueurs et les publicités pour que les pages web se chargent plus vite. S’il y a un hic (comme un site web qui ne fonctionne pas comme vous l’espériez), il vous suffit de désactiver le mode turbo.</string>
-  <string name="button_turbo_mode_keep_enabled">Laisser activé</string>
-  <string name="button_turbo_mode_turn_off">Désactiver</string>
-  <string name="turbo_mode_disable_a11y">Désactiver le mode turbo</string>
-  <string name="turbo_mode_enable_a11y">Activer le mode turbo</string>
   <string name="homescreen_tile_remove">Retirer</string>
-  <string name="nav_close_hint">Fermer</string>
   <string name="homescreen_unpin_a11y">Détacher</string>
   <string name="homescreen_title">Écran d’accueil</string>
   <string name="pin_label">Épingler à l’écran d’accueil</string>
@@ -75,17 +50,8 @@
   <string name="notification_unpinned_general2">Retiré de l’écran d’accueil de %1$s</string>
   <string name="notification_pinned_site">Épinglé à l’écran d’accueil Firefox TV</string>
   <string name="notification_unpinned_site">Retiré de l’écran d’accueil Firefox TV</string>
-  <string name="pocket_home_tutorial_title">Découvrez des vidéos recommandées par %1$s</string>
-  <string name="pocket_home_tutorial_dismiss_button">J’ai compris</string>
-  <string name="pocket_home_a11y_tile_focused">Recommandations de vidéos par %1$s</string>
-  <string name="pocket_video_feed_recommended_videos_title">Vidéos recommandées</string>
-  <string name="pocket_video_feed_failed_to_load">Hum, nous ne parvenons pas à afficher les recommandations de vidéos par %1$s.</string>
-  <string name="pocket_video_feed_reload_button">Réessayer</string>
-  <string name="pocket_video_feed_a11y_navigation">Utilisez les touches gauche et droite pour naviguer parmi les vidéos</string>
-  <string name="pocket_video_feed_a11y_feed_item_focused">%1$s sur %2$s</string>
   <string name="google_search_tile_title">Rechercher avec Google</string>
   <string name="google_search_hint_text">Rechercher avec Google ou saisir une adresse</string>
-  <string name="blank_tile_title">Ajouter un site web</string>
   <string name="preference_mozilla_telemetry_summary2">Mozilla veille à collecter uniquement les données nécessaires afin d’offrir et d’améliorer %1$s pour tout le monde.</string>
   <string name="preference_mozilla_telemetry_summary">En savoir plus</string>
 </resources>

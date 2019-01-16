@@ -1,36 +1,17 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="pocket_brand_name">Pocket</string>
   <string name="action_cancel">キャンセル</string>
   <string name="action_ok">OK</string>
   <string name="urlbar_hint">検索語またはアドレスを入力</string>
   <string name="menu_settings">設定</string>
   <string name="menu_about">製品情報</string>
-  <string name="preference_language">言語</string>
-  <string name="preference_language_systemdefault">システム標準</string>
-  <string name="preference_category_privacy">プライバシー</string>
-  <string name="preference_privacy_block_ads">追跡広告をブロック</string>
-  <string name="preference_privacy_block_ads_summary">一部の広告は、あなたがその広告をクリックしなくても訪れたサイトを追跡します</string>
-  <string name="preference_privacy_block_analytics">アクセス解析をブロック</string>
-  <string name="preference_privacy_block_analytics_summary">タップやスクロールなどの操作統計を収集、解析、計測するために利用されます</string>
-  <string name="preference_privacy_block_social">ソーシャル追跡をブロック</string>
-  <string name="preference_privacy_block_social_summary">ユーザーの訪問を追跡するためサイトに埋め込まれ、共有ボタンのように表示されます</string>
-  <string name="preference_privacy_block_content">他の追跡コンテンツをブロック</string>
-  <string name="preference_privacy_block_content_summary2">有効にすると、ページによっては予期せぬ動作をする原因になります</string>
-  <string name="preference_category_performance">パフォーマンス</string>
-  <string name="preference_performance_block_webfonts">ウェブフォントをブロック</string>
-  <string name="preference_performance_block_webfonts_summary">アイコンや画像が正常に表示されない場合があります</string>
   <string name="preference_mozilla_telemetry2">使用状況データを送信</string>
   <string name="preference_privacy_notice">プライバシー通知</string>
-  <string name="accessibility_announcement_loading">読み込み中</string>
-  <string name="accessibility_announcement_loading_finished">ウェブサイト読み込み完了</string>
   <string name="content_description_forward">次のページへ進む</string>
   <string name="content_description_reload">ウェブサイトを再読み込み</string>
   <string name="content_description_back">前のページへ戻る</string>
   <string name="external_app_prompt_title">リンクを他のアプリで開く</string>
   <string name="external_app_prompt">%1$s を離れて、%2$s でこのリンクを開いてください。</string>
-  <string name="external_app_prompt_no_app_title">リンクを開けるアプリを探す</string>
-  <string name="external_app_prompt_no_app">ご使用の端末にはこのリンクを開けるアプリがありません。%1$s を離れて、%2$s で開けるアプリを探してください。</string>
   <string name="external_multiple_apps_matched_exit">プライベートブラウジングを終了しますか？</string>
   <string name="errorpage_title">ページ読み込みエラー</string>
   <string name="errorpage_refresh">再試行</string>
@@ -57,18 +38,12 @@
   <string name="your_rights_content5"><![CDATA["%1$s は Disconnect, Inc. により提供されているブロックリストも "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">GNU General Public License v3</a>" の下で単独のリソースとして使用しており、それらは "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%3$s">&#12371;&#12385;&#12425;</a>" から入手可能です。"]]></string>
   <string name="settings_cookies_dialog_title">すべての Cookie とサイトデータの消去</string>
   <string name="settings_cookies_dialog_content2">これにより、すべての Cookie とサイトデータが消去され、ウェブサイトからログアウトしたり、オフライン用に保存されているコンテンツが削除されたりする可能性があります。</string>
-  <string name="turbo_mode">ターボモード</string>
   <string name="turbo_mode_enabled_toast">ターボモード有効</string>
   <string name="turbo_mode_disabled_toast">ターボモード無効</string>
   <string name="onboarding_turbo_mode_title">ターボモードはより速くブラウズするのに役立ちます</string>
   <string name="onboarding_turbo_mode_body">ターボモードは自動的にトラッカーと広告をブロックし、より速くブラウズするのを手助けします。 サイトが期待通りに動作しないなど問題が見られる場合は、ターボモードを無効化してください。</string>
-  <string name="button_turbo_mode_keep_enabled">有効なままにする</string>
-  <string name="button_turbo_mode_turn_off">無効にする</string>
-  <string name="turbo_mode_disable_a11y">ターボモードを無効にする</string>
-  <string name="turbo_mode_enable_a11y">ターボモードを有効にする</string>
   <string name="homescreen_unpin_tutorial_toast">ホーム画面からピン留めを外すには [選択] ボタンを長押ししてください</string>
   <string name="homescreen_tile_remove">削除</string>
-  <string name="nav_close_hint">閉じる</string>
   <string name="homescreen_unpin_a11y">ピン留めを外す</string>
   <string name="homescreen_title">ホーム画面</string>
   <string name="pin_label">ホーム画面にピン留め</string>
@@ -76,18 +51,8 @@
   <string name="notification_unpinned_general2">%1$s のホーム画面から削除しました</string>
   <string name="notification_pinned_site">Firefox TV のホーム画面にピン留めしました</string>
   <string name="notification_unpinned_site">Firefox TV のホーム画面から削除しました</string>
-  <string name="pocket_home_tutorial_title">%1$s からおすすめの動画を紹介します</string>
-  <string name="pocket_home_tutorial_description">ウェブ上で一番興味深い動画。Mozilla の一員となった %1$s がおすすめします。</string>
-  <string name="pocket_home_tutorial_dismiss_button">了解しました</string>
-  <string name="pocket_home_a11y_tile_focused">%1$s のおすすめ動画</string>
-  <string name="pocket_video_feed_recommended_videos_title">おすすめ動画</string>
-  <string name="pocket_video_feed_failed_to_load">申し訳ありませんが、%1$s のおすすめ動画を表示中に何か問題が発生しました。</string>
-  <string name="pocket_video_feed_reload_button">再読み込み</string>
-  <string name="pocket_video_feed_a11y_navigation">動画を選択するには左右のボタンを使ってください</string>
-  <string name="pocket_video_feed_a11y_feed_item_focused">%2$s 上の %1$s</string>
   <string name="google_search_tile_title">Google で検索</string>
   <string name="google_search_hint_text">Google で検索またはアドレスを入力</string>
-  <string name="blank_tile_title">ウェブサイトを追加</string>
   <string name="preference_mozilla_telemetry_summary2">Mozilla は %1$s を皆さんに提供し改善するために必要な情報だけを収集するよう努めています。</string>
   <string name="preference_mozilla_telemetry_summary">詳細情報</string>
 </resources>
