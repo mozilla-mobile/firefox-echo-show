@@ -114,20 +114,17 @@ object ScreenController {
         fun getNavOverlay() = fragmentManager.getNavigationOverlay()
 
         if (isVisible) {
-            if (getNavOverlay() != null) {
-                throw IllegalStateException("Did not expect navigation overlay to exist")
-            }
-
             val newOverlay = NavigationOverlayFragment.newInstance(isOverlayOnStartup = isOverlayOnStartup)
             fragmentManager.beginTransaction()
                 .replace(R.id.navigationOverlayContainer, newOverlay, NavigationOverlayFragment.FRAGMENT_TAG)
                 .commit()
         } else {
-            val existingOverlay = getNavOverlay() ?: throw IllegalStateException("Expected navigation overlay to exist")
-            NavigationOverlayAnimations.animateOut(existingOverlay) {
-                fragmentManager.beginTransaction()
-                    .remove(existingOverlay)
-                    .commit()
+            getNavOverlay()?.let { existingOverlay ->
+                NavigationOverlayAnimations.animateOut(existingOverlay) {
+                    fragmentManager.beginTransaction()
+                        .remove(existingOverlay)
+                        .commit()
+                }
             }
         }
 
