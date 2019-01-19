@@ -53,13 +53,13 @@ class FrameworkRepoTest {
 
     @Test
     fun `WHEN touch exploration state changes to false THEN voice view is disabled`() {
-        repo.onTouchExplorationStateChanged(false)
+        repo.touchExplorationStateChangeListener.onTouchExplorationStateChanged(false)
         repo.isVoiceViewEnabled.observeForever { assertFalse(it!!) }
     }
 
     @Test
     fun `WHEN touch exploration state changes to true THEN voice view is enabled`() {
-        repo.onTouchExplorationStateChanged(true)
+        repo.touchExplorationStateChangeListener.onTouchExplorationStateChanged(true)
         repo.isVoiceViewEnabled.observeForever { assertTrue(it!!) }
     }
 }
