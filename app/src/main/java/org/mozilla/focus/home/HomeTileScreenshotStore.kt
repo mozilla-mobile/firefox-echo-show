@@ -10,9 +10,10 @@ import android.graphics.BitmapFactory
 import android.support.annotation.AnyThread
 import android.support.annotation.VisibleForTesting
 import android.support.annotation.WorkerThread
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.sync.Mutex
-import kotlinx.coroutines.experimental.sync.withLock
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.mozilla.focus.ext.arePixelsAllTheSame
 import org.mozilla.focus.home.HomeTileScreenshotStore.DIR
 import org.mozilla.focus.home.HomeTileScreenshotStore.uuidToFileSystemMutex
@@ -95,7 +96,7 @@ object HomeTileScreenshotStore {
 
     /** @param uuid a unique identifier for this screenshot. */
     @AnyThread
-    fun saveAsync(context: Context, uuid: UUID, screenshot: Bitmap) = launch {
+    fun saveAsync(context: Context, uuid: UUID, screenshot: Bitmap) = GlobalScope.launch {
         if (!isScreenshotAcceptableAsHomeTile(screenshot)) {
             // We won't save this image, meaning we'll return null when we try to read it.
             // At the time of writing, this will fall back to placeholders.
@@ -115,7 +116,7 @@ object HomeTileScreenshotStore {
 
     /** @param a unique identifier for this screenshot. */
     @AnyThread
-    fun removeAsync(context: Context, uuid: UUID) = launch {
+    fun removeAsync(context: Context, uuid: UUID) = GlobalScope.launch {
         getMutex(uuid).withLock {
             getFileForUUID(context, uuid).delete()
         }
