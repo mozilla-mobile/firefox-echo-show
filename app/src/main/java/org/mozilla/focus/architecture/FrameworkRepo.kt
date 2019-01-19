@@ -7,24 +7,31 @@ package org.mozilla.focus.architecture
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.support.annotation.UiThread
+import android.support.annotation.VisibleForTesting
+import android.support.annotation.VisibleForTesting.PRIVATE
 import android.view.accessibility.AccessibilityManager
 
 /**
  * A model to hold state related to the Android framework.
  */
-class FrameworkRepo : AccessibilityManager.TouchExplorationStateChangeListener {
+class FrameworkRepo {
 
     private val _isVoiceViewEnabled = MutableLiveData<Boolean>()
     val isVoiceViewEnabled: LiveData<Boolean> = _isVoiceViewEnabled
 
+    @VisibleForTesting(otherwise = PRIVATE) val touchExplorationStateChangeListener = TouchExplorationStateChangeListener()
+
     fun init(accessibilityManager: AccessibilityManager) {
         // We call the listener directly to set the initial state.
-        accessibilityManager.addTouchExplorationStateChangeListener(this)
-        onTouchExplorationStateChanged(accessibilityManager.isTouchExplorationEnabled)
+        accessibilityManager.addTouchExplorationStateChangeListener(touchExplorationStateChangeListener)
+        touchExplorationStateChangeListener.onTouchExplorationStateChanged(accessibilityManager.isTouchExplorationEnabled)
     }
 
-    @UiThread // for simplicity: listener should be called from UI thread anyway.
-    override fun onTouchExplorationStateChanged(isEnabled: Boolean) {
-        _isVoiceViewEnabled.value = isEnabled // Touch exploration state == VoiceView.
+    @VisibleForTesting(otherwise = PRIVATE)
+    inner class TouchExplorationStateChangeListener : AccessibilityManager.TouchExplorationStateChangeListener {
+        @UiThread // for simplicity: listener should be called from UI thread anyway.
+        override fun onTouchExplorationStateChanged(isEnabled: Boolean) {
+            _isVoiceViewEnabled.value = isEnabled // Touch exploration state == VoiceView.
+        }
     }
 }
