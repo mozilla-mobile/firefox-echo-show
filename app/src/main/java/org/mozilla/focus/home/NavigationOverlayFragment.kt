@@ -19,7 +19,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.*
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
-import kotlinx.coroutines.experimental.CancellationException
 import mozilla.components.support.base.observer.Consumable
 import mozilla.components.support.ktx.android.content.systemService
 import org.mozilla.focus.R
@@ -30,6 +29,7 @@ import org.mozilla.focus.browser.HomeTileLongClickListener
 import org.mozilla.focus.ext.serviceLocator
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.FragmentViewUiCoroutineScope
 
 private const val KEY_IS_OVERLAY_ON_STARTUP = "isOverlayOnStartup"
 
@@ -47,9 +47,12 @@ class NavigationOverlayFragment : Fragment() {
     val isOverlayOnStartup: Boolean by lazy { arguments!!.getBoolean(KEY_IS_OVERLAY_ON_STARTUP) }
 
     private val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
+    private val viewUiCoroutineScope = FragmentViewUiCoroutineScope()
     private val googleSearchFocusRequestObserver = GoogleSearchFocusRequestObserver()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        viewUiCoroutineScope.onCreateView()
+
         val context = inflater.context
         val overlay = inflater.inflate(R.layout.fragment_navigation_overlay, container, false)
 
@@ -58,6 +61,7 @@ class NavigationOverlayFragment : Fragment() {
         val isVisibleInStartupMode = arrayOf(overlay.initialHomescreenBackground)
         isVisibleInStartupMode.forEach { it.visibility = if (isOverlayOnStartup) View.VISIBLE else View.GONE }
 
+        overlay.homeTiles.init(viewUiCoroutineScope)
         setOverlayHeight(overlay.homeTiles)
 
         // We forward the google search event to the default search engine: Google.
@@ -76,13 +80,8 @@ class NavigationOverlayFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         context!!.serviceLocator.pinnedTileRepo.googleSearchEvents.removeObserver(googleSearchFocusRequestObserver)
-
-        // Since we start the async jobs in View.init and Android is inflating the view for us,
-        // there's no good way to pass in the uiLifecycleJob. We could consider other solutions
-        // but it'll add complexity that I don't think is probably worth it.
-        homeTiles.uiLifecycleCancelJob.cancel(CancellationException("Parent lifecycle has ended"))
+        viewUiCoroutineScope.onDestroyView()
     }
 
     private fun setOverlayHeight(homeTiles: HomeTileGridNavigation) {

@@ -8,9 +8,8 @@ import android.content.Context
 import android.preference.PreferenceManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.view.View
 import android.widget.Toast
-import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.CoroutineScope
 import org.mozilla.focus.R
 import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.widget.AccessibleGridLayoutManager
@@ -23,12 +22,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyle: Int = 0
 ) : RecyclerView(context, attrs, defStyle) {
-
-    /**
-     * Used to cancel background->UI threads: we attach them as children to this job
-     * and cancel this job at the end of the UI lifecycle, cancelling the children.
-     */
-    var uiLifecycleCancelJob: Job
 
     // We need this in order to show the unpin toast, at max, once per
     // instantiation of the HomeTileGridNavigation
@@ -43,17 +36,16 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     /** Called inside [setVisibility] right before super.setVisibility is called. */
     var onPreSetVisibilityListener: ((isVisible: Boolean) -> Unit)? = null
 
-    init {
-        uiLifecycleCancelJob = Job()
-        initTiles()
+    fun init(uiScope: CoroutineScope) {
+        initTiles(uiScope)
     }
 
-    private fun initTiles() {
+    private fun initTiles(uiScope: CoroutineScope) {
         val homeTiles = HomeTilesManager.getTilesCache(context)
 
         canShowUpinToast = true
 
-        adapter = HomeTileAdapter(uiLifecycleCancelJob, homeTiles, loadUrl = { urlStr ->
+        adapter = HomeTileAdapter(uiScope, homeTiles, loadUrl = { urlStr ->
             if (urlStr.isNotEmpty()) {
                 onTileClicked?.invoke(urlStr)
             }

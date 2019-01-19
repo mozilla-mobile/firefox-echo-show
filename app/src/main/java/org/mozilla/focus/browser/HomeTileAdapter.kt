@@ -14,12 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import kotlinx.android.synthetic.main.home_tile.view.*
-import kotlinx.coroutines.experimental.CompletableDeferred
-import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.ext.forceExhaustive
@@ -27,13 +25,13 @@ import org.mozilla.focus.ext.serviceLocator
 import org.mozilla.focus.ext.toJavaURI
 import org.mozilla.focus.ext.withRoundedCorners
 import org.mozilla.focus.home.BundledHomeTile
+import org.mozilla.focus.home.BundledTilesManager
 import org.mozilla.focus.home.CustomHomeTile
 import org.mozilla.focus.home.HomeTile
 import org.mozilla.focus.home.HomeTilePlaceholderGenerator
-import org.mozilla.focus.home.BundledTilesManager
-import org.mozilla.focus.home.TileAction
 import org.mozilla.focus.home.HomeTileScreenshotStore
 import org.mozilla.focus.home.HomeTilesManager
+import org.mozilla.focus.home.TileAction
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.FormattedDomain
 
@@ -48,7 +46,7 @@ private val CUSTOM_TILE_ICON_INTERPOLATOR = DecelerateInterpolator()
 typealias ExecuteSearch = (String, InlineAutocompleteEditText.AutocompleteResult) -> Unit
 
 class HomeTileAdapter(
-    private val uiLifecycleCancelJob: Job,
+    private val uiScope: CoroutineScope,
     private var tiles: MutableList<HomeTile>,
     private val loadUrl: (String) -> Unit,
     private val homeTileLongClickListenerProvider: () -> HomeTileLongClickListener?,
@@ -63,7 +61,7 @@ class HomeTileAdapter(
                 setIconLayoutMarginParams(iconView, R.dimen.home_tile_margin_value)
             }
             is CustomHomeTile -> {
-                onBindCustomHomeTile(uiLifecycleCancelJob, holder, item)
+                onBindCustomHomeTile(uiScope, holder, item)
                 setIconLayoutMarginParams(iconView, R.dimen.home_tile_margin_value)
             }
         }.forceExhaustive
@@ -187,8 +185,8 @@ private fun onBindBundledHomeTile(holder: TileViewHolder, tile: BundledHomeTile)
     }
 }
 
-private fun onBindCustomHomeTile(uiLifecycleCancelJob: Job, holder: TileViewHolder, item: CustomHomeTile) = with(holder) {
-    launch(uiLifecycleCancelJob + UI, CoroutineStart.UNDISPATCHED) {
+private fun onBindCustomHomeTile(uiScope: CoroutineScope, holder: TileViewHolder, item: CustomHomeTile) = with(holder) {
+    uiScope.launch {
         val validUri = item.url.toJavaURI()
 
         val screenshotDeferred = async {
