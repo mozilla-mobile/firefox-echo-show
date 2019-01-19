@@ -55,4 +55,5 @@
   <string name="google_search_hint_text">Rechercher avec Google ou saisir une adresse</string>
   <string name="preference_mozilla_telemetry_summary2">Mozilla veille à collecter uniquement les données nécessaires afin d’offrir et d’améliorer %1$s pour tout le monde.</string>
   <string name="preference_mozilla_telemetry_summary">En savoir plus</string>
+  <string name="nav_close_hint">Fermer</string>
 </resources>

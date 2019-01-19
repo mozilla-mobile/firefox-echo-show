@@ -56,4 +56,5 @@
   <string name="google_search_hint_text">Google で検索またはアドレスを入力</string>
   <string name="preference_mozilla_telemetry_summary2">Mozilla は %1$s を皆さんに提供し改善するために必要な情報だけを収集するよう努めています。</string>
   <string name="preference_mozilla_telemetry_summary">詳細情報</string>
+  <string name="nav_close_hint">閉じる</string>
 </resources>
