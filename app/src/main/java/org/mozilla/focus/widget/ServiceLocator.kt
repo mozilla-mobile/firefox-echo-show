@@ -4,7 +4,9 @@
 
 package org.mozilla.focus.widget
 
+import android.content.Context
 import org.mozilla.focus.architecture.FrameworkRepo
+import org.mozilla.focus.ext.getAccessibilityManager
 
 /**
  * Implementation of the Service Locator pattern. Use this class to provide dependencies without
@@ -40,4 +42,9 @@ import org.mozilla.focus.architecture.FrameworkRepo
 open class ServiceLocator {
 
     val frameworkRepo = FrameworkRepo()
+
+    fun init(applicationContext: Context) {
+        // The touch state listener gets called even when the application is backgrounded so we only need to add it once.
+        frameworkRepo.init(applicationContext.getAccessibilityManager())
+    }
 }
