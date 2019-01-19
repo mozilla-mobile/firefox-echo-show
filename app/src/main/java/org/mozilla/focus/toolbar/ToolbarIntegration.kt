@@ -9,9 +9,11 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -152,36 +154,43 @@ object ToolbarIntegration {
         onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
         val res = context.resources
+        fun getDrawable(@DrawableRes drawableId: Int): Drawable =
+            ResourcesCompat.getDrawable(res, drawableId, null)!!
 
-        val homescreenButton = BrowserToolbar.Button(R.drawable.ic_grid,
+        val homescreenButton = BrowserToolbar.Button(
+                getDrawable(R.drawable.ic_grid),
                 context.getString(R.string.homescreen_title),
                 background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(HOME, null, null) }
                 .let { WorkaroundAction(it) }
         toolbar.addNavigationAction(homescreenButton)
 
-        val backButton = BrowserToolbar.Button(R.drawable.ic_back,
+        val backButton = BrowserToolbar.Button(
+                getDrawable(R.drawable.ic_back),
                 context.getString(R.string.content_description_back),
                 background = TOOLBAR_BUTTON_BACKGROUND,
                 visible = toolbarStateProvider::isBackEnabled) { onToolbarEvent(BACK, null, null) }
                 .let { WorkaroundAction(it) }
         toolbar.addNavigationAction(backButton)
 
-        val forwardButton = BrowserToolbar.Button(R.drawable.ic_forward,
+        val forwardButton = BrowserToolbar.Button(
+                getDrawable(R.drawable.ic_forward),
                 context.getString(R.string.content_description_forward),
                 toolbarStateProvider::isForwardEnabled,
                 background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(FORWARD, null, null) }
                 .let { WorkaroundAction(it) }
         toolbar.addNavigationAction(forwardButton)
 
-        val refreshButton = BrowserToolbar.Button(R.drawable.ic_refresh,
+        val refreshButton = BrowserToolbar.Button(
+                getDrawable(R.drawable.ic_refresh),
                 context.getString(R.string.content_description_reload),
                 background = TOOLBAR_BUTTON_BACKGROUND,
                 visible = { !toolbarStateProvider.isStartupHomepageVisible() }) { onToolbarEvent(RELOAD, null, null) }
                 .let { WorkaroundAction(it) }
         toolbar.addPageAction(refreshButton)
 
-        val pinButton = ChangeableVisibilityButton(imageResource = R.drawable.ic_pin,
-                imageResourceSelected = R.drawable.ic_pin_filled,
+        val pinButton = ChangeableVisibilityButton(
+                imageDrawable = getDrawable(R.drawable.ic_pin),
+                imageDrawableSelected = getDrawable(R.drawable.ic_pin_filled),
                 contentDescription = context.getString(R.string.pin_label),
                 contentDescriptionSelected = context.getString(R.string.homescreen_unpin_a11y),
                 background = R.drawable.toolbar_toggle_background,
@@ -213,14 +222,17 @@ object ToolbarIntegration {
             toolbar.addBrowserAction(Toolbar.ActionSpace(actionSpaceWidth))
         }
 
-        val settingsButton = BrowserToolbar.Button(R.drawable.ic_settings,
+        val settingsButton = BrowserToolbar.Button(
+                getDrawable(R.drawable.ic_settings),
                 context.getString(R.string.menu_settings),
                 background = TOOLBAR_BUTTON_BACKGROUND) { onToolbarEvent(SETTINGS, null, null) }
                 .let { WorkaroundAction(it) }
         toolbar.addBrowserAction(settingsButton)
 
-        val brandIcon = Toolbar.ActionImage(R.drawable.ic_firefox_and_workmark, "")
-                .let { WorkaroundAction(it, shouldTintIcon = false) }
+        val brandIcon = Toolbar.ActionImage(
+            getDrawable(R.drawable.ic_firefox_and_workmark),
+            ""
+        ).let { WorkaroundAction(it, shouldTintIcon = false) }
         toolbar.addBrowserAction(brandIcon)
 
         /*
@@ -304,16 +316,16 @@ private class WorkaroundAction(
  * A [BrowserToolbar.ToggleButton] that can be set to different visibilities
  */
 private class ChangeableVisibilityButton(
-    @DrawableRes imageResource: Int,
-    @DrawableRes imageResourceSelected: Int,
+    imageDrawable: Drawable,
+    imageDrawableSelected: Drawable,
     contentDescription: String,
     contentDescriptionSelected: String,
-    @DrawableRes background: Int? = null,
+    @DrawableRes background: Int,
     val visibility: () -> Int,
     listener: (Boolean) -> Unit
 ) : BrowserToolbar.ToggleButton(
-        imageResource,
-        imageResourceSelected,
+        imageDrawable,
+        imageDrawableSelected,
         contentDescription,
         contentDescriptionSelected,
         background = background,
