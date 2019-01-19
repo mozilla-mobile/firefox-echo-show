@@ -24,11 +24,11 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC9.2"
+    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC12"
 }
 
 detekt {
-    toolVersion = "1.0.0.RC9.2"
+    toolVersion = "1.0.0-RC12"
     input = files("$projectDir")
     config = files("$projectDir/quality/detekt.yml")
     filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
