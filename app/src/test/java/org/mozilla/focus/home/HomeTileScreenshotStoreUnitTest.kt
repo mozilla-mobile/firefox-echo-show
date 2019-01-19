@@ -6,7 +6,7 @@ package org.mozilla.focus.home
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
