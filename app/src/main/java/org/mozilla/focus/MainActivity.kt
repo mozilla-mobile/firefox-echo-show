@@ -39,6 +39,7 @@ import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.ToolbarViewModel
+import org.mozilla.focus.utils.ActivityUiCoroutineScope
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 
@@ -49,6 +50,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     private lateinit var toolbarCallbacks: ToolbarCallbacks
     private val toolbarStateProvider = DelegateToBrowserToolbarStateProvider()
     private lateinit var appBarLayoutController: BrowserAppBarLayoutController
+
+    private val activityUiScope = ActivityUiCoroutineScope().apply { init(lifecycle) }
 
     private val toolbarViewModel: ToolbarViewModel
         get() = FirefoxViewModelProviders.of(this)[ToolbarViewModel::class.java]
@@ -98,7 +101,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
             }
         }
 
-        toolbarCallbacks = ToolbarIntegration.setup(this, toolbarViewModel, toolbar, toolbarStateProvider,
+        toolbarCallbacks = ToolbarIntegration.setup(this, activityUiScope, toolbarViewModel, toolbar, toolbarStateProvider,
             ::onToolbarEvent)
     }
 

@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import kotlinx.coroutines.CoroutineScope
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
@@ -86,6 +87,7 @@ object ToolbarIntegration {
     @SuppressWarnings("LongMethod")
     fun setup(
         lifecycleOwner: LifecycleOwner,
+        uiScope: CoroutineScope,
         viewModel: ToolbarViewModel,
         toolbar: BrowserToolbar,
         toolbarStateProvider: ToolbarStateProvider,
@@ -102,7 +104,7 @@ object ToolbarIntegration {
 
         configureToolbarSpacing(toolbar)
         initTextChangeListeners(context, toolbar, onToolbarEvent)
-        val progressBarController = configureProgressBar(context, toolbar)
+        val progressBarController = configureProgressBar(context, uiScope, toolbar)
         val pinButton = addToolbarButtons(context, toolbar, toolbarStateProvider, onToolbarEvent)
 
         // Some component workarounds.
@@ -139,10 +141,10 @@ object ToolbarIntegration {
         toolbar.browserActionMargin = res.pxToDp(BUTTON_ACTION_MARGIN_DP)
     }
 
-    private fun configureProgressBar(context: Context, toolbar: BrowserToolbar): ProgressBarController {
+    private fun configureProgressBar(context: Context, uiScope: CoroutineScope, toolbar: BrowserToolbar): ProgressBarController {
         val urlBoxBackground = UrlBoxBackgroundWithProgress(context)
         toolbar.urlBoxView = urlBoxBackground
-        val progressBarController = ProgressBarController(urlBoxBackground)
+        val progressBarController = ProgressBarController(uiScope, urlBoxBackground)
         return progressBarController
     }
 

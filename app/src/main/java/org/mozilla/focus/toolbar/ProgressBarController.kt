@@ -4,17 +4,17 @@
 
 package org.mozilla.focus.toolbar
 
-import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private const val MIN_UI_PROGRESS = 0
 private const val MAX_UI_PROGRESS = 100
 
 /** Controls the appearance of the progress bar. */
 class ProgressBarController(
+    private val uiScope: CoroutineScope,
     private val progressBar: UrlBoxBackgroundWithProgress
 ) {
     private var isLoading = false
@@ -59,7 +59,7 @@ class ProgressBarController(
         // The progress bar may hide even when set to an arbitrary percentage and it looks weird:
         // we max out the progress bar briefly to make it look more natural.
         progressBar.progress = MAX_UI_PROGRESS
-        hideProgressBarJob = launch(UI, CoroutineStart.UNDISPATCHED) {
+        hideProgressBarJob = uiScope.launch {
             delay(250)
             progressBar.progress = MIN_UI_PROGRESS
         }
