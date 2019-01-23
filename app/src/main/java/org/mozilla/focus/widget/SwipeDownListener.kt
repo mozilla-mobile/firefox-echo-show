@@ -10,6 +10,10 @@ import kotlin.math.abs
 
 /**
  * Executes [doOnSwipeDown] when down swipes are detected.
+ *
+ * TODO this was written to be used in #106, but related functionality was
+ * split off into #204 pending UX input.  After these decisions have been made,
+ * this class should be either used or deleted
  */
 class SwipeDownListener(private val doOnSwipeDown: () -> Unit) : GestureDetector.SimpleOnGestureListener() {
 
