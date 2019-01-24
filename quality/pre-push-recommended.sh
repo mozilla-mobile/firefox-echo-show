@@ -21,8 +21,7 @@
         verifyWebViewCount \
         assembleAmazonWebViewDebugAndroidTest \
         lintAmazonWebViewDebug \
-        testAmazonWebViewDebug \
-        connectedAmazonWebViewDebugAndroidTest
+        testAmazonWebViewDebug
 
 # Tasks omitted because they take a long time to run:
 # - unit test on all variants
