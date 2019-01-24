@@ -5,8 +5,6 @@
 
 package org.mozilla.focus.home;
 
-import android.content.Context;
-import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
@@ -15,7 +13,6 @@ import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
-
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -32,7 +29,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertFalse;
-import static org.mozilla.focus.OnboardingActivity.ONBOARD_SHOWN_PREF;
 
 @RunWith(AndroidJUnit4.class)
 @Ignore // TODO: fix me! #525
@@ -42,21 +38,7 @@ public class PinnedTileTests {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule
-            = new ActivityTestRule<MainActivity>(MainActivity.class) {
-        @Override
-        protected void beforeActivityLaunched() {
-            super.beforeActivityLaunched();
-
-            Context appContext = InstrumentationRegistry.getInstrumentation()
-                    .getTargetContext()
-                    .getApplicationContext();
-
-            PreferenceManager.getDefaultSharedPreferences(appContext)
-                    .edit()
-                    .putBoolean(ONBOARD_SHOWN_PREF, true)
-                    .apply();
-        }
-    };
+            = new ActivityTestRule<MainActivity>(MainActivity.class);
 
     @After
     public void tearDown() throws Exception {

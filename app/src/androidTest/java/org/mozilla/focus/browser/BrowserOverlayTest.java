@@ -5,8 +5,6 @@
 
 package org.mozilla.focus.browser;
 
-import android.content.Context;
-import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.matcher.ViewMatchers;
@@ -14,7 +12,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObjectNotFoundException;
-
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -31,7 +28,6 @@ import static android.support.test.espresso.web.assertion.WebViewAssertions.webM
 import static android.support.test.espresso.web.model.Atoms.getCurrentUrl;
 import static android.support.test.espresso.web.sugar.Web.onWebView;
 import static org.hamcrest.Matchers.containsString;
-import static org.mozilla.focus.OnboardingActivity.ONBOARD_SHOWN_PREF;
 
 @RunWith(AndroidJUnit4.class)
 @Ignore // TODO: fix me! #525
@@ -41,21 +37,7 @@ public class BrowserOverlayTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule
-            = new ActivityTestRule<MainActivity>(MainActivity.class) {
-        @Override
-        protected void beforeActivityLaunched() {
-            super.beforeActivityLaunched();
-
-            Context appContext = InstrumentationRegistry.getInstrumentation()
-                    .getTargetContext()
-                    .getApplicationContext();
-
-            PreferenceManager.getDefaultSharedPreferences(appContext)
-                    .edit()
-                    .putBoolean(ONBOARD_SHOWN_PREF, true)
-                    .apply();
-        }
-    };
+            = new ActivityTestRule<MainActivity>(MainActivity.class);
 
     @After
     public void tearDown() throws Exception {
