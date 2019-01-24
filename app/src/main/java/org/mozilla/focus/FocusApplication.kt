@@ -7,6 +7,8 @@ package org.mozilla.focus
 
 import android.os.StrictMode
 import android.support.v7.preference.PreferenceManager
+import mozilla.components.support.base.log.Log
+import mozilla.components.support.base.log.sink.AndroidLogSink
 import org.mozilla.focus.locale.LocaleAwareApplication
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.session.VisibilityLifeCycleCallback
@@ -31,6 +33,7 @@ class FocusApplication : LocaleAwareApplication() {
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
 
         enableStrictMode()
+        Log.addSink(AndroidLogSink())
 
         serviceLocator = ServiceLocator().apply {
             init(this@FocusApplication)

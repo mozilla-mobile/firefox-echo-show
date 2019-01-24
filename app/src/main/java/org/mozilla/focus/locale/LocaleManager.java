@@ -35,6 +35,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * * It's lazy.
  * * It relies on using the SharedPreferences file owned by the app for performance.
  */
+@SuppressWarnings("LogUsage") // this is expected to get replaced by components #824 - no need to update yet.
 public class LocaleManager {
     private static final String LOG_TAG = "GeckoLocales";
 
