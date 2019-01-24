@@ -67,7 +67,7 @@ internal class FirefoxWebView(
         // WebView.getUrl() always returns the currently loading or loaded page).
         // If the app is paused/killed before the initial page finished loading, then the entire
         // list will be null - so we need to additionally check whether the list even exists.
-        if (backForwardList != null && backForwardList.currentItem.url == desiredURL) {
+        if (backForwardList?.currentItem?.url == desiredURL && desiredURL != null) {
             // restoreState doesn't actually load the current page, it just restores navigation history,
             // so we also need to explicitly reload in this case:
             reload()
