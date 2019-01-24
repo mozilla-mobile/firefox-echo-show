@@ -50,6 +50,15 @@ class FragmentViewUiCoroutineScopeTest {
         assertFalse(scope.coroutineContext.isActive)
     }
 
+    @Test
+    fun `WHEN the coroutine scope goes through two lifecycles THEN the scope is cancelled`() {
+        scope.onCreateView()
+        scope.onDestroyView()
+        scope.onCreateView()
+        scope.onDestroyView()
+        assertFalse(scope.coroutineContext.isActive)
+    }
+
     @Test(expected = IllegalStateException::class)
     fun `WHEN onCreateView is called twice before onDestroyView is called THEN then an exception is thrown`() {
         scope.onCreateView()
