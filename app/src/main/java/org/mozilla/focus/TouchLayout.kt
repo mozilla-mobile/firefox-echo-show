@@ -6,10 +6,13 @@ package org.mozilla.focus
 
 import android.content.Context
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.view.GestureDetectorCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import org.mozilla.focus.ext.isWithinBoundsOf
+import org.mozilla.focus.ext.serviceLocator
+import org.mozilla.focus.widget.SwipeDownOutsideOfListener
 import java.lang.ref.WeakReference
 import kotlin.math.round
 
@@ -23,12 +26,14 @@ class TouchInterceptorLayout(
 ) : CoordinatorLayout(context, attrs) {
 
     private val touchOutsideListeners = mutableListOf<Pair<WeakReference<View>, () -> Unit>>()
+    private val gestureDetector = GestureDetectorCompat(context, context.serviceLocator.swipeDownOutsideOfListener)
 
     override fun onInterceptTouchEvent(event: MotionEvent?): Boolean {
         if (event?.action == MotionEvent.ACTION_DOWN) {
             touchOutsideListeners.filter { (viewRef, _) -> !(event isWithinBoundsOf viewRef.get()) }
                     .forEach { (_, action) -> action.invoke() }
         }
+        gestureDetector.onTouchEvent(event)
 
         return super.onInterceptTouchEvent(event)
     }

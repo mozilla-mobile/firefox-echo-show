@@ -10,6 +10,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
 import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_WRAP
 import android.support.v4.app.Fragment
+import android.support.v4.view.GestureDetectorCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +18,16 @@ import kotlinx.android.synthetic.main.fragment_navigation_overlay.*
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
 import kotlinx.coroutines.experimental.CancellationException
 import org.mozilla.focus.R
+import org.mozilla.focus.TouchInterceptorLayout
 import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
 import org.mozilla.focus.browser.HomeTileGridNavigation
 import org.mozilla.focus.browser.HomeTileLongClickListener
+import org.mozilla.focus.ext.serviceLocator
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.widget.SwipeDownOutsideOfListener
+import java.lang.ref.WeakReference
 
 private const val KEY_IS_OVERLAY_ON_STARTUP = "isOverlayOnStartup"
 
@@ -105,11 +110,15 @@ class NavigationOverlayFragment : Fragment() {
                 homeTileLongClickListener = null
             }
         }
-
-        overlay.dismissHitTarget.setOnClickListener {
+        fun dismissOverlay() {
             removeClickListeners()
             callbacks?.setNavigationOverlayIsVisible(false)
             TelemetryWrapper.dismissHomeOverlayClickEvent()
+            overlay.context.serviceLocator.swipeDownOutsideOfListener.disable()
+        }
+
+        overlay.dismissHitTarget.setOnClickListener {
+            dismissOverlay()
         }
 
         with(overlay.homeTiles) {
@@ -124,6 +133,9 @@ class NavigationOverlayFragment : Fragment() {
                 }
             }
         }
+
+        overlay.context.serviceLocator
+                .swipeDownOutsideOfListener.enable(overlay.homeTiles) { dismissOverlay() }
     }
 
     fun refreshTilesForInsertion() {

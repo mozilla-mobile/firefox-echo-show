@@ -42,6 +42,7 @@ import org.mozilla.focus.ext.getAccessibilityManager
 open class ServiceLocator {
 
     val frameworkRepo = FrameworkRepo()
+    val swipeDownOutsideOfListener = SwipeDownOutsideOfListener()
 
     fun init(applicationContext: Context) {
         // The touch state listener gets called even when the application is backgrounded so we only need to add it once.
