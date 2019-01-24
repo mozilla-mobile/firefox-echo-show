@@ -36,6 +36,7 @@ import java.util.Set;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+@SuppressWarnings("LogUsage") // this will get replaced by components.
 public class SearchEngineManager extends BroadcastReceiver {
     private static final String LOG_TAG = SearchEngineManager.class.getSimpleName();
 
