@@ -127,6 +127,7 @@ internal class FirefoxWebView(
         this.deleteData()
     }
 
+    @Suppress("DEPRECATION") // drawing cache methods: we'll replace this with components soon.
     override fun takeScreenshot(): Bitmap {
         // Under the hood, createBitmap may create a new reference to the existing Bitmap so
         // it's efficient: we don't have to copy the existing Bitmap or GC it on destroy.
