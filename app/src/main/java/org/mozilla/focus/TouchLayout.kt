@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import org.mozilla.focus.ext.isWithinBoundsOf
 import java.lang.ref.WeakReference
 import kotlin.math.round
 
@@ -46,11 +47,4 @@ class TouchInterceptorLayout(
     }
 }
 
-private infix fun MotionEvent?.isWithinBoundsOf(view: View?): Boolean {
-    view ?: return false
-    this ?: return false
-    val x = round(this.x).toInt()
-    val y = round(this.y).toInt()
-    return x in view.left..view.right &&
-            y in view.top..view.bottom
-}
+

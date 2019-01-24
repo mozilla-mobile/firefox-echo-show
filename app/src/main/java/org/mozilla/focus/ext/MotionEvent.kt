@@ -5,6 +5,8 @@
 package org.mozilla.focus.ext
 
 import android.view.MotionEvent
+import android.view.View
+import kotlin.math.round
 
 /** Calls the functionBlock and then [MotionEvent.recycle]s this. Inspired by [AutoCloseable.use]. */
 inline fun <R> MotionEvent.use(functionBlock: (MotionEvent) -> R): R {
@@ -13,4 +15,13 @@ inline fun <R> MotionEvent.use(functionBlock: (MotionEvent) -> R): R {
     } finally {
         recycle()
     }
+}
+
+infix fun MotionEvent?.isWithinBoundsOf(view: View?): Boolean {
+    view ?: return false
+    this ?: return false
+    val x = round(this.x).toInt()
+    val y = round(this.y).toInt()
+    return x in view.left..view.right &&
+            y in view.top..view.bottom
 }
