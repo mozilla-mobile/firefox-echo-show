@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Pinch to exit full screen web content like videos (#75)
-- "Handle" UI element above pinned tiles to help communicate swipe-to-dismiss functionality 
 
 ### Changed
 - Appearance and animations of navigation overlay to more clearly overlay browser content

@@ -46,6 +46,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:background="@color/photonGrey70"/>
 
+    <!-- This handle is only a visual indicator. Overlay dismissal is actually accomplished
+    by allowing the tap to fall through to the dismissHitTarget -->
     <View
         android:id="@+id/overlayHandle"
         android:layout_width="64dp"
