@@ -41,9 +41,7 @@
   <string name="settings_cookies_dialog_content2">Ciò eliminerà tutti i cookie e i dati raccolti. Rimuovere queste informazioni potrebbe causare la disconnessione da siti web e l\'eliminazione dei contenuti web salvati offline.</string>
   <string name="turbo_mode_enabled_toast">Modalità turbo attivata</string>
   <string name="turbo_mode_disabled_toast">Modalità turbo disattivata</string>
-  <string name="onboarding_turbo_mode_title">La modalità turbo ti permette di navigare più velocemente</string>
-  <string name="onboarding_turbo_mode_body">La modalità turbo blocca in automatico elementi traccianti e pubblicità per caricare le pagine più rapidamente. Se incontri un problema, come un sito che non funziona come dovrebbe, basterà disattivare la modalità turbo.</string>
-  <string name="homescreen_unpin_tutorial_toast">Per sbloccare un elemento nella pagina principale tieni premuto SELECT</string>
+    <string name="homescreen_unpin_tutorial_toast">Per sbloccare un elemento nella pagina principale tieni premuto SELECT</string>
   <string name="homescreen_tile_remove">Rimuovi</string>
   <string name="homescreen_unpin_a11y">Rimuovi dalla bacheca</string>
   <string name="homescreen_title">Schermata principale</string>

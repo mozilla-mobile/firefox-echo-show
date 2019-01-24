@@ -41,9 +41,7 @@
   <string name="settings_cookies_dialog_content2">Dadurch werden alle Cookies und Website-Daten gelöscht. Wenn Sie diese Daten löschen, werden Sie möglicherweise von Websites abgemeldet und offline gespeicherte Web-Inhalte werden gelöscht.</string>
   <string name="turbo_mode_enabled_toast">Turbo-Modus aktiviert</string>
   <string name="turbo_mode_disabled_toast">Turbo-Modus deaktiviert</string>
-  <string name="onboarding_turbo_mode_title">Der Turbo-Modus hilft Ihnen, schneller zu surfen</string>
-  <string name="onboarding_turbo_mode_body">Der Turbo-Modus blockiert automatisch Tracker und Anzeigen, damit Sie schneller ans Ziel kommen. Wenn es ein Problem gibt – wie bei einer Website, die sich nicht so verhält, wie Sie es erwarten – schalten Sie einfach den Turbo-Modus aus.</string>
-  <string name="homescreen_unpin_tutorial_toast">Drücken und halten Sie AUSWÄHLEN zum Ablösen vom Startbildschirm</string>
+    <string name="homescreen_unpin_tutorial_toast">Drücken und halten Sie AUSWÄHLEN zum Ablösen vom Startbildschirm</string>
   <string name="homescreen_tile_remove">Entfernen</string>
   <string name="homescreen_unpin_a11y">Ablösen</string>
   <string name="homescreen_title">Startbildschirm</string>

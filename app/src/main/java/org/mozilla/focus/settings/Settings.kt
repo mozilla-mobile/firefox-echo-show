@@ -10,7 +10,6 @@ import android.content.res.Resources
 import android.preference.PreferenceManager
 
 import org.mozilla.focus.R
-import org.mozilla.focus.OnboardingActivity
 import org.mozilla.focus.search.SearchEngine
 
 /**
@@ -35,9 +34,6 @@ class Settings private constructor(context: Context) {
 
     val defaultSearchEngineName: String?
         get() = preferences.getString(getPreferenceKey(R.string.pref_key_search_engine), null)
-
-    fun shouldShowOnboarding(): Boolean =
-            !preferences.getBoolean(OnboardingActivity.ONBOARD_SHOWN_PREF, false)
 
     fun setDefaultSearchEngine(searchEngine: SearchEngine) {
         preferences.edit()

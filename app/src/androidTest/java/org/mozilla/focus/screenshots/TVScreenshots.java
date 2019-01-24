@@ -40,7 +40,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
-import static org.mozilla.focus.OnboardingActivity.ONBOARD_SHOWN_PREF;
 
 @RunWith(AndroidJUnit4.class)
 @Ignore // TODO: fix me! #525
@@ -75,11 +74,6 @@ public class TVScreenshots extends ScreenshotTest {
 
     @Test
     public void firstLaunchScreen() throws InterruptedException, UiObjectNotFoundException {
-        /* Overwrite the app preference before main activity launch */
-        preferencesEditor
-                .putBoolean(ONBOARD_SHOWN_PREF, false)
-                .apply();
-
         mActivityTestRule.launchActivity(intent);
 
 //        onView(withId(R.id.enable_turbo_mode))
