@@ -9,7 +9,6 @@ import android.view.MotionEvent
 import android.view.View
 import org.mozilla.focus.ext.isWithinBoundsOf
 import org.mozilla.focus.utils.WeakReferenceDelegate
-import java.lang.ref.WeakReference
 import kotlin.math.abs
 
 /**

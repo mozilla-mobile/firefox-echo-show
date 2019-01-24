@@ -12,9 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import org.mozilla.focus.ext.isWithinBoundsOf
 import org.mozilla.focus.ext.serviceLocator
-import org.mozilla.focus.widget.SwipeDownOutsideOfListener
 import java.lang.ref.WeakReference
-import kotlin.math.round
 
 /**
  * Allows us to intercept touch events happening anywhere on the screen without
@@ -51,5 +49,3 @@ class TouchInterceptorLayout(
         }
     }
 }
-
-
