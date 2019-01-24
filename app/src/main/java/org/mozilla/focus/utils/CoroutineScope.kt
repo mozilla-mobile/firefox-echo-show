@@ -48,13 +48,19 @@ class ActivityUiCoroutineScope : LifecycleObserver, CoroutineScope {
  */
 class FragmentViewUiCoroutineScope : CoroutineScope {
 
+    /**
+     * Returns the coroutine context scoped to the Fragment's view lifecycle.
+     *
+     * @throws KotlinNullPointerException if accessed before [onCreateView] is ever called (a UI job should never start
+     * before the view hierarchy is created).
+     */
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + viewLifecycleCancelJob!!
 
     private var viewLifecycleCancelJob: Job? = null
 
     fun onCreateView() {
-        if (viewLifecycleCancelJob != null) {
+        if (viewLifecycleCancelJob?.isCancelled == false) {
             throw IllegalStateException("onCreateView unexpectedly called twice before onDestroyView")
         }
 
@@ -62,8 +68,10 @@ class FragmentViewUiCoroutineScope : CoroutineScope {
     }
 
     fun onDestroyView() {
-        // To reduce exceptions thrown from lifecycle errors, we don't null the job.
-        // If a job is created around this cancelled job, it will just fail to execute.
+        // A user of this class may try to create a job on the UI thread after onDestroyView is called (e.g.
+        // a background coroutine finishes and tries to execute on the UI thread). In these cases, we don't
+        // want the application to throw so we don't null this job: instead the caller will get the cancelled
+        // job and their job will fail to execute.
         viewLifecycleCancelJob!!.cancel()
     }
 }
