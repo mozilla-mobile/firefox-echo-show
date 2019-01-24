@@ -33,4 +33,7 @@
 
     <!-- We don't want to fail the build, nor do we want to to pollute our informational output. -->
     <issue id="Typos" severity="informational"/>
+
+    <!-- We do not support Google services. -->
+    <issue id="GoogleAppIndexingWarning" severity="ignore"/>
 </lint>
