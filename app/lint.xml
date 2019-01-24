@@ -20,6 +20,10 @@
     <!-- Sometimes we don't want to update the SDK immediately. -->
     <issue id="OldTargetApi" severity="informational"/>
 
+    <!-- With limited devices to support, we're intentional about which folders we put our resources
+         into to limit APK size. The IconDensities check should catch our DPI errors. -->
+    <issue id="IconMissingDensityFolder" severity="informational"/>
+
     <!-- While we are developing the app and importing/exporting strings from the l10n repository
          there will always be missing or extra translations. Just printing a warning is enough.
          No need to fail the builds. -->
