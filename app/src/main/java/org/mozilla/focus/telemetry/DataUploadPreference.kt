@@ -4,6 +4,7 @@
 
 package org.mozilla.focus.telemetry
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.StrictMode
@@ -14,6 +15,7 @@ import org.mozilla.telemetry.TelemetryHolder
 private const val PREF_KEY_TELEMETRY = R.string.pref_key_telemetry
 
 /** A data container for for the "Send usage data" preference the user can switch. */
+@SuppressLint("StaticFieldLeak") // We intentionally hold the application context.
 internal object DataUploadPreference : SharedPreferences.OnSharedPreferenceChangeListener {
     // Sentry needs a reference to the applicationContext. We do not store the Activity context.
     private lateinit var appContext: Context
