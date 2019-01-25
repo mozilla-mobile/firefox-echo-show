@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Toolbar not updating correctly after application state is restored (#145)
 - A memory leak where the MainActivity was retained after the framework destroyed it (#153)
+- An accessibility problem where an invisible view could steal focus on the home screen (#213)
 
 ## [1.2] - ?
 ### Changed
