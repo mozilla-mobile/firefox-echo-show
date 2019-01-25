@@ -17,6 +17,7 @@ import android.widget.TextView
 import mozilla.components.support.ktx.android.content.systemService
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
+import org.mozilla.focus.UrlSearcher
 
 private const val HIDDEN_EDIT_TEXT_ID = R.id.hiddenEditText
 
@@ -35,7 +36,7 @@ object HiddenEditTextManager {
     /**
      * Attaches a hidden EditText to a ViewGroup
      */
-    fun attach(viewGroupToAttachTo: ViewGroup) {
+    private fun attachAndReturnHiddenEditText(viewGroupToAttachTo: ViewGroup): EditText {
         val editText = EditText(viewGroupToAttachTo.context).apply {
             setImeActionLabel(null, EditorInfo.IME_ACTION_SEARCH)
             // Elevation should be lower than the rest of the ViewGroup for this to
@@ -45,8 +46,6 @@ object HiddenEditTextManager {
             inputType = InputType.TYPE_CLASS_TEXT
             hint = viewGroupToAttachTo.context.getString(R.string.google_search_hint_text)
 
-            // For some reason, to prevent focusing on startup and in linear navigation, both of these are necessary.
-            isFocusable = false
             importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_NO
         }
         viewGroupToAttachTo.addView(editText)
@@ -57,6 +56,7 @@ object HiddenEditTextManager {
             height = 1
             width = 1
         }
+        return editText
     }
 
     /**
@@ -67,37 +67,31 @@ object HiddenEditTextManager {
     }
 
     /**
-     * Opens soft keyboard and causes the hidden EditText to request focus.
+     * Opens soft keyboard, attaches a hidden EditText, and causes it to request focus.
      *
      * Should be used on a view that has already been passed to
      * [HiddenEditTextManager.attach]
      */
-    fun openSoftKeyboard(view: View) {
+    fun openSoftKeyboard(viewGroupToAttachTo: ViewGroup, urlSearchProvider: () -> UrlSearcher?) {
+        val editText = attachAndReturnHiddenEditText(viewGroupToAttachTo)
+
         fun showKeyboard() {
-            view.context?.systemService<InputMethodManager>(Context.INPUT_METHOD_SERVICE)
+            viewGroupToAttachTo.context?.systemService<InputMethodManager>(Context.INPUT_METHOD_SERVICE)
                     ?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
         }
+        fun setSearchListener() {
+            editText.setOnEditorActionListener(SearchOnGoEditorActionListener(editText) { query, autocomplete ->
+                urlSearchProvider()?.onTextInputUrlEntered(query, autocomplete)
+            })
+        }
 
-        val editText = view.getEditText()
-
-        editText?.setText("")
+        editText.setText("")
         // Programmatically requesting focus on the device does not open
         // the soft keyboard for an unknown reason, so we need to open
         // the keyboard manually in addition to requesting focus
         showKeyboard()
-        editText?.requestFocus()
-    }
-
-    /**
-     * Sets [executeSearch] as a listener to fire when the keyboard go button is
-     * pressed.
-     *
-     * Should be used on a view that has already been passed to
-     * [HiddenEditTextManager.attach]
-     */
-    fun setKeyboardListener(view: View, executeSearch: ExecuteSearch) {
-        val editText = view.getEditText()
-        editText?.setOnEditorActionListener(SearchOnGoEditorActionListener(editText, executeSearch))
+        editText.requestFocus()
+        setSearchListener()
     }
 
     private fun View.getEditText() = this.findViewById<EditText?>(HIDDEN_EDIT_TEXT_ID)

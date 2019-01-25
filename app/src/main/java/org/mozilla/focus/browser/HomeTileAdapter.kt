@@ -99,13 +99,9 @@ class HomeTileAdapter(
 
     private fun ViewGroup.setSearchClickListeners(item: HomeTile, urlSearchProvider: () -> UrlSearcher?) {
         // TODO read hint text from Tile, pass through HiddenEditTextManager#attach
-        HiddenEditTextManager.attach(this)
         this.setOnClickListener {
-            HiddenEditTextManager.openSoftKeyboard(it)
+            HiddenEditTextManager.openSoftKeyboard(this, urlSearchProvider)
             TelemetryWrapper.homeTileClickEvent(item)
-        }
-        HiddenEditTextManager.setKeyboardListener(this) { query, autocomplete ->
-            urlSearchProvider()?.onTextInputUrlEntered(query, autocomplete)
         }
     }
 
