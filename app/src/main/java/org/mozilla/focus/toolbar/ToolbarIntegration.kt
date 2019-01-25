@@ -13,7 +13,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.content.res.AppCompatResources
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -157,7 +157,7 @@ object ToolbarIntegration {
     ): ChangeableVisibilityButton {
         val res = context.resources
         fun getDrawable(@DrawableRes drawableId: Int): Drawable =
-            ResourcesCompat.getDrawable(res, drawableId, null)!!
+            AppCompatResources.getDrawable(context, drawableId)!!
 
         val homescreenButton = BrowserToolbar.Button(
                 getDrawable(R.drawable.ic_grid),
