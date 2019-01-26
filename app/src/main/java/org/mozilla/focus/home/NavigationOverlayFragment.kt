@@ -4,6 +4,7 @@
 
 package org.mozilla.focus.home
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.constraint.ConstraintLayout
@@ -13,9 +14,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.*
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
 import kotlinx.coroutines.experimental.CancellationException
+import mozilla.components.support.base.observer.Consumable
+import mozilla.components.support.ktx.android.content.systemService
 import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
@@ -132,6 +136,23 @@ class NavigationOverlayFragment : Fragment() {
 
     fun removePinnedSiteFromTiles(tileId: String) {
         homeTiles.removePinnedSiteFromTiles(tileId)
+    }
+
+    private inner class GoogleSearchFocusRequestObserver : Observer<Consumable<GoogleSearchFocusRequestEvent>> {
+        override fun onChanged(consumable: Consumable<GoogleSearchFocusRequestEvent>?) {
+            consumable?.consume {
+                googleSearchHiddenEditText.setText("")
+                googleSearchHiddenEditText.requestFocus()
+                googleSearchHiddenEditText.showKeyboard()
+                true
+            }
+        }
+
+        private fun EditText.showKeyboard() {
+            // ViewUtils.showKeyboard doesn't seem to work.
+            val inputMethodManager = context?.systemService<InputMethodManager>(Context.INPUT_METHOD_SERVICE)
+            inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        }
     }
 
     companion object {
