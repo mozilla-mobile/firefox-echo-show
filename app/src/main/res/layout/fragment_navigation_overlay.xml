@@ -13,6 +13,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <!-- We want users to click the Google search tile, type in a query, and to search upon submission, i.e. no
+         visible EditText. However, users can only type into an EditText so we hide this one below other views in
+         the layout and programmatically shift focus to it (and thus the keyboard) when appropriate.
+
+         The previous implementation added this view to the layout dynamically but that undesirably forced focus
+         upon the added view: instead, this view is added on inflation. -->
+    <EditText
+            android:id="@+id/googleSearchHiddenEditText"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:elevation="-8dp"
+            android:hint="@string/google_search_hint_text"
+            android:inputType="text"
+            android:imeActionLabel="@null"
+            android:imeActionId="@integer/ime_action_search"
+            android:importantForAccessibility="no"/>
+
     <!-- Visible in dialog mode, this is the semi opaque background that obscures the URL bar. If focusable,
          this view is accessible by the screen reader through the overlay background where there aren't home tiles. -->
     <View
@@ -101,7 +120,9 @@
             android:paddingEnd="22dp"
             android:paddingTop="44dp"
             android:clipChildren="false"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false">
+        <requestFocus/>
+    </org.mozilla.focus.browser.HomeTileGridNavigation>
 
     <android.support.constraint.Guideline
             android:id="@+id/overlayTopAsInitialHomescreen"
