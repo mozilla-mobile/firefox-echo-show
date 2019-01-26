@@ -5,6 +5,7 @@
 package org.mozilla.focus.home
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.constraint.ConstraintLayout
@@ -15,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.*
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
 import kotlinx.coroutines.experimental.CancellationException
@@ -25,6 +27,7 @@ import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
 import org.mozilla.focus.browser.HomeTileGridNavigation
 import org.mozilla.focus.browser.HomeTileLongClickListener
+import org.mozilla.focus.ext.serviceLocator
 import org.mozilla.focus.ext.updateLayoutParams
 import org.mozilla.focus.telemetry.TelemetryWrapper
 
@@ -44,8 +47,10 @@ class NavigationOverlayFragment : Fragment() {
     val isOverlayOnStartup: Boolean by lazy { arguments!!.getBoolean(KEY_IS_OVERLAY_ON_STARTUP) }
 
     private val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
+    private var googleSearchFocusRequestObserver = GoogleSearchFocusRequestObserver()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val context = inflater.context
         val overlay = inflater.inflate(R.layout.fragment_navigation_overlay, container, false)
 
         val isVisibleInDialogMode = arrayOf(overlay.semiOpaqueBackground, overlay.dismissHitTarget)
@@ -53,9 +58,12 @@ class NavigationOverlayFragment : Fragment() {
         val isVisibleInStartupMode = arrayOf(overlay.initialHomescreenBackground)
         isVisibleInStartupMode.forEach { it.visibility = if (isOverlayOnStartup) View.VISIBLE else View.GONE }
 
-        overlay.homeTiles.urlSearcher = activity as UrlSearcher
-
         setOverlayHeight(overlay.homeTiles)
+
+        // We forward the google search event to the default search engine: Google.
+        overlay.googleSearchHiddenEditText.setOnEditorActionListener(DefaultSearchOnEditorActionListener(activity as UrlSearcher))
+        // TODO: use lifecycle view owner with SDK 28.
+        context.serviceLocator.pinnedTileRepo.googleSearchEvents.observe(this, googleSearchFocusRequestObserver)
 
         NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isOverlayOnStartup, isBeingRestored = savedInstanceState != null) {
             // We defer setting click listeners until the animation completes
@@ -68,6 +76,8 @@ class NavigationOverlayFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        context!!.serviceLocator.pinnedTileRepo.googleSearchEvents.removeObserver(googleSearchFocusRequestObserver)
 
         // Since we start the async jobs in View.init and Android is inflating the view for us,
         // there's no good way to pass in the uiLifecycleJob. We could consider other solutions

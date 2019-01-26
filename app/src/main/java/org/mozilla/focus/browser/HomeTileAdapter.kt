@@ -22,8 +22,8 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
-import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.ext.forceExhaustive
+import org.mozilla.focus.ext.serviceLocator
 import org.mozilla.focus.ext.toJavaURI
 import org.mozilla.focus.ext.withRoundedCorners
 import org.mozilla.focus.home.BundledHomeTile
@@ -51,7 +51,6 @@ class HomeTileAdapter(
     private val uiLifecycleCancelJob: Job,
     private var tiles: MutableList<HomeTile>,
     private val loadUrl: (String) -> Unit,
-    private val urlSearchProvider: () -> UrlSearcher?,
     private val homeTileLongClickListenerProvider: () -> HomeTileLongClickListener?,
     var onTileFocused: (() -> Unit)?
 ) : RecyclerView.Adapter<TileViewHolder>() {
@@ -70,7 +69,7 @@ class HomeTileAdapter(
         }.forceExhaustive
 
         if (item is BundledHomeTile && item.action == TileAction.SEARCH && itemView is ViewGroup) {
-            itemView.setSearchClickListeners(item, urlSearchProvider)
+            itemView.setSearchClickListeners(item)
 
             // This removes any existing listener. setOnLongClickListener(null)
             // didn't clear the listener for an unknown reason
@@ -97,20 +96,14 @@ class HomeTileAdapter(
         }
     }
 
-    private fun ViewGroup.setSearchClickListeners(item: HomeTile, urlSearchProvider: () -> UrlSearcher?) {
-        // TODO read hint text from Tile, pass through HiddenEditTextManager#attach
-        HiddenEditTextManager.attach(this)
+    private fun ViewGroup.setSearchClickListeners(item: HomeTile) {
         this.setOnClickListener {
-            HiddenEditTextManager.openSoftKeyboard(it)
+            context.serviceLocator.pinnedTileRepo.googleSearchFocusRequest()
             TelemetryWrapper.homeTileClickEvent(item)
-        }
-        HiddenEditTextManager.setKeyboardListener(this) { query, autocomplete ->
-            urlSearchProvider()?.onTextInputUrlEntered(query, autocomplete)
         }
     }
 
     private fun View.setNavigateClickListener(item: HomeTile) {
-        if (this is ViewGroup) HiddenEditTextManager.removeIfPresent(this)
         this.setOnClickListener {
             loadUrl(item.url)
             TelemetryWrapper.homeTileClickEvent(item)

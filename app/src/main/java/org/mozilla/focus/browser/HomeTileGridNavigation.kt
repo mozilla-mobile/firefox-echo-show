@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.coroutines.experimental.Job
 import org.mozilla.focus.R
-import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.home.HomeTilesManager
 import org.mozilla.focus.widget.AccessibleGridLayoutManager
 
@@ -41,7 +40,6 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     var homeTileLongClickListener: HomeTileLongClickListener? = null
 
     var onTileClicked: ((value: String) -> Unit)? = null
-    var urlSearcher: UrlSearcher? = null
     /** Called inside [setVisibility] right before super.setVisibility is called. */
     var onPreSetVisibilityListener: ((isVisible: Boolean) -> Unit)? = null
 
@@ -69,8 +67,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
                 Toast.makeText(context, R.string.homescreen_unpin_tutorial_toast, Toast.LENGTH_LONG).show()
                 canShowUpinToast = false
             }
-        }, homeTileLongClickListenerProvider = { homeTileLongClickListener },
-        urlSearchProvider = { urlSearcher })
+        }, homeTileLongClickListenerProvider = { homeTileLongClickListener })
 
         val tileColumnCount = resources.getInteger(R.integer.home_tile_column_count)
         layoutManager = AccessibleGridLayoutManager(context, tileColumnCount)
