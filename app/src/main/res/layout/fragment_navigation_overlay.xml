@@ -17,6 +17,9 @@
          visible EditText. However, users can only type into an EditText so we hide this one below other views in
          the layout and programmatically shift focus to it (and thus the keyboard) when appropriate.
 
+         To hide the view, we make it tiny - 1x1 dp - and set its elevation to -8, which should be below all
+         other views. Then we put it in the corner underneath the home tiles view.
+
          The previous implementation added this view to the layout dynamically but that undesirably forced focus
          upon the added view: instead, this view is added on inflation. -->
     <EditText
