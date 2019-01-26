@@ -7,6 +7,7 @@ package org.mozilla.focus.widget
 import android.content.Context
 import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.ext.getAccessibilityManager
+import org.mozilla.focus.home.PinnedTileRepo
 
 /**
  * Implementation of the Service Locator pattern. Use this class to provide dependencies without
@@ -42,6 +43,7 @@ import org.mozilla.focus.ext.getAccessibilityManager
 open class ServiceLocator {
 
     val frameworkRepo = FrameworkRepo()
+    val pinnedTileRepo = PinnedTileRepo()
 
     fun init(applicationContext: Context) {
         // The touch state listener gets called even when the application is backgrounded so we only need to add it once.
