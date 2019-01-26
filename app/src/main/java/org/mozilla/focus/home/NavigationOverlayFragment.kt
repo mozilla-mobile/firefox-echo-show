@@ -47,7 +47,7 @@ class NavigationOverlayFragment : Fragment() {
     val isOverlayOnStartup: Boolean by lazy { arguments!!.getBoolean(KEY_IS_OVERLAY_ON_STARTUP) }
 
     private val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
-    private var googleSearchFocusRequestObserver = GoogleSearchFocusRequestObserver()
+    private val googleSearchFocusRequestObserver = GoogleSearchFocusRequestObserver()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val context = inflater.context
