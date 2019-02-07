@@ -11,6 +11,6 @@ about: Create a report to help us improve
 ### Actual behavior
 
 ### Device information
-
 * Echo Show device (1st gen? 2nd?): ?
-* Firefox version: ?
+* Latest affected Firefox version: ?
+* Earliest affected Firefoxx version: ?
