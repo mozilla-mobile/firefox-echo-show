@@ -124,7 +124,7 @@ dependencies {
     implementation "com.android.support:preference-v7:$support_libraries_version"
     implementation "com.android.support:recyclerview-v7:$support_libraries_version"
 
-    implementation 'io.sentry:sentry-android:1.7.9'
+    implementation 'io.sentry:sentry-android:1.7.14'
 
     implementation ("com.google.code.findbugs:annotations:3.0.1") {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
@@ -147,7 +147,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.8"
-    testImplementation 'org.mockito:mockito-core:2.21.0'
+    testImplementation 'org.mockito:mockito-core:2.23.0'
     testImplementation "android.arch.core:core-testing:1.1.1"
 
     androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
