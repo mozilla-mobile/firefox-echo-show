@@ -8,6 +8,7 @@ import android.content.Context
 import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.ext.getAccessibilityManager
 import org.mozilla.focus.home.PinnedTileRepo
+import org.mozilla.focus.session.SessionRepo
 
 /**
  * Implementation of the Service Locator pattern. Use this class to provide dependencies without
@@ -43,6 +44,7 @@ import org.mozilla.focus.home.PinnedTileRepo
 open class ServiceLocator private constructor() {
 
     val frameworkRepo = FrameworkRepo()
+    val sessionRepo = SessionRepo()
     val pinnedTileRepo = PinnedTileRepo()
 
     private fun init(applicationContext: Context) {
