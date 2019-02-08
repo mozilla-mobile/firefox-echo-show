@@ -35,8 +35,9 @@ class FullscreenCallbacksTest {
     @Before
     fun setUp() {
         browserFragment = mock(BrowserFragment::class.java)
+        val browserViewModel = mock(BrowserViewModel::class.java)
         telemetry = mock(TelemetryWrapper::class.java)
-        callbacks = TestFullscreenCallbacks(browserFragment, telemetry)
+        callbacks = TestFullscreenCallbacks(browserFragment, browserViewModel, telemetry)
     }
 
     @Test
@@ -135,8 +136,9 @@ class FullscreenCallbacksTest {
 
     class TestFullscreenCallbacks(
         browserFragment: BrowserFragment,
+        browserViewModel: BrowserViewModel,
         telemetry: TelemetryWrapper
-    ) : FullscreenCallbacks(browserFragment, telemetry) {
+    ) : FullscreenCallbacks(browserFragment, browserViewModel, telemetry) {
 
         private val layout = OnInterceptTouchEventFrameLayout(RuntimeEnvironment.application, mock(AttributeSet::class.java))
 
