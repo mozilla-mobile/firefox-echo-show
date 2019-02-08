@@ -14,14 +14,13 @@
         android:layout_height="match_parent"
         android:scrollbarThumbVertical="@drawable/scrollbar_thumb"/>
 
-    <!-- We need a background on the fullscreen view because the content  does not always fill the
-         screen. We insert the fullscreen view into this container with a background, instead of
-         the parent container, to avoid overdraw with the WebView. -->
+    <!-- There are visual glitches if there is no background behind this view: we use windowBackground to do this
+         and set this transparent. See MainActivityViewModel.isWindowBackgroundEnabled for more details. -->
     <org.mozilla.focus.widget.OnInterceptTouchEventFrameLayout
         android:id="@+id/fullscreenContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
+        android:background="@android:color/transparent"
         android:visibility="gone" />
 
 </FrameLayout>
