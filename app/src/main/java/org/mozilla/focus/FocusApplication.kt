@@ -35,9 +35,7 @@ class FocusApplication : LocaleAwareApplication() {
         enableStrictMode()
         Log.addSink(AndroidLogSink())
 
-        serviceLocator = ServiceLocator().apply {
-            init(this@FocusApplication)
-        }
+        serviceLocator = ServiceLocator.getAndInit(this)
 
         SearchEngineManager.getInstance().init(this)
         TelemetryWrapper.init(this)

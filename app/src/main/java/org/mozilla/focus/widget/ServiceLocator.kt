@@ -40,13 +40,21 @@ import org.mozilla.focus.home.PinnedTileRepo
  *   open val telemetry: TelemetryInterface by lazy { SentryWrapper() }
  *   ```
  */
-open class ServiceLocator {
+open class ServiceLocator private constructor() {
 
     val frameworkRepo = FrameworkRepo()
     val pinnedTileRepo = PinnedTileRepo()
 
-    fun init(applicationContext: Context) {
+    private fun init(applicationContext: Context) {
         // The touch state listener gets called even when the application is backgrounded so we only need to add it once.
         frameworkRepo.init(applicationContext.getAccessibilityManager())
+    }
+
+    companion object {
+        fun getAndInit(applicationContext: Context): ServiceLocator {
+            return ServiceLocator().apply {
+                init(applicationContext)
+            }
+        }
     }
 }
