@@ -9,12 +9,14 @@ import android.arch.lifecycle.ViewModel
 import android.support.annotation.UiThread
 import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.ext.LiveDataCombiners
+import org.mozilla.focus.session.SessionRepo
 
 /**
  * The view state, and UI event callback interface, of the browser UI component.
  */
 class BrowserViewModel(
-    frameworkRepo: FrameworkRepo
+    frameworkRepo: FrameworkRepo,
+    private val sessionRepo: SessionRepo
 ) : ViewModel() {
 
     private val isNavigationOverlayVisible = MutableLiveData<Boolean>()
@@ -35,5 +37,9 @@ class BrowserViewModel(
     @UiThread
     fun onNavigationOverlayVisibilityChange(isVisible: Boolean) {
         isNavigationOverlayVisible.value = isVisible
+    }
+
+    fun fullscreenChanged(isFullscreen: Boolean) {
+        sessionRepo.fullscreenChange(isFullscreen)
     }
 }
