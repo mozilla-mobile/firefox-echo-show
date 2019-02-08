@@ -23,6 +23,7 @@ import org.mozilla.focus.widget.OnInterceptTouchEventFrameLayout
  */
 open class FullscreenCallbacks(
     private val browserFragment: BrowserFragment,
+    private val browserViewModel: BrowserViewModel,
     private val telemetryWrapper: TelemetryWrapper = TelemetryWrapper
 ) : IWebView.Callback {
 
@@ -38,6 +39,7 @@ open class FullscreenCallbacks(
     override fun onEnterFullScreen(callback: IWebView.FullscreenCallback, view: View?) {
         if (view == null) return
 
+        browserViewModel.fullscreenChanged(true)
         isInFullScreen = true
         exitOnScaleGestureListener = ExitFullscreenOnScaleGestureListener(callback, view)
 
@@ -78,6 +80,7 @@ open class FullscreenCallbacks(
             val wasExitedByScaleGesture = exitOnScaleGestureListener?.wasExitCalledByGesture!!
             telemetryWrapper.fullscreenExitEvent(wasExitedByScaleGesture)
         }
+        browserViewModel.fullscreenChanged(false)
         exitOnScaleGestureListener = null
     }
 
