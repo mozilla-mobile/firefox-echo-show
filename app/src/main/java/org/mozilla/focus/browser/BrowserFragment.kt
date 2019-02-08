@@ -113,7 +113,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         super.onCreate(savedInstanceState)
         session = initSession()
         webView?.setBlockingEnabled(session.isBlockingEnabled)
-        iWebViewCallback = SessionCallbackProxy(session, FullscreenCallbacks(this))
+        iWebViewCallback = SessionCallbackProxy(session, FullscreenCallbacks(this, viewModel))
 
         LoadTimeObserver.addObservers(session, this)
     }
