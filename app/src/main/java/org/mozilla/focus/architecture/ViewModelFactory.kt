@@ -23,7 +23,7 @@ class ViewModelFactory(
         when (modelClass) {
             BrowserAppBarViewModel::class.java -> BrowserAppBarViewModel(frameworkRepo) as T
             ToolbarViewModel::class.java -> ToolbarViewModel() as T
-            BrowserViewModel::class.java -> BrowserViewModel(frameworkRepo) as T
+            BrowserViewModel::class.java -> BrowserViewModel(frameworkRepo, sessionRepo) as T
 
             else -> throw IllegalArgumentException("Unknown modelClass $modelClass")
         }

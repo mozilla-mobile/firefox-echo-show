@@ -12,8 +12,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.helpers.ext.assertValues
+import org.mozilla.focus.session.SessionRepo
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -26,13 +29,18 @@ class BrowserViewModelTest {
     private lateinit var frameworkRepo: FrameworkRepo
     private lateinit var isVoiceViewEnabled: MutableLiveData<Boolean>
 
+    private lateinit var sessionRepo: SessionRepo
+
     @Before
     fun setUp() {
         isVoiceViewEnabled = MutableLiveData()
         frameworkRepo = mock(FrameworkRepo::class.java).also {
             `when`(it.isVoiceViewEnabled).thenReturn(isVoiceViewEnabled)
         }
-        viewModel = BrowserViewModel(frameworkRepo)
+
+        sessionRepo = mock(SessionRepo::class.java)
+
+        viewModel = BrowserViewModel(frameworkRepo, sessionRepo)
     }
 
     @Test
@@ -58,5 +66,13 @@ class BrowserViewModelTest {
             isVoiceViewEnabled.value = true
             viewModel.onNavigationOverlayVisibilityChange(true)
         }
+    }
+
+    @Test
+    fun `WHEN fullscreenChanged is called THEN sessionRepo is notified`() {
+        viewModel.fullscreenChanged(false)
+        verify(sessionRepo, times(1)).fullscreenChange(false)
+        viewModel.fullscreenChanged(true)
+        verify(sessionRepo, times(1)).fullscreenChange(true)
     }
 }
