@@ -43,7 +43,6 @@ interface BrowserFragmentCallbacks : HomeTileLongClickListener {
 
     @UiThread // performs a fragment transaction.
     fun setNavigationOverlayIsVisible(isVisible: Boolean, isOverlayOnStartup: Boolean = false)
-    fun onFullScreenChange(isFullscreen: Boolean)
 
     fun onNonTextInputUrlEntered(urlStr: String)
 
