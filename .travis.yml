@@ -8,7 +8,7 @@ android:
     - tools
     - platform-tools
     - build-tools-27.0.3
-    - android-26
+    - android-27
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
@@ -16,10 +16,11 @@ android:
 sudo: false
 
 before_install:
+  - yes | sdkmanager "platforms;android-27" "build-tools;27.0.3"
   - touch local.properties
 
 script:
-  - ./gradlew -Pcoverage clean assembleAmazonWebViewDebug
+  - ./gradlew clean assembleAmazonWebViewDebug checkstyle ktlint pmd detekt verifyWebViewCount assembleAmazonWebViewDebugAndroidTest lintAmazonWebViewDebug testAmazonWebViewDebug
   - echo "--" > .adjust_token
   - ./gradlew -Pcoverage jacocoAmazonWebViewDebugTestReport
 
