@@ -14,6 +14,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.helpers.ext.assertValues
+import org.mozilla.focus.session.SessionRepo
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -26,6 +27,9 @@ class BrowserAppBarViewModelTest {
     private lateinit var frameworkRepo: FrameworkRepo
     private lateinit var isVoiceViewEnabled: MutableLiveData<Boolean>
 
+    private lateinit var sessionRepo: SessionRepo
+    private lateinit var isFullscreen: MutableLiveData<Boolean>
+
     @Before
     fun setUp() {
         isVoiceViewEnabled = MutableLiveData()
@@ -33,7 +37,12 @@ class BrowserAppBarViewModelTest {
             `when`(it.isVoiceViewEnabled).thenReturn(isVoiceViewEnabled)
         }
 
-        viewModel = BrowserAppBarViewModel(frameworkRepo)
+        isFullscreen = MutableLiveData()
+        sessionRepo = mock(SessionRepo::class.java).also {
+            `when`(it.isFullscreen).thenReturn(isFullscreen)
+        }
+
+        viewModel = BrowserAppBarViewModel(frameworkRepo, sessionRepo)
     }
 
     @Test
@@ -58,6 +67,15 @@ class BrowserAppBarViewModelTest {
             isVoiceViewEnabled.value = true
             viewModel.onNavigationOverlayVisibilityChange(false)
             viewModel.onNavigationOverlayVisibilityChange(true)
+        }
+    }
+
+    @Test
+    fun `WHEN session repo isFullscreen is changed THEN the app bar takes the opposite value`() {
+        viewModel.isAppBarHidden.assertValues(false, true, false) {
+            isFullscreen.value = true
+            isFullscreen.value = false
+            isFullscreen.value = true
         }
     }
 }

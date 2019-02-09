@@ -9,12 +9,15 @@ import android.arch.lifecycle.ViewModel
 import android.support.annotation.UiThread
 import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.ext.LiveDataCombiners
+import org.mozilla.focus.ext.map
+import org.mozilla.focus.session.SessionRepo
 
 /**
  * The view state, and UI event callbacks, for the app bar layout.
  */
 class BrowserAppBarViewModel(
-    frameworkRepo: FrameworkRepo
+    frameworkRepo: FrameworkRepo,
+    sessionRepo: SessionRepo
 ) : ViewModel() {
 
     private val isNavigationOverlayVisible = MutableLiveData<Boolean>()
@@ -25,6 +28,8 @@ class BrowserAppBarViewModel(
     ) { isVoiceViewEnabled, isNavigationOverlayVisible ->
         !isVoiceViewEnabled && !isNavigationOverlayVisible
     }
+
+    val isAppBarHidden = sessionRepo.isFullscreen.map { !it }
 
     // TODO: this property should be reactively pushed from the model.
     @UiThread
