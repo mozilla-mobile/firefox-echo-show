@@ -185,10 +185,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
             isVisible = isVisible, isOverlayOnStartup = isOverlayOnStartup)
     }
 
-    override fun onFullScreenChange(isFullscreen: Boolean) {
-        appBarLayoutController.onFullScreenChange(isFullscreen)
-    }
-
     override fun onUrlUpdate(url: String?) = toolbarCallbacks.onDisplayUrlUpdate(url)
     override fun onSessionLoadingUpdate(isLoading: Boolean) = toolbarCallbacks.onLoadingUpdate(isLoading)
     override fun onSessionProgressUpdate(progress: Int) = toolbarCallbacks.onProgressUpdate(progress)
