@@ -23,7 +23,7 @@ class ViewModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = with(serviceLocator) {
         when (modelClass) {
             MainActivityViewModel::class.java -> MainActivityViewModel(sessionRepo) as T
-            BrowserAppBarViewModel::class.java -> BrowserAppBarViewModel(frameworkRepo) as T
+            BrowserAppBarViewModel::class.java -> BrowserAppBarViewModel(frameworkRepo, sessionRepo) as T
             ToolbarViewModel::class.java -> ToolbarViewModel() as T
             BrowserViewModel::class.java -> BrowserViewModel(frameworkRepo, sessionRepo) as T
 
