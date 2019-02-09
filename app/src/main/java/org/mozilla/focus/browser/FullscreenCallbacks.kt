@@ -44,7 +44,6 @@ open class FullscreenCallbacks(
         exitOnScaleGestureListener = ExitFullscreenOnScaleGestureListener(callback, view)
 
         with(browserFragment) {
-            callbacks?.onFullScreenChange(true)
             webView?.setVisibility(View.GONE)
 
             val params = FrameLayout.LayoutParams(
@@ -63,7 +62,6 @@ open class FullscreenCallbacks(
 
     override fun onExitFullScreen() {
         with(browserFragment) {
-            callbacks?.onFullScreenChange(false)
             webView?.setVisibility(View.VISIBLE)
 
             fullscreenContainerOverride.removeAllViews()
