@@ -32,14 +32,14 @@ class BrowserAppBarLayoutController(
         viewModel.isToolbarScrollEnabled.observe(lifecycleOwner, Observer {
             toolbar.setIsScrollEnabled(it!!)
         })
+
+        viewModel.isAppBarHidden.observe(lifecycleOwner, Observer {
+            appBarLayout.setExpanded(it!!, true) // Note: expanded means hidden.
+        })
     }
 
     fun onHomeVisibilityChange(isHomeVisible: Boolean) {
         viewModel.onNavigationOverlayVisibilityChange(isHomeVisible)
-    }
-
-    fun onFullScreenChange(isFullscreen: Boolean) {
-        appBarLayout.setExpanded(!isFullscreen, true) // Not expanded means hidden.
     }
 }
 
