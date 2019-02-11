@@ -13,7 +13,7 @@
 
 # Descriptions for each gradle task below can be found in the
 # output of `./gradlew tasks`.
-./gradlew --quiet \
+time ./gradlew --quiet \
         checkstyle \
         ktlint \
         pmd \
