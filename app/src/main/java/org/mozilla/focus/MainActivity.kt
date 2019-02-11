@@ -51,7 +51,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     private val toolbarStateProvider = DelegateToBrowserToolbarStateProvider()
     private lateinit var appBarLayoutController: BrowserAppBarLayoutController
 
-    private val activityUiScope = ActivityUiCoroutineScope().apply { init(lifecycle) }
+    private val activityUiScope = ActivityUiCoroutineScope.getAndInit(lifecycle)
 
     private val toolbarViewModel: ToolbarViewModel
         get() = FirefoxViewModelProviders.of(this)[ToolbarViewModel::class.java]

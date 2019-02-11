@@ -30,16 +30,19 @@ class ActivityUiCoroutineScopeTest {
     }
 
     @Test
+    fun `WHEN the static factory method is called THEN the lifecycle observer is observing the lifecycle`() {
+        val lifecycle = mock(Lifecycle::class.java)
+        ActivityUiCoroutineScope.getAndInit(lifecycle)
+
+        lifecycle.assertAddObserverCalledOnce()
+    }
+
+    @Test
     fun `WHEN init is called THEN the lifecycle observer is observing the lifecycle`() {
         val lifecycle = mock(Lifecycle::class.java)
         uninitScope.init(lifecycle)
 
-        verify(lifecycle, times(1)).addObserver(any())
-    }
-
-    @Test(expected = IllegalStateException::class)
-    fun `WHEN the coroutine context is accessed before init THEN an exception is thrown`() {
-        uninitScope.coroutineContext
+        lifecycle.assertAddObserverCalledOnce()
     }
 
     @Test
@@ -52,4 +55,8 @@ class ActivityUiCoroutineScopeTest {
         initScope.onDestroy()
         assertFalse(initScope.coroutineContext.isActive)
     }
+}
+
+private fun Lifecycle.assertAddObserverCalledOnce() {
+    verify(this, times(1)).addObserver(any())
 }
