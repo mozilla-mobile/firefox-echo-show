@@ -66,7 +66,8 @@ class BundledTilesManager @VisibleForTesting constructor(
         }
 
         private fun loadBlacklist(context: Context): MutableSet<String> {
-            return context.getSharedPreferences(PREF_HOME_TILES, MODE_PRIVATE).getStringSet(BUNDLED_SITES_ID_BLACKLIST, mutableSetOf())
+            return context.getSharedPreferences(PREF_HOME_TILES, MODE_PRIVATE)
+                .getStringSet(BUNDLED_SITES_ID_BLACKLIST, null) ?: mutableSetOf()
         }
     }
 
