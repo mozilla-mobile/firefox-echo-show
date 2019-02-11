@@ -19,6 +19,7 @@ import android.net.Uri
  * Spec: https://github.com/mozilla-mobile/focus-android/issues/1231#issuecomment-326237077
  */
 fun Uri.truncatedHost(): String? {
+    val host = host // cache the property: its value can change during this call
     if (host.isNullOrEmpty()) {
         return host
     }
@@ -69,9 +70,11 @@ fun Uri.truncatedPath(): String {
 
 val Uri.isYouTubeDesktop: Boolean
     get() {
-        val host: String? = host // cache it.
-        return host != null &&
-                host.endsWith("youtube.com") &&
+        val host: String? = host // cache properties: their values can change during this call
+        val path: String? = path
+        return if (host == null || path == null) false else {
+            host.endsWith("youtube.com") &&
                 !host.endsWith("m.youtube.com") &&
                 !path.startsWith("/tv")
+        }
     }
