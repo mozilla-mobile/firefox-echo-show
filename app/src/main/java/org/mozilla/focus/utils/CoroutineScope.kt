@@ -7,35 +7,41 @@ package org.mozilla.focus.utils
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import android.support.annotation.VisibleForTesting
+import android.support.annotation.VisibleForTesting.PRIVATE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import org.mozilla.focus.utils.ActivityUiCoroutineScope.Companion.getAndInit
 import kotlin.coroutines.CoroutineContext
 
 /**
  * A [CoroutineScope] that is scoped to an Activity's lifecycle and launches jobs on the main thread.
  *
- * Callers must call [init] to register the scope to the Activity.
+ * Get a new, initialized instance with [getAndInit].
  */
-class ActivityUiCoroutineScope : LifecycleObserver, CoroutineScope {
+class ActivityUiCoroutineScope @VisibleForTesting(otherwise = PRIVATE) constructor() : LifecycleObserver, CoroutineScope {
 
     override val coroutineContext: CoroutineContext
-        get() {
-            if (!wasInitCalled) throw IllegalStateException("Expected init to be called before accessing context")
-            return Dispatchers.Main + lifecycleCancelJob
-        }
+        get() = Dispatchers.Main + lifecycleCancelJob
 
-    private var wasInitCalled = false
     private val lifecycleCancelJob = Job()
 
     fun init(lifecycle: Lifecycle) {
-        wasInitCalled = true
         lifecycle.addObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
         lifecycleCancelJob.cancel()
+    }
+
+    companion object {
+        fun getAndInit(lifecycle: Lifecycle): ActivityUiCoroutineScope {
+            return ActivityUiCoroutineScope().apply {
+                init(lifecycle)
+            }
+        }
     }
 }
 
