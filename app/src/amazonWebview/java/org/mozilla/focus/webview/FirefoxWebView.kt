@@ -7,6 +7,7 @@ package org.mozilla.focus.webview
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.VisibleForTesting
 import android.util.AttributeSet
@@ -48,6 +49,17 @@ internal class FirefoxWebView(
     init {
         setOnLongClickListener(linkHandler)
         isLongClickable = true
+        initBackgroundColor()
+    }
+
+    private fun initBackgroundColor() {
+        // The initial navigation overlay is drawn over the WebView. However, on some Echo Show devices [1], the
+        // overlay fade out animation causes graphical glitches, as if the WebView's background color is transparent
+        // (graphical glitches usually occur when parts of the screen have no draw calls on them). We fix this
+        // issue by defaulting the background to an opaque color.
+        //
+        // [1]: We cannot reproduce on the SF Echo Show but can on the MTV one, despite using similar OS versions.
+        setBackgroundColor(Color.WHITE)
     }
 
     override fun restoreWebViewState(session: Session) {
