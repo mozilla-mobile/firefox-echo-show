@@ -20,8 +20,9 @@
         detekt \
         verifyWebViewCount \
         assembleAmazonWebViewDebugAndroidTest \
-        lintAmazonWebViewDebug \
         testAmazonWebViewDebug
 
 # Tasks omitted because they take a long time to run:
 # - unit test on all variants
+# - android lint
+# - androidTest tests (on-device: UI & integration)
