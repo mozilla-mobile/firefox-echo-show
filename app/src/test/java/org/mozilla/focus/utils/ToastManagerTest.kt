@@ -32,7 +32,7 @@ class ToastManagerTest {
 
     @Test
     fun `WHEN showUnpinnedToast is called THEN it did not leave a string substitution template around`() {
-        ToastManager.showPinnedToast(context)
+        ToastManager.showUnpinnedToast(context)
         assertToastDoesNotContainStringSubstitutionTemplate()
     }
 
