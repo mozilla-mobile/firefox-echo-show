@@ -102,6 +102,45 @@ class UriKtTest {
             assertTrue(it.toString(), it.isYouTubeDesktop)
         }
     }
+
+    @Test
+    fun testTruncatedPathWithEmptySegments() {
+        assertTruncatedPath("", "https://www.mozilla.org")
+        assertTruncatedPath("", "https://www.mozilla.org/")
+        assertTruncatedPath("", "https://www.mozilla.org///")
+    }
+
+    @Test
+    fun testTrunactedPathWithOneSegment() {
+        assertTruncatedPath("/space", "https://www.theverge.com/space")
+    }
+
+    @Test
+    fun testTruncatedPathWithTwoSegments() {
+        assertTruncatedPath("/en-US/firefox", "https://www.mozilla.org/en-US/firefox/")
+        assertTruncatedPath("/mozilla-mobile/focus-android", "https://github.com/mozilla-mobile/focus-android")
+    }
+
+    @Test
+    fun testTruncatedPathWithMultipleSegments() {
+        assertTruncatedPath("/en-US/…/fast", "https://www.mozilla.org/en-US/firefox/features/fast/")
+
+        assertTruncatedPath("/2017/…/nasa-hi-seas-mars-analogue-mission-hawaii-mauna-loa",
+            "https://www.theverge.com/2017/9/24/16356876/nasa-hi-seas-mars-analogue-mission-hawaii-mauna-loa")
+    }
+
+    @Test
+    fun testTruncatedPathWithMultipleSegmentsAndFragment() {
+        assertTruncatedPath(
+            "/@bfrancis/the-story-of-firefox-os-cb5bf796e8fb",
+            "https://medium.com/@bfrancis/the-story-of-firefox-os-cb5bf796e8fb#931a")
+    }
+
+    private fun assertTruncatedPath(expectedTruncatedPath: String, url: String) {
+        assertEquals("truncatedPath($url)",
+            expectedTruncatedPath,
+            Uri.parse(url).truncatedPath())
+    }
 }
 
 private fun httpsUriBuilder(): Uri.Builder = Uri.Builder().scheme("https")
