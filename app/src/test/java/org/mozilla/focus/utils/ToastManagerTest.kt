@@ -31,24 +31,24 @@ class ToastManagerTest {
     }
 
     @Test
-    fun `WHEN showUnpinnedToast is called THEN it did not leave a string substitution template around`() {
+    fun `GIVEN showUnpinnedToast creates the toast text with a string substitution WHEN showUnpinnedToast is called THEN the toast text does not contain the string substitution template literal`() {
         ToastManager.showUnpinnedToast(context)
         assertToastDoesNotContainStringSubstitutionTemplate()
     }
 
-    @Test // verify we don't display the opposite toast text.
+    @Test
     fun `WHEN showUnpinnedToast is called THEN the toast text contains "removed"`() {
         ToastManager.showUnpinnedToast(context)
         assertToastContains("removed")
     }
 
     @Test
-    fun `WHEN showPinnedToast is called THEN it did not leave a string substitution template around`() {
+    fun `GIVEN showPinnedToast creates the toast text with a string substitution WHEN showPinnedToast is called THEN the toast text does not contain the string substitution template literal`() {
         ToastManager.showPinnedToast(context)
         assertToastDoesNotContainStringSubstitutionTemplate()
     }
 
-    @Test // verify we don't display the opposite toast text.
+    @Test
     fun `WHEN showPinnedToast is called THEN it contains "pinned" text`() {
         ToastManager.showPinnedToast(context)
         assertToastContains("pinned")
