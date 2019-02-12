@@ -55,7 +55,7 @@ class UrlBoxBackgroundWithProgress(
         progressDrawable.setBounds(0, 0, w, h)
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         backgroundDrawable.draw(canvas)
         progressDrawable.draw(canvas)
     }
