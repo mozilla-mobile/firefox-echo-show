@@ -49,14 +49,9 @@ class ToastManagerTest {
     }
 
     @Test
-    fun `WHEN showPinnedToast is called THEN it contains "pinned" text`() {
+    fun `WHEN showPinnedToast is called THEN it contains "pinned" text but not "unpinned"`() {
         ToastManager.showPinnedToast(context)
         assertToastContains("pinned")
-    }
-
-    @Test // we test for "pinned" elsewhere but that string can be "unpinned"
-    fun `WHEN showPinnedToast is called THEN it does not contain "unpinned" text`() {
-        ToastManager.showPinnedToast(context)
         assertFalse(lastToastTextLowercase, lastToastTextLowercase.contains("unpinned"))
     }
 
