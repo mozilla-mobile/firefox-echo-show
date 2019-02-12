@@ -30,34 +30,4 @@ class UriTest {
                 expectedTruncatedPath,
                 Uri.parse(url).truncatedHost())
     }
-
-    @Test // regression test for #403.
-    fun `isYouTubeDesktop is false for null host`() {
-        assertFalse(Uri.parse("file:///whatever/").isYouTubeDesktop)
-    }
-
-    @Test
-    fun `isYouTubeDesktop is true for desktop YouTube URL`() {
-        assertTrue(Uri.parse("https://www.youtube.com/watch?v=6E4TOHGO0Ms").isYouTubeDesktop)
-    }
-
-    @Test
-    fun `isYouTubeDesktop is false for mobile YouTube URL`() {
-        assertFalse(Uri.parse("https://m.youtube.com/watch?v=s2txy9sYc9M").isYouTubeDesktop)
-    }
-
-    @Test
-    fun `isYouTubeDesktop is false for TV YouTube URL`() {
-        assertFalse(Uri.parse("https://www.youtube.com/tv#/watch/video/control?v=SsipngvHiEU").isYouTubeDesktop)
-    }
-
-    @Test
-    fun `isYouTubeDesktop is false for non-YouTube URL`() {
-        assertFalse(Uri.parse("https://www.google.com/").isYouTubeDesktop)
-    }
-
-    @Test
-    fun `isYouTubeDesktop is false for youtube in uri path`() {
-        assertFalse(Uri.parse("https://www.google.com/youtube.com").isYouTubeDesktop)
-    }
 }

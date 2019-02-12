@@ -104,6 +104,11 @@ class UriKtTest {
     }
 
     @Test
+    fun `isYouTubeDesktop is false for youtube in uri path`() {
+        assertFalse("https://www.google.com/youtube.com".toUri()!!.isYouTubeDesktop)
+    }
+
+    @Test
     fun testTruncatedPathWithEmptySegments() {
         assertTruncatedPath("", "https://www.mozilla.org")
         assertTruncatedPath("", "https://www.mozilla.org/")
