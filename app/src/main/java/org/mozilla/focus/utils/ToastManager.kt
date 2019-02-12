@@ -21,16 +21,14 @@ object ToastManager {
 
     fun showUnpinnedToast(context: Context) {
         val brandName = context.getString(R.string.firefox_brand_name)
-        context.let {
-            context.getString(R.string.notification_unpinned_general2, brandName)
-        }?.let { string -> showToast(string, context) }
+        val toastStr = context.getString(R.string.notification_unpinned_general2, brandName)
+        showToast(toastStr, context)
     }
 
     fun showPinnedToast(context: Context) {
         val brandName = context.getString(R.string.firefox_brand_name)
-        context.let {
-            context.getString(R.string.notification_pinned_general2, brandName)
-        }?.let { string -> showToast(string, context) }
+        val toastStr = context.getString(R.string.notification_pinned_general2, brandName)
+        ToastManager.showToast(toastStr, context)
     }
 
     fun showToast(text: String, context: Context) {
@@ -41,9 +39,8 @@ object ToastManager {
     }
 
     fun showToast(textId: Int, context: Context) {
-        context.getString(textId)?.let {
-            showToast(it, context)
-        }
+        val toastStr = context.getString(textId)
+        showToast(toastStr, context)
     }
 }
 
