@@ -10,12 +10,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObjectNotFoundException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -25,14 +23,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.MainActivity;
 import org.mozilla.focus.R;
-
 import tools.fastlane.screengrab.Screengrab;
 import tools.fastlane.screengrab.locale.LocaleTestRule;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -147,13 +142,13 @@ public class TVScreenshots extends ScreenshotTest {
         /* capture a screenshot of the clear data dialog */
 //        clearButton.perform(click());
 
-        ViewInteraction confirmClear = onView(
-                allOf(withText(R.string.settings_cookies_dialog_content), isDisplayed()))
-                .inRoot(isDialog());
-
-        Screengrab.screenshot("clear-all-data");
-
-        confirmClear.perform(pressBack());
+//        ViewInteraction confirmClear = onView(
+//                allOf(withText(R.string.settings_cookies_dialog_content), isDisplayed()))
+//                .inRoot(isDialog());
+//
+//        Screengrab.screenshot("clear-all-data");
+//
+//        confirmClear.perform(pressBack());
 
         /* capture a screenshot of the privacy notice */
 //        onView(allOf(withId(R.id.privacyNoticeButton), isDisplayed()))
