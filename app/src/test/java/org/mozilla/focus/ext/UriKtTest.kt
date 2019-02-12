@@ -17,15 +17,14 @@ import org.robolectric.RobolectricTestRunner
 class UriKtTest {
 
     @Test
-    fun `WHEN truncatedHost is called on a null host THEN it returns the host`() {
-        val expectedHost = null
+    fun `WHEN truncatedHost is called on a null host THEN it returns null`() {
         val uri = httpsUriBuilder()
             .path("mozilla/en-US")
-            .authority(expectedHost)
+            .authority(null)
             .build()
         assertNull(uri.host)
 
-        assertEquals(expectedHost, uri.truncatedHost())
+        assertNull(uri.truncatedHost())
     }
 
     @Test
