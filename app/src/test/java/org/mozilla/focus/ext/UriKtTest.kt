@@ -48,10 +48,17 @@ class UriKtTest {
     }
 
     @Test
-    fun `WHEN truncatedHost is called on a valid Uri THEN the truncated host is returned`() {
+    fun `WHEN truncatedHost is called on a common valid Uri THEN the truncated host is returned`() {
         arrayOf(
             Pair("https://tomshardware.co.uk", "tomshardware.co.uk"),
-            Pair("https://mail.google.com/emails", "google.com")
+            Pair("https://mail.google.com/emails", "google.com"),
+            Pair("https://www.mozilla.org", "mozilla.org"),
+            Pair("https://en.m.wikipedia.org/wiki/", "wikipedia.org"),
+            Pair("http://example.org", "example.org"),
+            Pair("https://www.youtube.com/watch?v=oHg5SJYRHA0", "youtube.com"),
+            Pair("https://www.facebook.com/Firefox/", "facebook.com"),
+            Pair("https://de.search.yahoo.com/search?p=mozilla&fr=yfp-t&fp=1&toggle=1&cop=mss&ei=UTF-8", "yahoo.com"),
+            Pair("https://www.amazon.co.uk/Doctor-Who-10-Part-DVD/dp/B06XCMVY1H", "amazon.co.uk")
         ).map { (uriStr, expectedStr) ->
             Pair(uriStr.toUri()!!, expectedStr)
         }.forEach { (input, expected) ->
