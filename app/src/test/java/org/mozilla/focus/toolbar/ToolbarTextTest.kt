@@ -6,6 +6,7 @@ package org.mozilla.focus.toolbar
 
 import android.net.Uri
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.ext.toUri
@@ -42,5 +43,17 @@ class ToolbarTextTest {
         // Perhaps not the best behavior but this is unlikely to come up in the wild.
         val expected = "there/is/no/spoon"
         assertEquals(expected, ToolbarText.getDisplayText(expected.toUri() as Uri).leftOrThrow)
+    }
+
+    @Test
+    fun `WHEN getDisplayText receives a uri with null path THEN return it`() {
+        val uri = Uri.Builder()
+            .scheme("https")
+            .authority("mozilla.org")
+            .path(null)
+            .build()
+        assertNull(uri.path)
+
+        assertEquals(uri.toString(), ToolbarText.getDisplayText(uri).leftOrThrow)
     }
 }
