@@ -72,9 +72,8 @@ val Uri.isYouTubeDesktop: Boolean
     get() {
         val host: String? = host // cache properties: their values can change during this call
         val path: String? = path
-        return if (host == null || path == null) false else {
-            host.endsWith("youtube.com") &&
-                !host.endsWith("m.youtube.com") &&
-                !path.startsWith("/tv")
-        }
+        if (host == null || path == null) return false
+        return host.endsWith("youtube.com") &&
+            !host.endsWith("m.youtube.com") &&
+            !path.startsWith("/tv")
     }
