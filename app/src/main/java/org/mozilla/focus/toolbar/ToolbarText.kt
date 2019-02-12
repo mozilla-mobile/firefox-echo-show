@@ -25,7 +25,7 @@ object ToolbarText {
             return Either.Right(HintText)
         }
 
-        return (if (uri.scheme == URLs.SCHEME_FILE && uri.path.startsWith(URLs.PATH_ANDROID_ASSET)) {
+        return (if (uri.scheme == URLs.SCHEME_FILE && uri.path?.startsWith(URLs.PATH_ANDROID_ASSET) == true) {
             val uriNewScheme = uri.buildUpon().scheme(URLs.SCHEME_APP).build()
 
             // Currently: `app:///android_asset/...` Unfortunately, there is no way to remove the
