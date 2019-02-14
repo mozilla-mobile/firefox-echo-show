@@ -1,4 +1,5 @@
 # Firefox for Echo Show
+[![codecov](https://codecov.io/gh/mozilla-mobile/firefox-echo-show/branch/master/graph/badge.svg)](https://codecov.io/gh/mozilla-mobile/firefox-echo-show)
 
 Available on all Echo Show devices: *"Alexa, open Firefox!"*
 
