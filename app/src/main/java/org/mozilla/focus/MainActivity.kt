@@ -8,6 +8,8 @@ package org.mozilla.focus
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
@@ -57,6 +59,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     private val toolbarViewModel: ToolbarViewModel
         get() = FirefoxViewModelProviders.of(this)[ToolbarViewModel::class.java]
 
+    private val windowBackgroundDrawable = ColorDrawable(Color.BLACK) // optimization: don't reallocate.
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -98,8 +102,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     private fun initViews() {
         FirefoxViewModelProviders.of(this)[MainActivityViewModel::class.java].let { viewModel ->
             viewModel.isWindowBackgroundEnabled.observe(this@MainActivity, Observer<Boolean> {
-                val windowBackgroundResource = if (it == true) android.R.color.black else android.R.color.transparent
-                window.setBackgroundDrawableResource(windowBackgroundResource)
+                val windowBackgroundResource = if (it == true) windowBackgroundDrawable else null
+                window.setBackgroundDrawable(windowBackgroundResource)
             })
         }
 

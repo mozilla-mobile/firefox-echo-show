@@ -5,14 +5,23 @@
 package org.mozilla.focus
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.mozilla.focus.ext.switchMap
 import org.mozilla.focus.session.SessionRepo
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A view model representing UI controlled by the [MainActivity].
  */
 class MainActivityViewModel(
-    sessionRepo: SessionRepo
+    sessionRepo: SessionRepo,
+    private val coroutineContext: CoroutineContext = Main // LiveData eventually runs on main so just start there.
 ) : ViewModel() {
 
     // Draw a background behind fullscreen views - this serves the following purposes:
@@ -26,8 +35,33 @@ class MainActivityViewModel(
     // is also a simpler solution.
     //
     // The whole screen is usually covered by the WebView so if left the window background on all the time,
-    // we would have an extra layer of overdraw and performance may suffer. Since these devices are low powered,
-    // it seems worthwhile to preemptively optimize this. More details on windowBackground and overdraw:
+    // we would have an extra layer of overdraw and performance suffers: enabling the window background always,
+    // using the Profile GPU rendering option, and interacting with the application, frames are noticeably dropped.
+    // More details on windowBackground and overdraw:
     //   https://android-developers.googleblog.com/2009/03/window-backgrounds-ui-speed.html
-    val isWindowBackgroundEnabled: LiveData<Boolean> = sessionRepo.isFullscreen
+    private var windowBackgroundDeferredUpdateJob: Job? = null
+    private var _isWindowBackgroundEnabled = MutableLiveData<Boolean>()
+    val isWindowBackgroundEnabled: LiveData<Boolean> = sessionRepo.isFullscreen.switchMap { newValue ->
+        fun delay(millis: Long, action: () -> Unit) = GlobalScope.launch(coroutineContext) {
+            delay(millis)
+            action()
+        }
+
+        // Cancel the deferred job: if we need it, we'll reschedule it. This simplifies the state update because we
+        // don't need to handle emissions when there is an active job and when there is no active job.
+        windowBackgroundDeferredUpdateJob?.cancel()
+        windowBackgroundDeferredUpdateJob = null
+
+        val lastEmittedValue = _isWindowBackgroundEnabled.value
+        val isExitingFullscreen = lastEmittedValue == true && !newValue
+
+        // We return the backing LiveData using switchMap so we have a LiveData reference to update from our deferred job.
+        _isWindowBackgroundEnabled.also {
+            if (isExitingFullscreen) {
+                windowBackgroundDeferredUpdateJob = delay(millis = 5000) { it.value = false }
+            } else {
+                it.value = newValue
+            }
+        }
+    }
 }

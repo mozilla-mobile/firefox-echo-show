@@ -13,6 +13,10 @@ fun <T, U> LiveData<T>.map(mapper: (T) -> U): LiveData<U> {
     return Transformations.map(this, mapper)
 }
 
+fun <T, U> LiveData<T>.switchMap(mapper: (T) -> LiveData<U>): LiveData<U> {
+    return Transformations.switchMap(this, mapper)
+}
+
 fun <T> LiveData<T>.doOnEach(action: (T?) -> Unit): LiveData<T> {
     return this.map {
         action(it)
