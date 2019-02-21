@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Appearance and animations of navigation overlay to more clearly overlay browser content
+- Disabled web content translation animation when entering/exiting fullscreen (#219)
 
 ### Fixed
 - Toolbar not updating correctly after application state is restored (#145)
