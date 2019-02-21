@@ -6,7 +6,6 @@ package org.mozilla.focus.architecture
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import org.mozilla.focus.MainActivityViewModel
 import org.mozilla.focus.browser.BrowserViewModel
 import org.mozilla.focus.toolbar.BrowserAppBarViewModel
 import org.mozilla.focus.toolbar.ToolbarViewModel
@@ -22,7 +21,6 @@ class ViewModelFactory(
     @Suppress("UNCHECKED_CAST") // necessary to get generic types to match, unfortunately.
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = with(serviceLocator) {
         when (modelClass) {
-            MainActivityViewModel::class.java -> MainActivityViewModel(sessionRepo) as T
             BrowserAppBarViewModel::class.java -> BrowserAppBarViewModel(frameworkRepo, sessionRepo) as T
             ToolbarViewModel::class.java -> ToolbarViewModel() as T
             BrowserViewModel::class.java -> BrowserViewModel(frameworkRepo, sessionRepo) as T
