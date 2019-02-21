@@ -7,7 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- This view is briefly visible after exiting fullscreen so we draw it under the WebView. -->
+    <!-- There are visual glitches if there is no background behind the fullscreen container: for why we can't use the
+         fullscreen container itself and other details, see BrowserViewModel.isFullscreenBackgroundEnabled.
+
+         This view is briefly visible after exiting fullscreen so we draw it under the WebView. -->
     <View
             android:id="@+id/fullscreenContainerBackground"
             android:layout_width="match_parent"
@@ -22,8 +25,6 @@
         android:layout_height="match_parent"
         android:scrollbarThumbVertical="@drawable/scrollbar_thumb"/>
 
-    <!-- There are visual glitches if there is no background behind this view: we use windowBackground to do this
-         and set this transparent. See MainActivityViewModel.isWindowBackgroundEnabled for more details. -->
     <org.mozilla.focus.widget.OnInterceptTouchEventFrameLayout
         android:id="@+id/fullscreenContainer"
         android:layout_width="match_parent"

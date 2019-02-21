@@ -92,7 +92,7 @@ class BrowserViewModelTest {
 
     @Test
     fun `WHEN entering fullscreen THEN the window background is enabled immediately`() {
-        viewModel.isWindowBackgroundEnabled.assertValues(false, true) {
+        viewModel.isFullscreenBackgroundEnabled.assertValues(false, true) {
             isFullscreen.value = false
             isFullscreen.value = true
         }
@@ -101,12 +101,12 @@ class BrowserViewModelTest {
     @Test
     fun `WHEN exiting fullscreen THEN the window background is not disabled until several seconds afterwards`() {
         withTestContext(testCoroutineContext) {
-            viewModel.isWindowBackgroundEnabled.assertValues(true) {
+            viewModel.isFullscreenBackgroundEnabled.assertValues(true) {
                 isFullscreen.value = true
                 isFullscreen.value = false // note: emission is delayed so no assertion.
             }
 
-            viewModel.isWindowBackgroundEnabled.assertValues(true, false) {
+            viewModel.isFullscreenBackgroundEnabled.assertValues(true, false) {
                 advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS, TimeUnit.SECONDS)
             }
         }
@@ -115,7 +115,7 @@ class BrowserViewModelTest {
     @Test
     fun `WHEN sessionRepo isFullscreen emits redundant values THEN the window background state still updates correctly`() {
         withTestContext(testCoroutineContext) {
-            viewModel.isWindowBackgroundEnabled.assertValues(true, true, true, false, false, false, false, true, true, true) {
+            viewModel.isFullscreenBackgroundEnabled.assertValues(true, true, true, false, false, false, false, true, true, true) {
                 repeat(3) { isFullscreen.value = true }
                 repeat(3) { isFullscreen.value = false }
                 advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS, TimeUnit.SECONDS)
@@ -128,20 +128,20 @@ class BrowserViewModelTest {
     @Test
     fun `WHEN entering, exiting, and entering fullscreen quickly THEN the window background defer disable is cancelled`() {
         withTestContext(testCoroutineContext) {
-            viewModel.isWindowBackgroundEnabled.assertValues(true) {
+            viewModel.isFullscreenBackgroundEnabled.assertValues(true) {
                 isFullscreen.value = true
                 isFullscreen.value = false // note: emission is delayed so no assertion.
             }
 
             // We can verify cancellation occurs if the window background is not disabled (false is not emitted).
-            viewModel.isWindowBackgroundEnabled.assertValues(true, true) {
+            viewModel.isFullscreenBackgroundEnabled.assertValues(true, true) {
                 advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS / 2, TimeUnit.SECONDS)
                 isFullscreen.value = true
                 advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS, TimeUnit.SECONDS)
             }
 
             // Verify windowBackground disabled deferred updates still works after a successful cancellation.
-            viewModel.isWindowBackgroundEnabled.assertValues(true, false) {
+            viewModel.isFullscreenBackgroundEnabled.assertValues(true, false) {
                 isFullscreen.value = false
                 advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS, TimeUnit.SECONDS)
             }

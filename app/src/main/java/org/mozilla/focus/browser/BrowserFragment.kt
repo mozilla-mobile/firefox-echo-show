@@ -202,7 +202,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         }
         isFullscreenBackgroundEnabledObserver = IsFullscreenBackgroundEnabledObserver().also {
             // TODO: update to viewLifecycleObserver in SDK 28 change.
-            viewModel.isWindowBackgroundEnabled.observe(this@BrowserFragment, it)
+            viewModel.isFullscreenBackgroundEnabled.observe(this@BrowserFragment, it)
         }
 
         return layout
@@ -216,7 +216,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             isWebViewVisibleObserver = null
         }
         isFullscreenBackgroundEnabledObserver?.let {
-            viewModel.isWindowBackgroundEnabled.removeObserver(it)
+            viewModel.isFullscreenBackgroundEnabled.removeObserver(it)
             isFullscreenBackgroundEnabledObserver = null
         }
     }

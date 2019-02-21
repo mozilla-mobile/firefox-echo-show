@@ -48,18 +48,13 @@ class BrowserViewModel(
     //
     // There may be flickering between the toolbar and the fullscreen video when exiting fullscreen:
     // my hypothesis is that there is a gap between these views where no view is drawn, showing the user
-    // an invalid graphics buffer (which are known to have visual artifacts). We fill the gap with the window
-    // background because using views inside the view hierarchy didn't seem to work; using the window background
-    // is also a simpler solution.
-    //
-    // The whole screen is usually covered by the WebView so if left the window background on all the time,
-    // we would have an extra layer of overdraw and performance suffers: enabling the window background always,
-    // using the Profile GPU rendering option, and interacting with the application, frames are noticeably dropped.
-    // More details on windowBackground and overdraw:
-    //   https://android-developers.googleblog.com/2009/03/window-backgrounds-ui-speed.html
-    private var windowBackgroundDeferredUpdateJob: Job? = null
-    private var _isWindowBackgroundEnabled = MutableLiveData<Boolean>()
-    val isWindowBackgroundEnabled: LiveData<Boolean> = sessionRepo.isFullscreen.switchMap { newValue ->
+    // an invalid graphics buffer (which are known to have visual artifacts). Setting the background color of the
+    // fullscreen container does not fix the issue so we fill the gap with another view's background. This space is
+    // usually covered by the WebView or the fullscreen container so to prevent overdraw and improve performance, we
+    // dynamically show and hide the background view.
+    private var fullscreenBackgroundDeferredUpdateJob: Job? = null
+    private var _isFullscreenBackgroundEnabled = MutableLiveData<Boolean>()
+    val isFullscreenBackgroundEnabled: LiveData<Boolean> = sessionRepo.isFullscreen.switchMap { newValue ->
         fun delay(millis: Long, action: () -> Unit) = GlobalScope.launch(coroutineContext) {
             delay(millis)
             action()
@@ -67,16 +62,18 @@ class BrowserViewModel(
 
         // Cancel the deferred job: if we need it, we'll reschedule it. This simplifies the state update because we
         // don't need to handle emissions when there is an active job and when there is no active job.
-        windowBackgroundDeferredUpdateJob?.cancel()
-        windowBackgroundDeferredUpdateJob = null
+        fullscreenBackgroundDeferredUpdateJob?.cancel()
+        fullscreenBackgroundDeferredUpdateJob = null
 
-        val lastEmittedValue = _isWindowBackgroundEnabled.value
+        val lastEmittedValue = _isFullscreenBackgroundEnabled.value
         val isExitingFullscreen = lastEmittedValue == true && !newValue
 
         // We return the backing LiveData using switchMap so we have a LiveData reference to update from our deferred job.
-        _isWindowBackgroundEnabled.also {
+        _isFullscreenBackgroundEnabled.also {
             if (isExitingFullscreen) {
-                windowBackgroundDeferredUpdateJob = delay(millis = 5000) { it.value = false }
+                // The background needs to remain visible during the animation to exit fullscreen mode. Unfortunately,
+                // we get an emission when the animation begins so we wait a short duration before disabling the background.
+                fullscreenBackgroundDeferredUpdateJob = delay(millis = 5000) { it.value = false }
             } else {
                 it.value = newValue
             }
