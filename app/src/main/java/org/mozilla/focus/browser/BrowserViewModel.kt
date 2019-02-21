@@ -8,6 +8,8 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.UiThread
+import android.support.annotation.VisibleForTesting
+import android.support.annotation.VisibleForTesting.PRIVATE
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -73,7 +75,9 @@ class BrowserViewModel(
             if (isExitingFullscreen) {
                 // The background needs to remain visible during the animation to exit fullscreen mode. Unfortunately,
                 // we get an emission when the animation begins so we wait a short duration before disabling the background.
-                fullscreenBackgroundDeferredUpdateJob = delay(millis = 5000) { it.value = false }
+                fullscreenBackgroundDeferredUpdateJob = delay(millis = FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS) {
+                    it.value = false
+                }
             } else {
                 it.value = newValue
             }
@@ -88,5 +92,9 @@ class BrowserViewModel(
 
     fun fullscreenChanged(isFullscreen: Boolean) {
         sessionRepo.fullscreenChange(isFullscreen)
+    }
+
+    companion object {
+        @VisibleForTesting(otherwise = PRIVATE) val FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS: Long = 5000
     }
 }

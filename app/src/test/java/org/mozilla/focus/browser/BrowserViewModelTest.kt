@@ -18,12 +18,10 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mozilla.focus.architecture.FrameworkRepo
+import org.mozilla.focus.browser.BrowserViewModel.Companion.FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS
 import org.mozilla.focus.helpers.ext.assertValues
 import org.mozilla.focus.session.SessionRepo
 import org.robolectric.RobolectricTestRunner
-import java.util.concurrent.TimeUnit
-
-private const val EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS = 6L
 
 @ObsoleteCoroutinesApi // TestCoroutineContext: it has no replacement yet. See https://stackoverflow.com/a/49078296 for an alternative.
 @RunWith(RobolectricTestRunner::class)
@@ -107,7 +105,7 @@ class BrowserViewModelTest {
             }
 
             viewModel.isFullscreenBackgroundEnabled.assertValues(true, false) {
-                advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS, TimeUnit.SECONDS)
+                advanceTimeBy(FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS)
             }
         }
     }
@@ -118,7 +116,7 @@ class BrowserViewModelTest {
             viewModel.isFullscreenBackgroundEnabled.assertValues(true, true, true, false, false, false, false, true, true, true) {
                 repeat(3) { isFullscreen.value = true }
                 repeat(3) { isFullscreen.value = false }
-                advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS, TimeUnit.SECONDS)
+                advanceTimeBy(FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS)
                 repeat(3) { isFullscreen.value = false }
                 repeat(3) { isFullscreen.value = true }
             }
@@ -135,15 +133,15 @@ class BrowserViewModelTest {
 
             // We can verify cancellation occurs if the window background is not disabled (false is not emitted).
             viewModel.isFullscreenBackgroundEnabled.assertValues(true, true) {
-                advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS / 2, TimeUnit.SECONDS)
+                advanceTimeBy(FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS / 2)
                 isFullscreen.value = true
-                advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS, TimeUnit.SECONDS)
+                advanceTimeBy(FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS)
             }
 
             // Verify windowBackground disabled deferred updates still works after a successful cancellation.
             viewModel.isFullscreenBackgroundEnabled.assertValues(true, false) {
                 isFullscreen.value = false
-                advanceTimeBy(EXIT_FULLSCREEN_EXCEED_EMISSION_DELAY_SECONDS, TimeUnit.SECONDS)
+                advanceTimeBy(FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS)
             }
         }
     }
