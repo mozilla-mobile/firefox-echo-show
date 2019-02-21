@@ -34,7 +34,11 @@ class BrowserAppBarLayoutController(
         })
 
         viewModel.isAppBarHidden.observe(lifecycleOwner, Observer {
-            appBarLayout.setExpanded(it!!, true) // Note: expanded means hidden.
+            // Visual glitches appear between the toolbar and the WebView if the WebView animates when exiting fullscreen
+            // so we disable these animations as a simple solution: the animations had poor performance anyway.
+            //
+            // Note: expanded in setExpanded means hidden.
+            appBarLayout.setExpanded(it!!, false)
         })
     }
 
