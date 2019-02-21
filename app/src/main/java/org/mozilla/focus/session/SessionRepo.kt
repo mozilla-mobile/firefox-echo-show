@@ -8,7 +8,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 
 /**
- * TODO
+ * A model for the currently active [Session]s.
  */
 class SessionRepo {
 
