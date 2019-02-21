@@ -17,7 +17,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.ext.LiveDataCombiners
-import org.mozilla.focus.ext.switchMap
 import org.mozilla.focus.session.SessionRepo
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
@@ -57,30 +56,33 @@ class BrowserViewModel(
     // dynamically show and hide the background view.
     private var fullscreenBackgroundDeferredUpdateJob: Job? = null
     private var _isFullscreenBackgroundEnabled = MutableLiveData<Boolean>()
-    val isFullscreenBackgroundEnabled: LiveData<Boolean> = sessionRepo.isFullscreen.switchMap { newValue ->
-        fun delay(millis: Long, action: () -> Unit) = GlobalScope.launch(coroutineContext) {
-            delay(millis)
-            action()
-        }
+    val isFullscreenBackgroundEnabled: LiveData<Boolean> = _isFullscreenBackgroundEnabled
 
-        // Cancel the deferred job: if we need it, we'll reschedule it. This simplifies the state update because we
-        // don't need to handle emissions when there is an active job and when there is no active job.
-        fullscreenBackgroundDeferredUpdateJob?.cancel()
-        fullscreenBackgroundDeferredUpdateJob = null
+    init {
+        sessionRepo.isFullscreen.observeForever { newValue ->
+            fun delay(millis: Long, action: () -> Unit) = GlobalScope.launch(coroutineContext) {
+                delay(millis)
+                action()
+            }
 
-        val lastEmittedValue = _isFullscreenBackgroundEnabled.value
-        val isExitingFullscreen = lastEmittedValue == true && !newValue
+            if (newValue == null) return@observeForever
 
-        // We return the backing LiveData using switchMap so we have a LiveData reference to update from our deferred job.
-        _isFullscreenBackgroundEnabled.also {
+            // Cancel the deferred job: if we need it, we'll reschedule it. This simplifies the state update because we
+            // don't need to handle emissions when there is an active job and when there is no active job.
+            fullscreenBackgroundDeferredUpdateJob?.cancel()
+            fullscreenBackgroundDeferredUpdateJob = null
+
+            val lastEmittedValue = _isFullscreenBackgroundEnabled.value
+            val isExitingFullscreen = lastEmittedValue == true && !newValue
+
             if (isExitingFullscreen) {
                 // The background needs to remain visible during the animation to exit fullscreen mode. Unfortunately,
                 // we get an emission when the animation begins so we wait a short duration before disabling the background.
                 fullscreenBackgroundDeferredUpdateJob = delay(millis = FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS) {
-                    it.value = false
+                    _isFullscreenBackgroundEnabled.value = false
                 }
             } else {
-                it.value = newValue
+                _isFullscreenBackgroundEnabled.value = newValue
             }
         }
     }
