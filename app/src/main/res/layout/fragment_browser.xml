@@ -7,6 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- This view is briefly visible after exiting fullscreen so we draw it under the WebView. -->
+    <View
+            android:id="@+id/fullscreenContainerBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/black"
+            android:visibility="gone"/>
+
     <!-- fillViewport is necessary for the WebView to fill the ScrollView -->
     <org.mozilla.focus.iwebview.IWebView
         android:id="@+id/webview"

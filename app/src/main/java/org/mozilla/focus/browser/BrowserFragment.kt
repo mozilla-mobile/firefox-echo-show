@@ -12,6 +12,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_browser.*
 import org.mozilla.focus.R
 import org.mozilla.focus.architecture.FirefoxViewModelProviders
 import org.mozilla.focus.browser.URLs.APP_STARTUP_HOME
@@ -77,6 +78,7 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     internal val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
     val toolbarStateProvider = BrowserToolbarStateProvider()
     private var isWebViewVisibleObserver: IsWebViewVisibleViewModelObserver? = null
+    private var isFullscreenBackgroundEnabledObserver: IsFullscreenBackgroundEnabledObserver? = null
 
     private val viewModel: BrowserViewModel
         get() = FirefoxViewModelProviders.of(this)[BrowserViewModel::class.java]
@@ -191,12 +193,16 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val layout = inflater.inflate(R.layout.fragment_browser, container, false)
 
-        if (isWebViewVisibleObserver != null) {
-            throw IllegalStateException("WebViewVisibleObserver unexpectedly already exists: bad lifecycle assumptions?")
+        if (isWebViewVisibleObserver != null || isFullscreenBackgroundEnabledObserver != null) {
+            throw IllegalStateException("view observers unexpectedly exist: bad lifecycle assumptions?")
         }
         isWebViewVisibleObserver = IsWebViewVisibleViewModelObserver().also {
             // TODO: After SDK 28 upgrade (#72), observe over viewLifecycleOwner, remove obs removal in destroyView.
             viewModel.isWebViewVisible.observe(this@BrowserFragment, it)
+        }
+        isFullscreenBackgroundEnabledObserver = IsFullscreenBackgroundEnabledObserver().also {
+            // TODO: update to viewLifecycleObserver in SDK 28 change.
+            viewModel.isWindowBackgroundEnabled.observe(this@BrowserFragment, it)
         }
 
         return layout
@@ -208,6 +214,10 @@ class BrowserFragment : IWebViewLifecycleFragment() {
         isWebViewVisibleObserver?.let {
             viewModel.isWebViewVisible.removeObserver(it)
             isWebViewVisibleObserver = null
+        }
+        isFullscreenBackgroundEnabledObserver?.let {
+            viewModel.isWindowBackgroundEnabled.removeObserver(it)
+            isFullscreenBackgroundEnabledObserver = null
         }
     }
 
@@ -249,6 +259,12 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     private inner class IsWebViewVisibleViewModelObserver : Observer<Boolean> {
         override fun onChanged(isVisible: Boolean?) {
             webView?.setVisibility(if (isVisible!!) View.VISIBLE else View.GONE)
+        }
+    }
+
+    private inner class IsFullscreenBackgroundEnabledObserver : Observer<Boolean> {
+        override fun onChanged(isEnabled: Boolean?) {
+            fullscreenContainerBackground.visibility = if (isEnabled == true) View.VISIBLE else View.GONE
         }
     }
 }

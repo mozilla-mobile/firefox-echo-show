@@ -5,7 +5,6 @@
 
 package org.mozilla.focus
 
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -100,13 +99,6 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     private fun initViews() {
-        FirefoxViewModelProviders.of(this)[MainActivityViewModel::class.java].let { viewModel ->
-            viewModel.isWindowBackgroundEnabled.observe(this@MainActivity, Observer<Boolean> {
-                val windowBackgroundResource = if (it == true) windowBackgroundDrawable else null
-                window.setBackgroundDrawable(windowBackgroundResource)
-            })
-        }
-
         FirefoxViewModelProviders.of(this)[BrowserAppBarViewModel::class.java].let { viewModel ->
             appBarLayoutController = BrowserAppBarLayoutController(viewModel, appBarLayout, toolbar).apply {
                 init(this@MainActivity)
