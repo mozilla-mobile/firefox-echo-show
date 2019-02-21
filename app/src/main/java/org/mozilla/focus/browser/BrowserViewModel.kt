@@ -19,6 +19,7 @@ import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.ext.LiveDataCombiners
 import org.mozilla.focus.ext.switchMap
 import org.mozilla.focus.session.SessionRepo
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -95,6 +96,8 @@ class BrowserViewModel(
     }
 
     companion object {
-        @VisibleForTesting(otherwise = PRIVATE) val FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS: Long = 5000
+        // The exit fullscreen animation anecdotally takes less than a second so a few seconds should be plenty.
+        @VisibleForTesting(otherwise = PRIVATE) val FULLSCREEN_BACKGROUND_DEFERRED_DISABLE_MILLIS: Long =
+            TimeUnit.SECONDS.toMillis(3)
     }
 }
