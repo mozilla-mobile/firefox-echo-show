@@ -4,14 +4,15 @@
 
 package org.mozilla.focus
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.ext.toSafeIntent
@@ -23,26 +24,22 @@ private const val TEST_URL = "https://github.com/mozilla-mobile/focus-android"
 @RunWith(RobolectricTestRunner::class)
 class IntentValidatorTest {
 
+    private val context: Context get() = RuntimeEnvironment.application
+
     @Test
     fun testViewIntent() {
-        var isCalled = false
         val expectedUrl = TEST_URL
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(expectedUrl)).toSafeIntent()
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { url ->
-            isCalled = true
-            assertEquals(expectedUrl, url)
-        }
-
-        assertTrue("Expected intent to be valid", isCalled)
+        val actual = IntentValidator(intent).getUriToOpen(context)
+        assertEquals(expectedUrl, actual)
     }
 
     /** In production we see apps send VIEW intents without an URL. (Focus #1373) */
     @Test
     fun testViewIntentWithNullURL() {
         val intent = Intent(Intent.ACTION_VIEW, null).toSafeIntent()
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { _ ->
-            fail("Null URL should not be valid")
-        }
+        val actual = IntentValidator(intent).getUriToOpen(context)
+        assertNull(actual)
     }
 
     @Test
@@ -55,14 +52,8 @@ class IntentValidatorTest {
                 .intent
                 .setData(Uri.parse(expectedUrl))
                 .toSafeIntent()
-
-        var isCalled = false
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { url ->
-            isCalled = true
-            assertEquals(expectedUrl, url)
-        }
-
-        assertTrue("Expected intent to be valid", isCalled)
+        val actual = IntentValidator(intent).getUriToOpen(context)
+        assertEquals(expectedUrl, actual)
     }
 
     @Test
@@ -71,17 +62,13 @@ class IntentValidatorTest {
             addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY)
         }.toSafeIntent()
 
-        IntentValidator.validateOnCreate(RuntimeEnvironment.application, intent, null) { _, _ ->
-            fail("Intent from history should not be valid")
-        }
+        assertNull(IntentValidator(intent).getUriToOpen(context))
     }
 
     @Test
     fun testIntentNotValidIfWeAreRestoring() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(TEST_URL)).toSafeIntent()
-        IntentValidator.validateOnCreate(RuntimeEnvironment.application, intent, Bundle()) { _, _ ->
-            fail("Intent from restore should not be valid")
-        }
+        assertNull(IntentValidator(intent).getUriToOpen(context, Bundle()))
     }
 
     @Test
@@ -90,14 +77,8 @@ class IntentValidatorTest {
         val intent = Intent(Intent.ACTION_SEND).apply {
             putExtra(Intent.EXTRA_TEXT, expectedUrl)
         }.toSafeIntent()
-
-        var isCalled = false
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { url ->
-            isCalled = true
-            assertEquals(expectedUrl, url)
-        }
-
-        assertTrue("Expected share intent to be valid", isCalled)
+        val actual = IntentValidator(intent).getUriToOpen(context)
+        assertEquals(expectedUrl, actual)
     }
 
     @Test
@@ -107,14 +88,9 @@ class IntentValidatorTest {
             putExtra(Intent.EXTRA_TEXT, expectedText)
         }.toSafeIntent()
 
-        var isCalled = false
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { url ->
-            isCalled = true
-            expectedText.split(" ").forEach {
-                assertTrue("Expected search url to contain $it", url.contains(it))
-            }
+        val searchUrl = IntentValidator(intent).getUriToOpen(context)
+        expectedText.split(" ").forEach {
+            assertTrue("Expected search url to contain $it", searchUrl!!.contains(it))
         }
-
-        assertTrue("Expected share intent to be valid", isCalled)
     }
 }
