@@ -16,6 +16,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.ext.toSafeIntent
+import org.mozilla.focus.ext.toUri
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
@@ -25,6 +26,13 @@ private const val TEST_URL = "https://github.com/mozilla-mobile/focus-android"
 class IntentValidatorTest {
 
     private val context: Context get() = RuntimeEnvironment.application
+
+    @Test
+    fun `WHEN receiving an intent with a null action THEN a null uri is returned`() {
+        val intent = Intent(null, TEST_URL.toUri()).toSafeIntent()
+        val actual = IntentValidator(intent).getUriToOpen(context)
+        assertNull(actual)
+    }
 
     @Test
     fun `WHEN receiving a view intent with a valid uri THEN the uri is returned`() {
@@ -40,6 +48,18 @@ class IntentValidatorTest {
         val intent = Intent(Intent.ACTION_VIEW, null).toSafeIntent()
         val actual = IntentValidator(intent).getUriToOpen(context)
         assertNull(actual)
+    }
+
+    @Test
+    fun `WHEN receiving a view intent with a blank uri THEN a null uri is returned`() {
+        arrayOf(
+            "",
+            "     "
+        ).forEachIndexed { i, blankStr ->
+            val intent = Intent(Intent.ACTION_VIEW, blankStr.toUri()).toSafeIntent()
+            val actual = IntentValidator(intent).getUriToOpen(context)
+            assertNull("index $i", actual)
+        }
     }
 
     @Test
@@ -93,6 +113,45 @@ class IntentValidatorTest {
         val searchUrl = IntentValidator(intent).getUriToOpen(context)
         expectedText.split(" ").forEach {
             assertTrue("Expected search url to contain $it", searchUrl!!.contains(it))
+        }
+    }
+
+    @Test
+    fun `WHEN receiving a share intent with no text extra THEN a null uri is returned`() {
+        val intent = Intent(Intent.ACTION_SEND).toSafeIntent()
+        val actual = IntentValidator(intent).getUriToOpen(context)
+        assertNull(actual)
+    }
+
+    @Test
+    fun `WHEN receiving a share intent with null text THEN a null uri is returned`() {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_TEXT, null as String?)
+        }.toSafeIntent()
+        val actual = IntentValidator(intent).getUriToOpen(context)
+        assertNull(actual)
+    }
+
+    @Test
+    fun `WHEN receiving a share intent with blank text THEN a null uri is returned`() {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_TEXT, "    ")
+        }.toSafeIntent()
+        val actual = IntentValidator(intent).getUriToOpen(context)
+        assertNull(actual)
+    }
+
+    @Test
+    fun `WHEN receiving an unrecognized intent THEN a null uri is returned`() {
+        arrayOf(
+            Intent.ACTION_MAIN,
+            Intent.ACTION_SENDTO,
+            Intent.ACTION_SEND_MULTIPLE,
+            Intent.ACTION_CALL
+        ).forEach {
+            val intent = Intent(it, TEST_URL.toUri()).toSafeIntent()
+            val actual = IntentValidator(intent).getUriToOpen(context)
+            assertNull("Expeceted null for action $it", actual)
         }
     }
 }
