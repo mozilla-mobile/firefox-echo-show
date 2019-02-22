@@ -15,7 +15,6 @@ import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.ext.toSafeIntent
-import org.mozilla.focus.session.Source
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
@@ -29,10 +28,9 @@ class IntentValidatorTest {
         var isCalled = false
         val expectedUrl = TEST_URL
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(expectedUrl)).toSafeIntent()
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { url, source ->
+        IntentValidator.validate(RuntimeEnvironment.application, intent) { url ->
             isCalled = true
             assertEquals(expectedUrl, url)
-            assertEquals(Source.VIEW, source)
         }
 
         assertTrue("Expected intent to be valid", isCalled)
@@ -42,7 +40,7 @@ class IntentValidatorTest {
     @Test
     fun testViewIntentWithNullURL() {
         val intent = Intent(Intent.ACTION_VIEW, null).toSafeIntent()
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { _, _ ->
+        IntentValidator.validate(RuntimeEnvironment.application, intent) { _ ->
             fail("Null URL should not be valid")
         }
     }
@@ -59,10 +57,9 @@ class IntentValidatorTest {
                 .toSafeIntent()
 
         var isCalled = false
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { url, source ->
+        IntentValidator.validate(RuntimeEnvironment.application, intent) { url ->
             isCalled = true
             assertEquals(expectedUrl, url)
-            assertEquals(Source.VIEW, source)
         }
 
         assertTrue("Expected intent to be valid", isCalled)
@@ -95,9 +92,8 @@ class IntentValidatorTest {
         }.toSafeIntent()
 
         var isCalled = false
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { url, source ->
+        IntentValidator.validate(RuntimeEnvironment.application, intent) { url ->
             isCalled = true
-            assertEquals(Source.SHARE, source)
             assertEquals(expectedUrl, url)
         }
 
@@ -112,9 +108,8 @@ class IntentValidatorTest {
         }.toSafeIntent()
 
         var isCalled = false
-        IntentValidator.validate(RuntimeEnvironment.application, intent) { url, source ->
+        IntentValidator.validate(RuntimeEnvironment.application, intent) { url ->
             isCalled = true
-            assertEquals(Source.SHARE, source)
             expectedText.split(" ").forEach {
                 assertTrue("Expected search url to contain $it", url.contains(it))
             }
