@@ -109,8 +109,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         IntentValidator.validate(this, unsafeIntent.toSafeIntent(), ::onValidBrowserIntent)
     }
 
-    private fun onValidBrowserIntent(url: String, source: Source) {
-        ScreenController.showBrowserScreenForUrl(supportFragmentManager, url, source)
+    private fun onValidBrowserIntent(url: String) {
+        // Source is no longer used by this code base.
+        ScreenController.showBrowserScreenForUrl(supportFragmentManager, url, Source.NONE)
     }
 
     override fun applyLocale() {

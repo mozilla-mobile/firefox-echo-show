@@ -11,7 +11,7 @@ import mozilla.components.support.utils.SafeIntent
 import org.mozilla.focus.session.Source
 import org.mozilla.focus.utils.UrlUtils
 
-typealias OnValidBrowserIntent = (url: String, source: Source) -> Unit
+typealias OnValidBrowserIntent = (url: String) -> Unit
 
 /**
  * A container for functions that parse Intents and notify the application of their validity.
@@ -52,7 +52,7 @@ object IntentValidator {
                 return // If there's no URL in the Intent then we can't create a session.
             }
 
-            onValidBrowserIntent(dataString, Source.VIEW)
+            onValidBrowserIntent(dataString)
         } else if (Intent.ACTION_SEND.equals(action)) {
             val dataString = intent.getStringExtra(Intent.EXTRA_TEXT)
             if (dataString == null || dataString.isEmpty()) {
@@ -61,7 +61,7 @@ object IntentValidator {
 
             val isSearch = !UrlUtils.isUrl(dataString)
             val url = if (isSearch) UrlUtils.createSearchUrl(context, dataString) else dataString
-            onValidBrowserIntent(url, Source.SHARE)
+            onValidBrowserIntent(url)
         }
     }
 }
