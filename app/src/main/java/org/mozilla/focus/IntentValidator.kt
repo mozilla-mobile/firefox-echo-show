@@ -7,61 +7,53 @@ package org.mozilla.focus
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.content.Intent.ACTION_SEND
+import android.content.Intent.ACTION_VIEW
 import mozilla.components.support.utils.SafeIntent
-import org.mozilla.focus.session.Source
 import org.mozilla.focus.utils.UrlUtils
 
-typealias OnValidBrowserIntent = (url: String) -> Unit
-
 /**
- * A container for functions that parse Intents and notify the application of their validity.
+ * An encapsulation of functions that extract values from valid Intents.
  *
- * This class uses callbacks to notify the application in order to decouple the Intent parsing
- * from the application logic, which also allows us to test the functionality.
- *
- * The functions in this class take [SafeIntent] in order to encourage the caller to use SafeIntents
+ * The class constructor takes a [SafeIntent] to encourage the caller to use SafeIntents
  * in their code.
  */
-object IntentValidator {
+class IntentValidator(
+    private val intent: SafeIntent
+) {
 
-    fun validateOnCreate(context: Context, intent: SafeIntent, savedInstanceState: Bundle?, onValidBrowserIntent: OnValidBrowserIntent) {
+    /**
+     * Takes the uri defined in the [SafeIntent] and converts it into the uri the app should open.
+     *
+     * @return the uri for the app to open or null if there is none.
+     */
+    fun getUriToOpen(context: Context, savedInstanceState: Bundle? = null): String? {
         if ((intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
             // This Intent was launched from history (recent apps). Android will redeliver the
             // original Intent (which might be a VIEW intent). However if there's no active browsing
             // session then we do not want to re-process the Intent and potentially re-open a website
             // from a session that the user already "erased".
-            return
+            return null
         }
 
         if (savedInstanceState != null) {
             // We are restoring a previous session - No need to handle this Intent.
-            return
+            return null
         }
 
-        validate(context, intent, onValidBrowserIntent)
-    }
-
-    fun validate(context: Context, intent: SafeIntent, onValidBrowserIntent: OnValidBrowserIntent) {
-        val action = intent.action
-
-        // ACTION_VIEW is only sent internally: we want the preinstalled WebView
-        // application to handle system-wide HTTP(S) intents.
-        if (Intent.ACTION_VIEW.equals(action)) {
-            val dataString = intent.dataString
-            if (dataString == null || dataString.isEmpty()) {
-                return // If there's no URL in the Intent then we can't create a session.
+        return when (intent.action) {
+            // ACTION_VIEW is only sent internally: we want the preinstalled WebView
+            // application to handle system-wide HTTP(S) intents.
+            ACTION_VIEW -> intent.dataString?.ifBlank { null }
+            ACTION_SEND -> {
+                val dataString = intent.getStringExtra(Intent.EXTRA_TEXT)?.ifBlank { null }
+                dataString?.let {
+                    val isSearch = !UrlUtils.isUrl(dataString)
+                    if (isSearch) UrlUtils.createSearchUrl(context, dataString) else dataString
+                }
             }
 
-            onValidBrowserIntent(dataString)
-        } else if (Intent.ACTION_SEND.equals(action)) {
-            val dataString = intent.getStringExtra(Intent.EXTRA_TEXT)
-            if (dataString == null || dataString.isEmpty()) {
-                return
-            }
-
-            val isSearch = !UrlUtils.isUrl(dataString)
-            val url = if (isSearch) UrlUtils.createSearchUrl(context, dataString) else dataString
-            onValidBrowserIntent(url)
+            else -> null
         }
     }
 }

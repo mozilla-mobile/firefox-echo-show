@@ -69,7 +69,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
         setContentView(R.layout.activity_main)
 
-        IntentValidator.validateOnCreate(this, intent, savedInstanceState, ::onValidBrowserIntent)
+        IntentValidator(intent).getUriToOpen(this, savedInstanceState)?.let {
+            onValidBrowserIntent(it)
+        }
         sessionManager.sessions.observe(this, object : NonNullObserver<List<Session>>() {
             public override fun onValueChanged(value: List<Session>) {
                 val sessions = value
@@ -106,7 +108,9 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {
-        IntentValidator.validate(this, unsafeIntent.toSafeIntent(), ::onValidBrowserIntent)
+        IntentValidator(unsafeIntent.toSafeIntent()).getUriToOpen(this)?.let {
+            onValidBrowserIntent(it)
+        }
     }
 
     private fun onValidBrowserIntent(url: String) {
