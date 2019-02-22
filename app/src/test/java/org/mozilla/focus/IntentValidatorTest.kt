@@ -27,7 +27,7 @@ class IntentValidatorTest {
     private val context: Context get() = RuntimeEnvironment.application
 
     @Test
-    fun testViewIntent() {
+    fun `WHEN receiving a view intent with a valid uri THEN the uri is returned`() {
         val expectedUrl = TEST_URL
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(expectedUrl)).toSafeIntent()
         val actual = IntentValidator(intent).getUriToOpen(context)
@@ -36,14 +36,16 @@ class IntentValidatorTest {
 
     /** In production we see apps send VIEW intents without an URL. (Focus #1373) */
     @Test
-    fun testViewIntentWithNullURL() {
+    fun `WHEN receiving a view intent with a null uri THEN a null uri is returned`() {
         val intent = Intent(Intent.ACTION_VIEW, null).toSafeIntent()
         val actual = IntentValidator(intent).getUriToOpen(context)
         assertNull(actual)
     }
 
     @Test
-    fun testCustomTabIntent() {
+    fun `WHEN receiving a custom tabs intent with a valid uri THEN the uri is returned`() {
+        // Custom tab intents are view intents. Since FFES doesn't support custom tabs, we don't have code
+        // to handle them specially and we handle them like view intents.
         val expectedUrl = TEST_URL
         val intent = CustomTabsIntent.Builder()
                 .setToolbarColor(Color.GREEN)
@@ -57,7 +59,7 @@ class IntentValidatorTest {
     }
 
     @Test
-    fun testViewIntentFromHistoryIsIgnored() {
+    fun `WHEN receiving a view intent with the launched from history flag THEN a null uri is returned`() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(TEST_URL)).apply {
             addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY)
         }.toSafeIntent()
@@ -66,13 +68,13 @@ class IntentValidatorTest {
     }
 
     @Test
-    fun testIntentNotValidIfWeAreRestoring() {
+    fun `WHEN restoring state THEN a null uri is returned`() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(TEST_URL)).toSafeIntent()
         assertNull(IntentValidator(intent).getUriToOpen(context, Bundle()))
     }
 
     @Test
-    fun testShareIntentViaNewIntent() {
+    fun `WHEN receiving a send intent with a valid uri THEN the uri is returned`() {
         val expectedUrl = TEST_URL
         val intent = Intent(Intent.ACTION_SEND).apply {
             putExtra(Intent.EXTRA_TEXT, expectedUrl)
@@ -82,7 +84,7 @@ class IntentValidatorTest {
     }
 
     @Test
-    fun testShareIntentWithTextViaNewIntent() {
+    fun `WHEN receiving a send intent with text THEN a search uri is returned`() {
         val expectedText = "Hello World Firefox TV"
         val intent = Intent(Intent.ACTION_SEND).apply {
             putExtra(Intent.EXTRA_TEXT, expectedText)
