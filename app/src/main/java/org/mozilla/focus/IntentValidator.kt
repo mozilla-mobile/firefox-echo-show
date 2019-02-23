@@ -28,18 +28,28 @@ class IntentValidator(
      * @return the uri for the app to open or null if there is none.
      */
     fun getUriToOpen(context: Context, savedInstanceState: Bundle? = null): String? {
-        if ((intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
-            // This Intent was launched from history (recent apps). Android will redeliver the
-            // original Intent (which might be a VIEW intent). However if there's no active browsing
-            // session then we do not want to re-process the Intent and potentially re-open a website
-            // from a session that the user already "erased".
-            return null
+        fun isIntentRedelivered(): Boolean {
+            // This Intent was launched from history (recent apps): this may not be called on Echo Show but
+            // handling it may be useful for testing on the Android emulator.
+            //
+            // I do not know how to reproduce this code path in manual testing.
+            return (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY != 0) ||
+
+                // The Activity is being restored.
+                //
+                // You can reproduce this code path manually on an Android emulator by enabling don't keep
+                // activities, opening FF, clicking home, opening the recent apps, and opening FF from there.
+                savedInstanceState != null
         }
 
-        if (savedInstanceState != null) {
-            // We are restoring a previous session - No need to handle this Intent.
-            return null
-        }
+        // N.B. the code path for restoring state is hard to understand because this Intent handling code should
+        // be tightly integrated with Android's Activity restoration and our EngineView session restore but it's not.
+        // We could spend time improving this but we should wait to integrate with components first. As such, this
+        // code is similar to how it was when we forked Focus and may do unnecessary things.
+        //
+        // If an intent is being redelivered, we already have some state and our session restore process will handle
+        // restoring it so the redundant Intent is not helpful.
+        if (isIntentRedelivered()) return null
 
         return when (intent.action) {
             // ACTION_VIEW is only sent internally: we want the preinstalled WebView
