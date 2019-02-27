@@ -1,19 +1,19 @@
 {
   "gd": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "faclair-beag",
     "wikipedia-gd"
   ],
   "gl": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "twitter",
     "wikipedia-gl"
   ],
   "en-GB": [
-    "google",
+    "google-b-amzes",
     "amazon-en-GB",
     "duckduckgo",
     "qwant",
@@ -21,20 +21,20 @@
     "wikipedia"
   ],
   "lo": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-lo"
   ],
   "tr": [
-    "google",
+    "google-b-amzes",
     "yandex-tr",
     "duckduckgo",
     "twitter",
     "wikipedia-tr"
   ],
   "lv": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "salidzinilv",
     "sslv",
@@ -42,40 +42,40 @@
     "wikipedia-lv"
   ],
   "lt": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-lt"
   ],
   "th": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-th"
   ],
   "te": [
-    "google",
+    "google-b-amzes",
     "amazon-in",
     "duckduckgo",
     "wikipedia-te",
     "wiktionary-te"
   ],
   "ta": [
-    "google",
+    "google-b-amzes",
     "amazon-in",
     "duckduckgo",
     "wikipedia-ta",
     "wiktionary-ta"
   ],
   "uk-TR": [
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-uk",
     "yandex-market"
   ],
   "bn-IN": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "rediff",
@@ -83,13 +83,13 @@
   ],
   "ru-KZ": [
     "yandex-ru",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-ru"
   ],
   "de": [
-    "google",
+    "google-b-amzes",
     "amazon-de",
     "duckduckgo",
     "qwant",
@@ -97,54 +97,54 @@
     "wikipedia-de"
   ],
   "da": [
-    "google",
+    "google-b-amzes",
     "amazon-co-uk",
     "duckduckgo",
     "twitter",
     "wikipedia-da"
   ],
   "pt-BR": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-br"
   ],
   "be-BY": [
     "yandex.by",
-    "google-nocodes",
+    "google",
     "be.wikipedia.org",
     "duckduckgo",
     "tut.by"
   ],
   "nb-NO": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "gulesider-mobile-NO",
     "twitter",
     "wikipedia-NO"
   ],
   "gu-IN": [
-    "google",
+    "google-b-amzes",
     "amazon-in",
     "duckduckgo",
     "wikipedia-gu"
   ],
   "be-RU": [
     "yandex.by",
-    "google-nocodes",
+    "google",
     "be.wikipedia.org",
     "duckduckgo",
     "tut.by"
   ],
   "uz": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "twitter",
     "wikipedia-uz"
   ],
   "ga-IE": [
-    "google",
+    "google-b-amzes",
     "amazon-en-GB",
     "duckduckgo",
     "tearma",
@@ -152,7 +152,7 @@
     "wikipedia-ga-IE"
   ],
   "es-CL": [
-    "google",
+    "google-b-amzes",
     "drae",
     "duckduckgo",
     "mercadolibre-cl",
@@ -161,20 +161,20 @@
   ],
   "be-KZ": [
     "yandex.by",
-    "google-nocodes",
+    "google",
     "be.wikipedia.org",
     "duckduckgo",
     "tut.by"
   ],
   "el": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "skroutz",
     "twitter",
     "wikipedia-el"
   ],
   "eo": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "reta-vortaro",
     "twitter",
@@ -182,26 +182,26 @@
   ],
   "kk-RU": [
     "yandex",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-kk"
   ],
   "eu": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "elebila",
     "wikipedia-eu"
   ],
   "sv-SE": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "prisjakt-sv-SE",
     "twitter",
     "wikipedia-sv-SE"
   ],
   "ru": [
-    "google",
+    "google-b-amzes",
     "yandex-ru",
     "duckduckgo",
     "twitter",
@@ -209,54 +209,54 @@
   ],
   "tr-RU": [
     "yandex-tr",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-tr"
   ],
   "kk-BY": [
     "yandex",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-kk"
   ],
   "rm": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "leo_ende_de",
     "pledarigrond",
     "wikipedia-rm"
   ],
   "ro": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-ro"
   ],
   "dsb": [
-    "google",
+    "google-b-amzes",
     "amazon-de",
     "duckduckgo",
     "twitter",
     "wikipedia-dsb"
   ],
   "hsb": [
-    "google",
+    "google-b-amzes",
     "amazon-de",
     "duckduckgo",
     "twitter",
     "wikipedia-hsb"
   ],
   "be": [
-    "google",
+    "google-b-amzes",
     "be.wikipedia.org",
     "duckduckgo",
     "tut.by",
     "yandex.by"
   ],
   "ms": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "twitter",
@@ -264,40 +264,40 @@
   ],
   "kk-KZ": [
     "yandex",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-kk"
   ],
   "mr": [
-    "google",
+    "google-b-amzes",
     "amazon-in",
     "duckduckgo",
     "rediff",
     "wikipedia-mr"
   ],
   "uk-RU": [
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-uk",
     "yandex-market"
   ],
   "br": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-br"
   ],
   "uk-KZ": [
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-uk",
     "yandex-market"
   ],
   "ja": [
-    "google",
+    "google-b-amzes",
     "amazon-jp",
     "duckduckgo",
     "twitter-ja",
@@ -306,45 +306,45 @@
   ],
   "ru-TR": [
     "yandex-ru",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-ru"
   ],
   "pt-PT": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "wikipedia-ptpt"
   ],
   "es-AR": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "mercadolibre-ar",
     "twitter",
     "wikipedia-es"
   ],
   "nn-NO": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "gulesider-mobile-NO",
     "twitter",
     "wikipedia-NN"
   ],
   "uk-BY": [
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-uk",
     "yandex-market"
   ],
   "fy-NL": [
-    "google",
+    "google-b-amzes",
     "wikipedia-fy-NL",
     "bolcom-fy-NL",
     "duckduckgo"
   ],
   "or": [
-    "google",
+    "google-b-amzes",
     "amazon-in",
     "duckduckgo",
     "wikipedia-or",
@@ -352,13 +352,13 @@
   ],
   "be-TR": [
     "yandex.by",
-    "google-nocodes",
+    "google",
     "be.wikipedia.org",
     "duckduckgo",
     "tut.by"
   ],
   "ca": [
-    "google",
+    "google-b-amzes",
     "twitter",
     "wikipedia-ca",
     "diec2",
@@ -366,19 +366,19 @@
   ],
   "kk-TR": [
     "yandex",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-kk"
   ],
   "cy": [
-    "google",
+    "google-b-amzes",
     "amazon-en-GB",
     "duckduckgo",
     "wikipedia-cy"
   ],
   "cs": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "heureka-cz",
     "mapy-cz",
@@ -387,14 +387,14 @@
     "wikipedia-cz"
   ],
   "en-CA": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "twitter",
     "wikipedia"
   ],
   "hi-IN": [
-    "google",
+    "google-b-amzes",
     "amazon-in",
     "duckduckgo",
     "twitter",
@@ -402,33 +402,33 @@
   ],
   "tr-TR": [
     "yandex-tr",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-tr"
   ],
   "pl": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-pl"
   ],
   "hr": [
-    "google",
+    "google-b-amzes",
     "amazon-en-GB",
     "duckduckgo",
     "twitter",
     "wikipedia-hr"
   ],
   "en-US": [
-    "google-2018",
+    "google-b-1-amzes",
     "amazondotcom",
     "duckduckgo",
     "twitter",
     "wikipedia"
   ],
   "hu": [
-    "google",
+    "google-b-amzes",
     "sztaki-en-hu",
     "vatera",
     "duckduckgo",
@@ -436,31 +436,31 @@
     "wikipedia-hu"
   ],
   "he": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-he"
   ],
   "zh-HK": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "wikipedia-zh-TW"
   ],
   "default": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "twitter",
     "wikipedia"
   ],
   "ml": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-ml"
   ],
   "ur": [
-    "google",
+    "google-b-amzes",
     "amazon-in",
     "duckduckgo",
     "twitter",
@@ -468,26 +468,26 @@
   ],
   "zh-CN": [
     "baidu",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "taobao",
     "wikipedia-zh-CN"
   ],
   "en-ZA": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia"
   ],
   "uk": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-uk",
     "yandex-market"
   ],
   "hy-AM": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "list-am",
@@ -495,39 +495,39 @@
   ],
   "tr-BY": [
     "yandex-tr",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-tr"
   ],
   "my": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "twitter",
     "wikipedia-my"
   ],
   "is": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "leit-is",
     "wikipedia-is"
   ],
   "it": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-it"
   ],
   "as": [
-    "google",
+    "google-b-amzes",
     "amazon-in",
     "duckduckgo",
     "wikipedia-as"
   ],
   "ar": [
-    "google",
+    "google-b-amzes",
     "wikipedia-ar",
     "duckduckgo",
     "twitter"
@@ -539,77 +539,77 @@
     "yandex-market"
   ],
   "et": [
-    "google",
+    "google-b-amzes",
     "amazon-co-uk",
     "duckduckgo",
     "twitter",
     "wikipedia-et"
   ],
   "az": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "azerdict",
     "duckduckgo",
     "wikipedia-az"
   ],
   "es-ES": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-es"
   ],
   "id": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-id"
   ],
   "sr": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-sr"
   ],
   "nl": [
-    "google",
+    "google-b-amzes",
     "wikipedia-nl",
     "bolcom-nl",
     "duckduckgo"
   ],
   "ru-BY": [
     "yandex-ru",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-ru"
   ],
   "ru-RU": [
     "yandex-ru",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-ru"
   ],
   "fr": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "qwant",
     "twitter",
     "wikipedia-fr"
   ],
   "fa": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "wikipedia-fa"
   ],
   "ff": [
-    "google",
+    "google-b-amzes",
     "amazon-france",
     "duckduckgo",
     "wikipedia-fr"
   ],
   "fi": [
-    "google",
+    "google-b-amzes",
     "twitter",
     "wikipedia-fi",
     "amazondotcom",
@@ -617,38 +617,38 @@
   ],
   "tr-KZ": [
     "yandex-tr",
-    "google-nocodes",
+    "google",
     "duckduckgo",
     "twitter",
     "wikipedia-tr"
   ],
   "ka": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "wikipedia-ka"
   ],
   "kk": [
     "yandex",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-kk"
   ],
   "zh-TW": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "wikipedia-zh-TW"
   ],
   "sq": [
-    "google",
+    "google-b-amzes",
     "amazon-en-GB",
     "duckduckgo",
     "twitter",
     "wikipedia-sq"
   ],
   "ko": [
-    "google",
+    "google-b-amzes",
     "danawa-kr",
     "twitter",
     "daum-kr",
@@ -656,7 +656,7 @@
     "naver-kr"
   ],
   "kn": [
-    "google",
+    "google-b-amzes",
     "amazon-in",
     "duckduckgo",
     "twitter",
@@ -664,7 +664,7 @@
     "wiktionary-kn"
   ],
   "es-MX": [
-    "google",
+    "google-b-amzes",
     "amazondotcom",
     "duckduckgo",
     "mercadolibre-mx",
@@ -672,7 +672,7 @@
     "wikipedia-es"
   ],
   "sk": [
-    "google",
+    "google-b-amzes",
     "azet-sk",
     "duckduckgo",
     "slovnik-sk",
@@ -680,7 +680,7 @@
     "wikipedia-sk"
   ],
   "sl": [
-    "google",
+    "google-b-amzes",
     "ceneje",
     "duckduckgo",
     "odpiralni",
