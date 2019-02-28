@@ -72,7 +72,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         setContentView(R.layout.activity_main)
 
         val intent = intent.toSafeIntent()
-        intentResponder.onCreate(this, savedInstanceState, IntentValidator(intent))
+        intentResponder.onCreate(this, savedInstanceState, intent)
 
         sessionManager.sessions.observe(this, object : NonNullObserver<List<Session>>() {
             public override fun onValueChanged(value: List<Session>) {
@@ -110,7 +110,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {
-        intentResponder.onNewIntent(this, IntentValidator(unsafeIntent.toSafeIntent()))
+        intentResponder.onNewIntent(this, unsafeIntent.toSafeIntent())
     }
 
     override fun applyLocale() {
