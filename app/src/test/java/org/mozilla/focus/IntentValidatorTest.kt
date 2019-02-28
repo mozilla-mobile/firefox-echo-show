@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -79,18 +78,13 @@ class IntentValidatorTest {
     }
 
     @Test
-    fun `WHEN receiving a view intent with the launched from history flag THEN a null uri is returned`() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(TEST_URL)).apply {
+    fun `WHEN receiving a view intent with the launched from history flag THEN the uri is returned`() {
+        val expectedUrl = TEST_URL
+        val intent = Intent(Intent.ACTION_VIEW, expectedUrl.toUri()).apply {
             addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY)
         }.toSafeIntent()
 
-        assertNull(IntentValidator(intent).getUriToOpen(context))
-    }
-
-    @Test
-    fun `WHEN restoring state THEN a null uri is returned`() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(TEST_URL)).toSafeIntent()
-        assertNull(IntentValidator(intent).getUriToOpen(context, Bundle()))
+        assertEquals(expectedUrl, IntentValidator(intent).getUriToOpen(context))
     }
 
     @Test
