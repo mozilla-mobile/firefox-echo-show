@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
-import mozilla.components.support.utils.SafeIntent
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.animation.VisibilityAnimator
 import org.mozilla.focus.architecture.FirefoxViewModelProviders
@@ -45,6 +44,11 @@ import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 
 class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, UrlSearcher {
 
+    private val intentResponder = MainActivityIntentResponder(loadUrl = { url ->
+        // Source is no longer used by this code base.
+        ScreenController.showBrowserScreenForUrl(supportFragmentManager, url, Source.NONE)
+    })
+
     private val sessionManager = SessionManager.getInstance()
 
     private lateinit var toolbarCallbacks: ToolbarCallbacks
@@ -63,15 +67,13 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         SentryWrapper.init(this)
         PublicSuffix.init(this) // Used by custom home tiles.
 
-        val intent = SafeIntent(intent)
-
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         setContentView(R.layout.activity_main)
 
-        IntentValidator(intent).getUriToOpen(this, savedInstanceState)?.let {
-            onValidBrowserIntent(it)
-        }
+        val intent = intent.toSafeIntent()
+        intentResponder.onCreate(this, savedInstanceState, IntentValidator(intent))
+
         sessionManager.sessions.observe(this, object : NonNullObserver<List<Session>>() {
             public override fun onValueChanged(value: List<Session>) {
                 val sessions = value
@@ -108,14 +110,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {
-        IntentValidator(unsafeIntent.toSafeIntent()).getUriToOpen(this)?.let {
-            onValidBrowserIntent(it)
-        }
-    }
-
-    private fun onValidBrowserIntent(url: String) {
-        // Source is no longer used by this code base.
-        ScreenController.showBrowserScreenForUrl(supportFragmentManager, url, Source.NONE)
+        intentResponder.onNewIntent(this, IntentValidator(unsafeIntent.toSafeIntent()))
     }
 
     override fun applyLocale() {
