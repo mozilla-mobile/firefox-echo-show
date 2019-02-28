@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import mozilla.components.support.utils.SafeIntent
+import org.mozilla.focus.ext.getUriToOpen
 
 /**
  * Takes [Intent]s sent to [MainActivity] and tells it what to do in response to them. This class is intended to
@@ -17,13 +18,13 @@ class MainActivityIntentResponder constructor(
     private val loadUrl: (String) -> Unit
 ) {
 
-    fun onCreate(context: Context, savedInstanceState: Bundle?, intentValidator: IntentValidator) {
+    fun onCreate(context: Context, savedInstanceState: Bundle?, intent: SafeIntent) {
         // This Intent was launched from history (recent apps): this may not be called on Echo Show but
         // handling it may be useful for testing on the Android emulator.
         //
         // This code may be unnecessary: it's from Focus and I do not know how to reproduce this code path
         // in manual testing.
-        if (intentValidator.intent.isLaunchedFromHistory) {
+        if (intent.isLaunchedFromHistory) {
             return
         }
 
@@ -37,15 +38,15 @@ class MainActivityIntentResponder constructor(
             return
         }
 
-        maybeLoadUrlFromIntent(context, intentValidator)
+        maybeLoadUrlFromIntent(context, intent)
     }
 
-    private fun maybeLoadUrlFromIntent(context: Context, intentValidator: IntentValidator) {
-        intentValidator.getUriToOpen(context)?.let { loadUrl(it) }
+    private fun maybeLoadUrlFromIntent(context: Context, intent: SafeIntent) {
+        intent.getUriToOpen(context)?.let { loadUrl(it) }
     }
 
-    fun onNewIntent(context: Context, intentValidator: IntentValidator) {
-        maybeLoadUrlFromIntent(context, intentValidator)
+    fun onNewIntent(context: Context, intent: SafeIntent) {
+        maybeLoadUrlFromIntent(context, intent)
     }
 }
 
