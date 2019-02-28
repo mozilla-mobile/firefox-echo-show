@@ -9,6 +9,7 @@ import android.content.Intent.ACTION_VIEW
 import android.content.Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
 import android.os.Bundle
 import mozilla.components.support.utils.SafeIntent
+import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
@@ -53,6 +54,27 @@ class MainActivityIntentResponderTest {
     fun `WHEN the activity is restoring state THEN no url is loaded`() {
         setLoadUrlIsFail()
         responder.onCreate(context, mock(Bundle::class.java), intent)
+    }
+
+    @Test
+    fun `WHEN receiving a valid view intent in onCreate THEN a url is loaded`() {
+        assertLoadUrlIsCalled {
+            responder.onCreate(context, null, intent)
+        }
+    }
+
+    @Test
+    fun `WHEN receiving a valid view intent in onNewIntent THEN a url is loaded`() {
+        assertLoadUrlIsCalled {
+            responder.onNewIntent(context, intent)
+        }
+    }
+
+    private fun assertLoadUrlIsCalled(testFunction: () -> Unit) {
+        var isCalled = false
+        loadUrlFun = { isCalled = true }
+        testFunction()
+        assertTrue("Expected load url to be called", isCalled)
     }
 
     private fun setLoadUrlIsFail() {
