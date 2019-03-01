@@ -14,4 +14,4 @@ label: "bug"
 ### Device information
 * Echo Show device (1st gen? 2nd?): ?
 * Latest affected Firefox version: ?
-* Earliest affected Firefoxx version: ?
+* Earliest affected Firefox version: ?
