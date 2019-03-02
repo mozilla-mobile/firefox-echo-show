@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import mozilla.components.support.utils.SafeIntent
 import org.mozilla.focus.ext.getUriToOpen
+import org.mozilla.focus.session.SessionRestorer
 
 /**
  * Takes [Intent]s sent to [MainActivity] and tells it what to do in response to them. This class is intended to
@@ -18,7 +19,7 @@ class MainActivityIntentResponder constructor(
     private val loadUrl: (String) -> Unit
 ) {
 
-    fun onCreate(context: Context, savedInstanceState: Bundle?, intent: SafeIntent) {
+    fun onCreate(context: Context, savedInstanceState: Bundle?, sessionRestorer: SessionRestorer, intent: SafeIntent) {
         // This Intent was launched from history (recent apps): this may not be called on Echo Show but
         // handling it may be useful for testing on the Android emulator.
         //
@@ -38,15 +39,17 @@ class MainActivityIntentResponder constructor(
             return
         }
 
-        maybeLoadUrlFromIntent(context, intent)
-    }
-
-    private fun maybeLoadUrlFromIntent(context: Context, intent: SafeIntent) {
-        intent.getUriToOpen(context)?.let { loadUrl(it) }
+        // Ideally, if there was both a URL to restore and an Intent URI to open, we would add both to the back stack.
+        // However, issue #254 means we would create a new session for each url (i.e. 2 total) and the first loaded url
+        // would be inaccessible so we just load the one the user probably intends.
+        //
+        // In future iterations, we should consider loading these URLs reactively.
+        val urlToLoad = intent.getUriToOpen(context) ?: sessionRestorer.getPersistedSessionUrl()
+        urlToLoad?.let(loadUrl)
     }
 
     fun onNewIntent(context: Context, intent: SafeIntent) {
-        maybeLoadUrlFromIntent(context, intent)
+        intent.getUriToOpen(context)?.let(loadUrl)
     }
 }
 
