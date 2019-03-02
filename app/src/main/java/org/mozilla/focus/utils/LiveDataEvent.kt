@@ -11,4 +11,4 @@ package org.mozilla.focus.utils
  * This implementation is inspired by:
  *   https://medium.com/google-developers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
  */
-class LiveDataEvent
+object LiveDataEvent
