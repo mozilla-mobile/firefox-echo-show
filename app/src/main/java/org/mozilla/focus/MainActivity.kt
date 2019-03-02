@@ -25,6 +25,8 @@ import org.mozilla.focus.iwebview.WebViewProvider
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
 import org.mozilla.focus.session.Session
 import org.mozilla.focus.session.SessionManager
+import org.mozilla.focus.session.SessionRestorer
+import org.mozilla.focus.session.SessionRestorerStorage
 import org.mozilla.focus.session.Source
 import org.mozilla.focus.settings.SettingsActivity
 import org.mozilla.focus.settings.UserClearDataEvent
@@ -72,7 +74,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         setContentView(R.layout.activity_main)
 
         val intent = intent.toSafeIntent()
-        intentResponder.onCreate(this, savedInstanceState, intent)
+        val sessionRestorer = initSessionRestorer()
+        intentResponder.onCreate(this, savedInstanceState, sessionRestorer, intent)
 
         sessionManager.sessions.observe(this, object : NonNullObserver<List<Session>>() {
             public override fun onValueChanged(value: List<Session>) {
@@ -97,6 +100,12 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         WebViewProvider.preload(this)
         UserClearDataEvent.liveData.observe(this, UserClearDataEventObserver(this))
     }
+
+    private fun initSessionRestorer(): SessionRestorer = SessionRestorer.getAndInit(
+        lifecycle,
+        SessionRestorerStorage(::getSharedPreferences),
+        sessionManager
+    )
 
     private fun initViews() {
         FirefoxViewModelProviders.of(this)[BrowserAppBarViewModel::class.java].let { viewModel ->
