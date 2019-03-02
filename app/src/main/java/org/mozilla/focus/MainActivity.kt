@@ -98,7 +98,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
         initViews()
         WebViewProvider.preload(this)
-        UserClearDataEvent.liveData.observe(this, UserClearDataEventObserver(this))
+        UserClearDataEvent.liveData.observe(this, UserClearDataEventObserver(this, sessionRestorer))
     }
 
     private fun initSessionRestorer(): SessionRestorer = SessionRestorer.getAndInit(
