@@ -53,11 +53,7 @@
     ]]>
     </string>
 
-    <string name="error_connect_title">@string/error_connectionfailure_title</string>
-    <string name="error_connect_message">@string/error_connectionfailure_message</string>
-
     <string name="error_timeout_title">The connection timed out</string>
-    <string name="error_timeout_message">@string/error_connectionfailure_message</string>
 
     <string name="error_hostLookup_title">Server not found</string>
     <string name="error_hostLookup_message"><![CDATA[
