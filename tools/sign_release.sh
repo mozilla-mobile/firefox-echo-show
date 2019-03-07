@@ -49,28 +49,7 @@ else
         exit 1
     fi
 
-    # via https://unix.stackexchange.com/a/155077
-    if output=$(git status --porcelain) && [ -n "$output" ]; then
-        echo "Error: uncommited git changes: exiting."
-        exit 1
-    fi
-
-    # `git name-rev` sample output: HEAD tags/v1.0.0.5
-    # When a commit without a tag is checked out, "tags/..."" will be replaced with "undefined".
-    IS_ON_GIT_TAG=`git name-rev --tags HEAD | grep --only-matching --invert-match undefined`
-    if [[ -z $IS_ON_GIT_TAG ]]; then
-        echo "Error: currently checked out commit does not have a tag (as releases should)."
-        exit 1
-    fi
-
-    GIT_TAG_VERSION=`git name-rev --tags HEAD | grep -o "v[0-9.]\+$" | grep -o "[0-9.]\+$"`
     GRADLE_VERSION=`cat app/build.gradle | grep versionName | grep --only-matching "[0-9.]\+"`
-    if [[ $GIT_TAG_VERSION != $GRADLE_VERSION ]]; then
-        echo "Error: git tag version - $GIT_TAG_VERSION - does not match gradle version - $GRADLE_VERSION."
-        echo "    Did you increment the build version?"
-        exit 1
-    fi
-
     echo "Building release v$GRADLE_VERSION."
 
     # Ensure the tests are passing.
