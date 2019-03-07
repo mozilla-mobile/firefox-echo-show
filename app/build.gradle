@@ -1,4 +1,5 @@
 import org.mozilla.gradle.tasks.VerifyWebViewCount
+import org.mozilla.android.tasks.*
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -183,6 +184,7 @@ dependencies {
 }
 
 task verifyWebViewCount(type: VerifyWebViewCount)
+task validateAndroidAppReleaseConfiguration(type: ValidateAndroidAppReleaseConfiguration)
 
 // -------------------------------------------------------------------------------------------------
 //  Dynamically set versionCode (See tools/build/versionCode.gradle
