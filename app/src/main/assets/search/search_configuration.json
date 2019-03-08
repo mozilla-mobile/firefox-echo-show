@@ -68,7 +68,7 @@
     "wiktionary-ta"
   ],
   "uk-TR": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-uk",
@@ -83,7 +83,7 @@
   ],
   "ru-KZ": [
     "yandex-ru",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-ru"
@@ -111,7 +111,7 @@
   ],
   "be-BY": [
     "yandex.by",
-    "google",
+    "google-b-amzes",
     "be.wikipedia.org",
     "duckduckgo",
     "tut.by"
@@ -131,7 +131,7 @@
   ],
   "be-RU": [
     "yandex.by",
-    "google",
+    "google-b-amzes",
     "be.wikipedia.org",
     "duckduckgo",
     "tut.by"
@@ -161,7 +161,7 @@
   ],
   "be-KZ": [
     "yandex.by",
-    "google",
+    "google-b-amzes",
     "be.wikipedia.org",
     "duckduckgo",
     "tut.by"
@@ -182,7 +182,7 @@
   ],
   "kk-RU": [
     "yandex",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-kk"
@@ -209,14 +209,14 @@
   ],
   "tr-RU": [
     "yandex-tr",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-tr"
   ],
   "kk-BY": [
     "yandex",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-kk"
@@ -264,7 +264,7 @@
   ],
   "kk-KZ": [
     "yandex",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-kk"
@@ -277,7 +277,7 @@
     "wikipedia-mr"
   ],
   "uk-RU": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-uk",
@@ -290,7 +290,7 @@
     "wikipedia-br"
   ],
   "uk-KZ": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-uk",
@@ -306,7 +306,7 @@
   ],
   "ru-TR": [
     "yandex-ru",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-ru"
@@ -331,7 +331,7 @@
     "wikipedia-NN"
   ],
   "uk-BY": [
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-uk",
@@ -352,7 +352,7 @@
   ],
   "be-TR": [
     "yandex.by",
-    "google",
+    "google-b-amzes",
     "be.wikipedia.org",
     "duckduckgo",
     "tut.by"
@@ -366,7 +366,7 @@
   ],
   "kk-TR": [
     "yandex",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-kk"
@@ -402,7 +402,7 @@
   ],
   "tr-TR": [
     "yandex-tr",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-tr"
@@ -468,7 +468,7 @@
   ],
   "zh-CN": [
     "baidu",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "taobao",
     "wikipedia-zh-CN"
@@ -495,7 +495,7 @@
   ],
   "tr-BY": [
     "yandex-tr",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-tr"
@@ -578,14 +578,14 @@
   ],
   "ru-BY": [
     "yandex-ru",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-ru"
   ],
   "ru-RU": [
     "yandex-ru",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-ru"
@@ -617,7 +617,7 @@
   ],
   "tr-KZ": [
     "yandex-tr",
-    "google",
+    "google-b-amzes",
     "duckduckgo",
     "twitter",
     "wikipedia-tr"
