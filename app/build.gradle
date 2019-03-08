@@ -183,8 +183,10 @@ dependencies {
     androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
 }
 
+// This task runs automatically during release builds and is likely to break. If people are unfamiliar with gradle, they
+// may not know we define this task. As such, we namespace it to make them more likely to read the gradle source.
+task validateMozillaAndroidAppReleaseConfiguration(type: ValidateAndroidAppReleaseConfiguration)
 task verifyWebViewCount(type: VerifyWebViewCount)
-task validateAndroidAppReleaseConfiguration(type: ValidateAndroidAppReleaseConfiguration)
 
 // -------------------------------------------------------------------------------------------------
 //  Dynamically set versionCode (See tools/build/versionCode.gradle
