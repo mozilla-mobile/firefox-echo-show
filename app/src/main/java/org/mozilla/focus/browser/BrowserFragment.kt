@@ -76,7 +76,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
 
     internal val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
     val toolbarStateProvider = BrowserToolbarStateProvider()
-    private var isWebViewVisibleObserver: IsWebViewVisibleViewModelObserver? = null
 
     private val viewModel: BrowserViewModel
         get() = FirefoxViewModelProviders.of(this)[BrowserViewModel::class.java]
@@ -191,24 +190,11 @@ class BrowserFragment : IWebViewLifecycleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val layout = inflater.inflate(R.layout.fragment_browser, container, false)
 
-        if (isWebViewVisibleObserver != null) {
-            throw IllegalStateException("WebViewVisibleObserver unexpectedly already exists: bad lifecycle assumptions?")
-        }
-        isWebViewVisibleObserver = IsWebViewVisibleViewModelObserver().also {
-            // TODO: After SDK 28 upgrade (#72), observe over viewLifecycleOwner, remove obs removal in destroyView.
-            viewModel.isWebViewVisible.observe(this@BrowserFragment, it)
-        }
+        viewModel.isWebViewVisible.observe(viewLifecycleOwner, Observer {
+            webView?.setVisibility(if (it!!) View.VISIBLE else View.GONE)
+        })
 
         return layout
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        isWebViewVisibleObserver?.let {
-            viewModel.isWebViewVisible.removeObserver(it)
-            isWebViewVisibleObserver = null
-        }
     }
 
     fun onNavigationOverlayVisibilityChange(isVisible: Boolean) {
@@ -243,12 +229,6 @@ class BrowserFragment : IWebViewLifecycleFragment() {
             val uri = url?.toUri() ?: return
             val webView = webView ?: return
             WebCompat.onSessionLoadingChanged(isLoading, uri, webView)
-        }
-    }
-
-    private inner class IsWebViewVisibleViewModelObserver : Observer<Boolean> {
-        override fun onChanged(isVisible: Boolean?) {
-            webView?.setVisibility(if (isVisible!!) View.VISIBLE else View.GONE)
         }
     }
 }
