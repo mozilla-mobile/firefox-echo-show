@@ -73,7 +73,7 @@ class SessionRestorerTest {
     fun `WHEN onPause is called THEN the session will be persisted`() {
         val expected = PersistableSession("https://mozilla.org", 1776).also {
             currentUrl.value = it.url
-            currentTimeMillis = it.timeMillis
+            currentTimeMillis = it.timeAtPersistEpochMillis
         }
 
         restorer.onPause()

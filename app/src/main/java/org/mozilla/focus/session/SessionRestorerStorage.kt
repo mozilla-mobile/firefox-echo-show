@@ -15,7 +15,7 @@ private const val SHARED_PREFS_NAME = "SessionRestorer"
  */
 data class PersistableSession(
     val url: String,
-    val timeMillis: Long
+    val timeAtPersistEpochMillis: Long
 )
 
 /**
@@ -32,7 +32,7 @@ class SessionRestorerStorage(
     fun setPersistedSession(persistableSession: PersistableSession): Unit = with(persistableSession) {
         sharedPrefs.edit()
             .putString(KEY_URL, url)
-            .putLong(KEY_TIME_MILLIS, timeMillis)
+            .putLong(KEY_TIME_MILLIS, timeAtPersistEpochMillis)
             .apply()
     }
 
