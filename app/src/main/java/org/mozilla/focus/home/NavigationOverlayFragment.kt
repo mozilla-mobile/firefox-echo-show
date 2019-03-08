@@ -48,7 +48,6 @@ class NavigationOverlayFragment : Fragment() {
 
     private val callbacks: BrowserFragmentCallbacks? get() = activity as BrowserFragmentCallbacks?
     private val viewUiCoroutineScope = FragmentViewUiCoroutineScope()
-    private val googleSearchFocusRequestObserver = GoogleSearchFocusRequestObserver()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewUiCoroutineScope.onCreateView()
@@ -66,8 +65,7 @@ class NavigationOverlayFragment : Fragment() {
 
         // We forward the google search event to the default search engine: Google.
         overlay.googleSearchHiddenEditText.setOnEditorActionListener(DefaultSearchOnEditorActionListener(activity as UrlSearcher))
-        // TODO: use lifecycle view owner with SDK 28.
-        context.serviceLocator.pinnedTileRepo.googleSearchEvents.observe(this, googleSearchFocusRequestObserver)
+        context.serviceLocator.pinnedTileRepo.googleSearchEvents.observe(viewLifecycleOwner, GoogleSearchFocusRequestObserver())
 
         NavigationOverlayAnimations.onCreateViewAnimateIn(overlay, isOverlayOnStartup, isBeingRestored = savedInstanceState != null) {
             // We defer setting click listeners until the animation completes
@@ -80,7 +78,6 @@ class NavigationOverlayFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        context!!.serviceLocator.pinnedTileRepo.googleSearchEvents.removeObserver(googleSearchFocusRequestObserver)
         viewUiCoroutineScope.onDestroyView()
     }
 
