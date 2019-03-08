@@ -13,7 +13,7 @@ import android.support.annotation.VisibleForTesting.PRIVATE
 import java.util.concurrent.TimeUnit
 
 /**
- * An implementation of session restore that persists the last url the user visited before the application
+ * An implementation of session restore that persists only the last url the user visited before the application
  * was closed: i.e. it does not persist the forward and back stack.
  *
  * To use this, create an instance with [getAndInit] and call [getPersistedSessionUrl] before Activity.onPause
