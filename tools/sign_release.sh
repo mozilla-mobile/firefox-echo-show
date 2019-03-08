@@ -43,6 +43,7 @@ fi
 # Assert pre-conditions, if test flag is not specified.
 if [[ $1 = "--test" ]]; then
     echo "--test specified: DISABLING RELEASE CHECKS"
+    ASSEMBLE_FLAGS=-PnoValidate
 else
     if [ ! -f .sentry_dsn_release ]; then
         echo "Error: expected <project-dir>/.sentry_dsn_release for Sentry key"
@@ -57,7 +58,7 @@ else
 fi
 
 # Build the release build.
-./gradlew --quiet clean assembleAmazonWebviewRelease || exit 1
+./gradlew --quiet clean assembleAmazonWebviewRelease $ASSEMBLE_FLAGS || exit 1
 
 # Strip unsigned content from the JAR. When running `apksigner verify`, most files in META-INF
 # will give warnings that they're not protected by the signature. I could not figure out what
