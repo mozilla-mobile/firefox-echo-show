@@ -34,7 +34,7 @@ class SessionRestorer @VisibleForTesting(otherwise = PRIVATE) constructor(
      */
     fun getPersistedSessionUrl(): String? {
         val persistedSession = storage.getPersistedSession() ?: return null
-        val timeMillisOfPersistence = persistedSession.timeMillis
+        val timeMillisOfPersistence = persistedSession.timeAtPersistEpochMillis
         val timeMinutesSincePersistence =
             TimeUnit.MILLISECONDS.toMinutes(getCurrentTimeMillis() - timeMillisOfPersistence)
 
@@ -48,7 +48,7 @@ class SessionRestorer @VisibleForTesting(otherwise = PRIVATE) constructor(
         // will *not* be called if the application is open and times out. Instead, we must persist here.
         storage.setPersistedSession(PersistableSession(
             url = sessionManager.currentSession.url.value,
-            timeMillis = getCurrentTimeMillis()
+            timeAtPersistEpochMillis = getCurrentTimeMillis()
         ))
     }
 

@@ -80,13 +80,13 @@ class SessionRestorerStorageTest {
 
     private fun assertPersistedSession(expected: PersistableSession): Unit = with(expected) {
         assertEquals(url, sharedPrefs.getString(KEY_URL, "defaultValue"))
-        assertEquals(timeMillis, sharedPrefs.getLong(KEY_TIME_MILLIS, -1))
+        assertEquals(timeAtPersistEpochMillis, sharedPrefs.getLong(KEY_TIME_MILLIS, -1))
     }
 
     private fun PersistableSession.persistForTest() {
         sharedPrefs.edit()
             .putString(KEY_URL, url)
-            .putLong(KEY_TIME_MILLIS, timeMillis)
+            .putLong(KEY_TIME_MILLIS, timeAtPersistEpochMillis)
             .apply()
     }
 }
