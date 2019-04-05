@@ -51,7 +51,7 @@ class HomeTileAdapter(
     private val loadUrl: (String) -> Unit,
     private val homeTileLongClickListenerProvider: () -> HomeTileLongClickListener?,
     var onTileFocused: (() -> Unit)?
-) : androidx.recyclerview.widget.RecyclerView.Adapter<TileViewHolder>() {
+) : RecyclerView.Adapter<TileViewHolder>() {
 
     override fun onBindViewHolder(holder: TileViewHolder, position: Int) = with(holder) {
         val item = tiles[position]
@@ -231,7 +231,7 @@ private fun onBindCustomHomeTile(uiScope: CoroutineScope, holder: TileViewHolder
 
 class TileViewHolder(
     itemView: View
-) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+) : RecyclerView.ViewHolder(itemView) {
     val iconView = itemView.tile_icon
     val titleView = itemView.tile_title
 }

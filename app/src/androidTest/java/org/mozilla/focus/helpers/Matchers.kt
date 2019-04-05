@@ -29,10 +29,10 @@ private fun maybeInvertMatcher(matcher: Matcher<View>, useUnmodifiedMatcher: Boo
  *
  * via https://stackoverflow.com/a/50130818
  */
-fun hasItemCount(count: Int): Matcher<View> = object : BoundedMatcher<View, androidx.recyclerview.widget.RecyclerView>(androidx.recyclerview.widget.RecyclerView::class.java) {
+fun hasItemCount(count: Int): Matcher<View> = object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
     override fun describeTo(description: Description?) {
         description?.appendText("has $count items")
     }
 
-    override fun matchesSafely(view: androidx.recyclerview.widget.RecyclerView?): Boolean = view?.adapter?.itemCount == count
+    override fun matchesSafely(view: RecyclerView?): Boolean = view?.adapter?.itemCount == count
 }

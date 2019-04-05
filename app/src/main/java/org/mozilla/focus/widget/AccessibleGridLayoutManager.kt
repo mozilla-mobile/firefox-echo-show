@@ -23,7 +23,7 @@ class AccessibleGridLayoutManager(
         reverseLayout
 ) {
 
-    override fun getColumnCountForAccessibility(recycler: androidx.recyclerview.widget.RecyclerView.Recycler, state: androidx.recyclerview.widget.RecyclerView.State): Int {
+    override fun getColumnCountForAccessibility(recycler: RecyclerView.Recycler, state: RecyclerView.State): Int {
         // With multiple rows, VoiceView announces "row X column Y". With a single row, VoiceView
         // announces "X of Y" where Y is the column count. However, if you have fewer than Y items
         // (i.e. 3 items for 4 columns), this is unintuitive so we override the announcement.

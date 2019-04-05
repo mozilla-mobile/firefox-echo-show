@@ -21,7 +21,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-) : androidx.recyclerview.widget.RecyclerView(context, attrs, defStyle) {
+) : RecyclerView(context, attrs, defStyle) {
 
     // We need this in order to show the unpin toast, at max, once per
     // instantiation of the HomeTileGridNavigation

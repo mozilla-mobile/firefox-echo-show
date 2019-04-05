@@ -46,7 +46,7 @@ class NavigationOverlayRobot private constructor() {
         }
 
         private fun longPressTile(index: Int) {
-            homeTiles().perform(RecyclerViewActions.actionOnItemAtPosition<androidx.recyclerview.widget.RecyclerView.ViewHolder>(index, ViewActions.longClick()))
+            homeTiles().perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(index, ViewActions.longClick()))
         }
     }
 
