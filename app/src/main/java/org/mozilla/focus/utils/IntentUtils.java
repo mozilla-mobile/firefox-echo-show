@@ -9,8 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.iwebview.IWebView;

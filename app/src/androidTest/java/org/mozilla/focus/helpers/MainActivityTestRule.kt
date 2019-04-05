@@ -4,8 +4,8 @@
 
 package org.mozilla.focus.helpers
 
-import android.support.test.espresso.IdlingRegistry
-import android.support.test.rule.ActivityTestRule
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.rule.ActivityTestRule
 import org.mozilla.focus.MainActivity
 
 /**

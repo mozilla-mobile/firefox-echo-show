@@ -9,7 +9,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import android.util.AttributeSet
 import android.view.View
 import android.webkit.JsPromptResult

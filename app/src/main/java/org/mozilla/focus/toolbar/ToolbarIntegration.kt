@@ -4,16 +4,16 @@
 
 package org.mozilla.focus.toolbar
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
-import android.support.v7.content.res.AppCompatResources
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
+import androidx.appcompat.content.res.AppCompatResources
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup

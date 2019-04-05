@@ -4,7 +4,7 @@
 
 package org.mozilla.focus.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.junit.Assert;

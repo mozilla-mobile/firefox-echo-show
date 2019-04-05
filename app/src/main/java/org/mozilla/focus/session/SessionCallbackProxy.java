@@ -4,8 +4,8 @@
 
 package org.mozilla.focus.session;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import org.mozilla.focus.iwebview.IWebView;

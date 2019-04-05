@@ -4,9 +4,9 @@
 
 package org.mozilla.focus.ext
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import junit.framework.TestCase.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before

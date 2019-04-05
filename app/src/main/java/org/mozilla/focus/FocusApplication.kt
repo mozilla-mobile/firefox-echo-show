@@ -6,7 +6,7 @@
 package org.mozilla.focus
 
 import android.os.StrictMode
-import android.support.v7.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import mozilla.components.support.base.log.Log
 import mozilla.components.support.base.log.sink.AndroidLogSink
 import org.mozilla.focus.locale.LocaleAwareApplication

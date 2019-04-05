@@ -4,9 +4,9 @@
 
 package org.mozilla.focus.toolbar
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import android.support.annotation.UiThread
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.annotation.UiThread
 import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.ext.LiveDataCombiners
 import org.mozilla.focus.ext.map

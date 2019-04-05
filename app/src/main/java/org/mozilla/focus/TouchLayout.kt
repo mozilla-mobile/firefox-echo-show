@@ -5,7 +5,7 @@
 package org.mozilla.focus
 
 import android.content.Context
-import android.support.design.widget.CoordinatorLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -19,7 +19,7 @@ import kotlin.math.round
 class TouchInterceptorLayout(
     context: Context,
     attrs: AttributeSet?
-) : CoordinatorLayout(context, attrs) {
+) : androidx.coordinatorlayout.widget.CoordinatorLayout(context, attrs) {
 
     private val touchOutsideListeners = mutableListOf<Pair<WeakReference<View>, () -> Unit>>()
 

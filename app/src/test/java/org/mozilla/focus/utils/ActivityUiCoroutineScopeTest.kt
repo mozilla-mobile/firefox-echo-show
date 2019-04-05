@@ -4,7 +4,7 @@
 
 package org.mozilla.focus.utils
 
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse

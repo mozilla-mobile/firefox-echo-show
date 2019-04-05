@@ -4,7 +4,7 @@
 
 package org.mozilla.focus.helpers;
 
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.IdlingResource;
 
 import org.mozilla.focus.session.SessionManager;
 

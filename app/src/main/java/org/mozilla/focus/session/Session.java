@@ -5,7 +5,7 @@
 package org.mozilla.focus.session;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.mozilla.focus.architecture.NonNullLiveData;
 import org.mozilla.focus.architecture.NonNullMutableLiveData;

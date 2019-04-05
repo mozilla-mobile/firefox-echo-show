@@ -2,10 +2,10 @@ package org.mozilla.focus.screenshots;
 
 import android.app.Instrumentation;
 import android.content.Context;
-import android.support.annotation.StringRes;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.IdlingRegistry;
-import android.support.test.uiautomator.UiDevice;
+import androidx.annotation.StringRes;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.uiautomator.UiDevice;
 import android.text.format.DateUtils;
 
 import org.junit.After;

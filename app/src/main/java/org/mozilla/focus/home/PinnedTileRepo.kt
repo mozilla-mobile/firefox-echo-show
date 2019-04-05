@@ -4,8 +4,8 @@
 
 package org.mozilla.focus.home
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import mozilla.components.support.base.observer.Consumable
 
 /**

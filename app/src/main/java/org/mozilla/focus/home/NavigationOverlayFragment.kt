@@ -4,14 +4,14 @@
 
 package org.mozilla.focus.home
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.constraint.ConstraintLayout
-import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
-import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_WRAP
-import android.support.v4.app.Fragment
+import androidx.annotation.IdRes
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_WRAP
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +42,7 @@ private const val KEY_IS_OVERLAY_ON_STARTUP = "isOverlayOnStartup"
  * Note: this was originally implemented as a DialogFragment to better decouple the UI of the overlay from the
  * app but there was a long delay before it could be displayed so we switched to a regular Fragment.
  */
-class NavigationOverlayFragment : Fragment() {
+class NavigationOverlayFragment : androidx.fragment.app.Fragment() {
 
     val isOverlayOnStartup: Boolean by lazy { arguments!!.getBoolean(KEY_IS_OVERLAY_ON_STARTUP) }
 

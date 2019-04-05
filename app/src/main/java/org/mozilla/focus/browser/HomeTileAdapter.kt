@@ -7,8 +7,8 @@ package org.mozilla.focus.browser
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.graphics.Color
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +51,7 @@ class HomeTileAdapter(
     private val loadUrl: (String) -> Unit,
     private val homeTileLongClickListenerProvider: () -> HomeTileLongClickListener?,
     var onTileFocused: (() -> Unit)?
-) : RecyclerView.Adapter<TileViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<TileViewHolder>() {
 
     override fun onBindViewHolder(holder: TileViewHolder, position: Int) = with(holder) {
         val item = tiles[position]
@@ -231,7 +231,7 @@ private fun onBindCustomHomeTile(uiScope: CoroutineScope, holder: TileViewHolder
 
 class TileViewHolder(
     itemView: View
-) : RecyclerView.ViewHolder(itemView) {
+) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     val iconView = itemView.tile_icon
     val titleView = itemView.tile_title
 }

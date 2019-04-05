@@ -11,7 +11,7 @@ package org.mozilla.focus.browser
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import android.text.TextUtils
 import android.webkit.WebSettings
 

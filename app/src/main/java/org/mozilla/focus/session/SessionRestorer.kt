@@ -4,12 +4,12 @@
 
 package org.mozilla.focus.session
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Lifecycle.Event.ON_PAUSE
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
-import android.support.annotation.VisibleForTesting
-import android.support.annotation.VisibleForTesting.PRIVATE
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PRIVATE
 import java.util.concurrent.TimeUnit
 
 /**

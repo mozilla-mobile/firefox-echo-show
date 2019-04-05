@@ -7,7 +7,7 @@
      Adding comments to explain how these views are used is redundant to the
      source code and liable to go out of date: however, this file is too confusing
      without the redundant comments so we use them anyway. -->
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -127,18 +127,18 @@
         <requestFocus/>
     </org.mozilla.focus.browser.HomeTileGridNavigation>
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
             android:id="@+id/overlayTopAsInitialHomescreen"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintGuide_begin="@dimen/appbar_height"
             android:orientation="horizontal"/>
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
             android:id="@+id/overlayTopAsDialog"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintGuide_begin="@dimen/navigation_overlay_bottom_as_dialog"
             android:orientation="horizontal"/>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

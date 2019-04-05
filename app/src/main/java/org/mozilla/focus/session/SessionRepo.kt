@@ -4,8 +4,8 @@
 
 package org.mozilla.focus.session
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 /**
  * A model for the currently active [Session]s.

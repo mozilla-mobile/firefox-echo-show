@@ -4,7 +4,7 @@
 
 package org.mozilla.focus.ext
 
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 
-val Fragment?.isVisibleAndNonNull: Boolean
+val androidx.fragment.app.Fragment?.isVisibleAndNonNull: Boolean
     get() = this != null && this.isVisible

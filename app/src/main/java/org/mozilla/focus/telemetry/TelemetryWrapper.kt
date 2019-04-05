@@ -8,8 +8,8 @@ package org.mozilla.focus.telemetry
 import android.content.Context
 import android.net.http.SslError
 import android.os.StrictMode
-import android.support.annotation.VisibleForTesting
-import android.support.annotation.VisibleForTesting.PRIVATE
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PRIVATE
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText.AutocompleteResult
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.home.BundledHomeTile

@@ -5,8 +5,8 @@
 package org.mozilla.focus.widget
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.GridLayoutManager as AndroidGridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager as AndroidGridLayoutManager
 
 /**
  * A GridLayoutManager that fixes a11y errors in the Android framework implementation.
@@ -23,7 +23,7 @@ class AccessibleGridLayoutManager(
         reverseLayout
 ) {
 
-    override fun getColumnCountForAccessibility(recycler: RecyclerView.Recycler, state: RecyclerView.State): Int {
+    override fun getColumnCountForAccessibility(recycler: androidx.recyclerview.widget.RecyclerView.Recycler, state: androidx.recyclerview.widget.RecyclerView.State): Int {
         // With multiple rows, VoiceView announces "row X column Y". With a single row, VoiceView
         // announces "X of Y" where Y is the column count. However, if you have fewer than Y items
         // (i.e. 3 items for 4 columns), this is unintuitive so we override the announcement.

@@ -8,8 +8,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.preference.PreferenceScreen
-import android.support.v7.preference.PreferenceViewHolder
-import android.support.v7.preference.SwitchPreferenceCompat
+import androidx.preference.PreferenceViewHolder
+import androidx.preference.SwitchPreferenceCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextPaint

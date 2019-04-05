@@ -4,8 +4,8 @@
 
 package org.mozilla.focus.architecture
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import org.mozilla.focus.browser.BrowserViewModel
 import org.mozilla.focus.toolbar.BrowserAppBarViewModel
 import org.mozilla.focus.toolbar.ToolbarViewModel
