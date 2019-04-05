@@ -135,7 +135,7 @@ class SettingsActivity : AppCompatActivity(),
             }
         }
 
-        override fun onCreateRecyclerView(inflater: LayoutInflater?, parent: ViewGroup?, savedInstanceState: Bundle?): androidx.recyclerview.widget.RecyclerView {
+        override fun onCreateRecyclerView(inflater: LayoutInflater?, parent: ViewGroup?, savedInstanceState: Bundle?): RecyclerView {
             // Removing start/end padding from this view fixes an issue where,
             // when preferences without icons were used, dividers would stick
             // out beyond their accompanying text. We attempted to solve the
