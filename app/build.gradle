@@ -152,7 +152,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.23.0'
     testImplementation "androidx.arch.core:core-testing:$architecture_components_version"
 
-    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0-alpha4'
+    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
 
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version", {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -179,8 +179,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestUtil 'androidx.test:orchestrator:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestUtil 'androidx.test:orchestrator:1.1.1'
 }
 
 // This task runs automatically during release builds and is likely to break. If people are unfamiliar with gradle, they
