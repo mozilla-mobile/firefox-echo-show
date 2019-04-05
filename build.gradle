@@ -18,7 +18,10 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        // Note that Gradle plugin version is also declared in buildSrc/build.gradle.kts
+        // If your plugin isn't behaving the way you expect, verify that these two versions
+        // are in sync.  Or even better, figure out a way to get rid of one of them.
+        classpath 'com.android.tools.build:gradle:3.3.2'
 
         classpath 'org.ajoberstar:grgit:1.5.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

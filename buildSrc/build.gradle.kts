@@ -15,5 +15,5 @@ repositories {
 
 dependencies {
     // We cannot share dependencies with the project because we can't access buildscript.ext.
-    implementation("com.android.tools.build:gradle:3.1.4")
+    implementation("com.android.tools.build:gradle:3.3.2")
 }
