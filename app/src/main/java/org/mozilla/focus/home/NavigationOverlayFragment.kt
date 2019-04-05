@@ -11,12 +11,12 @@ import androidx.annotation.IdRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_WRAP
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.*
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
 import mozilla.components.support.base.observer.Consumable
@@ -42,7 +42,7 @@ private const val KEY_IS_OVERLAY_ON_STARTUP = "isOverlayOnStartup"
  * Note: this was originally implemented as a DialogFragment to better decouple the UI of the overlay from the
  * app but there was a long delay before it could be displayed so we switched to a regular Fragment.
  */
-class NavigationOverlayFragment : androidx.fragment.app.Fragment() {
+class NavigationOverlayFragment : Fragment() {
 
     val isOverlayOnStartup: Boolean by lazy { arguments!!.getBoolean(KEY_IS_OVERLAY_ON_STARTUP) }
 

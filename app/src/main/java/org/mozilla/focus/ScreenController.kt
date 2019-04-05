@@ -26,7 +26,7 @@ object ScreenController {
      */
     fun onUrlEnteredInner(
             context: Context,
-            fragmentManager: androidx.fragment.app.FragmentManager,
+            fragmentManager: FragmentManager,
             urlStr: String,
             onSuccess: ((isUrl: Boolean) -> Unit)? = null
     ) {
@@ -41,7 +41,7 @@ object ScreenController {
         onSuccess?.invoke(isUrl)
     }
 
-    fun showBrowserScreenForCurrentSession(fragmentManager: androidx.fragment.app.FragmentManager, sessionManager: SessionManager) {
+    fun showBrowserScreenForCurrentSession(fragmentManager: FragmentManager, sessionManager: SessionManager) {
         val currentSession = sessionManager.currentSession
 
         if (fragmentManager.getBrowserFragment()?.session?.isSameAs(currentSession) == true) {
@@ -57,7 +57,7 @@ object ScreenController {
                 .commit()
     }
 
-    fun showBrowserScreenForStartupHomeScreen(fragmentManager: androidx.fragment.app.FragmentManager) {
+    fun showBrowserScreenForStartupHomeScreen(fragmentManager: FragmentManager) {
         // HACK: we don't want the home screen in the back stack so we don't want to load a home
         // screen URL. However, there's no simple way to create a BrowserFragment without a URL
         // so we assign the startup url to a session but don't load it into the WebView. Unfortunately,
@@ -69,7 +69,7 @@ object ScreenController {
         showBrowserScreenForUrl(fragmentManager, APP_STARTUP_HOME.toString(), Source.NONE)
     }
 
-    fun showBrowserScreenForUrl(fragmentManager: androidx.fragment.app.FragmentManager?, url: String, source: Source) {
+    fun showBrowserScreenForUrl(fragmentManager: FragmentManager?, url: String, source: Source) {
         // This code is not correct:
         // - We only support one session but it creates a new session when there's no BrowserFragment
         // such as each time we open a URL from the home screen.
@@ -89,7 +89,7 @@ object ScreenController {
         }
     }
 
-    fun recreateBrowserScreen(fragmentManager: androidx.fragment.app.FragmentManager) {
+    fun recreateBrowserScreen(fragmentManager: FragmentManager) {
         fragmentManager.getBrowserFragment()?.let { browserFragment ->
             fragmentManager.beginTransaction()
                     .remove(browserFragment)
@@ -107,7 +107,7 @@ object ScreenController {
      * but it is already visible and vice versa.
      */
     fun setNavigationOverlayIsVisible(
-            fragmentManager: androidx.fragment.app.FragmentManager,
+            fragmentManager: FragmentManager,
             appBarLayoutController: BrowserAppBarLayoutController,
             toolbarViewModel: ToolbarViewModel,
             isVisible: Boolean,

@@ -19,7 +19,7 @@ object LoadTimeObserver {
     private const val MAX_PROGRESS = 99
 
     @JvmStatic
-    fun addObservers(session: Session, fragment: androidx.fragment.app.Fragment) {
+    fun addObservers(session: Session, fragment: Fragment) {
         var startLoadTime: Long = 0
         var urlLoading: String? = null
 

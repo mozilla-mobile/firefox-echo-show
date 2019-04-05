@@ -4,10 +4,10 @@
 
 package org.mozilla.focus.architecture
 
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import org.mozilla.focus.ext.serviceLocator
 
 /**
@@ -17,12 +17,12 @@ import org.mozilla.focus.ext.serviceLocator
  */
 object FirefoxViewModelProviders {
 
-    fun of(activity: androidx.fragment.app.FragmentActivity): ViewModelProvider {
+    fun of(activity: FragmentActivity): ViewModelProvider {
         val viewModelFactory = ViewModelFactory(activity.serviceLocator)
         return ViewModelProviders.of(activity, viewModelFactory)
     }
 
-    fun of(fragment: androidx.fragment.app.Fragment): ViewModelProvider {
+    fun of(fragment: Fragment): ViewModelProvider {
         // If we're attempting to retrieve a view model, we should be attached to a context already.
         val viewModelFactory = ViewModelFactory(fragment.context!!.serviceLocator)
         return ViewModelProviders.of(fragment, viewModelFactory)

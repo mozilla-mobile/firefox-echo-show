@@ -5,9 +5,9 @@
 
 package org.mozilla.focus.locale;
 
-import androidx.fragment.app.Fragment;
-
 import java.util.Locale;
+
+import androidx.fragment.app.Fragment;
 
 public abstract class LocaleAwareFragment extends Fragment {
     private Locale cachedLocale = null;

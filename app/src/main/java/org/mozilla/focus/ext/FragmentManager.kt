@@ -8,8 +8,8 @@ import androidx.fragment.app.FragmentManager
 import org.mozilla.focus.browser.BrowserFragment
 import org.mozilla.focus.home.NavigationOverlayFragment
 
-fun androidx.fragment.app.FragmentManager?.getBrowserFragment(): BrowserFragment? =
+fun FragmentManager?.getBrowserFragment(): BrowserFragment? =
         this?.findFragmentByTag(BrowserFragment.FRAGMENT_TAG) as BrowserFragment?
 
-fun androidx.fragment.app.FragmentManager?.getNavigationOverlay(): NavigationOverlayFragment? =
+fun FragmentManager?.getNavigationOverlay(): NavigationOverlayFragment? =
         this?.findFragmentByTag(NavigationOverlayFragment.FRAGMENT_TAG) as NavigationOverlayFragment?

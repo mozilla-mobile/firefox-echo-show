@@ -6,5 +6,6 @@ package org.mozilla.focus.ext
 
 import androidx.fragment.app.Fragment
 
-val androidx.fragment.app.Fragment?.isVisibleAndNonNull: Boolean
+
+val Fragment?.isVisibleAndNonNull: Boolean
     get() = this != null && this.isVisible
