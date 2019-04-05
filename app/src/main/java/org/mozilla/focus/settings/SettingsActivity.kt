@@ -6,7 +6,6 @@ package org.mozilla.focus.settings
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -18,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.Browser
@@ -94,7 +94,7 @@ class SettingsActivity : AppCompatActivity(),
      * Handle launching Fragments from the PreferenceScreens.
      */
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
-        val fragment = androidx.fragment.app.Fragment.instantiate(this, pref?.fragment, pref?.extras)
+        val fragment = Fragment.instantiate(this, pref?.fragment, pref?.extras)
         supportFragmentManager.beginTransaction()
                 .setBreadCrumbTitle(pref?.title)
                 .replace(R.id.settings_container, fragment, FRAGMENT_TAG)
