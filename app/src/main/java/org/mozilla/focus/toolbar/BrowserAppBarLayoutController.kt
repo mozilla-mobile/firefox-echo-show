@@ -22,9 +22,9 @@ private const val TOOLBAR_SCROLL_ENABLED_FLAGS = SCROLL_FLAG_SCROLL or
 
 /** A view controller for the [AppBarLayout] and the [BrowserToolbar] it contains. */
 class BrowserAppBarLayoutController(
-        private val viewModel: BrowserAppBarViewModel,
-        private val appBarLayout: AppBarLayout,
-        private val toolbar: BrowserToolbar
+    private val viewModel: BrowserAppBarViewModel,
+    private val appBarLayout: AppBarLayout,
+    private val toolbar: BrowserToolbar
 ) : LifecycleObserver {
 
     fun init(lifecycleOwner: LifecycleOwner) {

@@ -82,7 +82,7 @@ object LocalizedContent {
     }
 
     private fun putLayoutDirectionIntoMap(webView: WebView, substitutionMap: MutableMap<String, String>) {
-        ViewCompat.setLayoutDirection(webView, View.LAYOUT_DIRECTION_LOCALE)
+        ViewCompat.setLayoutDirection(webView, ViewCompat.LAYOUT_DIRECTION_LOCALE)
         val layoutDirection = ViewCompat.getLayoutDirection(webView)
 
         val direction: String
