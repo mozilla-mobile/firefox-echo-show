@@ -7,8 +7,8 @@ package org.mozilla.focus.integration.home
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -27,7 +27,7 @@ class HomeTileScreenshotStoreIntegrationTest {
 
     @Before
     fun setUp() {
-        andyContext = InstrumentationRegistry.getTargetContext()
+        andyContext = ApplicationProvider.getApplicationContext()
         andyContext.filesDir.listFiles().forEach { it.deleteRecursively() } // Clean up between tests.
     }
 
