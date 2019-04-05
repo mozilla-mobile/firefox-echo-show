@@ -119,7 +119,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$architecture_components_version"
     implementation "androidx.appcompat:appcompat:$androidx_version"
     implementation "androidx.cardview:cardview:$androidx_version"
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "androidx.browser:browser:$androidx_version"
     implementation "com.google.android.material:material:$androidx_version"
     implementation "androidx.leanback:leanback:$androidx_version"
