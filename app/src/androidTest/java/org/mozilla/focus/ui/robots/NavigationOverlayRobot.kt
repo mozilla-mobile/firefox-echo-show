@@ -4,12 +4,12 @@
 
 package org.mozilla.focus.ui.robots
 
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.contrib.RecyclerViewActions
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.v7.widget.RecyclerView
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.recyclerview.widget.RecyclerView
 import org.mozilla.focus.R
 import org.mozilla.focus.helpers.hasItemCount
 import org.mozilla.focus.helpers.isDisplayed
@@ -46,7 +46,7 @@ class NavigationOverlayRobot private constructor() {
         }
 
         private fun longPressTile(index: Int) {
-            homeTiles().perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(index, ViewActions.longClick()))
+            homeTiles().perform(RecyclerViewActions.actionOnItemAtPosition<androidx.recyclerview.widget.RecyclerView.ViewHolder>(index, ViewActions.longClick()))
         }
     }
 

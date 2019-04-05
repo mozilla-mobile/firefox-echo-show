@@ -6,13 +6,13 @@ package org.mozilla.focus.settings
 
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.PreferenceScreen
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceScreen
+import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.widget.Toolbar
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -94,7 +94,7 @@ class SettingsActivity : AppCompatActivity(),
      * Handle launching Fragments from the PreferenceScreens.
      */
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
-        val fragment = Fragment.instantiate(this, pref?.fragment, pref?.extras)
+        val fragment = androidx.fragment.app.Fragment.instantiate(this, pref?.fragment, pref?.extras)
         supportFragmentManager.beginTransaction()
                 .setBreadCrumbTitle(pref?.title)
                 .replace(R.id.settings_container, fragment, FRAGMENT_TAG)
@@ -135,7 +135,7 @@ class SettingsActivity : AppCompatActivity(),
             }
         }
 
-        override fun onCreateRecyclerView(inflater: LayoutInflater?, parent: ViewGroup?, savedInstanceState: Bundle?): RecyclerView {
+        override fun onCreateRecyclerView(inflater: LayoutInflater?, parent: ViewGroup?, savedInstanceState: Bundle?): androidx.recyclerview.widget.RecyclerView {
             // Removing start/end padding from this view fixes an issue where,
             // when preferences without icons were used, dividers would stick
             // out beyond their accompanying text. We attempted to solve the

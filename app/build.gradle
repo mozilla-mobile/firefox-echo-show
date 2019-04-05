@@ -23,7 +23,7 @@ android {
         versionCode 11 // This versionCode is "frozen" for local builds. For "release" builds we
         // override this with a generated versionCode at build time.
         versionName "1.3"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
 
         multiDexEnabled true
@@ -61,7 +61,7 @@ android {
     }
     testOptions {
         unitTests.includeAndroidResources true // for robolectric.
-        execution 'ANDROID_TEST_ORCHESTRATOR'
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
     flavorDimensions "engine"
@@ -116,15 +116,15 @@ repositories {
 }
 
 dependencies {
-    implementation "android.arch.lifecycle:extensions:$architecture_components_version"
-    implementation "com.android.support:appcompat-v7:$support_libraries_version"
-    implementation "com.android.support:cardview-v7:$support_libraries_version"
-    implementation "com.android.support.constraint:constraint-layout:1.1.3"
-    implementation "com.android.support:customtabs:$support_libraries_version"
-    implementation "com.android.support:design:$support_libraries_version"
-    implementation "com.android.support:leanback-v17:$support_libraries_version"
-    implementation "com.android.support:preference-v7:$support_libraries_version"
-    implementation "com.android.support:recyclerview-v7:$support_libraries_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$architecture_components_version"
+    implementation "androidx.appcompat:appcompat:$support_libraries_version"
+    implementation "androidx.cardview:cardview:$support_libraries_version"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation "androidx.browser:browser:$support_libraries_version"
+    implementation "com.google.android.material:material:$support_libraries_version"
+    implementation "androidx.leanback:leanback:$support_libraries_version"
+    implementation "androidx.preference:preference:$support_libraries_version"
+    implementation "androidx.recyclerview:recyclerview:$support_libraries_version"
 
     implementation 'io.sentry:sentry-android:1.7.14'
 
@@ -150,15 +150,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.8"
     testImplementation 'org.mockito:mockito-core:2.23.0'
-    testImplementation "android.arch.core:core-testing:$architecture_components_version"
+    testImplementation "androidx.arch.core:core-testing:$architecture_components_version"
 
-    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0-alpha4'
 
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version", {
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version", {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 
-    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:$espresso_version") {
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:$espresso_version") {
         exclude module: 'appcompat-v7'
         exclude module: 'support-v4'
         exclude module: 'support-annotations'
@@ -167,8 +167,8 @@ dependencies {
         exclude module: 'espresso-core'
     }
 
-    androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:$espresso_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-web:$espresso_version", {
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-web:$espresso_version", {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 
@@ -179,8 +179,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestUtil 'androidx.test:orchestrator:1.1.0-alpha4'
 }
 
 // This task runs automatically during release builds and is likely to break. If people are unfamiliar with gradle, they

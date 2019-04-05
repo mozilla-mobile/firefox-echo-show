@@ -4,11 +4,11 @@
 
 package org.mozilla.focus.toolbar
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MutableLiveData
-import android.support.design.widget.AppBarLayout
-import android.support.v7.app.AppCompatActivity
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import com.google.android.material.appbar.AppBarLayout
+import androidx.appcompat.app.AppCompatActivity
 import mozilla.components.browser.toolbar.BrowserToolbar
 import org.junit.Before
 import org.junit.Rule

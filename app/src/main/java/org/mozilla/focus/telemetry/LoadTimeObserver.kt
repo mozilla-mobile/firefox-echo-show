@@ -5,7 +5,7 @@
 package org.mozilla.focus.telemetry
 
 import android.os.SystemClock
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import mozilla.components.support.base.log.Log
 import mozilla.components.support.base.log.Log.Priority
 import org.mozilla.focus.architecture.NonNullObserver
@@ -19,7 +19,7 @@ object LoadTimeObserver {
     private const val MAX_PROGRESS = 99
 
     @JvmStatic
-    fun addObservers(session: Session, fragment: Fragment) {
+    fun addObservers(session: Session, fragment: androidx.fragment.app.Fragment) {
         var startLoadTime: Long = 0
         var urlLoading: String? = null
 

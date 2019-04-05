@@ -4,13 +4,13 @@
 
 package org.mozilla.focus.helpers
 
-import android.support.test.espresso.matcher.BoundedMatcher
-import android.support.v7.widget.RecyclerView
+import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed as espressoIsDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed as espressoIsDisplayed
 
 // TODO: replace with components implementation: #155.
 
@@ -29,10 +29,10 @@ private fun maybeInvertMatcher(matcher: Matcher<View>, useUnmodifiedMatcher: Boo
  *
  * via https://stackoverflow.com/a/50130818
  */
-fun hasItemCount(count: Int): Matcher<View> = object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
+fun hasItemCount(count: Int): Matcher<View> = object : BoundedMatcher<View, androidx.recyclerview.widget.RecyclerView>(androidx.recyclerview.widget.RecyclerView::class.java) {
     override fun describeTo(description: Description?) {
         description?.appendText("has $count items")
     }
 
-    override fun matchesSafely(view: RecyclerView?): Boolean = view?.adapter?.itemCount == count
+    override fun matchesSafely(view: androidx.recyclerview.widget.RecyclerView?): Boolean = view?.adapter?.itemCount == count
 }

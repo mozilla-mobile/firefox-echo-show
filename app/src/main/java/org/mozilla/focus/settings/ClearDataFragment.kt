@@ -4,10 +4,10 @@
 
 package org.mozilla.focus.settings
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +34,7 @@ private fun sendUserClearDataEvent() { mutableClearEventLiveData.value = Consuma
 /**
  * Fragment used in Settings to clear cookies and browsing history.
  */
-class ClearDataFragment : Fragment() {
+class ClearDataFragment : androidx.fragment.app.Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_cleardata, container, false)

@@ -4,9 +4,9 @@
 
 package org.mozilla.focus.browser
 
-import android.support.annotation.VisibleForTesting
-import android.support.annotation.VisibleForTesting.PRIVATE
-import android.support.v4.math.MathUtils
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PRIVATE
+import androidx.core.math.MathUtils
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup

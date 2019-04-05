@@ -11,9 +11,9 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.support.annotation.AnyThread
-import android.support.annotation.UiThread
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.AnyThread
+import androidx.annotation.UiThread
+import androidx.annotation.VisibleForTesting
 import org.json.JSONArray
 import org.mozilla.focus.ext.isScreenXLarge
 import org.mozilla.focus.ext.toUri

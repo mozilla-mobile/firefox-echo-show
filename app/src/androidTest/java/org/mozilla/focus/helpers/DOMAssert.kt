@@ -4,11 +4,11 @@
 
 package org.mozilla.focus.helpers
 
-import android.support.test.espresso.web.assertion.WebViewAssertions.webMatches
-import android.support.test.espresso.web.sugar.Web.onWebView
-import android.support.test.espresso.web.webdriver.DriverAtoms.findElement
-import android.support.test.espresso.web.webdriver.DriverAtoms.getText
-import android.support.test.espresso.web.webdriver.Locator
+import androidx.test.espresso.web.assertion.WebViewAssertions.webMatches
+import androidx.test.espresso.web.sugar.Web.onWebView
+import androidx.test.espresso.web.webdriver.DriverAtoms.findElement
+import androidx.test.espresso.web.webdriver.DriverAtoms.getText
+import androidx.test.espresso.web.webdriver.Locator
 import org.hamcrest.CoreMatchers.equalTo
 
 /**

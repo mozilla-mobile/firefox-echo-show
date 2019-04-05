@@ -4,7 +4,7 @@
 
 package org.mozilla.focus.session
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Rule

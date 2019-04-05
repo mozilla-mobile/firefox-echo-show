@@ -8,7 +8,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.support.v4.view.animation.FastOutSlowInInterpolator
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import android.view.View
 import android.view.animation.LinearInterpolator
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*

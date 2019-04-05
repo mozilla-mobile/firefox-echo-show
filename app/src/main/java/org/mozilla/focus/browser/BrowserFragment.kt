@@ -4,10 +4,10 @@
 
 package org.mozilla.focus.browser
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.UiThread
+import androidx.annotation.UiThread
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View

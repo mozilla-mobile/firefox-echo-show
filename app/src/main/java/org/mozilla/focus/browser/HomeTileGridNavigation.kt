@@ -6,7 +6,7 @@ package org.mozilla.focus.browser
 
 import android.content.Context
 import android.preference.PreferenceManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +21,7 @@ class HomeTileGridNavigation @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-) : RecyclerView(context, attrs, defStyle) {
+) : androidx.recyclerview.widget.RecyclerView(context, attrs, defStyle) {
 
     // We need this in order to show the unpin toast, at max, once per
     // instantiation of the HomeTileGridNavigation

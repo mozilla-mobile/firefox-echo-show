@@ -19,7 +19,7 @@
 
     <!-- Ideally, we have no elevation on the initial homescreen and elevation over web content. However, the elevation
          over web content is broken so we set it to 0 for all cases. -->
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_height"
@@ -32,7 +32,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/unpinOverlay"

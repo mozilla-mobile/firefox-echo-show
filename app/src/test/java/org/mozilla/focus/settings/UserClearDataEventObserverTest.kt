@@ -4,7 +4,7 @@
 
 package org.mozilla.focus.settings
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import mozilla.components.support.base.observer.Consumable
 import org.junit.Before
 import org.junit.Test

@@ -4,7 +4,7 @@
 
 package org.mozilla.focus.architecture
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 
 abstract class NonNullObserver<T> : Observer<T> {
     protected abstract fun onValueChanged(value: T)

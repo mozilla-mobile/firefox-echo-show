@@ -5,8 +5,8 @@
 package org.mozilla.focus.browser
 
 import android.content.pm.PackageManager
-import android.support.v4.util.ArrayMap
-import android.support.v4.view.ViewCompat
+import androidx.collection.ArrayMap
+import androidx.core.view.ViewCompat
 import android.view.View
 import android.webkit.WebView
 
@@ -34,7 +34,7 @@ object LocalizedContent {
         val context = webView.context
         val resources = Locales.getLocalizedResources(context)
 
-        val substitutionMap = ArrayMap<String, String>()
+        val substitutionMap = androidx.collection.ArrayMap<String, String>()
 
         val appNameExtended = resources.getString(R.string.app_name_extended_show)
         substitutionMap["%about-title%"] = appNameExtended

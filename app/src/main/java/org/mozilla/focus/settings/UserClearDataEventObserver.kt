@@ -4,8 +4,8 @@
 
 package org.mozilla.focus.settings
 
-import android.arch.lifecycle.Observer
-import android.support.v7.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import mozilla.components.support.base.observer.Consumable
 import org.mozilla.focus.ScreenController
 import org.mozilla.focus.session.SessionRestorer
