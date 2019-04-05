@@ -117,14 +117,14 @@ repositories {
 
 dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$architecture_components_version"
-    implementation "androidx.appcompat:appcompat:$support_libraries_version"
-    implementation "androidx.cardview:cardview:$support_libraries_version"
+    implementation "androidx.appcompat:appcompat:$androidx_version"
+    implementation "androidx.cardview:cardview:$androidx_version"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    implementation "androidx.browser:browser:$support_libraries_version"
-    implementation "com.google.android.material:material:$support_libraries_version"
-    implementation "androidx.leanback:leanback:$support_libraries_version"
-    implementation "androidx.preference:preference:$support_libraries_version"
-    implementation "androidx.recyclerview:recyclerview:$support_libraries_version"
+    implementation "androidx.browser:browser:$androidx_version"
+    implementation "com.google.android.material:material:$androidx_version"
+    implementation "androidx.leanback:leanback:$androidx_version"
+    implementation "androidx.preference:preference:$androidx_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_version"
 
     implementation 'io.sentry:sentry-android:1.7.14'
 
