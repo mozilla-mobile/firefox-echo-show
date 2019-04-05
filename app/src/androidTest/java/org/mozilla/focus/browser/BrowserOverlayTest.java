@@ -5,13 +5,6 @@
 
 package org.mozilla.focus.browser;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
-import androidx.test.uiautomator.UiDevice;
-import androidx.test.uiautomator.UiObjectNotFoundException;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -19,6 +12,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.MainActivity;
 import org.mozilla.focus.R;
+
+import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObjectNotFoundException;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
