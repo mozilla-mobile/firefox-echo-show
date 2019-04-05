@@ -51,7 +51,7 @@ public class WebViewProvider {
     }
 
     @SuppressLint("ViewConstructor") // we construct only in code.
-    public static class GeckoWebView extends org.mozilla.focus.iwebview.NestedGeckoView implements IWebView {
+    public static class GeckoWebView extends NestedGeckoView implements IWebView {
         private Callback callback;
         private String currentUrl = URLs.ABOUT_BLANK.toString();
         private boolean canGoBack;
