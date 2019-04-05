@@ -25,10 +25,10 @@ object ScreenController {
      * Loads the given url. If isTextInput is true, there should be no null parameters.
      */
     fun onUrlEnteredInner(
-            context: Context,
-            fragmentManager: FragmentManager,
-            urlStr: String,
-            onSuccess: ((isUrl: Boolean) -> Unit)? = null
+        context: Context,
+        fragmentManager: FragmentManager,
+        urlStr: String,
+        onSuccess: ((isUrl: Boolean) -> Unit)? = null
     ) {
         if (TextUtils.isEmpty(urlStr.trim())) {
             return
@@ -107,11 +107,11 @@ object ScreenController {
      * but it is already visible and vice versa.
      */
     fun setNavigationOverlayIsVisible(
-            fragmentManager: FragmentManager,
-            appBarLayoutController: BrowserAppBarLayoutController,
-            toolbarViewModel: ToolbarViewModel,
-            isVisible: Boolean,
-            isOverlayOnStartup: Boolean
+        fragmentManager: FragmentManager,
+        appBarLayoutController: BrowserAppBarLayoutController,
+        toolbarViewModel: ToolbarViewModel,
+        isVisible: Boolean,
+        isOverlayOnStartup: Boolean
     ) {
         fun getNavOverlay() = fragmentManager.getNavigationOverlay()
 

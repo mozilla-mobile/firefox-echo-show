@@ -226,7 +226,6 @@ public class WebViewProvider {
             return "?";
         }
 
-        @Override
         public boolean isYoutubeTV() {
             // TODO: Default implementation
             return false;
