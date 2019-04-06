@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - If the app times out and opened again within five minutes, the last loaded url will restore (#186)
 
+### Changed
+- Migrated dependencies to AndroidX (#217)
+
 ### Fixed
 - Under unlikely state restoration circumstances, a user who cleared their data could unexpectedly experience the data clear multiple times (#39)
 
