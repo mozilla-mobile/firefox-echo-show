@@ -9,7 +9,7 @@ import org.gradle.api.tasks.Exec
 import java.io.ByteArrayOutputStream
 
 private const val EXPECTED_WEBVIEW_COUNT = 1 // This will be 0 if we add the WebView dynamically.
-private const val WEBVIEW_CLASS_NAME = "IWebView"
+private const val WEBVIEW_CLASS_NAME = "org.mozilla.focus.iwebview.IWebView"
 
 // We use shell commands to traverse over the files because it's a trivial amount of code
 // compared to writing it ourselves and it's probably more optimized than we could write.

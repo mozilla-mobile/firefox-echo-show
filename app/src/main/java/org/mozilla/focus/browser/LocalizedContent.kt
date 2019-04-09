@@ -34,7 +34,7 @@ object LocalizedContent {
         val context = webView.context
         val resources = Locales.getLocalizedResources(context)
 
-        val substitutionMap = androidx.collection.ArrayMap<String, String>()
+        val substitutionMap = ArrayMap<String, String>()
 
         val appNameExtended = resources.getString(R.string.app_name_extended_show)
         substitutionMap["%about-title%"] = appNameExtended

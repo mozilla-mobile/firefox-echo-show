@@ -19,7 +19,7 @@ import kotlin.math.round
 class TouchInterceptorLayout(
     context: Context,
     attrs: AttributeSet?
-) : androidx.coordinatorlayout.widget.CoordinatorLayout(context, attrs) {
+) : CoordinatorLayout(context, attrs) {
 
     private val touchOutsideListeners = mutableListOf<Pair<WeakReference<View>, () -> Unit>>()
 
