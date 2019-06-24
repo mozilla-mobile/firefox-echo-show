@@ -12,6 +12,6 @@ labels: "bug"
 ### Actual behavior
 
 ### Device information
-* Echo Show device (1st gen? 2nd?): ?
+* Echo Show device (1st gen, 2nd gen, or 5): ?
 * Latest affected Firefox version: ?
 * Earliest affected Firefox version: ?
