@@ -76,12 +76,16 @@ zip --quiet --delete $BUILD_DIR/app-amazonWebview-release-unsigned.apk \
     'META-INF/services/*' \
     'META-INF/web-fragment.xml' || exit 1
 
-# Align and sign via autograph. Signing can be found here:
+# Sign via autograph. Signing can be found here:
 # https://github.com/mozilla-services/autograph/blob/a1bee1add785ae41a284b1d5873010817d1fa79f/signer/apk/jar.go#L69-L71
 curl -F "input=@$BUILD_DIR/app-amazonWebview-release-unsigned.apk" \
-    -o $BUILD_DIR/app-amazonWebview-release.apk \
+    -o $BUILD_DIR/$FINAL_NAME \
     -H "Authorization: $AUTH_TOKEN" \
     $SERVER || exit 1
+
+# Align ZIP to 4 byte addresses
+zipalign -v 4 $BUILD_DIR/$FINAL_NAME $BUILD_DIR/app-amazonWebview-release-aligned.apk
+mv -f $BUILD_DIR/app-amazonWebview-release-aligned.apk $BUILD_DIR/$FINAL_NAME
 
 # Verify.
 $BUILD_TOOLS/apksigner verify -Werr $BUILD_DIR/$FINAL_NAME || exit 1
