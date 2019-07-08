@@ -60,22 +60,6 @@ fi
 # Build the release build.
 ./gradlew --quiet clean assembleAmazonWebviewRelease $ASSEMBLE_FLAGS || exit 1
 
-# Strip unsigned content from the JAR. When running `apksigner verify`, most files in META-INF
-# will give warnings that they're not protected by the signature. I could not figure out what
-# these files are intended to do but removing them does not seem to affect the app. StackOverflow
-# suggests removing the files entirely: https://stackoverflow.com/a/47394901 However, MANIFEST.MF,
-# "The manifest file that is used to define extension and package related data." is protected by
-# the signature so instead we remove everything else. More on MANIFEST.MF in JAR format:
-# https://docs.oracle.com/javase/7/docs/technotes/guides/jar/jar.html
-#
-# This problem may not exist with APK signature scheme v2 but we use v1 (JAR signing) on Autograph.
-zip --quiet --delete $BUILD_DIR/app-amazonWebview-release-unsigned.apk \
-    'META-INF/*kotlin_module' \
-    'META-INF/*version' \
-    'META-INF/proguard/*' \
-    'META-INF/services/*' \
-    'META-INF/web-fragment.xml' || exit 1
-
 # Sign via autograph. Signing can be found here:
 # https://github.com/mozilla-services/autograph/blob/a1bee1add785ae41a284b1d5873010817d1fa79f/signer/apk/jar.go#L69-L71
 curl -F "input=@$BUILD_DIR/app-amazonWebview-release-unsigned.apk" \
@@ -87,8 +71,18 @@ curl -F "input=@$BUILD_DIR/app-amazonWebview-release-unsigned.apk" \
 zipalign -v 4 $BUILD_DIR/$FINAL_NAME $BUILD_DIR/app-amazonWebview-release-aligned.apk
 mv -f $BUILD_DIR/app-amazonWebview-release-aligned.apk $BUILD_DIR/$FINAL_NAME
 
+
+# We don't use `-Werr` (treat warnings as errors) because errors related to certain AndroidX
+# files are expected here.
+#
+# When the build is signed by Autograph, files inside the META-INF folder are not signed (due to
+# an outdated dependency on their end). We previously stripped these files out of the APK to
+# avoid warnings, but after migrating to AndroidX important files are now stored in this
+# directory (they appear to be Jetified libraries, but we haven't verified that). As we can't
+# strip these files out, we stop failing on warnings instead.
+#
 # Verify.
-$BUILD_TOOLS/apksigner verify -Werr $BUILD_DIR/$FINAL_NAME || exit 1
+$BUILD_TOOLS/apksigner verify $BUILD_DIR/$FINAL_NAME || exit 1
 
 echo "Build and sign successful. Opening build directory... Look for $FINAL_NAME"
 
