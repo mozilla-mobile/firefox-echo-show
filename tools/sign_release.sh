@@ -20,6 +20,9 @@
 # If you're not creating a release but want to create a release build for local testing, you
 # can append the `--test` flag to ignore some release checks.
 
+# Crash script if any command exits with non-zero status
+set -e
+
 BUILD_TOOLS=~/Library/Android/sdk/build-tools/28.0.2 # Update me on error!
 
 BUILD_DIR=app/build/outputs/apk/amazonWebview/release
@@ -71,13 +74,12 @@ curl -F "input=@$BUILD_DIR/app-amazonWebview-release-unsigned.apk" \
 zipalign -v 4 $BUILD_DIR/$FINAL_NAME $BUILD_DIR/app-amazonWebview-release-aligned.apk
 mv -f $BUILD_DIR/app-amazonWebview-release-aligned.apk $BUILD_DIR/$FINAL_NAME
 
-
 # We don't use `-Werr` (treat warnings as errors) because errors related to certain AndroidX
 # files are expected here.
 #
-# When the build is signed by Autograph, files inside the META-INF folder are not signed (due to
-# an outdated dependency on their end). We previously stripped these files out of the APK to
-# avoid warnings, but after migrating to AndroidX important files are now stored in this
+# When the build is signed by Autograph, files inside the META-INF folder are not signed because
+# they use jarsigner/apksigner v1 instead of v2 We previously stripped these files out of the APK
+# to avoid warnings, but after migrating to AndroidX important files are now stored in this
 # directory (they appear to be Jetified libraries, but we haven't verified that). As we can't
 # strip these files out, we stop failing on warnings instead.
 #
