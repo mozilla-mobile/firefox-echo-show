@@ -4,6 +4,8 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <lint>
 
+    <!-- This doesn't affect us, as we are not distributing through the Play Store -->
+    <issue id="ExpiredTargetSdkVersion" severity="informational"/>
     <issue id="InvalidPackage">
         <!-- Sentry: it uses one SDK for desktop apps and Android apps so I assume it's
              calling functions from desktop apps and silently ignoring those calls when
