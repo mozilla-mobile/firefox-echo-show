@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Under unlikely state restoration circumstances, a user who cleared their data could unexpectedly experience the data clear multiple times (#39)
 
+## [1.3.1] - 2019-07-08
+This version is identical to v1.3 except for minor build differences. Issue #280 is not reproducible in new local builds, so we are resubmitting the same code to see if this corrects the issue in production.
+
+### Fixed
+- Bug that caused a toolbar to be displayed over fullscreened YouTube videos (#280)
+
 ## [1.3] - 2019-03-07
 ### Added
 - Pinch to exit full screen web content like videos (#75)
