@@ -9,13 +9,14 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
-import androidx.annotation.VisibleForTesting
 import android.util.AttributeSet
 import android.view.View
 import android.webkit.JsPromptResult
 import android.webkit.JsResult
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import androidx.annotation.VisibleForTesting
+import org.mozilla.focus.R
 import org.mozilla.focus.ext.deleteData
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.session.Session
@@ -34,6 +35,11 @@ internal class FirefoxWebView(
     private val client: FocusWebViewClient,
     private val chromeClient: FirefoxWebChromeClient
 ) : NestedWebView(context, attrs), IWebView {
+
+    init {
+        val initialZoom = context.resources.getInteger(R.integer.webview_initial_zoom)
+        setInitialScale(initialZoom)
+    }
 
     @get:VisibleForTesting
     override var callback: IWebView.Callback? = null
