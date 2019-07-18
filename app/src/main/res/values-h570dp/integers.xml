@@ -3,10 +3,12 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
-    <integer name="home_tile_column_count">3</integer>
+    <!-- Used by the Echo Show 1
 
-    <!-- EditorInfo.IME_ACTION_* is defined by the framework. -->
-    <integer name="ime_action_search">3</integer>
+    Although the ES height is 600DP, this metric is set based on "available height", which
+    is not clearly defined. It can be queried using resources.configuration.screenHeightDp.
+
+    See https://developer.android.com/guide/topics/resources/providing-resources.html#ScreenHeightQualifier -->
 
     <integer name="webview_initial_zoom">100</integer>
 </resources>
