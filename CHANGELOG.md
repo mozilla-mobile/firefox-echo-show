@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Migrated dependencies to AndroidX (#217)
+- Set WebView initial zoom to 3x on the (smaller) ES5 device (#284)
 
 ### Fixed
 - Under unlikely state restoration circumstances, a user who cleared their data could unexpectedly experience the data clear multiple times (#39)
