@@ -4,11 +4,11 @@
 
 There are currently two devices:
 
-| Gen | Release | Code  | OS | Size  | Resources | DPI  | Emulator  | Resolution |
-|:---:|:-------:|:-----:|:--:|:-----:|:---------:|:----:|:---------:|:----------:|
-| 2nd | 2018    | AEOBP | 5  | 10.1" | xlarge    | mdpi | WXGA 10.1 | 1280x800   |
-| 1st | 2017    | AEOKN | 5  | 7"    | large     | mdpi | ?         | 1024x600   |
-| 5th | 2019    | AEOCH | ?  | ?     | large     | ?    | ?         | 960x480    |
+| Series | Release | Code  | OS | Size  | Resources | DPI  | Emulator  | Resolution |
+|:------:|:-------:|:-----:|:--:|:-----:|:---------:|:----:|:---------:|:----------:|
+| 5      | 2019    | AEOCH | ?  | ?     | large     | ?    | ?         | 960x480    |
+| 2      | 2018    | AEOBP | 5  | 10.1" | xlarge    | mdpi | WXGA 10.1 | 1280x800   |
+| 1      | 2017    | AEOKN | 5  | 7"    | large     | mdpi | ?         | 1024x600   |
 
 We recommend **developing** on Android tablet emulators for developer efficiency: the recommended Android emulator images are mentioned above.
 
