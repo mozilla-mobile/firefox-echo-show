@@ -5,7 +5,7 @@
 <resources>
     <!-- Used by the Echo Show 2
 
-     See comment in Integers-h570dp for details on why this does not match expected dimens -->
+     See device_reference.md for details on why this does not match expected dimens -->
 
-    <integer name="webview_initial_zoom">100</integer>
+    <!-- TODO file is not deleted because it will be used in a later commit -->
 </resources>
