@@ -2,19 +2,17 @@
     - Fire OS 5: Based on Android 5.1 (Lollipop, API level 22)
     - Fire OS 6: Based on Android 7.1 (Nougat, API level 25)
 
-There are currently three devices:
-
-| Series | Release | Code  | OS | Size  | Resources | DPI  | Emulator  | Resolution | Available Height |
-|:------:|:-------:|:-----:|:--:|:-----:|:---------:|:----:|:---------:|:----------:|:-----------------|
+| Series | Release | Code  | OS | Size  | Resources | DPI  | Emulator  | Resolution | Available Height* |
+|:------:|:-------:|:-----:|:--:|:-----:|:---------:|:----:|:---------:|:----------:|:------------------|
 | 5      | 2019    | AEOCH | ?  | ?     | large     | ?    | ?         | 960x480    | 456dp
 | 2      | 2018    | AEOBP | 5  | 10.1" | xlarge    | mdpi | WXGA 10.1 | 1280x800   | 770dp
 | 1      | 2017    | AEOKN | 5  | 7"    | large     | mdpi | ?         | 1024x600   | 570dp
 
 We recommend **developing** on Android tablet emulators for developer efficiency: the recommended Android emulator images are mentioned above.
 
-Note that available height does not match actual height.  See [documentation][res height] for details, but it seems that some space is reserved for toolbars and similar "screen decorations."  These values were retrieved by querying resources.configuration.screenHeightDp on device.
-
 However, we ultimately recommend **verifying behavior** on device: the behavior on device differs from the emulator. Important note: **locally built apps cannot be installed on production Echo Show devices** so if you do not have a developer device, use the emulators.
+
+* Note that available height does not match actual height.  Available height is the device's actual resolution minus space for the toolbar and similar "screen decorations". You can retrieve the available height values by querying resources.configuration.screenHeightDp on device. See [documentation][res height] for details.
 
 ### Known differences between Echo Show devices and Android tablet emulators
 From a user experience perspective, we've noticed the following differences:
@@ -31,7 +29,7 @@ From an implementation perspective, we've noticed the following differences:
 ## Distinguishing devices in code
 We distinguish devices using [the screen height metric][res height] from the Android resources system:
 - All devices will use resources with no qualifiers (e.g. `layout`)
-- Devices will use the largest qualified file that is smaller than their `available height` 
+- Devices will use the largest qualified file that is smaller than or equal to their `available height` 
 
 See the table above to see which screen size metric each device uses.
 

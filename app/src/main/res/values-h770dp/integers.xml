@@ -3,9 +3,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
-    <!-- Used by the Echo Show 2
-
-     See device_reference.md for details on why this does not match expected dimens -->
+    <!-- See device_reference.md for details on which devices use this file -->
 
     <integer name="home_tile_column_count">4</integer>
 </resources>
