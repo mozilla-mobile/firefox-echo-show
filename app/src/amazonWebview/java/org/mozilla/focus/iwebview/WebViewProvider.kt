@@ -65,6 +65,9 @@ private fun initWebview(webView: FirefoxWebView) = with(webView) {
     isVerticalScrollBarEnabled = true
     isHorizontalScrollBarEnabled = true
 
+    val initialZoom = context.resources.getInteger(R.integer.webview_initial_zoom)
+    setInitialScale(initialZoom)
+
     if (BuildConfig.DEBUG) {
         setWebContentsDebuggingEnabled(true)
     }
