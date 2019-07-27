@@ -8,5 +8,6 @@
     <!-- EditorInfo.IME_ACTION_* is defined by the framework. -->
     <integer name="ime_action_search">3</integer>
 
-    <integer name="webview_initial_zoom">300</integer>
+    <integer name="webview_initial_zoom">150</integer>
+    <integer name="webview_minimum_font_size">14</integer>
 </resources>

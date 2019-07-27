@@ -68,6 +68,9 @@ private fun initWebview(webView: FirefoxWebView) = with(webView) {
     val initialZoom = context.resources.getInteger(R.integer.webview_initial_zoom)
     setInitialScale(initialZoom)
 
+    val minimumFontSize = context.resources.getInteger(R.integer.webview_minimum_font_size)
+    settings.minimumFontSize = minimumFontSize
+
     if (BuildConfig.DEBUG) {
         setWebContentsDebuggingEnabled(true)
     }
