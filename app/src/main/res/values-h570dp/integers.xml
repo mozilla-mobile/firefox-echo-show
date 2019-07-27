@@ -5,5 +5,8 @@
 <resources>
     <!-- See device_reference.md for details on which devices use this file -->
 
+    <!-- 100 is the default initial zoom -->
     <integer name="webview_initial_zoom">100</integer>
+    <!-- 8 is the default minimum font size -->
+    <integer name="webview_minimum_font_size">8</integer>
 </resources>
