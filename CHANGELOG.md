@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Under unlikely state restoration circumstances, a user who cleared their data could unexpectedly experience the data clear multiple times (#39)
+- If the session is restored, the toolbar does not go away (#297)
 
 ## [1.3.1] - 2019-07-??
 *This version is identical to v1.3 except for minor build differences. Issue #280 is not reproducible in new local builds, so we are resubmitting the same code to see if this corrects the issue in production.*
