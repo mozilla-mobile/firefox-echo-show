@@ -20,7 +20,9 @@ class BrowserAppBarViewModel(
     sessionRepo: SessionRepo
 ) : ViewModel() {
 
-    private val isNavigationOverlayVisible = MutableLiveData<Boolean>()
+    private val isNavigationOverlayVisible = MutableLiveData<Boolean>().apply {
+        value = false
+    }
 
     val isToolbarScrollEnabled = LiveDataCombiners.combineLatest(
         frameworkRepo.isVoiceViewEnabled,
