@@ -21,6 +21,8 @@ class BrowserAppBarViewModel(
 ) : ViewModel() {
 
     private val isNavigationOverlayVisible = MutableLiveData<Boolean>().apply {
+        // This value changes when the overlay changes visibility. It has a default value of false since
+        // the overlay is hidden by default; this is particularly important for the case of session restoration.
         value = false
     }
 
