@@ -3,10 +3,6 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <lint>
-
-    <!-- This doesn't affect us, as we are not distributing through the Play Store -->
-    <issue id="ExpiredTargetSdkVersion" severity="informational"/>
-
     <issue id="InvalidPackage">
         <!-- Sentry: it uses one SDK for desktop apps and Android apps so I assume it's
              calling functions from desktop apps and silently ignoring those calls when
@@ -40,4 +36,7 @@
 
     <!-- We do not support Google services. -->
     <issue id="GoogleAppIndexingWarning" severity="ignore"/>
+
+    <!-- This doesn't affect us, as we are not distributing through the Play Store -->
+    <issue id="ExpiredTargetSdkVersion" severity="informational"/>
 </lint>
