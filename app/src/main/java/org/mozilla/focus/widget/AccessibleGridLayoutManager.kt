@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager as AndroidGridLayoutManage
 class AccessibleGridLayoutManager(
     context: Context,
     spanCount: Int,
-    orientation: Int = VERTICAL,
+    orientation: Int = RecyclerView.VERTICAL,
     reverseLayout: Boolean = false
 ) : AndroidGridLayoutManager(
         context,
@@ -27,7 +27,7 @@ class AccessibleGridLayoutManager(
         // With multiple rows, VoiceView announces "row X column Y". With a single row, VoiceView
         // announces "X of Y" where Y is the column count. However, if you have fewer than Y items
         // (i.e. 3 items for 4 columns), this is unintuitive so we override the announcement.
-        return if (orientation == VERTICAL && itemCount < spanCount) {
+        return if (orientation == RecyclerView.VERTICAL && itemCount < spanCount) {
             itemCount
         } else {
             super.getColumnCountForAccessibility(recycler, state)
