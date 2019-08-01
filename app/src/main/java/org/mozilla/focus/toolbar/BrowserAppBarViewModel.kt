@@ -20,6 +20,8 @@ class BrowserAppBarViewModel(
     sessionRepo: SessionRepo
 ) : ViewModel() {
 
+    // This value changes when the overlay changes visibility. It has a default value of false since
+    // the overlay is hidden by default; this is particularly important for the case of session restoration.
     private val isNavigationOverlayVisible = MutableLiveData<Boolean>().apply {
         value = false
     }
