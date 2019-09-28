@@ -4,25 +4,26 @@
 
 package org.mozilla.focus.home
 
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import androidx.annotation.IdRes
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_WRAP
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.annotation.IdRes
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_WRAP
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.*
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
 import mozilla.components.support.base.observer.Consumable
 import mozilla.components.support.ktx.android.content.systemService
 import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
+import org.mozilla.focus.appBarSemiOpaqueBackground
 import org.mozilla.focus.browser.BrowserFragmentCallbacks
 import org.mozilla.focus.browser.HomeTileGridNavigation
 import org.mozilla.focus.browser.HomeTileLongClickListener
@@ -55,7 +56,13 @@ class NavigationOverlayFragment : Fragment() {
         val context = inflater.context
         val overlay = inflater.inflate(R.layout.fragment_navigation_overlay, container, false)
 
-        val isVisibleInDialogMode = arrayOf(overlay.semiOpaqueBackground, overlay.dismissHitTarget)
+        val isVisibleInDialogMode = arrayOf(
+            overlay.dismissHitTarget,
+            overlay.semiOpaqueBackground,
+
+            // TODO: remove this HACK: see property definition for details.
+            @Suppress("DEPRECATION") overlay.appBarSemiOpaqueBackground
+        )
         isVisibleInDialogMode.forEach { it.visibility = if (isOverlayOnStartup) View.GONE else View.VISIBLE }
         val isVisibleInStartupMode = arrayOf(overlay.initialHomescreenBackground)
         isVisibleInStartupMode.forEach { it.visibility = if (isOverlayOnStartup) View.VISIBLE else View.GONE }
@@ -106,21 +113,28 @@ class NavigationOverlayFragment : Fragment() {
     }
 
     private fun setOnClickListeners(overlay: View) {
+        val dismissHitTargets = listOf(
+            overlay.dismissHitTarget,
+
+            // TODO: remove this HACK: see the property definition for details.
+            @Suppress("DEPRECATION") overlay.appBarSemiOpaqueBackground
+        )
+
         fun removeClickListeners() {
             // We remove the click listeners when dismissing the overlay
             // so that clicking them doesn't restart the animation.
-            overlay.dismissHitTarget.setOnClickListener(null)
+            dismissHitTargets.forEach { it.setOnClickListener(null) }
             with(overlay.homeTiles) {
                 onTileClicked = null
                 homeTileLongClickListener = null
             }
         }
 
-        overlay.dismissHitTarget.setOnClickListener {
+        dismissHitTargets.forEach { it.setOnClickListener {
             removeClickListeners()
             callbacks?.setNavigationOverlayIsVisible(false)
             TelemetryWrapper.dismissHomeOverlayClickEvent()
-        }
+        } }
 
         with(overlay.homeTiles) {
             onTileClicked = {

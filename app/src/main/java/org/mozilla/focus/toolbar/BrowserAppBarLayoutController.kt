@@ -4,6 +4,7 @@
 
 package org.mozilla.focus.toolbar
 
+import android.view.ViewGroup
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -12,6 +13,7 @@ import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+import kotlinx.android.synthetic.main.activity_main.view.*
 import mozilla.components.browser.toolbar.BrowserToolbar
 import org.mozilla.focus.ext.updateLayoutParams
 
@@ -23,14 +25,13 @@ private const val TOOLBAR_SCROLL_ENABLED_FLAGS = SCROLL_FLAG_SCROLL or
 /** A view controller for the [AppBarLayout] and the [BrowserToolbar] it contains. */
 class BrowserAppBarLayoutController(
     private val viewModel: BrowserAppBarViewModel,
-    private val appBarLayout: AppBarLayout,
-    private val toolbar: BrowserToolbar
+    private val appBarLayout: AppBarLayout
 ) : LifecycleObserver {
 
     fun init(lifecycleOwner: LifecycleOwner) {
         lifecycleOwner.lifecycle.addObserver(this)
         viewModel.isToolbarScrollEnabled.observe(lifecycleOwner, Observer {
-            toolbar.setIsScrollEnabled(it!!)
+            appBarLayout.appBarInnerContainer.setIsScrollEnabled(it!!)
         })
 
         viewModel.isAppBarHidden.observe(lifecycleOwner, Observer {
@@ -47,7 +48,7 @@ class BrowserAppBarLayoutController(
     }
 }
 
-private fun BrowserToolbar.setIsScrollEnabled(isScrollEnabled: Boolean) {
+private fun ViewGroup.setIsScrollEnabled(isScrollEnabled: Boolean) {
     updateLayoutParams {
         val layoutParams = it as AppBarLayout.LayoutParams
 
