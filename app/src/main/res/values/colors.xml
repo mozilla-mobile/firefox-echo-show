@@ -20,4 +20,6 @@
     <color name="amazon_settings_textcolor">@color/photonGrey10</color>
     <color name="amazon_toggle_on">#00CAFF</color>
     <color name="amazon_toggle_off">#F0F1EF</color>
+
+    <color name="nav_overlay_semi_opaque_background">@color/photonGrey90_a60p</color>
 </resources>
