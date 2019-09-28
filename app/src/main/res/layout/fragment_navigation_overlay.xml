@@ -41,7 +41,7 @@
             android:id="@+id/semiOpaqueBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/photonGrey90_a60p"
+            android:background="@color/nav_overlay_semi_opaque_background"
             android:focusable="false"/>
 
     <!-- Available in dialog mode, this is the hit target - i.e. not visible - to dismiss the overlay because the
