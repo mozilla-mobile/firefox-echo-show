@@ -12,6 +12,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import android.view.View
 import android.view.animation.LinearInterpolator
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
+import org.mozilla.focus.appBarSemiOpaqueBackground
 import org.mozilla.focus.ext.onGlobalLayoutOnce
 
 private const val TRANSLATION_MILLIS_FOR_FULL_SCREEN = 400
@@ -65,6 +66,12 @@ object NavigationOverlayAnimations {
             interpolator = alphaInterpolator
         }
 
+        @Suppress("DEPRECATION") // TODO: remove this HACK. See property definition for details.
+        val appBarSemiOpaqueBackground = overlay.appBarSemiOpaqueBackground
+        val appBarSemiOpaqueBackgroundAnimator = ObjectAnimator.ofFloat(appBarSemiOpaqueBackground, "alpha", *fadeValues).apply {
+            interpolator = alphaInterpolator
+        }
+
         val initialHomescreenBackgroundAnimator = if (!isOverlayOnStartup) {
             null
         } else {
@@ -87,13 +94,23 @@ object NavigationOverlayAnimations {
             duration = getAnimationDuration()
 
             val animatorSetBuilder = play(semiOpaqueBackgroundAnimator)
+                .with(appBarSemiOpaqueBackgroundAnimator)
             arrayOf(overlay.homeTiles, overlay.backgroundView, overlay.backgroundShadowView).forEach {
                 animatorSetBuilder.with(getTranslateUpAnimator(it))
             }
             initialHomescreenBackgroundAnimator?.let { animatorSetBuilder.with(it) }
 
             addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationStart(animation: Animator?, isReverse: Boolean) {
+                    if (isAnimateIn) {
+                        appBarSemiOpaqueBackground.visibility = View.VISIBLE
+                    }
+                }
+
                 override fun onAnimationEnd(animation: Animator?) {
+                    if (!isAnimateIn) {
+                        appBarSemiOpaqueBackground.visibility = View.GONE
+                    }
                     onAnimationEnd()
                 }
             })

@@ -109,7 +109,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
     private fun initViews() {
         FirefoxViewModelProviders.of(this)[BrowserAppBarViewModel::class.java].let { viewModel ->
-            appBarLayoutController = BrowserAppBarLayoutController(viewModel, appBarLayout, toolbar).apply {
+            appBarLayoutController = BrowserAppBarLayoutController(viewModel, appBarLayout).apply {
                 init(this@MainActivity)
             }
         }
@@ -222,3 +222,23 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
                 .start()
     }
 }
+
+/**
+ * Fetches the semiOpaqueBackground that overlays the AppBar. See the definition of
+ * R.id.appBarLayout in XML for why this view exists at all.
+ *
+ * We create this fragile view accessor, that encourages the breaking of encapsulation, because
+ * refactoring the code to avoid it isn't a good use of time at present. Specifically, there are two
+ * views, one in [MainActivity] and one in [NavigationOverlayFragment], that need to call into the
+ * other component in order to indicate success and cross-component communication is hard (and
+ * direct communication is deprecated) in this codebase. We could try to abstract them into Repos
+ * and ViewModels but those also don't exist.
+ *
+ * TODO: remove this HACK: see above for why this is bad.
+ *
+ * This property lives in MainActivity, rather than the places it's accessed from, because it
+ * references a View that lives in MainActivity. It's an extension function on View to guarantee we
+ * have a Context and view hierarchy available.
+ */
+@Deprecated("Prefer refactoring your code so this is unnecessary rather than using this directly")
+val View.appBarSemiOpaqueBackground: View get() = (this.context as MainActivity).appBarSemiOpaqueBackground

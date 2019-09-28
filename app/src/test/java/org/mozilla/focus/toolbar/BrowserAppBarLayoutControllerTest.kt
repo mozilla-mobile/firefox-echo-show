@@ -4,12 +4,11 @@
 
 package org.mozilla.focus.toolbar
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.appbar.AppBarLayout
-import androidx.appcompat.app.AppCompatActivity
-import mozilla.components.browser.toolbar.BrowserToolbar
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -52,8 +51,7 @@ class BrowserAppBarLayoutControllerTest {
         }
 
         appBarLayout = mock(AppBarLayout::class.java)
-        val toolbar = mock(BrowserToolbar::class.java)
-        initController = BrowserAppBarLayoutController(viewModel, appBarLayout, toolbar).apply {
+        initController = BrowserAppBarLayoutController(viewModel, appBarLayout).apply {
             init(lifecycleOwner)
         }
     }

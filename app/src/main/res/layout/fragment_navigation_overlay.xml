@@ -35,12 +35,20 @@
             android:imeActionId="@integer/ime_action_search"
             android:importantForAccessibility="no"/>
 
-    <!-- Visible in dialog mode, this is the semi opaque background that obscures the URL bar. If focusable,
-         this view is accessible by the screen reader through the overlay background where there aren't home tiles. -->
+    <!-- Visible in dialog mode, this is the semi opaque background sits behind the nav overlay. We
+         set not focusable because if it's focusable, this view is accessible by the screen reader
+         through the overlay background where there aren't home tiles.
+
+         This doesn't cover the AppBar (due to marginTop): another view does. That's necessary
+         because this view does not cover the App Bar unless we're animating so we have to make sure
+         these views do not overlap. See appBarSemiOpaqueBackground for a longer explanation. -->
     <View
             android:id="@+id/semiOpaqueBackground"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/appbar_height"
             android:background="@color/nav_overlay_semi_opaque_background"
             android:focusable="false"/>
 
