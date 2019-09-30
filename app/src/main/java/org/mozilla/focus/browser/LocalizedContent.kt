@@ -17,6 +17,8 @@ import org.mozilla.focus.utils.HtmlLoader
 
 object LocalizedContent {
 
+    const val licensesUrl = "licenses.html"
+
     @JvmStatic
     fun handleInternalContent(url: String, webView: WebView): Boolean {
         if (APP_ABOUT.toString() == url) {
@@ -54,7 +56,6 @@ object LocalizedContent {
         val trademarkPolicyUrl = "https://www.mozilla.org/foundation/trademarks/policy/"
         val gplUrl = "gpl.html"
         val trackingProtectionUrl = "https://wiki.mozilla.org/Security/Tracking_protection#Lists"
-        val licensesUrl = "licenses.html"
 
         val yourRights = resources.getString(R.string.your_rights)
         substitutionMap["%your-rights%"] = yourRights
