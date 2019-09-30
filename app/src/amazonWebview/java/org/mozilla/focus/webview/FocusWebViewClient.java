@@ -5,23 +5,30 @@
 package org.mozilla.focus.webview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslCertificate;
 import android.net.http.SslError;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+
+import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.browser.LocalizedContent;
 import org.mozilla.focus.browser.URLs;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.UrlUtils;
 import org.mozilla.focus.iwebview.IWebView;
+import org.mozilla.focus.widget.ServiceLocator;
 
 import java.io.ByteArrayInputStream;
 
@@ -233,7 +240,16 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
     }
 
     @Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+        if (url.equals("file:///android_asset/" + LocalizedContent.licensesUrl)) {
+            final Context context = view.getContext();
+
+            if (context != null) {
+                context.startActivity(new Intent(context, OssLicensesMenuActivity.class), null);
+            }
+            return true;
+        }
+
         // If this is an internal URL like focus:about then we load the content ourselves here.
         if (LocalizedContent.handleInternalContent(url, view)) {
             return true;
