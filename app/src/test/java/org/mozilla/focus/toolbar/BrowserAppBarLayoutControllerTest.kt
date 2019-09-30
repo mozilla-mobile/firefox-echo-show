@@ -19,6 +19,8 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mozilla.focus.utils.DeviceInfo
+import org.mozilla.focus.utils.DeviceInfo.Model
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 
@@ -51,7 +53,11 @@ class BrowserAppBarLayoutControllerTest {
         }
 
         appBarLayout = mock(AppBarLayout::class.java)
-        initController = BrowserAppBarLayoutController(viewModel, appBarLayout).apply {
+        val deviceInfo = mock(DeviceInfo::class.java).apply {
+            `when`(this.deviceModel).thenReturn(Model.UNKNOWN)
+        }
+
+        initController = BrowserAppBarLayoutController(viewModel, appBarLayout, deviceInfo).apply {
             init(lifecycleOwner)
         }
     }

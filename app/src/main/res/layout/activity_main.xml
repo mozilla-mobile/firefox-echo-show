@@ -23,9 +23,8 @@
 	     5, for an unknown reason setting any elevation on this view will cause the
 	     WebView to stop playing videos when the AppBar scrolls offscreen (#305). As such,
 	     we do not modify the elevation.  One side effect of this is that an elevation
-	     shadow undesirably appears on the initial homescreen. In theory, we can selectively
-	     enable this fix on ES 5 to prevent this issue from appearing on all devices but I
-	     (mcomella) don't think it's worth the complexity.
+	     shadow undesirably appears on the initial homescreen. Therefore, in code we selectively
+	     set the AppBar elevation to zero on devices that are not affected by this issue.
 
          Unfortunately, not modifying the elevation also means the NavigationOverlay's
          semi opaque background will not appear over the AppBar, even if the semi opaque

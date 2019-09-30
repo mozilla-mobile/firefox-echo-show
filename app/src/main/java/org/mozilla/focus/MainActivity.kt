@@ -19,6 +19,7 @@ import org.mozilla.focus.browser.BrowserFragmentCallbacks
 import org.mozilla.focus.ext.getBrowserFragment
 import org.mozilla.focus.ext.getNavigationOverlay
 import org.mozilla.focus.ext.isVisibleAndNonNull
+import org.mozilla.focus.ext.serviceLocator
 import org.mozilla.focus.ext.toSafeIntent
 import org.mozilla.focus.iwebview.IWebView
 import org.mozilla.focus.iwebview.WebViewProvider
@@ -109,7 +110,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
     private fun initViews() {
         FirefoxViewModelProviders.of(this)[BrowserAppBarViewModel::class.java].let { viewModel ->
-            appBarLayoutController = BrowserAppBarLayoutController(viewModel, appBarLayout).apply {
+            appBarLayoutController = BrowserAppBarLayoutController(viewModel, appBarLayout, serviceLocator.deviceInfo).apply {
                 init(this@MainActivity)
             }
         }
