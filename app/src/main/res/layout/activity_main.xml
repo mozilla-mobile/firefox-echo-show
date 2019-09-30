@@ -42,7 +42,9 @@
              we need this inner ViewGroup.
 
              CoordinatorLayout scroll flags are added dynamically: see
-             BrowserAppBarLayoutController's ViewGroup.setIsScrollEnabled. -->
+             BrowserAppBarLayoutController's ViewGroup.setIsScrollEnabled.
+
+             The accessibility of this view is changed dynamically: see ToolbarIntegration. -->
         <FrameLayout
                 android:id="@+id/appBarInnerContainer"
                 android:layout_width="match_parent"

@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.coroutines.CoroutineScope
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
@@ -89,6 +90,7 @@ object ToolbarIntegration {
         lifecycleOwner: LifecycleOwner,
         uiScope: CoroutineScope,
         viewModel: ToolbarViewModel,
+        toolbarContainer: ViewGroup,
         toolbar: BrowserToolbar,
         toolbarStateProvider: ToolbarStateProvider,
         onToolbarEvent: OnToolbarEvent
@@ -96,7 +98,7 @@ object ToolbarIntegration {
         val context = toolbar.context
 
         viewModel.isToolbarImportantForAccessibility.observe(lifecycleOwner, Observer {
-            toolbar.setIsImportantForAccessibility(it!!)
+            toolbarContainer.setIsImportantForAccessibility(it!!)
         })
 
         toolbar.displaySiteSecurityIcon = false
@@ -368,7 +370,7 @@ private val BrowserToolbar.editToolbar: ViewGroup
     // The class is internal so we compare against its name instead of its type.
     get() = children().first { it::class.java.simpleName == "EditToolbar" } as ViewGroup
 
-private fun BrowserToolbar.setIsImportantForAccessibility(isImportantForAccessibility: Boolean) {
+private fun View.setIsImportantForAccessibility(isImportantForAccessibility: Boolean) {
     // The open-navigation-overlay button will remain focused unless another view requests focus
     // (which we expect to happen). We could clear focus here to decouple this code but it's
     // unfortunately non-trivial.

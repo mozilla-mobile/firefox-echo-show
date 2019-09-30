@@ -114,8 +114,8 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
             }
         }
 
-        toolbarCallbacks = ToolbarIntegration.setup(this, activityUiScope, toolbarViewModel, toolbar, toolbarStateProvider,
-            ::onToolbarEvent)
+        toolbarCallbacks = ToolbarIntegration.setup(this, activityUiScope, toolbarViewModel,
+            appBarInnerContainer, toolbar, toolbarStateProvider, ::onToolbarEvent)
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {
