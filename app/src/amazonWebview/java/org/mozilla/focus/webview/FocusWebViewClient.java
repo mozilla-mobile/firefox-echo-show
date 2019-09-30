@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.net.http.SslCertificate;
 import android.net.http.SslError;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceResponse;
@@ -21,14 +19,12 @@ import android.webkit.WebViewClient;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 
-import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.browser.LocalizedContent;
 import org.mozilla.focus.browser.URLs;
+import org.mozilla.focus.iwebview.IWebView;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.UrlUtils;
-import org.mozilla.focus.iwebview.IWebView;
-import org.mozilla.focus.widget.ServiceLocator;
 
 import java.io.ByteArrayInputStream;
 
