@@ -9,6 +9,7 @@ import org.mozilla.focus.architecture.FrameworkRepo
 import org.mozilla.focus.ext.getAccessibilityManager
 import org.mozilla.focus.home.PinnedTileRepo
 import org.mozilla.focus.session.SessionRepo
+import org.mozilla.focus.utils.DeviceInfo
 
 /**
  * Implementation of the Service Locator pattern. Use this class to provide dependencies without
@@ -46,6 +47,8 @@ open class ServiceLocator private constructor() {
     val frameworkRepo = FrameworkRepo()
     val sessionRepo = SessionRepo()
     val pinnedTileRepo = PinnedTileRepo()
+
+    val deviceInfo by lazy { DeviceInfo() }
 
     private fun init(applicationContext: Context) {
         // The touch state listener gets called even when the application is backgrounded so we only need to add it once.
