@@ -15,7 +15,10 @@ import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
 import kotlinx.android.synthetic.main.activity_main.view.*
 import mozilla.components.browser.toolbar.BrowserToolbar
+import org.mozilla.focus.ext.forceExhaustive
 import org.mozilla.focus.ext.updateLayoutParams
+import org.mozilla.focus.utils.DeviceInfo
+import org.mozilla.focus.utils.DeviceInfo.Model
 
 private const val TOOLBAR_SCROLL_ENABLED_FLAGS = SCROLL_FLAG_SCROLL or
         SCROLL_FLAG_ENTER_ALWAYS or
@@ -25,7 +28,8 @@ private const val TOOLBAR_SCROLL_ENABLED_FLAGS = SCROLL_FLAG_SCROLL or
 /** A view controller for the [AppBarLayout] and the [BrowserToolbar] it contains. */
 class BrowserAppBarLayoutController(
     private val viewModel: BrowserAppBarViewModel,
-    private val appBarLayout: AppBarLayout
+    private val appBarLayout: AppBarLayout,
+    private val deviceInfo: DeviceInfo
 ) : LifecycleObserver {
 
     fun init(lifecycleOwner: LifecycleOwner) {
@@ -41,6 +45,31 @@ class BrowserAppBarLayoutController(
             // Note: expanded in setExpanded means hidden.
             appBarLayout.setExpanded(it!!, false)
         })
+
+        maybeSetElevationToZero(appBarLayout)
+    }
+
+    /**
+     * Sets the AppBar elevation to 0 to remove the shadow on the initial homescreen on some
+     * devices; other devices are affected by a bug (#305) where setting elevation will cause WebView
+     * videos to pause when the AppBar is scrolled off-screen: see R.id.appBarLayout for details.
+     */
+    private fun maybeSetElevationToZero(appBarLayout: AppBarLayout) {
+        when (deviceInfo.deviceModel) {
+            // These are known good devices.
+            Model.FIRST_GEN, Model.SECOND_GEN -> {
+                // targetElevation is the only simple way to change the elevation of the AppBar
+                // (normal elevation uses a different system) so we'll use it while it's still working.
+                @Suppress("DEPRECATION")
+                appBarLayout.targetElevation = 0f
+            }
+
+            // The ES5 is a known bad device. We don't know if new devices will also share this bug
+            // and we don't want to have to make a new build each time so we also disable elevation
+            // on these new devices.
+            Model.FIVE,
+            Model.UNKNOWN -> { /* don't set elevation. */ }
+        }.forceExhaustive
     }
 
     fun onHomeVisibilityChange(isHomeVisible: Boolean) {
