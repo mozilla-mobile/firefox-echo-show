@@ -240,9 +240,7 @@ public class FocusWebViewClient extends TrackingProtectionWebViewClient {
         if (url.equals("file:///android_asset/" + LocalizedContent.licensesUrl)) {
             final Context context = view.getContext();
 
-            if (context != null) {
-                context.startActivity(new Intent(context, OssLicensesMenuActivity.class), null);
-            }
+            context.startActivity(new Intent(context, OssLicensesMenuActivity.class));
             return true;
         }
 
