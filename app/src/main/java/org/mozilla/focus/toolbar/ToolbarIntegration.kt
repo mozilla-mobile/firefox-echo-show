@@ -158,7 +158,11 @@ object ToolbarIntegration {
         onToolbarEvent: OnToolbarEvent
     ): ChangeableVisibilityButton {
         val res = context.resources
+
         fun getDrawable(@DrawableRes drawableId: Int): Drawable =
+            // The linter warns "Expected resource of type drawable" but we are passing
+            // in a Drawable resource: this is a suspected bug so we suppress it.
+            @Suppress("ResourceType")
             AppCompatResources.getDrawable(context, drawableId)!!
 
         val homescreenButton = BrowserToolbar.Button(
