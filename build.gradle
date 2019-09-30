@@ -8,6 +8,7 @@ buildscript {
     ext.architecture_components_version = '2.0.1'
     ext.espresso_version = '3.1.1'
     ext.moz_components_version = '0.31.0'
+    ext.oss_licenses_version = '17.0.0'
 
     repositories {
         google()
@@ -29,6 +30,8 @@ buildscript {
         // Mozilla Android gradle plugin. For details, see the repo:
         //   https://github.com/mozilla-mobile/android-automation-tools/tree/master/gradle-plugin
         classpath "org.mozilla.android:gradle-plugin:0.1"
+
+        classpath 'com.google.android.gms:oss-licenses-plugin:0.9.5'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
