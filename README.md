@@ -13,8 +13,6 @@ Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participatio
 * Open issues: https://github.com/mozilla-mobile/firefox-echo-show/issues
   * [`good first issues`][good first] | [`help wanted`][help]
   * [File a security issue][sec issue] (be sure to check "Restrict access to... 'Security-Sensitive Firefox Bug' group")
-* IRC: [#focus (irc.mozilla.org)](https://wiki.mozilla.org/IRC) | [view logs](https://mozilla.logbot.info/focus/);
-we're available Monday-Friday, GMT and PST working hours.
 * Mailing list:
 [firefox-focus-public@](https://mail.mozilla.org/listinfo/firefox-focus-public)
 
