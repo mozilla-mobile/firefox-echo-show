@@ -1,6 +1,9 @@
 import org.mozilla.gradle.tasks.VerifyWebViewCount
 import org.mozilla.android.tasks.*
 
+plugins {
+    id "com.jetbrains.python.envs" version "0.0.26"
+}
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -116,6 +119,10 @@ repositories {
     mavenCentral()
 }
 
+ext.gleanGenerateMarkdownDocs = true
+ext.gleanDocsDirectory = "$rootDir/docs/glean"
+apply from: 'https://github.com/mozilla-mobile/android-components/raw/v24.0.0/components/service/glean/scripts/sdk_generator.gradle'
+
 dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
     implementation "androidx.appcompat:appcompat:$androidx_version"
@@ -141,6 +148,7 @@ dependencies {
     implementation "org.mozilla.components:ui-autocomplete:$moz_components_version"
     implementation "org.mozilla.components:ui-colors:$moz_components_version"
     implementation "org.mozilla.components:ui-fonts:$moz_components_version"
+    implementation "org.mozilla.components:service-glean:24.0.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
