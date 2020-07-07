@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.annotation.DrawableRes
@@ -19,12 +20,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.coroutines.CoroutineScope
 import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.toolbar.Toolbar
-import mozilla.components.support.ktx.android.content.res.pxToDp
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
 import org.mozilla.focus.TouchInterceptorLayout
@@ -386,3 +385,6 @@ private fun View.setIsImportantForAccessibility(isImportantForAccessibility: Boo
         View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
     }
 }
+
+private fun Resources.pxToDp(pixels: Int) = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP, pixels.toFloat(), displayMetrics).toInt()

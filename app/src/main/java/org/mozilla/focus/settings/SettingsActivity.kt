@@ -94,13 +94,21 @@ class SettingsActivity : AppCompatActivity(),
      * Handle launching Fragments from the PreferenceScreens.
      */
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference?): Boolean {
-        val fragment = Fragment.instantiate(this, pref?.fragment, pref?.extras)
+        if (pref == null) {
+            return false
+        }
+
+        val fragment = supportFragmentManager.fragmentFactory.instantiate(
+                ClassLoader.getSystemClassLoader(),
+                pref.fragment)
+        fragment.arguments = pref.extras
+
         supportFragmentManager.beginTransaction()
-                .setBreadCrumbTitle(pref?.title)
+                .setBreadCrumbTitle(pref.title)
                 .replace(R.id.settings_container, fragment, FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit()
-        supportActionBar?.title = pref?.title
+        supportActionBar?.title = pref.title
         return true
     }
 

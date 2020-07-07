@@ -20,7 +20,6 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.*
 import kotlinx.android.synthetic.main.fragment_navigation_overlay.view.*
 import mozilla.components.support.base.observer.Consumable
-import mozilla.components.support.ktx.android.content.systemService
 import org.mozilla.focus.R
 import org.mozilla.focus.UrlSearcher
 import org.mozilla.focus.appBarSemiOpaqueBackground
@@ -170,7 +169,7 @@ class NavigationOverlayFragment : Fragment() {
 
         private fun EditText.showKeyboard() {
             // ViewUtils.showKeyboard doesn't seem to work.
-            val inputMethodManager = context?.systemService<InputMethodManager>(Context.INPUT_METHOD_SERVICE)
+            val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
         }
     }
