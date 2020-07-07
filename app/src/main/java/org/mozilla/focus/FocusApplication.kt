@@ -7,6 +7,8 @@ package org.mozilla.focus
 
 import android.os.StrictMode
 import androidx.preference.PreferenceManager
+import mozilla.components.service.glean.Glean
+import mozilla.components.service.glean.config.Configuration
 import mozilla.components.support.base.log.Log
 import mozilla.components.support.base.log.sink.AndroidLogSink
 import org.mozilla.focus.locale.LocaleAwareApplication
@@ -39,9 +41,14 @@ class FocusApplication : LocaleAwareApplication() {
 
         SearchEngineManager.getInstance().init(this)
         TelemetryWrapper.init(this)
+        initGlean()
         DataUploadPreference.init(this.applicationContext)
 
         registerActivityLifecycleCallbacks(VisibilityLifeCycleCallback(this))
+    }
+
+    private fun initGlean() {
+        Glean.initialize(applicationContext, Configuration(channel = BuildConfig.BUILD_TYPE))
     }
 
     private fun enableStrictMode() {

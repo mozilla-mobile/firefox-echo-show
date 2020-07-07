@@ -159,6 +159,10 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
+    // For the initial release of Glean 19, we require consumer applications to
+    // depend on a separate library for unit tests. This will be removed in future releases.
+    testImplementation "org.mozilla.telemetry:glean-forUnitTests:21.3.0"
+
     testImplementation "org.robolectric:robolectric:3.8"
     testImplementation 'org.mockito:mockito-core:2.23.0'
     testImplementation "androidx.arch.core:core-testing:$architecture_components_version"

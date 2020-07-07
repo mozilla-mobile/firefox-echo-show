@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.StrictMode
 import android.preference.PreferenceManager
+import mozilla.components.service.glean.Glean
 import org.mozilla.focus.R
 import org.mozilla.telemetry.TelemetryHolder
 
@@ -54,6 +55,8 @@ internal object DataUploadPreference : SharedPreferences.OnSharedPreferenceChang
         TelemetryHolder.get()
                 .configuration
                 .setUploadEnabled(enabled).isCollectionEnabled = enabled
+
+        Glean.setUploadEnabled(enabled)
 
         SentryWrapper.onIsEnabledChanged(context, enabled)
     }
