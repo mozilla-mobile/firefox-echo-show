@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
+import mozilla.components.browser.domains.autocomplete.ShippedDomainsProvider
+import mozilla.components.feature.toolbar.ToolbarAutocompleteFeature
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.animation.VisibilityAnimator
 import org.mozilla.focus.architecture.FirefoxViewModelProviders
@@ -53,6 +55,7 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
     })
 
     private val sessionManager = SessionManager.getInstance()
+    private lateinit var toolbarAutocompleteFeature: ToolbarAutocompleteFeature
 
     private lateinit var toolbarCallbacks: ToolbarCallbacks
     private val toolbarStateProvider = DelegateToBrowserToolbarStateProvider()
@@ -62,6 +65,10 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
     private val toolbarViewModel: ToolbarViewModel
         get() = FirefoxViewModelProviders.of(this)[ToolbarViewModel::class.java]
+
+    val shippedDomainsProvider by lazy {
+        ShippedDomainsProvider().also { it.initialize(applicationContext) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,6 +124,10 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
 
         toolbarCallbacks = ToolbarIntegration.setup(this, activityUiScope, toolbarViewModel,
             appBarInnerContainer, toolbar, toolbarStateProvider, ::onToolbarEvent)
+
+        toolbarAutocompleteFeature = ToolbarAutocompleteFeature(toolbar).apply {
+            this.addDomainProvider(shippedDomainsProvider)
+        }
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {

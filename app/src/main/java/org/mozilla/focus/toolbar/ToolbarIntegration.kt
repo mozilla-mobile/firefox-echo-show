@@ -19,20 +19,16 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import kotlinx.coroutines.CoroutineScope
-import mozilla.components.browser.domains.DomainAutoCompleteProvider
 import mozilla.components.browser.toolbar.BrowserToolbar
+import mozilla.components.browser.toolbar.edit.EditToolbar
 import mozilla.components.concept.toolbar.Toolbar
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
-import org.mozilla.focus.TouchInterceptorLayout
-import org.mozilla.focus.ext.children
 import org.mozilla.focus.ext.isScreenXLarge
 import org.mozilla.focus.toolbar.ToolbarEvent.BACK
 import org.mozilla.focus.toolbar.ToolbarEvent.FORWARD
 import org.mozilla.focus.toolbar.ToolbarEvent.HOME
-import org.mozilla.focus.toolbar.ToolbarEvent.LOAD_URL
 import org.mozilla.focus.toolbar.ToolbarEvent.PIN_ACTION
 import org.mozilla.focus.toolbar.ToolbarEvent.RELOAD
 import org.mozilla.focus.toolbar.ToolbarEvent.SETTINGS
@@ -100,11 +96,10 @@ object ToolbarIntegration {
             toolbarContainer.setIsImportantForAccessibility(it!!)
         })
 
-        toolbar.displaySiteSecurityIcon = false
-        toolbar.hint = toolbar.context.getString(R.string.urlbar_hint)
+        toolbar.display.displayIndicatorSeparator = false
+        toolbar.display.hint = toolbar.context.getString(R.string.urlbar_hint)
 
         configureToolbarSpacing(toolbar)
-        initTextChangeListeners(context, toolbar, onToolbarEvent)
         val progressBarController = configureProgressBar(context, uiScope, toolbar)
         val pinButton = addToolbarButtons(context, toolbar, toolbarStateProvider, onToolbarEvent)
 
@@ -119,32 +114,34 @@ object ToolbarIntegration {
     }
 
     private fun configureURLBarText(toolbar: BrowserToolbar) {
-        // Components doesn't configure the text properly.
-        // TODO: Replace with the components implementation:
-        // https://github.com/mozilla-mobile/android-components/issues/756
-        val urlBar = toolbar.displayToolbar.children().first { it is TextView } as TextView
-        urlBar.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
-
-        val textColor = ContextCompat.getColor(toolbar.context, R.color.photonGrey10)
-        urlBar.setHintTextColor(textColor)
-        urlBar.setTextColor(textColor)
+        toolbar.edit.textSize = 24f
+        toolbar.edit.colors = EditToolbar.Colors(
+            clear = R.color.photonWhite,
+            icon = null,
+            hint = R.color.photonGrey10,
+            text = R.color.photonGrey10,
+            suggestionBackground = R.color.photonWhite,
+            suggestionForeground = R.color.photonWhite
+        )
     }
 
     private fun configureToolbarSpacing(toolbar: BrowserToolbar) {
         val res = toolbar.context.resources
-        val dp16 = res.pxToDp(16)
+//        val dp16 = res.pxToDp(16)
         val dp20 = res.pxToDp(20)
         val dp72 = res.pxToDp(72)
 
         toolbar.setPadding(dp72, dp20, dp72, dp20)
-        toolbar.urlBoxMargin = dp16
-        toolbar.setUrlTextPadding(dp16, 0, 0, 0)
-        toolbar.browserActionMargin = res.pxToDp(BUTTON_ACTION_MARGIN_DP)
+//        toolbar.display.
+//        toolbar.urlBoxMargin = dp16
+//        toolbar.setUrlTextPadding(dp16, 0, 0, 0)
+//        toolbar.browserActionMargin = res.pxToDp(BUTTON_ACTION_MARGIN_DP)
     }
 
     private fun configureProgressBar(context: Context, uiScope: CoroutineScope, toolbar: BrowserToolbar): ProgressBarController {
         val urlBoxBackground = UrlBoxBackgroundWithProgress(context)
-        toolbar.urlBoxView = urlBoxBackground
+        toolbar.edit
+//        toolbar.urlBoxView = urlBoxBackground
         val progressBarController = ProgressBarController(uiScope, urlBoxBackground)
         return progressBarController
     }
@@ -255,35 +252,6 @@ object ToolbarIntegration {
         return pinButton
     }
 
-    private fun initTextChangeListeners(
-        context: Context,
-        toolbar: BrowserToolbar,
-        onToolbarEvent: OnToolbarEvent
-    ) {
-        val domainAutoCompleteProvider = DomainAutoCompleteProvider().apply {
-            initialize(context)
-        }
-        toolbar.setAutocompleteFilter { value, view ->
-            view?.let {
-                val suggestion = domainAutoCompleteProvider.autocomplete(value)
-                view.applyAutocompleteResult(
-                        InlineAutocompleteEditText.AutocompleteResult(suggestion.text,
-                                suggestion.source, suggestion.size, { suggestion.url }))
-            }
-        }
-
-        toolbar.setOnUrlCommitListener { urlStr ->
-            val result = domainAutoCompleteProvider.autocomplete(urlStr)
-            val autocompleteResult = InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.size)
-            onToolbarEvent(LOAD_URL, urlStr, autocompleteResult)
-        }
-
-        toolbar.rootView?.findViewById<TouchInterceptorLayout>(R.id.main_content)
-                ?.setOnTouchOutsideViewListener(toolbar) {
-                    toolbar.displayMode()
-                }
-    }
-
     private fun onDisplayUrlUpdate(
         toolbar: BrowserToolbar,
         toolbarStateProvider: ToolbarStateProvider,
@@ -364,14 +332,6 @@ private fun ImageView.tintToolbarIconColor() {
     val iconColor = ContextCompat.getColor(context, R.color.photonGrey10)
     imageTintList = ColorStateList.valueOf(iconColor)
 }
-
-private val BrowserToolbar.displayToolbar: ViewGroup
-    // The class is internal so we compare against its name instead of its type.
-    get() = children().first { it::class.java.simpleName == "DisplayToolbar" } as ViewGroup
-
-private val BrowserToolbar.editToolbar: ViewGroup
-    // The class is internal so we compare against its name instead of its type.
-    get() = children().first { it::class.java.simpleName == "EditToolbar" } as ViewGroup
 
 private fun View.setIsImportantForAccessibility(isImportantForAccessibility: Boolean) {
     // The open-navigation-overlay button will remain focused unless another view requests focus

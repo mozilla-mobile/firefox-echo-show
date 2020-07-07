@@ -20,7 +20,7 @@ class DefaultSearchOnEditorActionListener(
         if (!actionId.isTerminalEvent()) return false
 
         val query = textView.text.toString()
-        urlSearcher.onTextInputUrlEntered(query, AutocompleteResult.emptyResult())
+        urlSearcher.onTextInputUrlEntered(query, AutocompleteResult("", "", 0))
         return true
     }
 
