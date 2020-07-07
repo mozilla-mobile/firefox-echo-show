@@ -11,12 +11,12 @@ import android.os.StrictMode
 import android.preference.PreferenceManager
 import mozilla.components.service.glean.Glean
 import org.mozilla.focus.R
-import org.mozilla.telemetry.TelemetryHolder
 
 private const val PREF_KEY_TELEMETRY = R.string.pref_key_telemetry
 
 /** A data container for for the "Send usage data" preference the user can switch. */
 @SuppressLint("StaticFieldLeak") // We intentionally hold the application context.
+@Suppress("DEPRECATION")
 internal object DataUploadPreference : SharedPreferences.OnSharedPreferenceChangeListener {
     // Sentry needs a reference to the applicationContext. We do not store the Activity context.
     private lateinit var appContext: Context
@@ -52,7 +52,7 @@ internal object DataUploadPreference : SharedPreferences.OnSharedPreferenceChang
     }
 
     private fun onEnabledChanged(context: Context, enabled: Boolean) {
-        TelemetryHolder.get()
+        DeprecatedTelemetryHolder.get()
                 .configuration
                 .setUploadEnabled(enabled).isCollectionEnabled = enabled
 

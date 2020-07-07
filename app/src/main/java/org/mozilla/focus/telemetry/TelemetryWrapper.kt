@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+@file:Suppress("DEPRECATION") // TODO remove this annotation as soon as we migrate to Glean
+
 package org.mozilla.focus.telemetry
 
 import android.content.Context
@@ -10,6 +12,7 @@ import android.net.http.SslError
 import android.os.StrictMode
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
+import mozilla.components.lib.fetch.httpurlconnection.HttpURLConnectionClient
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText.AutocompleteResult
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.home.BundledHomeTile
@@ -18,12 +21,11 @@ import org.mozilla.focus.home.HomeTile
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.toolbar.ToolbarEvent
 import org.mozilla.telemetry.Telemetry
-import org.mozilla.telemetry.TelemetryHolder
 import org.mozilla.telemetry.config.TelemetryConfiguration
 import org.mozilla.telemetry.event.TelemetryEvent
 import org.mozilla.telemetry.measurement.DefaultSearchMeasurement
 import org.mozilla.telemetry.measurement.SearchesMeasurement
-import org.mozilla.telemetry.net.HttpURLConnectionTelemetryClient
+import org.mozilla.telemetry.net.TelemetryClient
 import org.mozilla.telemetry.ping.TelemetryCorePingBuilder
 import org.mozilla.telemetry.ping.TelemetryMobileEventPingBuilder
 import org.mozilla.telemetry.schedule.jobscheduler.JobSchedulerTelemetryScheduler
@@ -132,10 +134,11 @@ object TelemetryWrapper {
 
             val serializer = JSONPingSerializer()
             val storage = FileTelemetryStorage(configuration, serializer)
-            val client = HttpURLConnectionTelemetryClient()
+            val client = TelemetryClient(HttpURLConnectionClient())
+
             val scheduler = JobSchedulerTelemetryScheduler()
 
-            TelemetryHolder.set(Telemetry(configuration, storage, client, scheduler)
+            DeprecatedTelemetryHolder.set(Telemetry(configuration, storage, client, scheduler)
                     .addPingBuilder(TelemetryCorePingBuilder(configuration))
                     .addPingBuilder(TelemetryMobileEventPingBuilder(configuration))
                     .setDefaultSearchProvider(createDefaultSearchProvider(context)))
@@ -153,12 +156,12 @@ object TelemetryWrapper {
     }
 
     fun startSession() {
-        TelemetryHolder.get().recordSessionStart()
+        DeprecatedTelemetryHolder.get().recordSessionStart()
         TelemetryEvent.create(Category.ACTION, Method.FOREGROUND, Object.APP).queue()
     }
 
     fun stopSession() {
-        TelemetryHolder.get().recordSessionEnd()
+        DeprecatedTelemetryHolder.get().recordSessionEnd()
 
         val histogramEvent = TelemetryEvent.create(Category.HISTOGRAM, Method.FOREGROUND, Object.BROWSER)
         for (bucketIndex in histogram.indices) {
@@ -193,7 +196,7 @@ object TelemetryWrapper {
     }
 
     fun stopMainActivity() {
-        TelemetryHolder.get()
+        DeprecatedTelemetryHolder.get()
                 .queuePing(TelemetryCorePingBuilder.TYPE)
                 .queuePing(TelemetryMobileEventPingBuilder.TYPE)
                 .scheduleUpload()
@@ -209,14 +212,14 @@ object TelemetryWrapper {
 
     private fun urlEnterEvent(autocompleteResult: AutocompleteResult) {
         TelemetryEvent.create(Category.ACTION, Method.TYPE_URL, Object.TOOLBAR)
-                .extra(Extra.AUTOCOMPLETE, (!autocompleteResult.isEmpty).toString())
+                .extra(Extra.AUTOCOMPLETE, (autocompleteResult.totalItems > 0).toString())
                 .queue()
     }
 
     private fun searchEnterEvent() {
         TelemetryEvent.create(Category.ACTION, Method.TYPE_QUERY, Object.TOOLBAR).queue()
 
-        val telemetry = TelemetryHolder.get()
+        val telemetry = DeprecatedTelemetryHolder.get()
         val searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
                 telemetry.configuration.context)
         telemetry.recordSearch(SearchesMeasurement.LOCATION_ACTIONBAR, searchEngine.identifier)
