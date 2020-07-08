@@ -9,10 +9,18 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.StrictMode
 import android.preference.PreferenceManager
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import org.mozilla.focus.R
 import org.mozilla.telemetry.TelemetryHolder
 
-private const val PREF_KEY_TELEMETRY = R.string.pref_key_telemetry
+internal const val PREF_KEY_TELEMETRY = R.string.pref_key_telemetry
+object DataUploadUpdateEvent { val dataUploadLiveData: LiveData<Boolean> = mutableDataUploadLiveData }
+private val mutableDataUploadLiveData = MutableLiveData<Boolean>()
+
+private fun sendDataUploadUpdateEvent(uploadEnabled: Boolean) {
+    mutableDataUploadLiveData.value = uploadEnabled
+}
 
 /** A data container for for the "Send usage data" preference the user can switch. */
 @SuppressLint("StaticFieldLeak") // We intentionally hold the application context.
@@ -55,6 +63,7 @@ internal object DataUploadPreference : SharedPreferences.OnSharedPreferenceChang
                 .configuration
                 .setUploadEnabled(enabled).isCollectionEnabled = enabled
 
+        sendDataUploadUpdateEvent(enabled)
         SentryWrapper.onIsEnabledChanged(context, enabled)
     }
 }
