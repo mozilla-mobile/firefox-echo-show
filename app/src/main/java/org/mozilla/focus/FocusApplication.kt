@@ -11,6 +11,7 @@ import mozilla.components.support.base.log.Log
 import mozilla.components.support.base.log.sink.AndroidLogSink
 import mozilla.telemetry.glean.Glean
 import mozilla.telemetry.glean.config.Configuration
+import org.mozilla.focus.GleanMetrics.LegacyIds
 import org.mozilla.focus.locale.LocaleAwareApplication
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.session.VisibilityLifeCycleCallback
@@ -21,6 +22,7 @@ import org.mozilla.focus.telemetry.PREF_KEY_TELEMETRY
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.widget.ServiceLocator
+import java.util.UUID
 
 class FocusApplication : LocaleAwareApplication() {
 
@@ -63,6 +65,9 @@ class FocusApplication : LocaleAwareApplication() {
             uploadEnabled = initialUploadEnabled,
             configuration = Configuration(channel = BuildConfig.BUILD_TYPE)
         )
+
+        val legacyId = TelemetryWrapper.clientId
+        LegacyIds.clientId.set(UUID.fromString(legacyId))
     }
 
     private fun enableStrictMode() {
