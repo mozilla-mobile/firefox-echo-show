@@ -1,0 +1,22 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
+
+legacy.ids:
+  client_id:
+    type: uuid
+    lifetime: user
+    description: |
+      The client id from legacy telemetry.
+    send_in_pings:
+      - deletion_request
+    bugs:
+      - https://github.com/mozilla-mobile/firefox-echo-show/issues/320
+    data_reviews:
+      -  https://github.com/mozilla-mobile/firefox-echo-show/pull/322#pullrequestreview-445001431
+    notification_emails:
+      - amazon-dev@mozilla.com
+      - schae@mozilla.com
+    expires: never
