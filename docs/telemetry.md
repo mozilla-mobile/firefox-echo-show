@@ -1,6 +1,10 @@
 # Telemetry
 For clients that have "Send usage data" enabled, Firefox for Echo Show sends a "core" ping and an "event" ping to Mozilla's telemetry service. Sending telemetry can be disabled in the app's settings. Builds of Firefox for Echo Show have telemetry enabled by default ("opt-out").
 
+## Baseline ping
+
+Firefox for Echo Show creates and tries to send a "baseline" ping when the app goes to the background. This baseline ping is defined by the [Glean](https://github.com/mozilla-mobile/android-components/tree/master/components/service/glean) component and [documented in the Android Components repository](https://github.com/mozilla-mobile/android-components/blob/master/components/service/glean/docs/baseline.md).
+
 ## Core ping
 
 Firefox for Echo Show creates and tries to send a "core" ping whenever the app goes to the background. This core ping uses the same format as Firefox for Android and is [documented on firefox-source-docs.mozilla.org](https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/data/core-ping.html).

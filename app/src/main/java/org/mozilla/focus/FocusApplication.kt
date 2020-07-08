@@ -9,11 +9,15 @@ import android.os.StrictMode
 import androidx.preference.PreferenceManager
 import mozilla.components.support.base.log.Log
 import mozilla.components.support.base.log.sink.AndroidLogSink
+import mozilla.telemetry.glean.Glean
+import mozilla.telemetry.glean.config.Configuration
 import org.mozilla.focus.locale.LocaleAwareApplication
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.session.VisibilityLifeCycleCallback
 import org.mozilla.focus.telemetry.AppStartupTimeMeasurement
 import org.mozilla.focus.telemetry.DataUploadPreference
+import org.mozilla.focus.telemetry.DataUploadUpdateEvent
+import org.mozilla.focus.telemetry.PREF_KEY_TELEMETRY
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.widget.ServiceLocator
@@ -39,9 +43,26 @@ class FocusApplication : LocaleAwareApplication() {
 
         SearchEngineManager.getInstance().init(this)
         TelemetryWrapper.init(this)
+        initGlean()
         DataUploadPreference.init(this.applicationContext)
 
         registerActivityLifecycleCallbacks(VisibilityLifeCycleCallback(this))
+    }
+
+    private fun initGlean() {
+        DataUploadUpdateEvent.dataUploadLiveData.observeForever { uploadEnabled ->
+            Glean.setUploadEnabled(uploadEnabled)
+        }
+
+        val telemetryKey = applicationContext.getString(PREF_KEY_TELEMETRY)
+        val initialUploadEnabled =
+            PreferenceManager.getDefaultSharedPreferences(this).getBoolean(telemetryKey, false)
+
+        Glean.initialize(
+            applicationContext = applicationContext,
+            uploadEnabled = initialUploadEnabled,
+            configuration = Configuration(channel = BuildConfig.BUILD_TYPE)
+        )
     }
 
     private fun enableStrictMode() {
