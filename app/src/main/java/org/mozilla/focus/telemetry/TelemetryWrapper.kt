@@ -110,6 +110,8 @@ object TelemetryWrapper {
         fun fromBoolean(bool: Boolean) = if (bool) TRUE else FALSE
     }
 
+    val clientId = TelemetryHolder.get().clientId
+
     @JvmStatic
     fun init(context: Context) {
         // When initializing the telemetry library it will make sure that all directories exist and
