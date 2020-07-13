@@ -110,7 +110,7 @@ object TelemetryWrapper {
         fun fromBoolean(bool: Boolean) = if (bool) TRUE else FALSE
     }
 
-    val clientId = TelemetryHolder.get().clientId
+    lateinit var clientId: String // Initialized in init()
 
     @JvmStatic
     fun init(context: Context) {
@@ -141,6 +141,8 @@ object TelemetryWrapper {
                     .addPingBuilder(TelemetryCorePingBuilder(configuration))
                     .addPingBuilder(TelemetryMobileEventPingBuilder(configuration))
                     .setDefaultSearchProvider(createDefaultSearchProvider(context)))
+
+            clientId = TelemetryHolder.get().clientId
         } finally {
             StrictMode.setThreadPolicy(threadPolicy)
         }
