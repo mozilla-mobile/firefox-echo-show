@@ -26,6 +26,9 @@ set -e
 BUILD_TOOLS=~/Library/Android/sdk/build-tools/29.0.3 # Update me on error!
 
 BUILD_DIR=app/build/outputs/apk/amazonWebview/release
+
+UNSIGNED_NAME=app-amazonWebview-release-unsigned.apk
+ALIGNED_NAME=app-amazonWebview-release-aligned.apk
 FINAL_NAME=app-amazonWebview-release.apk
 
 # Assert pre-conditions.
@@ -63,16 +66,15 @@ fi
 # Build the release build.
 ./gradlew --quiet clean assembleAmazonWebviewRelease $ASSEMBLE_FLAGS || exit 1
 
+# Align ZIP to 4 byte addresses
+$BUILD_TOOLS/zipalign -v 4 $BUILD_DIR/$UNSIGNED_NAME $BUILD_DIR/$ALIGNED_NAME
+
 # Sign via autograph. Signing can be found here:
 # https://github.com/mozilla-services/autograph/blob/a1bee1add785ae41a284b1d5873010817d1fa79f/signer/apk/jar.go#L69-L71
-curl -F "input=@$BUILD_DIR/app-amazonWebview-release-unsigned.apk" \
+curl -F "input=@$BUILD_DIR/$ALIGNED_NAME" \
     -o $BUILD_DIR/$FINAL_NAME \
     -H "Authorization: $AUTH_TOKEN" \
     $SERVER || exit 1
-
-# Align ZIP to 4 byte addresses
-zipalign -v 4 $BUILD_DIR/$FINAL_NAME $BUILD_DIR/app-amazonWebview-release-aligned.apk
-mv -f $BUILD_DIR/app-amazonWebview-release-aligned.apk $BUILD_DIR/$FINAL_NAME
 
 # We don't use `-Werr` (treat warnings as errors) because errors related to certain AndroidX
 # files are expected here.
