@@ -23,7 +23,7 @@
 # Crash script if any command exits with non-zero status
 set -e
 
-BUILD_TOOLS=~/Library/Android/sdk/build-tools/28.0.2 # Update me on error!
+BUILD_TOOLS=~/Library/Android/sdk/build-tools/29.0.3 # Update me on error!
 
 BUILD_DIR=app/build/outputs/apk/amazonWebview/release
 FINAL_NAME=app-amazonWebview-release.apk
