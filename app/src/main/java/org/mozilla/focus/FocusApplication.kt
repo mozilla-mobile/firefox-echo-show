@@ -54,6 +54,9 @@ class FocusApplication : LocaleAwareApplication() {
     private fun initGlean() {
         DataUploadUpdateEvent.dataUploadLiveData.observeForever { uploadEnabled ->
             Glean.setUploadEnabled(uploadEnabled)
+            if (uploadEnabled) {
+                LegacyIds.clientId.set(UUID.fromString(TelemetryWrapper.clientId))
+            }
         }
 
         val telemetryKey = applicationContext.getString(PREF_KEY_TELEMETRY)
@@ -66,8 +69,7 @@ class FocusApplication : LocaleAwareApplication() {
             configuration = Configuration(channel = BuildConfig.BUILD_TYPE)
         )
 
-        val legacyId = TelemetryWrapper.clientId
-        LegacyIds.clientId.set(UUID.fromString(legacyId))
+        LegacyIds.clientId.set(UUID.fromString(TelemetryWrapper.clientId))
     }
 
     private fun enableStrictMode() {
