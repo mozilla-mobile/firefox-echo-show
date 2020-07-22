@@ -73,3 +73,9 @@
 -dontwarn org.conscrypt.**
 # A resource is loaded with a relative path so the package of this class must be preserved.
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+####################################################################################################
+# Glean
+####################################################################################################
+# Remove after https://bugzilla.mozilla.org/show_bug.cgi?id=1655116
+-dontwarn mozilla.telemetry.glean.testing.**
