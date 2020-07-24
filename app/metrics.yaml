@@ -11,7 +11,7 @@ legacy.ids:
     description: |
       The client id from legacy telemetry.
     send_in_pings:
-      - deletion_request
+      - deletion-request
     bugs:
       - https://github.com/mozilla-mobile/firefox-echo-show/issues/320
     data_reviews:

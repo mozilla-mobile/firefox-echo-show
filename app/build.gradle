@@ -8,7 +8,7 @@ buildscript {
         }
 
         dependencies {
-            classpath "org.mozilla.components:tooling-glean-gradle:49.0.0"
+            classpath "org.mozilla.telemetry:glean-gradle-plugin:31.6.0"
         }
     }
 }
@@ -140,7 +140,7 @@ ext.gleanGenerateMarkdownDocs = true
 apply plugin: "org.mozilla.telemetry.glean-gradle-plugin"
 
 // Define library names and version constants.
-String GLEAN_VERSION = "31.2.3"
+String GLEAN_VERSION = "31.6.0"
 String GLEAN_LIBRARY = "org.mozilla.telemetry:glean:$GLEAN_VERSION"
 String GLEAN_LIBRARY_FORUNITTESTS = "org.mozilla.telemetry:glean-forUnitTests:$GLEAN_VERSION"
 
