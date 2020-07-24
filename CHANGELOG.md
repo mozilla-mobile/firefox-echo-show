@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.5] - around 2020-07-24
+### Added
+- Glean with deletion-request ping
+
+## [1.4] - around 2019-10-17
+_There may be additional changes as we did not keep good track of the changes
+in this release._
+
 ### Added
 - If the app times out and opened again within five minutes, the last loaded url will restore (#186)
 
@@ -77,7 +86,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Settings: "Send usage data" preference, About page, Privacy Notice, and "Clear all cookies and site data" preference
 - Toolbar: URL bar and home page, back/forward, refresh, pin/unpin, and settings buttons
 
-[Unreleased]: https://github.com/.../compare/v1.3...HEAD
+[Unreleased]: https://github.com/.../compare/v1.5...HEAD
+[1.5]: https://github.com/.../compare/v1.4...v1.5
+[1.4]: https://github.com/.../compare/v1.3...v1.4
 [1.3]: https://github.com/.../compare/v1.2...v1.3
 [1.2]: https://github.com/.../compare/v1.1...v1.2
 [1.1]: https://github.com/.../compare/v1.0...v1.1
