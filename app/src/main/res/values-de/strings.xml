@@ -55,4 +55,8 @@
   <string name="preference_mozilla_telemetry_summary2">Mozilla ist bestrebt, nur die Informationen zu sammeln, mit denen wir %1$s anbieten und für alle Nutzer verbessern können.</string>
   <string name="preference_mozilla_telemetry_summary">Mehr erfahren</string>
   <string name="nav_close_hint">Schließen</string>
+
+  <!-- Text for the banner. -->
+  <string name="banner_text">Firefox beendet Support auf Echo Show. Ab dem 30. April 2021 werden Sie zum Browsen automatisch zu Amazon Silk weitergeleitet.</string>
+  <string name="banner_more_info_button">Mehr erfahren</string>
 </resources>

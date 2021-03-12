@@ -55,4 +55,8 @@
   <string name="preference_mozilla_telemetry_summary2">Mozilla 坚持仅收集用来为大众改进 %1$s 所必需的数据。</string>
   <string name="preference_mozilla_telemetry_summary">详细了解</string>
   <string name="nav_close_hint">关闭</string>
+
+  <!-- Text for the banner. -->
+  <string name="banner_text">Firefox将终止对Echo Show的支持。自2021年4月30日起，在浏览网页时您将被自动重定向至Amazon Silk。</string>
+  <string name="banner_more_info_button">了解更多</string>
 </resources>

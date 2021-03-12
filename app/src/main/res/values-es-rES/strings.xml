@@ -55,4 +55,8 @@
   <string name="preference_mozilla_telemetry_summary2">Mozilla se esfuerza por recopilar solo lo necesario para proporcionar y mejorar %1$s para todos.</string>
   <string name="preference_mozilla_telemetry_summary">Descubrir más</string>
   <string name="nav_close_hint">Cerrar</string>
+
+  <!-- Text for the banner. -->
+  <string name="banner_text">Firefox finalizará el soporte para Echo Show. A partir del 30 de abril de 2021, serás redirigido automáticamente a Amazon Silk para navegar por la web.</string>
+  <string name="banner_more_info_button">Más información</string>
 </resources>
