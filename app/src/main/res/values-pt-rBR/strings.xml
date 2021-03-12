@@ -55,4 +55,7 @@
   <string name="preference_mozilla_telemetry_summary2">A Mozilla se empenha para coletar somente o que é necessário para melhorar o %1$s para todos.</string>
   <string name="preference_mozilla_telemetry_summary">Saiba mais</string>
   <string name="nav_close_hint">Fechar</string>
+
+  <string name="banner_text">O Firefox encerrá o suporte ao Echo Show. A partir do dia 30 de abril de 2021, você será automaticamente redirecionado para o navegador Amazon Silk.</string>
+  <string name="banner_more_info_button">Saiba mais</string>
 </resources>

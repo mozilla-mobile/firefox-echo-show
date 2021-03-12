@@ -43,6 +43,13 @@ open class FullscreenCallbacks(
         isInFullScreen = true
         exitOnScaleGestureListener = ExitFullscreenOnScaleGestureListener(callback, view)
 
+        browserFragment.activity?.also { activity ->
+            val bannerLayout: View? = activity.findViewById(R.id.bannerLayout)
+            if (bannerLayout != null) {
+                bannerLayout.visibility = View.GONE
+            }
+        }
+
         with(browserFragment) {
             webView?.setVisibility(View.GONE)
 
@@ -63,6 +70,13 @@ open class FullscreenCallbacks(
     override fun onExitFullScreen() {
         with(browserFragment) {
             webView?.setVisibility(View.VISIBLE)
+
+            browserFragment.activity?.also { activity ->
+                val bannerLayout: View? = activity.findViewById(R.id.bannerLayout)
+                if (bannerLayout != null) {
+                    bannerLayout.visibility = View.VISIBLE
+                }
+            }
 
             fullscreenContainerOverride.removeAllViews()
             fullscreenContainerOverride.visibility = View.GONE

@@ -39,4 +39,8 @@
     <string name="settings_cookies_dialog_title">सभी कुकीज और साइट आँकड़े साफ़ करें</string>
 
     <!-- Appended by save_robotranslations.py -->
+
+    <!-- Text for the banner. -->
+    <string name="banner_text">Echo Show के लिए Firefox सपोर्ट समाप्त कर देगा। 30 अप्रैल, 2021 से आपको वेब ब्राउज़िंग के लिए स्वतः ही Amazon Silk में रीडायरेक्ट कर दिया जाएगा।</string>
+    <string name="banner_more_info_button">अधिक जानें</string>
 </resources>

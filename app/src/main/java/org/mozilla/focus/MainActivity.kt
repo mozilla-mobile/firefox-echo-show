@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
+import android.widget.Button
 import kotlinx.android.synthetic.main.activity_main.*
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.animation.VisibilityAnimator
@@ -42,6 +43,7 @@ import org.mozilla.focus.toolbar.ToolbarIntegration
 import org.mozilla.focus.toolbar.ToolbarStateProvider
 import org.mozilla.focus.toolbar.ToolbarViewModel
 import org.mozilla.focus.utils.ActivityUiCoroutineScope
+import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.utils.publicsuffix.PublicSuffix
 
@@ -112,6 +114,17 @@ class MainActivity : LocaleAwareAppCompatActivity(), BrowserFragmentCallbacks, U
         FirefoxViewModelProviders.of(this)[BrowserAppBarViewModel::class.java].let { viewModel ->
             appBarLayoutController = BrowserAppBarLayoutController(viewModel, appBarLayout, serviceLocator.deviceInfo).apply {
                 init(this@MainActivity)
+            }
+        }
+
+        val bannerLayout: View? = findViewById(R.id.bannerLayout)
+        if (bannerLayout != null) {
+            val bannerMoreInfoButton: Button? = bannerLayout.findViewById(R.id.bannerMoreInfoButton)
+            if (bannerMoreInfoButton != null) {
+                bannerMoreInfoButton.setOnClickListener {
+                    val url = SupportUtils.getSumoURLForTopic(this, "amazon-end-support")
+                    ScreenController.showBrowserScreenForUrl(supportFragmentManager, url, Source.NONE)
+                }
             }
         }
 
